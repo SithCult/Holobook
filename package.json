@@ -4,12 +4,18 @@
   "private": true,
   "license": "(EUPL-1.2)",
   "dependencies": {
+    "firebase": "^7.2.0",
     "mdbreact": "^4.19.1",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.1.1",
+    "react-redux-firebase": "^2.4.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "redux": "^4.0.4",
+    "redux-firestore": "^0.9.0",
+    "redux-thunk": "^2.3.0"
   },
   "repository": {
     "type": "git",
