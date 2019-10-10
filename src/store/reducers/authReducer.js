@@ -10,7 +10,7 @@ const authReducer = (state = initState, action) => {
             console.log('Error');
             return {
                 ...state,
-                authError: "Oh no... We can't find your credentials anywhere.",
+                authError: "We can't find your credentials anywhere.",
                 authErrorDetails: action.err
             }
         case 'LOGIN_SUCCESS':
