@@ -25,10 +25,58 @@ import App from './App';
 
 import registerServiceWorker from './registerServiceWorker';
 
-// Render the root component to <div id="root"></div>
-ReactDOM.render( <App /> , document.getElementById('root'));
+//> Redux
+// Store, Middleware, Compose
+import { createStore, applyMiddleware, compose } from 'redux';
+// Provider
+import { Provider } from 'react-redux';
+// Thunk
+import thunk from 'redux-thunk';
+// Reducer
+import rootReducer from './store/reducers/rootReducer';
 
-registerServiceWorker();
+//> Firestore
+// Firestore is the DB of Firebase
+import { reduxFirestore, getFirestore } from 'redux-firestore'
+
+//> Firebase
+// React-Redux interface for Firebase
+import { reactReduxFirebase, getFirebase } from 'react-redux-firebase'
+// Firebase config
+import fbInit from './config/fbInit'
+
+/** 
+ * Create Redux data-store and store it in store
+ * Apply thunk middle ware
+ */
+const store = createStore(rootReducer,
+    compose(
+        applyMiddleware(
+            thunk.withExtraArgument({
+                getFirebase, // Firebase
+                getFirestore // Cloud DB
+            })
+        ),
+        reduxFirestore(fbInit),
+        reactReduxFirebase(fbInit, {
+            useFirestoreForProfile: true, // Sync user data to user profile
+            userProfile: 'users', // Tell Redux Firebase where our users are stored
+            attachAuthIsReady: true // Enable firebase initializing before DOM rendering
+        })
+    )
+);
+
+// Wait until firebase is initialized, then render the DOM
+store.firebaseAuthIsReady.then(() => {
+    // Render the DOM
+    ReactDOM.render(
+        <Provider store={store}>
+            <App />
+        </Provider>,
+        document.getElementById('root')
+    );
+    registerServiceWorker();
+})
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
