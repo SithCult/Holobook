@@ -53,7 +53,6 @@ class HomePage extends React.Component {
     sn: "",
     country: {},
     snValid: true,
-    password: "adminadmin",
   };
 
   componentDidMount = () => {
@@ -64,7 +63,12 @@ class HomePage extends React.Component {
     event.preventDefault();
     event.target.className += " was-validated";
 
-    this._signUserUp();
+    let result = this._signUserUp();
+    if(result.value){
+      console.log("Success");
+    } else {
+      console.log(result);
+    }
   }
 
   changeHandler = event => {
@@ -187,6 +191,53 @@ class HomePage extends React.Component {
     });
   }
 
+  _solidifyData = () => {
+    let data = {
+      email: this.state.email,
+      full_name: this.state.name,
+      sith_name: this.state.sn,
+      password: "adminadmin",
+      tracking: {
+        [Date.now()]: this.state.country
+      },
+      details: {
+        note: this.state.additional ? this.state.additional : null,
+        lightsaber: {
+          state: this.state.ls ? true : false,
+          color: this.state.lsc ? true : false
+        },
+        history: this.state.fam ? true : false,
+        involvement: {
+          general: this.state.inv ? true : false,
+          special: {
+            clusters: this.state.invCluster ? true : false,
+            flyers: this.state.invFlyers ? true : false,
+            money: this.state.invMoney ? true : false,
+            other: this.state.invOther ? true : false,
+            othertext: this.state.invOtherText ? this.state.invOtherText : null,
+            promote: this.state.invPromote ? true : false,
+            services: this.state.invServices ? true : false,
+            telling: this.state.invTelling ? true : false,
+          }
+        },
+      },
+      newsletter: this.state.checkEmail ? true : false,
+      letter: this.state.checkLetter ? true : false,
+      address: {
+        country: this.state.cc ? this.state.cc : this.state.country.country,
+        zip: this.state.zip ? this.state.zip : null,
+        city: this.state.city ? this.state.city : null,
+        address: this.state.address ? this.state.address : null,
+      },
+      law: {
+        privacy: this.state.checkPrivacy ? true : false,
+        data: this.state.checkData ? true : false,
+      },
+    }
+
+    return data;
+  }
+
   _signUserUp = () => {
     if(
       this.state.email &&
@@ -195,11 +246,42 @@ class HomePage extends React.Component {
       this.state.checkPrivacy &&
       this.state.checkData
     ) {
-      this.props.signUp(this.state);
+      if(this.state.checkLetter){
+        if(
+          !this.state.city ||
+          !this.state.zip ||
+          !this.state.address
+        ) {
+          return {
+            value: false,
+            code: 2,
+            msg: "Address details missing"
+          };
+        }
+      }
+      if(this.state.invOther){
+        if(!this.state.invOtherText){
+          return {
+            value: false,
+            code: 3,
+            msg: "Other Text missing"
+          };
+        }
+      }
+      // All local checks OK
+      this.props.signUp(this._solidifyData());
+      return {
+        value: true,
+        code: null,
+        msg: "Success"
+      };
     } else {
-      console.log("Some field empty.");
+      return {
+        value: false,
+        code: 1,
+        msg: "Basic fields missing"
+      };
     }
-    
   }
 
   render() {
@@ -394,9 +476,9 @@ class HomePage extends React.Component {
                 label="Handing out flyers"
                 type="checkbox"
                 containerClass="my-2"
-                checked={this.state.invFlayers}
+                checked={this.state.invFlyers}
                 onChange={this.handleCheckboxChange}
-                name="invFlayers"
+                name="invFlyers"
                 id="checkbox12"
                 />
                 <MDBInput 

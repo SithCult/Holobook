@@ -35,24 +35,24 @@ export const signUp = (newUser) => {
         const firebase = getFirebase();
         const firestore = getFirestore();
 
+        console.log(newUser);
+
         // Create new user to firebase
         firebase.auth().createUserWithEmailAndPassword(
             newUser.email,
             newUser.password
         ).then((response) => {
             // Create data for user we just created
-            /*let split_name = newUser.name.split(" ");
             return firestore.collection('users').doc(response.user.uid).set({
-                first_name: split_name[0],
-                last_name: split_name[split_name.length - 1],
-                full_name: newUser.name,
-                initials: split_name[0].charAt(0) + split_name[split_name.length - 1].charAt(0),
-                tier: 0, // 0: Basic, 1: Personal, 2: Family,
-                tabSlots: 4, // 3 tabs for basic program (+ Dashboard)
-                tabs: [
-                    {editable: false, icon: "columns", title: "Dashboard", color: "#ffffff", createdAt: new Date()} // Initial Dashboard tab
-                ]
-            })*/
+              full_name: newUser.full_name,
+              email: newUser.email,
+              tracking: newUser.tracking,
+              details: newUser.details,
+              newsletter: newUser.newsletter,
+              letter: newUser.letter,
+              address: newUser.address,
+              law: newUser.law
+            })
         }).then(() => {
             dispatch({
                 type: 'SIGNUP_SUCCESS'
