@@ -57,6 +57,76 @@ body{
 	background-color: #2e2e2e !important;
 }
 
+// Custom buttons
+.underlined {
+  text-decoration: none;
+  color: aqua;
+  padding-bottom: 0.15em;
+  box-sizing: border-box;
+  box-shadow: inset 0 -0.2em 0 aqua;
+  transition: 0.2s;
+  &:hover {
+    color: #222;
+    box-shadow: inset 0 -2em 0 aqua;
+    transition: all 0.45s cubic-bezier(0.86, 0, 0.07, 1);
+  }
+}
+
+.btn-modern {
+	overflow: visible !important;
+  position: relative;
+  background: none;
+  color: gold;
+	text-transform: uppercase;
+	font-size: 1em;
+  text-decoration: none;
+  border: 0.2em solid gold;
+	padding: 0.5em 1em;
+	box-shadow: none;
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 10%;
+    background: #2e2e2e;
+    height: 0.3em;
+    right: 20%;
+    top: -0.21em;
+    transform: skewX(-45deg);
+    -webkit-transition: all 0.45s cubic-bezier(0.86, 0, 0.07, 1);
+    transition: all 0.45s cubic-bezier(0.86, 0, 0.07, 1);
+  }
+  &::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 10%;
+    background: #2e2e2e;
+    height: 0.3em;
+    left: 20%;
+    bottom: -0.25em;
+    transform: skewX(45deg);
+    -webkit-transition: all 0.45 cubic-bezier(0.86, 0, 0.07, 1);
+    transition: all 0.45s cubic-bezier(0.86, 0, 0.07, 1);
+  }
+  &:hover {
+		box-shadow: none;
+		color: gold;
+    &::before {
+      right: 80%;
+    }
+    &::after {
+      left: 80%;
+    }
+	}
+	&:focus{
+		box-shadow: none;
+	}
+	&:active{
+		box-shadow: none;
+	}
+}
+
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
  * Copyright © 2019 Werbeagentur Christian Aichner
