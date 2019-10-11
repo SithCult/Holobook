@@ -6,51 +6,55 @@
 }
 
 // Custom colors
-.agency-dark{
-	background-color: $agencyDark !important;
+.sithcult-dark{
+	background-color: $sithcultDark !important;
 	&.darken-1{
-		background-color: darken($agencyDark, 5%) !important;
+		background-color: darken($sithcultDark, 5%) !important;
 	}
 	&.darken-2{
-		background-color: darken($agencyDark, 10%) !important;
+		background-color: darken($sithcultDark, 10%) !important;
 	}
 	&.darken-3{
-		background-color: darken($agencyDark, 15%) !important;
+		background-color: darken($sithcultDark, 15%) !important;
 	}
 	&.lighten-1{
-		background-color: lighten($agencyDark, 10%) !important;
+		background-color: lighten($sithcultDark, 10%) !important;
 	}
 	&.lighten-2{
-		background-color: lighten($agencyDark, 20%) !important;
+		background-color: lighten($sithcultDark, 20%) !important;
 	}
 	&.lighten-3{
-		background-color: lighten($agencyDark, 30%) !important;
+		background-color: lighten($sithcultDark, 30%) !important;
 	}
 }
-.agency-red{
-	background-color: $agencyRed !important;
+.sithcult-red{
+	background-color: $sithcultRed !important;
 	&.darken-1{
-		background-color: darken($agencyRed, 10%) !important;
+		background-color: darken($sithcultRed, 10%) !important;
 	}
 	&.darken-2{
-		background-color: darken($agencyRed, 20%) !important;
+		background-color: darken($sithcultRed, 20%) !important;
 	}
 	&.darken-3{
-		background-color: darken($agencyRed, 30%) !important;
+		background-color: darken($sithcultRed, 30%) !important;
 	}
 	&.lighten-1{
-		background-color: lighten($agencyRed, 10%) !important;
+		background-color: lighten($sithcultRed, 10%) !important;
 	}
 	&.lighten-2{
-		background-color: lighten($agencyRed, 20%) !important;
+		background-color: lighten($sithcultRed, 20%) !important;
 	}
 	&.lighten-3{
-		background-color: lighten($agencyRed, 30%) !important;
+		background-color: lighten($sithcultRed, 30%) !important;
 	}
 }
 
 .red-text{
-	color: $agencyRed !important;
+	color: $sithcultRed !important;
+}
+
+body{
+	background-color: #2e2e2e !important;
 }
 
 /** 
