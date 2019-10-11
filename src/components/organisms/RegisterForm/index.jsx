@@ -12,6 +12,12 @@ import countryList from 'react-select-country-list';
 // Fade In Animation
 import FadeIn from 'react-fade-in';
 
+//> Redux
+// Connect
+import { connect } from 'react-redux';
+// Actions
+import { signUp } from '../../../store/actions/authActions';
+
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -46,6 +52,8 @@ class HomePage extends React.Component {
     email: "",
     sn: "",
     country: {},
+    snValid: true,
+    password: "adminadmin",
   };
 
   componentDidMount = () => {
@@ -55,6 +63,8 @@ class HomePage extends React.Component {
   submitHandler = event => {
     event.preventDefault();
     event.target.className += " was-validated";
+
+    this._signUserUp();
   }
 
   changeHandler = event => {
@@ -78,6 +88,21 @@ class HomePage extends React.Component {
     this.setState({
       [event.target.name]: event.target.checked
     })
+  }
+
+  handleCodeChange = event => {
+    let code = event.target.value;
+
+    if(code.length <= 14){
+      if(code.length === 4 || code.length === 9){
+        code = code + "-";
+      }
+      this.setState({
+        code: code.toUpperCase()
+      });
+    } else {
+      return false;
+    }
   }
 
   _fetchAllCountries = (country) => {
@@ -162,8 +187,28 @@ class HomePage extends React.Component {
     });
   }
 
+  _signUserUp = () => {
+    if(
+      this.state.email &&
+      this.state.name &&
+      this.state.sn &&
+      this.state.checkPrivacy &&
+      this.state.checkData
+    ) {
+      this.props.signUp(this.state);
+    } else {
+      console.log("Some field empty.");
+    }
+    
+  }
+
   render() {
     console.log(this.state);
+
+    const { authError, auth } = this.props;
+
+    console.log(authError, auth);
+
     return (
       <MDBContainer id="register" className="text-center text-white mt-5 pt-5">
         <div className="mb-4">
@@ -207,6 +252,7 @@ class HomePage extends React.Component {
                 name="name"
                 outline
                 label="Your full name"
+                required
               >
                 <small id="emailHelp" className="form-text text-muted">
                   To contact you, we require your real name. But do not worry 
@@ -223,6 +269,7 @@ class HomePage extends React.Component {
                 name="email"
                 outline
                 label="Your email"
+                required
               >
                 <small id="emailHelp" className="form-text text-muted">
                   Like your real name, your private E-Mail will not be shared.
@@ -234,10 +281,12 @@ class HomePage extends React.Component {
                 value={this.state.sn}
                 onChange={this.changeHandler}
                 type="text"
+                className={!this.state.snValid && "is-invalid"}
                 id="materialFormRegisterConfirmEx3"
                 outline
                 name="sn"
                 label="Fictional name (Sith Name)"
+                required
               >
                 <small id="emailHelp" className="form-text text-muted">
                   You need to choose a fictional name. This will be your valid SithCult name 
@@ -269,6 +318,7 @@ class HomePage extends React.Component {
                   label="Your country"
                   labelClass="text-white"
                   outline
+                  required
                 />
               </MDBCol>
               <MDBCol md="6">
@@ -290,15 +340,17 @@ class HomePage extends React.Component {
               </MDBCol>
               <MDBCol md="6">
               {this.state.ls &&
-                <MDBInput 
-                label="My lightsaber is red or purple"
-                containerClass="my-2"
-                checked={this.state.lsc}
-                onChange={this.handleCheckboxChange}
-                name="lsc"
-                type="checkbox"
-                id="checkbox2"
-                />
+                <FadeIn>
+                  <MDBInput 
+                  label="My lightsaber is red or purple"
+                  containerClass="my-2"
+                  checked={this.state.lsc}
+                  onChange={this.handleCheckboxChange}
+                  name="lsc"
+                  type="checkbox"
+                  id="checkbox2"
+                  />
+                </FadeIn>
               }
               </MDBCol>
               <MDBCol md="6">
@@ -393,15 +445,18 @@ class HomePage extends React.Component {
                 id="checkbox17"
                 />
                 {this.state.invOther &&
-                  <MDBInput 
-                  type="textarea"
-                  label="What can you do for us?"
-                  rows="2"
-                  name="invOtherText"
-                  value={this.state.invOtherText}
-                  outline
-                  onChange={this.changeHandler}
-                  />
+                  <FadeIn>
+                    <MDBInput 
+                    type="textarea"
+                    label="What can you do for us?"
+                    rows="2"
+                    name="invOtherText"
+                    value={this.state.invOtherText}
+                    outline
+                    onChange={this.changeHandler}
+                    required={this.state.invOther ? true : false}
+                    />
+                  </FadeIn>
                 }
               </FadeIn>
               }
@@ -416,6 +471,10 @@ class HomePage extends React.Component {
                 value={this.state.additional}
                 onChange={this.changeHandler}
                 />
+              </MDBCol>
+              <MDBCol md="12" className="mt-3">
+                <hr/>
+                <p className="lead font-weight-bold">How would you like to hear from us?</p>
               </MDBCol>
               <MDBCol md="6">
                 <MDBInput 
@@ -459,6 +518,7 @@ class HomePage extends React.Component {
                     outline
                     name="city"
                     label="City"
+                    required={this.state.checkLetter ? true : false}
                   >
                   </MDBInput>
                   <MDBInput
@@ -469,6 +529,7 @@ class HomePage extends React.Component {
                     outline
                     name="zip"
                     label="Postal code (ZIP)"
+                    required={this.state.checkLetter ? true : false}
                   >
                   </MDBInput>
                   <MDBInput
@@ -479,6 +540,7 @@ class HomePage extends React.Component {
                     outline
                     name="address"
                     label="Address"
+                    required={this.state.checkLetter ? true : false}
                   >
                   </MDBInput>
                 </FadeIn>
@@ -504,6 +566,7 @@ class HomePage extends React.Component {
                 onChange={this.handleCheckboxChange}
                 name="checkPrivacy"
                 id="checkbox30"
+                required
                 />
                 <MDBInput 
                 label="I agree, that the data from this form is being stored and used by 
@@ -514,7 +577,39 @@ class HomePage extends React.Component {
                 onChange={this.handleCheckboxChange}
                 name="checkData"
                 id="checkbox31"
+                required
                 />
+              </MDBCol>
+              <MDBCol md="12">
+                <hr/>
+              </MDBCol>
+            </MDBRow>
+            <MDBRow>
+              <MDBCol md="4">
+                <p className="font-weight-bold">Redeem code</p>
+                <MDBInput
+                  value={this.state.code}
+                  onChange={this.handleCodeChange}
+                  type="text"
+                  id="materialFormRegisterConfirmEx40"
+                  outline
+                  name="code"
+                  label="Promotional code"
+                >
+                  <small id="codeHelp" className="form-text text-muted">
+                    Codes can be obtained at SithCult events, flyers or other promotional material.
+                  </small>
+                </MDBInput>
+              </MDBCol>
+              <MDBCol md="8" className="align-self-center text-center">
+                <MDBBtn 
+                color="green"
+                size="lg"
+                type="submit"
+                >
+                <MDBIcon icon="angle-right" className="pr-2" />
+                Start your journey
+                </MDBBtn>
               </MDBCol>
             </MDBRow>
             </FadeIn>
@@ -527,7 +622,21 @@ class HomePage extends React.Component {
   }
 }
 
-export default HomePage;
+const mapStateToProps = (state) => {
+  return {
+    authError: state.auth.authError,
+    authErrorDetails: state.auth.authErrorDetails,
+    auth: state.firebase.auth
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signUp: (newUser) => dispatch(signUp(newUser))
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(HomePage);
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)

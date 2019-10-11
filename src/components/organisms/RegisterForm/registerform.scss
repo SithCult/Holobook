@@ -28,7 +28,6 @@
   }
 
   .md-form.md-outline input:-webkit-autofill {
-    text-fill-color: white;
     -webkit-text-fill-color: white;
   }
 
@@ -103,6 +102,14 @@
     border-color: gold;
   }
 
+  .form-check-input.is-valid~.form-check-label, .was-validated .form-check-input:valid~.form-check-label{
+    color: lightgreen;
+  }
+
+  .form-check-input.is-invalid~.form-check-label, .was-validated .form-check-input:invalid~.form-check-label{
+    color: lightcoral;
+  }
+
   .select-dropdown {
     color: white !important;
   }
@@ -133,6 +140,10 @@
         background-color: rgb(50, 50, 50);
       }
     }
+  }
+
+  input[name="code"]{
+    letter-spacing: 4px;
   }
 }
 
