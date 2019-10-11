@@ -28,9 +28,7 @@
 - [Quick start](#quick-start)
 - [Bugs and feature requests](#bugs-and-feature-requests)
 - [Contributing](#contributing)
-- [Community](#community)
 - [Versioning](#versioning)
-- [Creators](#creators)
 - [Thanks](#thanks)
 - [Copyright and license](#copyright-and-license)
 
@@ -61,15 +59,6 @@ directions for opening issues, coding standards, and notes on development.
 All HTML and CSS should conform to the [Code Guide](https://github.com/mdo/code-guide), maintained by
 [Mark Otto](https://github.com/mdo).
 
-## [](#community)Community
-
-Get updates on our development and chat/talk with the project maintainers and community members.
-
-[![Discord][discord-badge]][discord]
-
-- Follow [@realaichner](https://twitter.com/realaichner).
-- Follow us on [Facebook](https://www.facebook.com/werbeagentur.aichner).
-
 ## [](#versioning)Versioning
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/SithCult/Holobook)
@@ -89,6 +78,3 @@ to [contribute to our project](#contributing).
 
 SPDX-License-Identifier: (EUPL-1.2)
 Copyright © 2019 Christian Aichner
-
-[discord-badge]: https://img.shields.io/badge/Discord-Join%20chat%20%E2%86%92-738bd7.svg
-[discord]: https://discord.gg/dnxUJmk
