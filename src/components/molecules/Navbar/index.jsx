@@ -15,8 +15,10 @@ import {
     MDBContainer,
 } from 'mdbreact';
 
-// React Logo
-import { ReactComponent as Logo } from '../../../assets/logo.svg';
+//> Images
+// Logo
+// To be added
+
 
 class Navbar extends React.Component{
     state = {
@@ -48,8 +50,7 @@ class Navbar extends React.Component{
                 <MDBNavbar color="agency-dark" dark expand="md" fixed="top" scrolling>
                 <MDBContainer>
                     <MDBNavbarBrand href="/" className="py-0 font-weight-bold">
-                    <Logo style={{ height: "2.5rem", width: "2.5rem" }} />
-                    <strong className="align-middle">MDB React Template</strong>
+                        <strong className="align-middle">SithCult Logo</strong>
                     </MDBNavbarBrand>
                     <MDBNavbarToggler
                     onClick={this.toggleCollapse("mainNavbarCollapse")}
