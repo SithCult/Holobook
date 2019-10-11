@@ -1,0 +1,88 @@
+#register{
+  .group{
+    img{
+      max-height: 100px;
+    }
+  }
+
+  .md-form{
+    input, textarea{
+      color: white !important;
+    }
+    
+  }
+
+  .form-control:focus{
+    border-color: gold;
+  }
+
+  .md-form.md-outline > input[type]:-webkit-autofill:not(.browser-default):not([type="search"]) + label, .md-form.md-outline > input[type=time]:not(.browser-default) + label{
+    background: #2e2e2e;
+  }
+
+  .md-form.md-outline label.active{
+    background: #2e2e2e;
+  }
+
+  .md-form.md-outline input:-webkit-autofill{
+    text-fill-color: white;
+    -webkit-text-fill-color: white;
+  }
+
+  .select-wrapper.md-form.md-outline input.select-dropdown:focus{
+    border-color: gold;
+    box-shadow: inset 0px 0px 0px 1px gold;
+  }
+
+  .form-check-input[type="checkbox"]:checked + label:before, label.btn input[type="checkbox"]:checked + label:before{
+    border-right: 2px solid gold;
+    border-bottom: 2px solid gold;
+  }
+
+  .md-form input:not([type]):focus:not([readonly]) + label, .md-form input[type=text]:not(.browser-default):focus:not([readonly]) + label, .md-form input[type=password]:not(.browser-default):focus:not([readonly]) + label, .md-form input[type=email]:not(.browser-default):focus:not([readonly]) + label, .md-form input[type=url]:not(.browser-default):focus:not([readonly]) + label, .md-form input[type=time]:not(.browser-default):focus:not([readonly]) + label, .md-form input[type=date]:not(.browser-default):focus:not([readonly]) + label, .md-form input[type=datetime]:not(.browser-default):focus:not([readonly]) + label, .md-form input[type=datetime-local]:not(.browser-default):focus:not([readonly]) + label, .md-form input[type=tel]:not(.browser-default):focus:not([readonly]) + label, .md-form input[type=number]:not(.browser-default):focus:not([readonly]) + label, .md-form input[type=search]:not(.browser-default):focus:not([readonly]) + label, .md-form input[type=search-md]:focus:not([readonly]) + label, .md-form textarea.md-textarea:focus:not([readonly]) + label{
+    color: gold;
+    background: #2e2e2e
+  }
+
+  .md-form input:not([type]):focus:not([readonly]), .md-form input[type=text]:not(.browser-default):focus:not([readonly]), .md-form input[type=password]:not(.browser-default):focus:not([readonly]), .md-form input[type=email]:not(.browser-default):focus:not([readonly]), .md-form input[type=url]:not(.browser-default):focus:not([readonly]), .md-form input[type=time]:not(.browser-default):focus:not([readonly]), .md-form input[type=date]:not(.browser-default):focus:not([readonly]), .md-form input[type=datetime]:not(.browser-default):focus:not([readonly]), .md-form input[type=datetime-local]:not(.browser-default):focus:not([readonly]), .md-form input[type=tel]:not(.browser-default):focus:not([readonly]), .md-form input[type=number]:not(.browser-default):focus:not([readonly]), .md-form input[type=search]:not(.browser-default):focus:not([readonly]), .md-form input[type=search-md]:focus:not([readonly]), .md-form textarea.md-textarea:focus:not([readonly]){
+    border-bottom: 1px solid gold;
+    box-shadow: 0 1px 0 0 gold;
+    border-color: gold;
+  }
+
+  .select-dropdown{
+    color: white !important;
+  }
+  .caret{
+    color: white !important;
+  }
+  
+  .dropdown-content {
+    background-color: rgb(30,30,30);
+    color: white !important;
+
+    li:not(.disabled) span{
+      color: white !important;
+    }
+
+    .disabled span{
+      color: rgb(180,180,180) !important;
+    }
+
+    .search{
+      color: white !important;
+    }
+
+    li{
+      line-height: 1.5rem;
+      &.active, &:hover{
+        background-color: rgb(50,50,50);
+      }
+    }
+  }
+}
+
+/** 
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019 Christian Aichner
+ */
