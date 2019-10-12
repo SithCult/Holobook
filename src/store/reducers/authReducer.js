@@ -7,17 +7,15 @@ const initState = {
 const authReducer = (state = initState, action) => {
     switch(action.type){
         case 'LOGIN_ERROR':
-            console.log('Error');
+            console.log('Error', action.err);
             return {
                 ...state,
-                authError: "We can't find your credentials anywhere.",
                 authErrorDetails: action.err
             }
         case 'LOGIN_SUCCESS':
             console.log('Login success');
             return {
                 ...state,
-                authError: null,
                 authErrorDetails: null
             };
         case 'SIGNOUT_SUCCESS':
