@@ -29,6 +29,7 @@ import {
   MDBBadge,
   MDBInput,
   MDBIcon,
+  MDBTooltip,
 } from 'mdbreact';
 
 //> Components
@@ -48,10 +49,16 @@ class ProfilePage extends React.Component {
   state = {
     post_charlength: 0,
     post: "",
+    post_basic: false,
   };
 
   componentDidMount = () => {
-    
+    let basic = localStorage.getItem("language_basic");
+    if(basic){
+      this.setState({
+        post_basic: basic === "true" ? true : false
+      });
+    }
   }
 
   changeTextareaHandler = event => {
@@ -159,24 +166,51 @@ class ProfilePage extends React.Component {
                 label="What's on your mind?"
                 name="post"
                 outline
+                className={this.state.post_basic && "basic narrow"}
                 value={this.state.post}
                 onChange={this.changeTextareaHandler}
                 />
-                <p>
+                <div>
                   <div className="d-inline post-settings">
-                    <span>
-                      <MDBIcon icon="language" size="lg" />
-                    </span>
-                    <span>
-                      <MDBIcon far icon="eye" size="lg" />
-                    </span>
+                    <MDBTooltip
+                      placement="top"
+                      domElement
+                      className="test"
+                    >
+                      <span
+                      onClick={(e) => {
+                        this.setState({
+                          post_basic: !this.state.post_basic
+                        }, () => localStorage.setItem("language_basic",this.state.post_basic))
+                        }
+                      }
+                      >
+                        <MDBIcon icon="language" size="lg" />
+                      </span>
+                      <span>
+                        Toggle Imperial Basic
+                      </span>
+                    </MDBTooltip>
+                    <MDBTooltip
+                      placement="top"
+                      domElement
+                      className="test"
+                    >
+                      <span>
+                        <MDBIcon far icon="eye" size="lg" />
+                      </span>
+                      <span>
+                        Change visibility
+                      </span>
+                    </MDBTooltip>
+                    
                   </div>
                   <small
                   className={this.state.post.length === 500 ? "text-danger float-right" : "float-right"}
                   >
                   {this.state.post.length} / 500
                   </small>
-                </p>
+                </div>
                 <div className="clearfix"/>
                 <hr/>
                 <div className="actions">
