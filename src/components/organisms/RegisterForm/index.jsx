@@ -72,7 +72,6 @@ class HomePage extends React.Component {
 
   submitHandler = event => {
     event.preventDefault();
-    event.target.className += " was-validated";
 
     let result = this._signUserUp();
     if(result.value){
@@ -442,9 +441,8 @@ class HomePage extends React.Component {
           Our team will come back to you within matter of hours to help you.
           </p>
           <form
-            className="needs-validation text-left"
+            className="text-left"
             onSubmit={this.submitHandler}
-            noValidate
           >
           <MDBRow>
             <MDBCol md="6">
