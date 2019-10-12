@@ -72,9 +72,7 @@ class LoginPage extends React.Component {
   render() {
     const { authErrorDetails, auth } = this.props;
     
-    console.log(authErrorDetails);
-
-    //if(auth.uid !== undefined) return <Redirect to="/holobook"/> 
+    if(auth.uid !== undefined) return <Redirect to="/holobook"/> 
 
     return (
       <MDBContainer id="login" className="text-center text-white pt-5 mt-5">
