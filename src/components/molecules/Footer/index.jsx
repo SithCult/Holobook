@@ -18,52 +18,64 @@ class Footer extends React.Component{
                 <MDBContainer className="text-center text-md-left">
                     <MDBRow>
                     <MDBCol md="6">
-                        <h5 className="title">Footer Content</h5>
+                        <h5 className="title">SithCult</h5>
                         <p>
-                        Here you can use rows and columns here to organize your footer
-                        content.
+                        SithCult is a worldwide Star Wars fan organization 
+                        comprised of and operated by Star Wars fans.
                         </p>
                     </MDBCol>
                     <MDBCol md="3">
-                        <h5 className="title">Links</h5>
+                        <h5 className="title">Useful links</h5>
                         <ul>
                         <li className="list-unstyled">
-                            <a href="#!">Link 1</a>
+                            <a 
+                            href="http://starwars.wikia.com/wiki/Main_Page"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >
+                            Wookiepedia
+                            </a>
                         </li>
                         <li className="list-unstyled">
-                            <a href="#!">Link 2</a>
+                            <a 
+                            href="https://www.501st.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >
+                            501st Legion
+                            </a>
                         </li>
                         <li className="list-unstyled">
-                            <a href="#!">Link 3</a>
-                        </li>
-                        <li className="list-unstyled">
-                            <a href="#!">Link 4</a>
+                            <a 
+                            href="https://www.patreon.com/sithcult"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            >
+                            Support of on Patreon
+                            </a>
                         </li>
                         </ul>
                     </MDBCol>
                     <MDBCol md="3">
-                        <h5 className="title">Links</h5>
+                        <h5 className="title">Contact</h5>
                         <ul>
                         <li className="list-unstyled">
-                            <a href="#!">Link 1</a>
-                        </li>
-                        <li className="list-unstyled">
-                            <a href="#!">Link 2</a>
-                        </li>
-                        <li className="list-unstyled">
-                            <a href="#!">Link 3</a>
-                        </li>
-                        <li className="list-unstyled">
-                            <a href="#!">Link 4</a>
+                            <a href="mailto:center@sithcult.com">center@sithcult.com</a>
                         </li>
                         </ul>
                     </MDBCol>
                     </MDBRow>
                 </MDBContainer>
                 <div className="footer-copyright text-center py-3">
+                    <MDBContainer>
+                    <p>SithCult is a worldwide Star Wars fan-club organization comprised of 
+                    and operated by Star Wars fans. While it is not sponsored by Lucasfilm Ltd., 
+                    it it follows generally accepted ground rules for Star Wars fan groups. Star 
+                    Wars, its characters, costumes, and all associated items are the intellectual 
+                    property of Lucasfilm. © & ™ Lucasfilm Ltd. All rights reserved.</p>
+                    </MDBContainer>
                     <MDBContainer fluid>
-                        &copy; {new Date().getFullYear()} Copyright: 
-                        <a href="https://www.aichner-christian.com" target="_blank" rel="noopener noreferrer"> Werbeagentur Christian Aichner </a>
+                        &copy; {new Date().getFullYear()} Copyright: SithCult
                     </MDBContainer>
                 </div>
             </MDBFooter>
