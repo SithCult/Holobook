@@ -31,6 +31,8 @@ import {
   MDBProgress,
   MDBBtn,
   MDBIcon,
+  ToastContainer,
+  toast,
 } from 'mdbreact';
 
 //> Components
@@ -49,6 +51,10 @@ import IMGlogo from '../../../assets/images/logo_white.png';
 const countries = countryList().getData();
 
 class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.firstRow = React.createRef();
+  }
 
   state = {
     name: "",
@@ -81,11 +87,62 @@ class HomePage extends React.Component {
     } 
   }
 
-  changeHandler = event => {
-    if(event.target.name === "sn"){
-      if (/\s/.test(event.target.value)) {
-        return false;
+  _checkSithname(value) {
+    const forbidden = [
+      "Darth",
+      "Lord",
+      "Acolyte",
+      "Adept",
+      "Dark",
+      "Light",
+      "Vitiate",
+      "Nathema",
+      "Dromund",
+      "Kaas",
+      "Ajunta",
+      "Pall",
+      "Kressh",
+      "Nadd",
+      "Fredon",
+      "Emperor",
+      "Imperial",
+      "Vader",
+      "Sidious",
+      "Great",
+      "King",
+      "Knight",
+      "Valkorion",
+      "Imperator",
+      "König",
+      "SithCult",
+      "Sith",
+      "Cult"
+    ];
+    let sn = value.toLowerCase().trim();
+    let results = forbidden.map((item) => {
+      if(sn.includes(item.toLowerCase().trim())){
+        return true;
       }
+    })
+    if(results.includes(true)){
+      if(!this.state.sn_infested){
+        this.setState({
+          sn_infested: true
+        });
+      }
+    } else {
+      if(this.state.sn_infested){
+        this.setState({
+          sn_infested: false
+        });
+      }
+    }
+  }
+
+  changeHandler = event => {
+    // Check Sithname
+    if(event.target.name === "sn"){
+      this._checkSithname(event.target.value);
     }
     this.setState({
       [event.target.name]: event.target.value
@@ -247,6 +304,8 @@ class HomePage extends React.Component {
       "fairy",
       "goblin",
       "halfdemon",
+      "halfling",
+      "gnome",
       "highfairy",
       "human",
       "ogre",
@@ -283,18 +342,13 @@ class HomePage extends React.Component {
 
   generateName = () => {
     /**
-      * Check the possibility that a name contains a space.
-      * This generator was tested and therefore "gnome" and "halfling" were excluded from use.
       * "elf" and "highelf" has been removed due to its special chars in its name.
       * It was tested using 1.000.000 names - which seems solid.
-      * However, if a name still has a space in it, create a new name.
       */
     let generation = this._generateRandomName();
-    if (!/\s/.test(generation.name)) {
-      this.setState({
-        sn: generation.name
-      });
-    }
+    this.setState({
+      sn: generation.name
+    });
   }
   
   _getIPData = async () => {
@@ -404,16 +458,17 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const { authError, auth } = this.props;
+    const { authError, auth, authErrorCode } = this.props;
 
-    console.log(authError, auth);
+    // Scroll up to error
+    authErrorCode && this.firstRow.current.scrollIntoView();
 
     return (
       <MDBContainer id="register" className="text-center text-white mt-5 pt-5">
         <div className="mb-4">
           <img className="img-fluid" src={IMGlogo} alt="SithCult logo"/>
         </div>
-        <p className="lead mt-4">
+        <p className="lead mt-4" ref={this.firstRow}>
         Become part of the world's largest Sith-Imperial organization.
         </p>
         <AboutUs />
@@ -469,6 +524,11 @@ class HomePage extends React.Component {
                 label="Your email"
                 required
               >
+                {authErrorCode && authErrorCode === 1 &&
+                  <small id="emailHelpError" className="form-text text-danger font-weight-bold">
+                    {authError && authError}
+                  </small>
+                }
                 <small id="emailHelp" className="form-text text-muted">
                   Like your real name, your private E-Mail will not be shared.
                 </small>
@@ -481,12 +541,22 @@ class HomePage extends React.Component {
                 type="text"
                 id="materialFormRegisterConfirmEx3"
                 outline
-                autocomplete="autocomplete_off_87454878587857"
+                autoComplete="autocomplete_off_87454878587857"
                 name="sn"
                 label="Fictional name (Sith Name)"
                 required
               >
-                <small id="emailHelp" className="form-text text-muted">
+                {authErrorCode && authErrorCode === 2 && 
+                  <small id="emailHelpError" className="form-text text-danger font-weight-bold">
+                    This name is already in use. Please choose a different one.
+                  </small>
+                }
+                {this.state.sn_infested &&
+                  <small id="snHelpError" className="form-text text-danger font-weight-bold">
+                    Your Sithname shall not contain any titles or names of original characters.
+                  </small>
+                }
+                <small id="snHelp" className="form-text text-muted">
                   You need to choose a fictional name. This will be your valid SithCult name 
                   that will be used in every conversation and in contact with other members.
                 </small>
@@ -563,7 +633,7 @@ class HomePage extends React.Component {
                 </MDBInput>
               </MDBCol>
               {this.state.password &&
-              <FadeIn>
+              <>
                 <MDBCol md="12" className="mt-3">
                   <hr/>
                   <p className="lead font-weight-bold">More about you</p>
@@ -826,7 +896,7 @@ class HomePage extends React.Component {
                 <MDBCol md="12">
                   <hr/>
                 </MDBCol>
-              </FadeIn>
+              </>
               }
               </MDBRow>
               {this.state.password &&
@@ -836,7 +906,7 @@ class HomePage extends React.Component {
                     <p className="font-weight-bold">Redeem code</p>
                     <MDBInput
                       value={this.state.code}
-                      autocomplete="autocomplete_off_874548537585743884357"
+                      autoComplete="autocomplete_off_874548537585743884357"
                       onChange={this.handleCodeChange}
                       type="text"
                       id="materialFormRegisterConfirmEx40"
@@ -875,6 +945,7 @@ class HomePage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     authError: state.auth.authError,
+    authErrorCode: state.auth.authErrorCode,
     authErrorDetails: state.auth.authErrorDetails,
     auth: state.firebase.auth
   }
