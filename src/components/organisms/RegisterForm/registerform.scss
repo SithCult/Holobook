@@ -16,6 +16,18 @@
     border-color: gold;
   }
 
+  // Automatically put * after a required input field's label
+  .required{
+    label:after {
+      content:" *";
+      position: relative;
+      top: auto;
+      display: inline;
+      opacity: 1;
+      color: gold;
+    }
+  }
+
   .md-form.md-outline
     > input[type]:-webkit-autofill:not(.browser-default):not([type="search"])
     + label,

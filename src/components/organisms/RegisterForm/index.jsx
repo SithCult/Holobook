@@ -78,7 +78,7 @@ class HomePage extends React.Component {
       console.log("Success");
     } else {
       console.log(result);
-    }
+    } 
   }
 
   changeHandler = event => {
@@ -108,9 +108,7 @@ class HomePage extends React.Component {
     let score, psw;
     // Default
     score = 0;
-
     psw = event.target.value;
-    console.log(zxcvbn(psw));
     
     if(psw.length >= 5){
       let result = zxcvbn(psw);
@@ -406,8 +404,6 @@ class HomePage extends React.Component {
   }
 
   render() {
-    console.log(this.state);
-
     const { authError, auth } = this.props;
 
     console.log(authError, auth);
@@ -445,7 +441,7 @@ class HomePage extends React.Component {
             onSubmit={this.submitHandler}
           >
           <MDBRow>
-            <MDBCol md="6">
+            <MDBCol md="6" className="required">
               <MDBInput
                 value={this.state.name}
                 onChange={this.changeHandler}
@@ -462,7 +458,7 @@ class HomePage extends React.Component {
                 </small>
               </MDBInput>
             </MDBCol>
-            <MDBCol md="6">
+            <MDBCol md="6" className="required">
               <MDBInput
                 value={this.state.email}
                 onChange={this.changeHandler}
@@ -478,13 +474,14 @@ class HomePage extends React.Component {
                 </small>
               </MDBInput>
             </MDBCol>
-            <MDBCol md="6">
+            <MDBCol md="6" className="required">
               <MDBInput
                 value={this.state.sn}
                 onChange={this.changeHandler}
                 type="text"
                 id="materialFormRegisterConfirmEx3"
                 outline
+                autocomplete="autocomplete_off_87454878587857"
                 name="sn"
                 label="Fictional name (Sith Name)"
                 required
@@ -509,9 +506,9 @@ class HomePage extends React.Component {
             </MDBCol>
           </MDBRow>
           {(this.state.name !== "" && this.state.email !== "" && this.state.sn !== "") &&
-            <FadeIn>
+          <>
             <MDBRow>
-              <MDBCol md="6">
+              <MDBCol md="6" className="required">
                 <p className="lead font-weight-bold">Where are you based?</p>
                 <MDBSelect
                   search
@@ -526,7 +523,7 @@ class HomePage extends React.Component {
                   required
                 />
               </MDBCol>
-              <MDBCol md="6">
+              <MDBCol md="6" className="required">
                 <p className="lead font-weight-bold">Set a password</p>
                 <MDBInput
                   value={this.state.password_input}
@@ -565,299 +562,310 @@ class HomePage extends React.Component {
                   </small>
                 </MDBInput>
               </MDBCol>
-              <MDBCol md="12" className="mt-3">
-                <hr/>
-                <p className="lead font-weight-bold">More about you</p>
-              </MDBCol>
-              <MDBCol md="6">
-                <MDBInput 
-                label="I own a stunt-lightsaber"
-                containerClass="my-2"
-                checked={this.state.ls}
-                onChange={this.handleCheckboxChange}
-                name="ls"
-                type="checkbox"
-                id="checkbox1"
-                />
-              </MDBCol>
-              <MDBCol md="6">
-              {this.state.ls &&
-                <FadeIn>
-                  <MDBInput 
-                  label="My lightsaber is red or purple"
-                  containerClass="my-2"
-                  checked={this.state.lsc}
-                  onChange={this.handleCheckboxChange}
-                  name="lsc"
-                  type="checkbox"
-                  id="checkbox2"
-                  />
-                </FadeIn>
-              }
-              </MDBCol>
-              <MDBCol md="6">
-                <MDBInput 
-                label="I am familiar with the history of the Sith"
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.fam}
-                onChange={this.handleCheckboxChange}
-                name="fam"
-                id="checkbox5"
-                />
-              </MDBCol>
-              <MDBCol md="6">
-              </MDBCol>
-              <MDBCol md="6">
-                <MDBInput 
-                label="I want to get involved in building up SithCult"
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.inv}
-                onChange={this.handleCheckboxChange}
-                name="inv"
-                id="checkbox10"
-                />
-              </MDBCol>
-              <MDBCol md="6">
-              {this.state.inv &&
+              {this.state.password &&
               <FadeIn>
-              <p className="font-weight-bold">How would you like to assist us?</p>
-                <MDBInput 
-                label="Establishing your local SithCult cluster"
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.invCluster}
-                onChange={this.handleCheckboxChange}
-                name="invCluster"
-                id="checkbox11"
-                />
-                <MDBInput 
-                label="Handing out flyers"
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.invFlyers}
-                onChange={this.handleCheckboxChange}
-                name="invFlyers"
-                id="checkbox12"
-                />
-                <MDBInput 
-                label="Promoting us at events"
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.invPromote}
-                onChange={this.handleCheckboxChange}
-                name="invPromote"
-                id="checkbox13"
-                />
-                <MDBInput 
-                label="Telling your friends about SithCult"
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.invTelling}
-                onChange={this.handleCheckboxChange}
-                name="invTelling"
-                id="checkbox14"
-                />
-                <MDBInput 
-                label="Donating services"
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.invServices}
-                onChange={this.handleCheckboxChange}
-                name="invServices"
-                id="checkbox15"
-                />
-                <MDBInput 
-                label="Donating money"
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.invMoney}
-                onChange={this.handleCheckboxChange}
-                name="invMoney"
-                id="checkbox16"
-                />
-                <MDBInput 
-                label="Something else"
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.invOther}
-                onChange={this.handleCheckboxChange}
-                name="invOther"
-                id="checkbox17"
-                />
-                {this.state.invOther &&
+                <MDBCol md="12" className="mt-3">
+                  <hr/>
+                  <p className="lead font-weight-bold">More about you</p>
+                </MDBCol>
+                <MDBCol md="6">
+                  <MDBInput 
+                  label="I own a stunt-lightsaber"
+                  containerClass="my-2"
+                  checked={this.state.ls}
+                  onChange={this.handleCheckboxChange}
+                  name="ls"
+                  type="checkbox"
+                  id="checkbox1"
+                  />
+                </MDBCol>
+                <MDBCol md="6">
+                {this.state.ls &&
                   <FadeIn>
                     <MDBInput 
-                    type="textarea"
-                    label="What can you do for us?"
-                    rows="2"
-                    name="invOtherText"
-                    value={this.state.invOtherText}
-                    outline
-                    onChange={this.changeHandler}
-                    required={this.state.invOther ? true : false}
+                    label="My lightsaber is red or purple"
+                    containerClass="my-2"
+                    checked={this.state.lsc}
+                    onChange={this.handleCheckboxChange}
+                    name="lsc"
+                    type="checkbox"
+                    id="checkbox2"
                     />
                   </FadeIn>
                 }
-              </FadeIn>
-              }
-              </MDBCol>
-              <MDBCol md="12">
-                <MDBInput 
-                type="textarea"
-                label="Would you like to add something?"
-                rows="3"
-                name="additional"
-                outline
-                value={this.state.additional}
-                onChange={this.changeHandler}
-                />
-              </MDBCol>
-              <MDBCol md="12" className="mt-3">
-                <hr/>
-                <p className="lead font-weight-bold">How would you like to hear from us?</p>
-              </MDBCol>
-              <MDBCol md="6">
-                <MDBInput 
-                label="I want to receive additional information via E-mail"
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.checkEmail}
-                onChange={this.handleCheckboxChange}
-                name="checkEmail"
-                id="checkbox20"
-                />
-                <small 
-                className="form-text text-muted"
-                >
-                You can change your mind at any time by clicking the unsubscribe link 
-                in the footer of any email you receive from us, or by contacting center@sithcult.com.
-                </small>
-              </MDBCol>
-              <MDBCol md="6">
-                <MDBInput 
-                label="I want to receive information and awards via letters"
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.checkLetter}
-                onChange={this.handleCheckboxChange}
-                name="checkLetter"
-                id="checkbox25"
-                />
-                <small 
-                className="form-text text-muted"
-                >
-                You can change your mind at any time by contacting center@sithcult.com.
-                </small>
-                {this.state.checkLetter &&
+                </MDBCol>
+                <MDBCol md="6">
+                  <MDBInput 
+                  label="I am familiar with the history of the Sith"
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.fam}
+                  onChange={this.handleCheckboxChange}
+                  name="fam"
+                  id="checkbox5"
+                  />
+                </MDBCol>
+                <MDBCol md="6">
+                </MDBCol>
+                <MDBCol md="6">
+                  <MDBInput 
+                  label="I want to get involved in building up SithCult"
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.inv}
+                  onChange={this.handleCheckboxChange}
+                  name="inv"
+                  id="checkbox10"
+                  />
+                </MDBCol>
+                <MDBCol md="6">
+                {this.state.inv &&
                 <FadeIn>
-                  <MDBInput
-                    value={this.state.city}
-                    onChange={this.changeHandler}
-                    type="text"
-                    id="materialFormRegisterConfirmEx10"
-                    outline
-                    name="city"
-                    label="City"
-                    required={this.state.checkLetter ? true : false}
-                  >
-                  </MDBInput>
-                  <MDBInput
-                    value={this.state.zip}
-                    onChange={this.changeHandler}
-                    type="text"
-                    id="materialFormRegisterConfirmEx11"
-                    outline
-                    name="zip"
-                    label="Postal code (ZIP)"
-                    required={this.state.checkLetter ? true : false}
-                  >
-                  </MDBInput>
-                  <MDBInput
-                    value={this.state.address}
-                    onChange={this.changeHandler}
-                    type="text"
-                    id="materialFormRegisterConfirmEx12"
-                    outline
-                    name="address"
-                    label="Address"
-                    required={this.state.checkLetter ? true : false}
-                  >
-                  </MDBInput>
+                <p className="font-weight-bold">How would you like to assist us?</p>
+                  <MDBInput 
+                  label="Establishing your local SithCult cluster"
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.invCluster}
+                  onChange={this.handleCheckboxChange}
+                  name="invCluster"
+                  id="checkbox11"
+                  />
+                  <MDBInput 
+                  label="Handing out flyers"
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.invFlyers}
+                  onChange={this.handleCheckboxChange}
+                  name="invFlyers"
+                  id="checkbox12"
+                  />
+                  <MDBInput 
+                  label="Promoting us at events"
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.invPromote}
+                  onChange={this.handleCheckboxChange}
+                  name="invPromote"
+                  id="checkbox13"
+                  />
+                  <MDBInput 
+                  label="Telling your friends about SithCult"
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.invTelling}
+                  onChange={this.handleCheckboxChange}
+                  name="invTelling"
+                  id="checkbox14"
+                  />
+                  <MDBInput 
+                  label="Donating services"
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.invServices}
+                  onChange={this.handleCheckboxChange}
+                  name="invServices"
+                  id="checkbox15"
+                  />
+                  <MDBInput 
+                  label="Donating money"
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.invMoney}
+                  onChange={this.handleCheckboxChange}
+                  name="invMoney"
+                  id="checkbox16"
+                  />
+                  <MDBInput 
+                  label="Something else"
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.invOther}
+                  onChange={this.handleCheckboxChange}
+                  name="invOther"
+                  id="checkbox17"
+                  />
+                  {this.state.invOther &&
+                    <FadeIn>
+                    <div className="required">
+                      <MDBInput 
+                      type="textarea"
+                      label="What can you do for us?"
+                      rows="2"
+                      name="invOtherText"
+                      value={this.state.invOtherText}
+                      outline
+                      onChange={this.changeHandler}
+                      required={this.state.invOther ? true : false}
+                      />
+                    </div>
+                    </FadeIn>
+                  }
                 </FadeIn>
                 }
-              </MDBCol>
-              <MDBCol md="12">
-                <MDBInput 
-                label={
-                <span>
-                I have read and agree to the
-                <a 
-                href='/privacy'
-                target="_blank"
-                className="ml-1 underlined"
-                >
-                Privacy Policy
-                </a>
-                </span>
-                }
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.checkPrivacy}
-                onChange={this.handleCheckboxChange}
-                name="checkPrivacy"
-                id="checkbox30"
-                required
-                />
-                <MDBInput 
-                label="I agree, that the data from this form is being stored and used by 
-                SithCult in order for you to receive any service"
-                type="checkbox"
-                containerClass="my-2"
-                checked={this.state.checkData}
-                onChange={this.handleCheckboxChange}
-                name="checkData"
-                id="checkbox31"
-                required
-                />
-              </MDBCol>
-              <MDBCol md="12">
-                <hr/>
-              </MDBCol>
-            </MDBRow>
-            <MDBRow>
-              <MDBCol md="4">
-                <p className="font-weight-bold">Redeem code</p>
-                <MDBInput
-                  value={this.state.code}
-                  onChange={this.handleCodeChange}
-                  type="text"
-                  id="materialFormRegisterConfirmEx40"
+                </MDBCol>
+                <MDBCol md="12">
+                  <MDBInput 
+                  type="textarea"
+                  label="Would you like to add something?"
+                  rows="3"
+                  name="additional"
                   outline
-                  name="code"
-                  label="Promotional code"
-                >
-                  <small id="codeHelp" className="form-text text-muted">
-                    Codes can be obtained at SithCult events, flyers or other promotional material.
+                  value={this.state.additional}
+                  onChange={this.changeHandler}
+                  />
+                </MDBCol>
+                <MDBCol md="12" className="mt-3">
+                  <hr/>
+                  <p className="lead font-weight-bold">How would you like to hear from us?</p>
+                </MDBCol>
+                <MDBCol md="6">
+                  <MDBInput 
+                  label="I want to receive additional information via E-mail"
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.checkEmail}
+                  onChange={this.handleCheckboxChange}
+                  name="checkEmail"
+                  id="checkbox20"
+                  />
+                  <small 
+                  className="form-text text-muted"
+                  >
+                  You can change your mind at any time by clicking the unsubscribe link 
+                  in the footer of any email you receive from us, or by contacting center@sithcult.com.
                   </small>
-                </MDBInput>
-              </MDBCol>
-              <MDBCol md="8" className="align-self-center text-center">
-                <MDBBtn 
-                color="green"
-                size="lg"
-                type="submit"
-                >
-                <MDBIcon icon="angle-right" className="pr-2" />
-                Start your journey
-                </MDBBtn>
-              </MDBCol>
-            </MDBRow>
-            </FadeIn>
+                </MDBCol>
+                <MDBCol md="6">
+                  <MDBInput 
+                  label="I want to receive information and awards via letters"
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.checkLetter}
+                  onChange={this.handleCheckboxChange}
+                  name="checkLetter"
+                  id="checkbox25"
+                  />
+                  <small 
+                  className="form-text text-muted"
+                  >
+                  You can change your mind at any time by contacting center@sithcult.com.
+                  </small>
+                  {this.state.checkLetter &&
+                  <FadeIn>
+                    <MDBInput
+                      value={this.state.city}
+                      onChange={this.changeHandler}
+                      type="text"
+                      id="materialFormRegisterConfirmEx10"
+                      outline
+                      name="city"
+                      label="City"
+                      required={this.state.checkLetter ? true : false}
+                    >
+                    </MDBInput>
+                    <MDBInput
+                      value={this.state.zip}
+                      onChange={this.changeHandler}
+                      type="text"
+                      id="materialFormRegisterConfirmEx11"
+                      outline
+                      name="zip"
+                      label="Postal code (ZIP)"
+                      required={this.state.checkLetter ? true : false}
+                    >
+                    </MDBInput>
+                    <MDBInput
+                      value={this.state.address}
+                      onChange={this.changeHandler}
+                      type="text"
+                      id="materialFormRegisterConfirmEx12"
+                      outline
+                      name="address"
+                      label="Address"
+                      required={this.state.checkLetter ? true : false}
+                    >
+                    </MDBInput>
+                  </FadeIn>
+                  }
+                </MDBCol>
+                <MDBCol md="12" className="required">
+                  <MDBInput 
+                  label={
+                  <span>
+                  I have read and agree to the
+                  <a 
+                  href='/privacy'
+                  target="_blank"
+                  className="ml-1 underlined"
+                  >
+                  Privacy Policy
+                  </a>
+                  </span>
+                  }
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.checkPrivacy}
+                  onChange={this.handleCheckboxChange}
+                  name="checkPrivacy"
+                  id="checkbox30"
+                  required
+                  />
+                  <MDBInput 
+                  label="I agree, that the data from this form is being stored and used by 
+                  SithCult in order for you to receive any service"
+                  type="checkbox"
+                  containerClass="my-2"
+                  checked={this.state.checkData}
+                  onChange={this.handleCheckboxChange}
+                  name="checkData"
+                  id="checkbox31"
+                  required
+                  />
+                </MDBCol>
+                <MDBCol md="12">
+                  <hr/>
+                </MDBCol>
+              </FadeIn>
+              }
+              </MDBRow>
+              {this.state.password &&
+                <FadeIn>
+                <MDBRow>
+                  <MDBCol md="4">
+                    <p className="font-weight-bold">Redeem code</p>
+                    <MDBInput
+                      value={this.state.code}
+                      autocomplete="autocomplete_off_874548537585743884357"
+                      onChange={this.handleCodeChange}
+                      type="text"
+                      id="materialFormRegisterConfirmEx40"
+                      outline
+                      name="code"
+                      label="Promotional code"
+                    >
+                      <small id="codeHelp" className="form-text text-muted">
+                        Codes can be obtained at SithCult events, flyers or other promotional material.
+                      </small>
+                    </MDBInput>
+                  </MDBCol>
+                  <MDBCol md="8" className="align-self-center text-center">
+                    <MDBBtn 
+                    color="green"
+                    size="lg"
+                    type="submit"
+                    >
+                    <MDBIcon icon="angle-right" className="pr-2" />
+                    Start your journey
+                    </MDBBtn>
+                  </MDBCol>
+                </MDBRow>
+                </FadeIn>
+              }
+              </>
           }
-
           </form>
+          <p className="text-left"><span className="text-gold">*</span> = Required field</p>
         </div>
       </MDBContainer>
     );
