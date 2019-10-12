@@ -11,6 +11,8 @@ import axios from 'axios';
 import countryList from 'react-select-country-list';
 // Fade In Animation
 import FadeIn from 'react-fade-in';
+// Password strength
+import zxcvbn from 'zxcvbn';
 
 //> Redux
 // Connect
@@ -26,6 +28,7 @@ import {
   MDBCol,
   MDBInput,
   MDBSelect,
+  MDBProgress,
   MDBBtn,
   MDBIcon,
 } from 'mdbreact';
@@ -53,6 +56,14 @@ class HomePage extends React.Component {
     sn: "",
     country: {},
     snValid: true,
+    passwordValid: {
+      score: 0,
+      msg: "",
+      percent: 0,
+      color: "danger",
+      className: "form-text text-danger",
+    },
+    password_input: "",
   };
 
   componentDidMount = () => {
@@ -92,6 +103,110 @@ class HomePage extends React.Component {
     this.setState({
       [event.target.name]: event.target.checked
     })
+  }
+
+  handlePasswordChange = event => {
+    let score, psw;
+    // Default
+    score = 0;
+
+    psw = event.target.value;
+    console.log(zxcvbn(psw));
+    
+    if(psw.length >= 5){
+      let result = zxcvbn(psw);
+      score = result.score;
+    }
+
+    switch(score){
+      case 0:
+        if(psw.length >= 5){
+          this.setState({
+            passwordValid: {
+              score: score,
+              msg: "Password very insecure",
+              percent: 10,
+              color: "danger",
+              className: "form-text text-danger"
+            },
+            password_input: psw
+          });
+        } else {
+          this.setState({
+            passwordValid: {
+              score: score,
+              msg: "Password too short",
+              percent: 5,
+              color: "danger",
+              className: "form-text text-danger"
+            },
+            password_input: psw
+          });
+        }
+        return false;
+      case 1:
+        this.setState({
+          passwordValid: {
+            score: score,
+            msg: "Password very insecure",
+            percent: 10,
+            color: "danger",
+            className: "form-text text-danger"
+          },
+          password_input: psw
+        });
+        return false;
+      case 2:
+        this.setState({
+          passwordValid: {
+            score: score,
+            msg: "Password insecure",
+            percent: 30,
+            color: "danger",
+            className: "form-text text-danger"
+          },
+          password_input: psw
+        });
+        return false;
+      case 3:
+        this.setState({
+          passwordValid: {
+            score: score,
+            msg: "Password ok",
+            percent: 50,
+            color: "warning",
+            className: "form-text text-warning"
+          },
+          password_input: psw,
+          password: psw
+        });
+        return true;
+      case 4:
+        this.setState({
+          passwordValid: {
+            score: score,
+            msg: "Password very secure",
+            percent: 100,
+            color: "success",
+            className: "form-text text-success"
+          },
+          password_input: psw,
+          password: psw
+        });
+        return true;
+      default:
+        this.setState({
+          passwordValid: {
+            score: score,
+            msg: "Password very secure",
+            percent: 100,
+            color: "success"
+          },
+          password_input: psw,
+          password: psw
+        });
+        return true;
+    }    
   }
 
   handleCodeChange = event => {
@@ -163,6 +278,12 @@ class HomePage extends React.Component {
     }
   }
 
+  togglePassword = () => {
+    this.setState({
+      password_show: !this.state.password_show,
+    })
+  }
+
   generateName = () => {
     /**
       * Check the possibility that a name contains a space.
@@ -196,7 +317,7 @@ class HomePage extends React.Component {
       email: this.state.email,
       full_name: this.state.name,
       sith_name: this.state.sn,
-      password: "adminadmin",
+      password: this.state.password ? this.state.password : null,
       tracking: {
         [Date.now()]: this.state.country
       },
@@ -244,7 +365,8 @@ class HomePage extends React.Component {
       this.state.name &&
       this.state.sn &&
       this.state.checkPrivacy &&
-      this.state.checkData
+      this.state.checkData &&
+      this.state.password
     ) {
       if(this.state.checkLetter){
         if(
@@ -363,7 +485,6 @@ class HomePage extends React.Component {
                 value={this.state.sn}
                 onChange={this.changeHandler}
                 type="text"
-                className={!this.state.snValid && "is-invalid"}
                 id="materialFormRegisterConfirmEx3"
                 outline
                 name="sn"
@@ -385,11 +506,15 @@ class HomePage extends React.Component {
               Random name
               </MDBBtn>
             </MDBCol>
+            <MDBCol md="12" className="mt-3">
+              <hr/>
+            </MDBCol>
           </MDBRow>
           {(this.state.name !== "" && this.state.email !== "" && this.state.sn !== "") &&
             <FadeIn>
             <MDBRow>
               <MDBCol md="6">
+                <p className="lead font-weight-bold">Where are you based?</p>
                 <MDBSelect
                   search
                   options={this.state.countries}
@@ -404,6 +529,43 @@ class HomePage extends React.Component {
                 />
               </MDBCol>
               <MDBCol md="6">
+                <p className="lead font-weight-bold">Set a password</p>
+                <MDBInput
+                  value={this.state.password_input}
+                  onChange={this.handlePasswordChange}
+                  type={this.state.password_show ? "text" : "password"}
+                  id="materialFormRegisterConfirmEx4"
+                  outline
+                  name="password_input"
+                  label="Password"
+                  required
+                >
+                {this.state.password_input.length > 0 &&
+                  <>
+                    <MDBProgress 
+                    className="my-2"
+                    material
+                    value={this.state.passwordValid.percent}
+                    color={this.state.passwordValid.color}
+                    />
+                    {this.state.passwordValid.msg &&
+                      <small 
+                      id="passwordHelp"
+                      className={this.state.passwordValid.className}
+                      >
+                        {this.state.passwordValid.msg}
+                      </small>
+                    }
+                  </>
+                }
+                  <small id="passwordHelp" className="form-text text-muted">
+                    You will need a password for access to Holobook, our social network.<br/>
+                    <span className="underlined" onClick={this.togglePassword}>
+                    <MDBIcon far icon={!this.state.password_show ? "eye" : "eye-slash"} className="pr-2" />
+                    {!this.state.password_show ? "Show" : "Hide"} password
+                    </span>
+                  </small>
+                </MDBInput>
               </MDBCol>
               <MDBCol md="12" className="mt-3">
                 <hr/>
