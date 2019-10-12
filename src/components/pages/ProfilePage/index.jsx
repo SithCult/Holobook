@@ -185,7 +185,11 @@ class ProfilePage extends React.Component {
                         }
                       }
                       >
-                        <MDBIcon icon="language" size="lg" />
+                        <MDBIcon
+                        icon="language"
+                        size="lg"
+                        className={this.state.post_basic && "text-gold"}
+                        />
                       </span>
                       <span>
                         Toggle Imperial Basic
