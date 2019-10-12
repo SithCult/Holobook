@@ -11,6 +11,7 @@ import { Route, Switch } from 'react-router-dom';
 import {
   HomePage,
   ProfilePage,
+  LoginPage,
 } from './components/pages';
 
 class Routes extends React.Component {
@@ -19,6 +20,7 @@ class Routes extends React.Component {
       <Switch>
         <Route exact path='/' component={HomePage} />
         <Route exact path='/holobook' component={ProfilePage} />
+        <Route exact path='/login' component={LoginPage} />
         <Route
           render={function () {
             return <h1>Not Found</h1>;
