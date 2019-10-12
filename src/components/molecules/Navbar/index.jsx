@@ -11,13 +11,14 @@ import {
     MDBNavbarToggler,
     MDBCollapse,
     MDBNavItem,
-    MDBNavLink,
     MDBContainer,
+    MDBBtn,
+    MDBIcon,
 } from 'mdbreact';
 
 //> Images
 // Logo
-// To be added
+import IMGlogo from '../../../assets/images/logo_white_sm.png';
 
 
 class Navbar extends React.Component{
@@ -50,7 +51,7 @@ class Navbar extends React.Component{
                 <MDBNavbar color="sithcult-dark" dark expand="md" fixed="top" scrolling>
                 <MDBContainer>
                     <MDBNavbarBrand href="/" className="py-0 font-weight-bold">
-                        <strong className="align-middle">SithCult Logo</strong>
+                        <img src={IMGlogo} height="50px" alt="SithCult Logo"/>
                     </MDBNavbarBrand>
                     <MDBNavbarToggler
                     onClick={this.toggleCollapse("mainNavbarCollapse")}
@@ -62,13 +63,12 @@ class Navbar extends React.Component{
                     >
                     <MDBNavbarNav right>
                         <MDBNavItem>
-                            <MDBNavLink
-                                exact
-                                to="/"
-                                onClick={this.closeCollapse("mainNavbarCollapse")}
+                            <MDBBtn 
+                            color="modern"
                             >
-                                <strong>Home</strong>
-                            </MDBNavLink>
+                            <MDBIcon icon="key" className="pr-2" />
+                            Already member? Log in
+                            </MDBBtn>
                         </MDBNavItem>
                     </MDBNavbarNav>
                     </MDBCollapse>
