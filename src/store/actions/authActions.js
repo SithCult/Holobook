@@ -37,8 +37,6 @@ export const signUp = (newUser) => {
 
         console.log(newUser);
 
-        let test = 1;
-
         // Check for Sithname duplicates
         firestore.collection('users').get()
         .then((querySnapshot) => {
@@ -58,7 +56,34 @@ export const signUp = (newUser) => {
                 }
             });
 
+            // Check if the Sithname is not already in use
             if(!duplicate){
+                // Set default values
+                let credits, reputation, title, badges, status, department, beta;
+
+                credits = 1000;
+                reputation = 10;
+                title = "Acolyte";
+                badges = {
+                    member: true
+                };
+                status = null;
+                department = null;
+                beta = true;
+
+                if(newUser.code){
+                    // Easter Egg - Feel free to use the code when enlisting
+                    if(newUser.code === "JGJF-8GHH-F8D7"){
+                        credits = 5000;
+                        reputation = 25;
+                        badges = {
+                            ...badges,
+                            hunter: true,
+                        }
+                        title = "Adept"
+                    }
+                }
+
                 // Create new user to firebase
                 firebase.auth().createUserWithEmailAndPassword(
                     newUser.email,
@@ -69,7 +94,15 @@ export const signUp = (newUser) => {
                         full_name: newUser.full_name,
                         sith_name: newUser.sith_name,
                         email: newUser.email,
+                        email_sith: newUser.email_sith,
                         tracking: newUser.tracking,
+                        credits: credits,
+                        reputation: reputation,
+                        title: title,
+                        badges: badges,
+                        status: status,
+                        department: department,
+                        beta: beta,
                         details: newUser.details,
                         newsletter: newUser.newsletter,
                         letter: newUser.letter,

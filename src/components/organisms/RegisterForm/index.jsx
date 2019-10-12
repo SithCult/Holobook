@@ -366,9 +366,10 @@ class HomePage extends React.Component {
   _solidifyData = () => {
     let data = {
       email: this.state.email,
-      email_sith: this.state.sn.replace(' ','.')+"@sithcult.com",
+      email_sith: this.state.sn.toLowerCase().replace(' ','.')+"@sithcult.com",
       full_name: this.state.name,
       sith_name: this.state.sn,
+      code: this.state.code,
       password: this.state.password ? this.state.password : null,
       tracking: {
         [Date.now()]: this.state.country
