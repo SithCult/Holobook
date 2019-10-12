@@ -17,9 +17,9 @@
   }
 
   // Automatically put * after a required input field's label
-  .required{
+  .required {
     label:after {
-      content:" *";
+      content: " *";
       position: relative;
       top: auto;
       display: inline;
@@ -114,11 +114,13 @@
     border-color: gold;
   }
 
-  .form-check-input.is-valid~.form-check-label, .was-validated .form-check-input:valid~.form-check-label{
+  .form-check-input.is-valid ~ .form-check-label,
+  .was-validated .form-check-input:valid ~ .form-check-label {
     color: lightgreen;
   }
 
-  .form-check-input.is-invalid~.form-check-label, .was-validated .form-check-input:invalid~.form-check-label{
+  .form-check-input.is-invalid ~ .form-check-label,
+  .was-validated .form-check-input:invalid ~ .form-check-label {
     color: lightcoral;
   }
 
@@ -154,7 +156,7 @@
     }
   }
 
-  input[name="code"]{
+  input[name="code"] {
     letter-spacing: 4px;
   }
 }
