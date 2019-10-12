@@ -961,5 +961,5 @@ export default connect(mapStateToProps,mapDispatchToProps)(HomePage);
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019 Werbeagentur Christian Aichner
+ * Copyright © 2019 Christian Aichner
  */
