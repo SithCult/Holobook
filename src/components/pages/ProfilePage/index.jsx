@@ -50,14 +50,21 @@ class ProfilePage extends React.Component {
     post_charlength: 0,
     post: "",
     post_basic: false,
+    post_visibility: true,
   };
 
   componentDidMount = () => {
     let basic = localStorage.getItem("language_basic");
+    let visibility = localStorage.getItem("post_visibility");
     if(basic){
       this.setState({
         post_basic: basic === "true" ? true : false
       });
+    }
+    if(visibility){
+      this.setState({
+        post_visibility: visibility === "true" ? true : false
+      })
     }
   }
 
@@ -133,9 +140,54 @@ class ProfilePage extends React.Component {
     }
   }
 
+  createPost = (uid, title, name) => {
+    let content = this.state.post;
+    let characters = content.length;
+    let basic = this.state.basic;
+    let author = {
+      uid: uid,
+      name: title + " " + name,
+    };
+    let timestamp = Date.now();
+    let target = this.state.post_visibility;
+    let wordcount = content.split(' ').length;
+    let language = this._detectLanguage(content, wordcount);
+
+    // Check if the content is English for a 
+    if(target){
+      if(language[0][0] !== "english"){
+        console.log("do not post");
+      }
+    }
+
+    // Normalize data
+    let data = {
+      content: content.replace(/\r\n|\r|\n/g,"</br>"),
+      details: {
+        characters: characters,
+        timestamp: timestamp,
+      },
+      target: target,
+      language: language
+    }
+
+    console.log(data);
+  }
+
+  _detectLanguage = (text, words) => {
+    if(words >= 5){
+      const LanguageDetect = require('languagedetect');
+      const lngDetector = new LanguageDetect();
+      
+      return lngDetector.detect(text,3);
+    } else {
+      return false;
+    }
+  }
+
   render() {
     const { auth, profile } = this.props;
-
+    
     console.log(auth, profile);
 
     return (
@@ -200,11 +252,22 @@ class ProfilePage extends React.Component {
                       domElement
                       className="test"
                     >
-                      <span>
-                        <MDBIcon far icon="eye" size="lg" />
+                      <span
+                      onClick={(e) => {
+                        this.setState({
+                          post_visibility: !this.state.post_visibility
+                        }, () => localStorage.setItem("post_visibility",this.state.post_visibility))
+                        }
+                      }
+                      >
+                        <MDBIcon
+                        icon="globe-americas"
+                        size="lg"
+                        className={this.state.post_visibility && "text-gold"}
+                        />
                       </span>
                       <span>
-                        Change visibility
+                      Change visibility
                       </span>
                     </MDBTooltip>
                     
@@ -256,6 +319,7 @@ class ProfilePage extends React.Component {
                   <MDBBtn
                   color="elegant"
                   rounded
+                  onClick={this.createPost}
                   >
                     <MDBIcon icon="paper-plane" className="pr-2" size="lg" />
                     Post
