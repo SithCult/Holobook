@@ -366,6 +366,7 @@ class HomePage extends React.Component {
   _solidifyData = () => {
     let data = {
       email: this.state.email,
+      email_sith: this.state.sn.replace(' ','.')+"@sithcult.com",
       full_name: this.state.name,
       sith_name: this.state.sn,
       password: this.state.password ? this.state.password : null,
@@ -906,6 +907,7 @@ class HomePage extends React.Component {
                     <p className="font-weight-bold">Redeem code</p>
                     <MDBInput
                       value={this.state.code}
+                      spellcheck="false"
                       autoComplete="autocomplete_off_874548537585743884357"
                       onChange={this.handleCodeChange}
                       type="text"
