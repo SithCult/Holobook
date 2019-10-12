@@ -64,9 +64,7 @@ export const signUp = (newUser) => {
                 credits = 1000;
                 reputation = 10;
                 title = "Acolyte";
-                badges = {
-                    member: true
-                };
+                badges = [];
                 status = null;
                 department = null;
                 beta = true;
@@ -76,11 +74,8 @@ export const signUp = (newUser) => {
                     if(newUser.code === "JGJF-8GHH-F8D7"){
                         credits = 5000;
                         reputation = 25;
-                        badges = {
-                            ...badges,
-                            hunter: true,
-                        }
-                        title = "Adept"
+                        badges.push('Hunter');
+                        title = "Adept";
                     }
                 }
 
