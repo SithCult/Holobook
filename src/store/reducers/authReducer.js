@@ -34,8 +34,17 @@ const authReducer = (state = initState, action) => {
             console.log("Signup error", action.err);
             return {
                 ...state,
+                authErrorCode: action.errCode,
                 authError: action.err.message,
                 authErrorDetails: action.err
+            }
+        case 'SIGNUP_DUPLICATE':
+            console.log("Signup error", "Sithname already in use");
+            return {
+                ...state,
+                authErrorCode: 2,
+                authError: "Sithname already in use",
+                authErrorDetails: "Choose another Sithname"
             }
         default:
             return state;
