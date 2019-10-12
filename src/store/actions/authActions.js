@@ -44,14 +44,14 @@ export const signUp = (newUser) => {
         ).then((response) => {
             // Create data for user we just created
             return firestore.collection('users').doc(response.user.uid).set({
-              full_name: newUser.full_name,
-              email: newUser.email,
-              tracking: newUser.tracking,
-              details: newUser.details,
-              newsletter: newUser.newsletter,
-              letter: newUser.letter,
-              address: newUser.address,
-              law: newUser.law
+                full_name: newUser.full_name,
+                email: newUser.email,
+                tracking: newUser.tracking,
+                details: newUser.details,
+                newsletter: newUser.newsletter,
+                letter: newUser.letter,
+                address: newUser.address,
+                law: newUser.law
             })
         }).then(() => {
             dispatch({
