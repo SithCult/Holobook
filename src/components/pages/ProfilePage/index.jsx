@@ -30,6 +30,10 @@ import {
   MDBInput,
   MDBIcon,
   MDBTooltip,
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem,
 } from 'mdbreact';
 
 //> Components
@@ -40,6 +44,22 @@ import './profilepage.scss';
 
 //> Images
 // To be added
+
+const feelings = [
+  { name: "great", icon: "smile-beam" },
+  { name: "angry", icon: "angry" },
+  { name: "silly", icon: "grin-tongue" },
+  { name: "joyful", icon: "laugh" },
+  { name: "loved", icon: "kiss" },
+  { name: "sad", icon: "sad-cry" },
+  { name: "neutral", icon: "meh" },
+  { name: "annoyed", icon: "meh-rolling-eyes" },
+  { name: "tired", icon: "tired" },
+  { name: "hurt", icon: "frown" },
+  { name: "funny", icon: "laugh-beam" },
+  { name: "dead", icon: "dizzy" },
+  { name: "flushed", icon: "flushed" },
+]
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -53,6 +73,10 @@ class ProfilePage extends React.Component {
     post_visibility: true,
     post_languages: [],
     post_languageApproved: true,
+    post_feeling: {
+      name: "Feeling",
+      icon: "smile"
+    }
   };
 
   componentDidMount = () => {
@@ -66,8 +90,23 @@ class ProfilePage extends React.Component {
     if(visibility){
       this.setState({
         post_visibility: visibility === "true" ? true : false
-      })
+      });
     }
+  }
+
+  // Feeling handler
+  handleFeeling = (event, feeling) => {
+    this.setState({
+      post_feeling: feeling
+    });
+  }
+  removeFeeling = event => {
+    this.setState({
+      post_feeling: {
+        name: "Feeling",
+        icon: "smile"
+      }
+    });
   }
 
   changeTextareaHandler = event => {
@@ -156,11 +195,14 @@ class ProfilePage extends React.Component {
     let target = this.state.post_visibility;
     let wordcount = content.split(' ').length;
     let language = this.state.post_languages ? this.state.post_languages : null;
+    let feeling = this.state.post_feeling.name.toLowerCase() === "feeling" ? null : this.state.post_feeling
 
     // Check if the content is English for a 
     if(target){
-      if(language[0][0] !== "english"){
-        console.log("do not post");
+      if(language.length > 0){
+        if(language[0][0] !== "english"){
+          console.log("do not post");
+        }
       }
     }
 
@@ -170,6 +212,7 @@ class ProfilePage extends React.Component {
       details: {
         characters: characters,
         timestamp: timestamp,
+        feeling: feeling,
       },
       target: target,
       language: language
@@ -352,13 +395,47 @@ class ProfilePage extends React.Component {
                   <MDBIcon icon="image" className="pr-2" size="lg" />
                   Photo
                   </MDBBtn>
-                  <MDBBtn
-                  color="elegant"
-                  rounded
-                  >
-                  <MDBIcon far icon="smile" className="pr-2" size="lg" />
-                  Feeling
-                  </MDBBtn>
+                  <MDBDropdown className="d-inline">
+                    <MDBDropdownToggle caret color="elegant" rounded>
+                      <MDBIcon 
+                      far={this.state.post_feeling.name.toLowerCase() === "feeling"}
+                      icon={this.state.post_feeling.icon}
+                      className="pr-2"
+                      size="lg"
+                      />
+                      {this.state.post_feeling.name}
+                    </MDBDropdownToggle>
+                    <MDBDropdownMenu color="danger">
+                      <MDBDropdownItem 
+                      className="remove"
+                      onClick={event => this.removeFeeling(event)}
+                      >
+                      No feeling
+                      <MDBIcon 
+                      icon="times"
+                      size="lg"
+                      className="text-danger"
+                      />
+                      </MDBDropdownItem>
+                    {feelings.map((feeling, i) => {
+                      return(
+                        <MDBDropdownItem 
+                        key={i}
+                        name={feeling.name}
+                        className={this.state.post_feeling.name === feeling.name && "active"}
+                        onClick={event => this.handleFeeling(event, feeling)}
+                        >
+                        <MDBIcon 
+                        icon={feeling.icon}
+                        size="lg"
+                        className={this.state.post_feeling.name === feeling.name && "text-gold"}
+                        />
+                        {feeling.name}
+                        </MDBDropdownItem>
+                      )
+                    })}
+                    </MDBDropdownMenu>
+                  </MDBDropdown>
                   <MDBBtn
                   color="elegant"
                   rounded

@@ -111,6 +111,37 @@
   .form-control:focus {
     border-color: gold;
   }
+
+  // Custom dropdown
+  .dropdown-menu{
+    background: #3e3e3e;
+    padding: 0;
+    button{
+      color: white;
+      i{
+        width: 30px;
+        color: lightgrey;
+      }
+    }
+  }
+  .dropdown-item{
+    &.remove{
+      background-color: #63403d;
+      display: flex;
+      justify-content: space-between;
+        i{
+          align-self: center;
+          width: auto;
+        }
+      
+    }
+    &:focus, &:hover, &.active{
+      box-shadow: none;
+      color: white !important;
+      text-decoration: none;
+      background-color: #5e5e5e !important;
+    }
+  }
 }
 
 /** 
