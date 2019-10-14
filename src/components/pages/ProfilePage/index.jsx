@@ -15,7 +15,13 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 // Actions
 import { signOut } from '../../../store/actions/authActions';
-import { createPost } from '../../../store/actions/authActions';
+import { 
+  createPost,
+  removePost,
+  editPost,
+  loadPosts,
+  reportPost,
+} from '../../../store/actions/postActions';
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -196,14 +202,14 @@ class ProfilePage extends React.Component {
     let timestamp = Date.now();
     let target = this.state.post_visibility;
     let wordcount = content.split(' ').length;
-    let language = this.state.post_languages ? this.state.post_languages : null;
+    let language = this.state.post_languages.length > 0 ? this.state.post_languages : null;
     let feeling = this.state.post_feeling.name.toLowerCase() === "feeling" ? null : this.state.post_feeling;
     let basic = this.state.post_basic;
     let ip = this.state.post_ip ? this.state.post_ip : null
 
     // Check if the content is English for a 
     if(target){
-      if(language.length > 0){
+      if(language){
         if(language[0][0] !== "english"){
           console.log("do not post");
         }
@@ -224,7 +230,8 @@ class ProfilePage extends React.Component {
       basic: basic,
     }
 
-    console.log(data);
+    // Tell Firebase to create post
+    this.props.createPost(data);
   }
   
   _getIPData = async () => {
@@ -539,7 +546,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signOut: () => dispatch(signOut())
+    signOut: () => dispatch(signOut()),
+    createPost: (newPost) => dispatch(createPost(newPost)),
   }
 }
 
