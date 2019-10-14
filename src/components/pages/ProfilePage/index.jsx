@@ -46,7 +46,9 @@ import {
 } from 'mdbreact';
 
 //> Components
-// To be added
+import {
+  Posts,
+} from '../../organisms';
 
 //> CSS
 import './profilepage.scss';
@@ -54,6 +56,8 @@ import './profilepage.scss';
 //> Images
 // To be added
 
+//> Data
+// Feelings
 const feelings = [
   { name: "great", icon: "smile-beam" },
   { name: "angry", icon: "angry" },
@@ -83,7 +87,8 @@ class ProfilePage extends React.Component {
     post_feeling: {
       name: "Feeling",
       icon: "meh-blank"
-    }
+    },
+    postsVisible: 5,
   };
 
   componentDidMount = () => {
@@ -101,6 +106,15 @@ class ProfilePage extends React.Component {
         post_visibility: visibility === "true" ? true : false
       });
     }
+
+    // Load posts
+    this.loadPosts(this.state.postsVisible);
+  }
+
+  loadMore = () => {
+    this.setState({
+      postsVisible: this.state.postsVisible + 5
+    }, () => this.loadPosts(this.state.postsVisible));
   }
 
   // Feeling handler
@@ -216,19 +230,20 @@ class ProfilePage extends React.Component {
       }
     }
 
-    if(language){
+    if(language && author){
       // Normalize data
       let data = {
         content: content.replace(/\r\n|\r|\n/g,"</br>"),
         details: {
-          author: author,
           characters: characters,
           words: wordcount,
           avgWordLength: parseInt(characters) / parseInt(wordcount),
-          timestamp: timestamp,
           feeling: feeling,
           ip: ip,
         },
+        uid: author.uid,
+        author: author.name,
+        timestamp: timestamp,
         target: target,
         language: {
           0: language[0][0],
@@ -240,6 +255,7 @@ class ProfilePage extends React.Component {
 
       // Tell Firebase to create post
       this.props.createPost(data);
+      this.loadPosts(this.state.postsVisible);
     }
   }
   
@@ -295,12 +311,14 @@ class ProfilePage extends React.Component {
     }
   }
 
+  loadPosts = (amount) => {
+    this.props.loadPosts(amount);
+  }
+
   render() {
     const { auth, profile } = this.props;
     
     console.log(auth, profile);
-
-    console.log(this.state);
 
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
@@ -535,9 +553,16 @@ class ProfilePage extends React.Component {
                 </MDBCol>
               </MDBRow>
             </MDBAlert>
+            <div className="posts">
+              <Posts posts={this.props.posts} />
+            </div>
           </MDBCol>
           <MDBCol md="3">
-
+            <MDBBtn
+            onClick={() => this.loadMore()}
+            >
+            Load more
+            </MDBBtn>
           </MDBCol>
 
         </MDBRow>
@@ -547,9 +572,11 @@ class ProfilePage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state);
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
+    posts: state.post.results,
   }
 }
 
@@ -557,6 +584,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     signOut: () => dispatch(signOut()),
     createPost: (newPost) => dispatch(createPost(newPost)),
+    loadPosts: (amount) => dispatch(loadPosts(amount)),
   }
 }
 

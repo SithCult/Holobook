@@ -3,6 +3,8 @@
     padding-left: 5px;
     padding-right: 5px;
   }
+
+  // Custom cards
   .card{
     background: #1e1e1e;
     color: white;
@@ -10,6 +12,29 @@
       color: #848e96 !important;
     }
   }
+  .posts{
+    .card{
+      background: #3e3e3e;
+      .avatar-img{
+        width: 2.5rem;
+      }
+      .author-info{
+        .feeling{
+          margin: 0;
+          color: lightgreen;
+          i{
+            margin-left: 0;
+            margin-right: 7px;
+          }
+        }
+        i{
+          margin-left: .2em;
+          margin-right: .2em;
+        }
+      }
+    }
+  }
+
   .alert{
     &.alert-danger{
       background: #f44336 !important;
