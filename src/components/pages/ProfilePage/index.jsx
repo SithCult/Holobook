@@ -15,6 +15,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 // Actions
 import { signOut } from '../../../store/actions/authActions';
+import { createPost } from '../../../store/actions/authActions';
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -52,11 +53,9 @@ const feelings = [
   { name: "angry", icon: "angry" },
   { name: "silly", icon: "grin-tongue" },
   { name: "joyful", icon: "laugh" },
-  { name: "loved", icon: "kiss" },
+  { name: "loved", icon: "grin-hearts" },
   { name: "sad", icon: "sad-cry" },
-  { name: "neutral", icon: "meh" },
-  { name: "annoyed", icon: "meh-rolling-eyes" },
-  { name: "tired", icon: "tired" },
+  { name: "annoyed", icon: "tired" },
   { name: "hurt", icon: "frown" },
   { name: "funny", icon: "laugh-beam" },
   { name: "dead", icon: "dizzy" },
@@ -77,7 +76,7 @@ class ProfilePage extends React.Component {
     post_languageApproved: true,
     post_feeling: {
       name: "Feeling",
-      icon: "smile"
+      icon: "meh-blank"
     }
   };
 
@@ -108,7 +107,7 @@ class ProfilePage extends React.Component {
     this.setState({
       post_feeling: {
         name: "Feeling",
-        icon: "smile"
+        icon: "meh-blank"
       }
     });
   }
