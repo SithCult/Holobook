@@ -192,12 +192,12 @@ class ProfilePage extends React.Component {
     }
   }
 
-  createPost = (uid, title, name) => {
+  createPost = () => {
     let content = this.state.post;
     let characters = content.length;
     let author = {
-      uid: uid,
-      name: title + " " + name,
+      uid: this.props.auth.uid,
+      name: this.props.profile.title + " " + this.props.profile.sith_name,
     };
     let timestamp = Date.now();
     let target = this.state.post_visibility;
@@ -216,22 +216,31 @@ class ProfilePage extends React.Component {
       }
     }
 
-    // Normalize data
-    let data = {
-      content: content.replace(/\r\n|\r|\n/g,"</br>"),
-      details: {
-        characters: characters,
-        timestamp: timestamp,
-        feeling: feeling,
-        ip: ip,
-      },
-      target: target,
-      language: language,
-      basic: basic,
-    }
+    if(language){
+      // Normalize data
+      let data = {
+        content: content.replace(/\r\n|\r|\n/g,"</br>"),
+        details: {
+          author: author,
+          characters: characters,
+          words: wordcount,
+          avgWordLength: parseInt(characters) / parseInt(wordcount),
+          timestamp: timestamp,
+          feeling: feeling,
+          ip: ip,
+        },
+        target: target,
+        language: {
+          0: language[0][0],
+          1: language[1][0],
+          2: language[2][0]
+        },
+        basic: basic,
+      }
 
-    // Tell Firebase to create post
-    this.props.createPost(data);
+      // Tell Firebase to create post
+      this.props.createPost(data);
+    }
   }
   
   _getIPData = async () => {
