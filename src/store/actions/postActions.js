@@ -3,25 +3,40 @@ export const createPost = (newPost) => {
         const firebase = getFirebase();
         const firestore = getFirestore();
 
-        console.log(newPost);
-
         // Get userId
-        let uid = newPost.details.author.uid;
-        let uniqueID = newPost.details.timestamp+uid.toString().substring(0,15);
+        let uid = newPost.uid;
+        // Create a unique id for the post
+        let uniqueID = newPost.timestamp+uid.toString().substring(0,15);
         
-        console.log(uniqueID);
-
         firestore.collection('posts').doc(uniqueID)
         .set({
           ...newPost
         }).then(() => {
-          console.log("Success");
-            //dispatch({ type: 'CREATE_TAB', tab });
+            dispatch({ type: 'CREATION_SUCCESS', newPost });
         }).catch((err) => {
-          console.log(err);
-            //dispatch({ type: 'CREATE_TAB_ERROR', err });
+            dispatch({ type: 'CREATION_ERROR', err });
         })
+    }
+}
 
+export const loadPosts = (amount) => {
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firebase = getFirebase();
+        const firestore = getFirestore();
+
+        firestore.collection('posts').orderBy("timestamp","desc").limit(amount).get()
+        .then((querySnapshot) => {
+            let results = [];
+            querySnapshot.forEach(function(doc) {
+                // doc.data() is never undefined for query doc snapshots
+                results.push(doc.data());
+                console.log(results);
+            });
+            dispatch({ type: 'LOAD_SUCCESS', results });
+        })
+        .catch((err) => {
+          dispatch({ type: 'LOAD_ERROR', err });
+        });
     }
 }
 
