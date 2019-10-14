@@ -51,6 +51,8 @@ class ProfilePage extends React.Component {
     post: "",
     post_basic: false,
     post_visibility: true,
+    post_languages: [],
+    post_languageApproved: true,
   };
 
   componentDidMount = () => {
@@ -73,7 +75,9 @@ class ProfilePage extends React.Component {
     event.target.style.height = 0;
     event.target.style.height = event.target.scrollHeight + 'px';
 
-
+    // Check language
+    let wordcount = event.target.value.split(' ').length;
+    this._detectLanguage(event.target.value, wordcount);
 
     if(event.target.value.length <= 500){
       this.setState({
@@ -151,7 +155,7 @@ class ProfilePage extends React.Component {
     let timestamp = Date.now();
     let target = this.state.post_visibility;
     let wordcount = content.split(' ').length;
-    let language = this._detectLanguage(content, wordcount);
+    let language = this.state.post_languages ? this.state.post_languages : null;
 
     // Check if the content is English for a 
     if(target){
@@ -178,10 +182,39 @@ class ProfilePage extends React.Component {
     if(words >= 5){
       const LanguageDetect = require('languagedetect');
       const lngDetector = new LanguageDetect();
-      
-      return lngDetector.detect(text,3);
+
+      let results = lngDetector.detect(text.trim(),3);
+      this.setState({
+        post_languages: results
+      }, () => this._getLanguageApproved());
     } else {
       return false;
+    }
+  }
+
+  _getLanguageApproved = () => {
+    if(this.state.post_visibility){
+      if(this.state.post_languages.length > 0){
+        if(this.state.post_languages[0][0] === "english"){
+          if(!this.state.post_languageApproved){
+            this.setState({
+              post_languageApproved: true
+            });
+          }
+        } else {
+          if(this.state.post_languageApproved){
+            this.setState({
+              post_languageApproved: false
+            });
+          }
+        }
+      }else {
+        if(!this.state.post_languageApproved){
+          this.setState({
+            post_languageApproved: true
+          });
+        }
+      }
     }
   }
 
@@ -189,6 +222,8 @@ class ProfilePage extends React.Component {
     const { auth, profile } = this.props;
     
     console.log(auth, profile);
+
+    console.log(this.state);
 
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
@@ -263,7 +298,7 @@ class ProfilePage extends React.Component {
                         <MDBIcon
                         icon="globe-americas"
                         size="lg"
-                        className={this.state.post_visibility && "text-gold"}
+                        className={this.state.post_visibility && (this.state.post_languageApproved ? "text-gold" : "text-danger")}
                         />
                       </span>
                       <span>
@@ -279,11 +314,40 @@ class ProfilePage extends React.Component {
                   </small>
                 </div>
                 <div className="clearfix"/>
+                <div>
+                {this.state.post_visibility ? (
+                  <>
+                  {this.state.post_languageApproved ? (
+                    <small className="text-gold">
+                      Posting globally
+                      {this.state.post_basic && " in Imperial Basic"}
+                    </small>
+                  ) : (
+                    <>
+                      <small className="text-danger">
+                        Posting to your cluster
+                        {this.state.post_basic && " in Imperial Basic"}
+                      </small>
+                      <br/>
+                      <small className="text-muted">
+                        Please write English to post globally
+                      </small>
+                    </>
+                  )}
+                  </>
+                ) : (
+                  <small className="text-muted">
+                  Posting to your cluster
+                  {this.state.post_basic && " in Imperial Basic"}
+                  </small>
+                )}
+                </div>
                 <hr/>
                 <div className="actions">
                   <MDBBtn
                   color="elegant"
                   rounded
+                  disabled
                   >
                   <MDBIcon icon="image" className="pr-2" size="lg" />
                   Photo
@@ -298,6 +362,7 @@ class ProfilePage extends React.Component {
                   <MDBBtn
                   color="elegant"
                   rounded
+                  disabled
                   >
                   <MDBIcon icon="user-plus" className="pr-2" size="lg" />
                   Tag
