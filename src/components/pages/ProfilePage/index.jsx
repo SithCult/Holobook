@@ -7,6 +7,8 @@ import React from 'react';
 import FadeIn from 'react-fade-in';
 // Country list
 import countryList from 'react-select-country-list';
+// Fetching
+import axios from 'axios';
 
 //> Redux
 // Connect
@@ -80,6 +82,8 @@ class ProfilePage extends React.Component {
   };
 
   componentDidMount = () => {
+    // Get IP data once every page call
+    this._getIPData();
     let basic = localStorage.getItem("language_basic");
     let visibility = localStorage.getItem("post_visibility");
     if(basic){
@@ -186,7 +190,6 @@ class ProfilePage extends React.Component {
   createPost = (uid, title, name) => {
     let content = this.state.post;
     let characters = content.length;
-    let basic = this.state.basic;
     let author = {
       uid: uid,
       name: title + " " + name,
@@ -195,7 +198,9 @@ class ProfilePage extends React.Component {
     let target = this.state.post_visibility;
     let wordcount = content.split(' ').length;
     let language = this.state.post_languages ? this.state.post_languages : null;
-    let feeling = this.state.post_feeling.name.toLowerCase() === "feeling" ? null : this.state.post_feeling
+    let feeling = this.state.post_feeling.name.toLowerCase() === "feeling" ? null : this.state.post_feeling;
+    let basic = this.state.post_basic;
+    let ip = this.state.post_ip ? this.state.post_ip : null
 
     // Check if the content is English for a 
     if(target){
@@ -213,12 +218,26 @@ class ProfilePage extends React.Component {
         characters: characters,
         timestamp: timestamp,
         feeling: feeling,
+        ip: ip,
       },
       target: target,
-      language: language
+      language: language,
+      basic: basic,
     }
 
     console.log(data);
+  }
+  
+  _getIPData = async () => {
+    // Get country data from ipapi
+    await axios.get('https://ipapi.co/json/').then((response) => {
+        let data = response.data;
+        this.setState({
+            post_ip: data
+        });
+    }).catch((error) => {
+        console.log(error);
+    });
   }
 
   _detectLanguage = (text, words) => {
