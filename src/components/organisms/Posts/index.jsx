@@ -90,8 +90,10 @@ class Posts extends React.Component {
                       />
                     </small>
                   </div>
-                  <div className="ml-auto p-2 mb-auto text-muted">
+                  <div className="ml-auto p-2 mb-auto">
+                    <small className="text-muted">
                     {this._calculateTimeAgo(post.timestamp)}
+                    </small>
                   </div>
                 </MDBCol>
               </MDBRow>

@@ -138,6 +138,15 @@ class ProfilePage extends React.Component {
     });
   }
 
+  _resetPostForm = () => {
+    this.setState({
+      post_charlength: 0,
+      post: "",
+      post_languages: [],
+      post_languageApproved: true,
+    }, () => this.removeFeeling())
+  }
+
   changeTextareaHandler = event => {
     event.target.style.overflow = 'hidden';
     event.target.style.height = 0;
@@ -231,7 +240,7 @@ class ProfilePage extends React.Component {
     if(target){
       if(language){
         if(language[0][0] !== "english"){
-          console.log("do not post");
+          console.log("do not post - not english");
         }
       }
     }
@@ -260,8 +269,11 @@ class ProfilePage extends React.Component {
       }
 
       // Tell Firebase to create post
+      this._resetPostForm();
       this.props.createPost(data);
       this.loadPosts(this.state.postsVisible);
+    } else {
+      console.log("do not post - not enough chars or no author");
     }
   }
   
@@ -323,8 +335,6 @@ class ProfilePage extends React.Component {
 
   render() {
     const { auth, profile } = this.props;
-    
-    console.log(auth, profile);
 
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
@@ -562,12 +572,12 @@ class ProfilePage extends React.Component {
             <div className="posts">
               <Posts posts={this.props.posts} update={this.loadMore} />
               <div className="text-center spinners">
-                <div class="spinner-grow text-danger" role="status">
-                  <span class="sr-only">Loading...</span>
+                <div className="spinner-grow text-danger" role="status">
+                  <span className="sr-only">Loading...</span>
                 </div>
-                <div class="spinner-grow text-danger" role="status">
+                <div className="spinner-grow text-danger" role="status">
                 </div>
-                <div class="spinner-grow text-danger" role="status">
+                <div className="spinner-grow text-danger" role="status">
                 </div>
               </div>
             </div>
