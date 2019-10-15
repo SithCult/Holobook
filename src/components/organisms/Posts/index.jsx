@@ -22,6 +22,14 @@ import {
 
 class Posts extends React.Component {
 
+  state = {
+    username: "",
+    avatar: "",
+    isUploading: false,
+    progress: 0,
+    avatarURL: ""
+  };
+
   _calculateTimeAgo = (timestamp) => {
     TimeAgo.addLocale(en);
     const timeAgo = new TimeAgo('en-US');
@@ -102,6 +110,15 @@ class Posts extends React.Component {
                 dangerouslySetInnerHTML={{__html: post.content}}
                 className={post.basic ? "basic narrow" : undefined}
                 ></p>
+                {post.image &&
+                  <div className="p-4">
+                    <img 
+                    className="img-fluid"
+                    src={post.image}
+                    alt={"Uploaded image by "+post.author}
+                    />
+                  </div>
+                }
               </div>
             </MDBCardBody>
           </MDBCard>

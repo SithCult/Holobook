@@ -9,6 +9,10 @@ import FadeIn from 'react-fade-in';
 import countryList from 'react-select-country-list';
 // Fetching
 import axios from 'axios';
+// Firebase
+import firebase from 'firebase';
+// Uploading images
+import FileUploader from 'react-firebase-file-uploader';
 
 //> Redux
 // Connect
@@ -43,6 +47,7 @@ import {
   MDBDropdownToggle,
   MDBDropdownMenu,
   MDBDropdownItem,
+  MDBProgress,
 } from 'mdbreact';
 
 //> Components
@@ -89,6 +94,7 @@ class ProfilePage extends React.Component {
       icon: "meh-blank"
     },
     postsVisible: 5,
+
   };
 
   componentDidMount = () => {
@@ -234,7 +240,8 @@ class ProfilePage extends React.Component {
     let language = this.state.post_languages.length > 0 ? this.state.post_languages : null;
     let feeling = this.state.post_feeling.name.toLowerCase() === "feeling" ? null : this.state.post_feeling;
     let basic = this.state.post_basic;
-    let ip = this.state.post_ip ? this.state.post_ip : null
+    let ip = this.state.post_ip ? this.state.post_ip : null;
+    let image = this.state.postImageURL ? this.state.postImageURL : null;
 
     // Check if the content is English for a 
     if(target){
@@ -266,6 +273,7 @@ class ProfilePage extends React.Component {
           2: language[2][0]
         },
         basic: basic,
+        image: image,
       }
 
       // Tell Firebase to create post
@@ -332,6 +340,23 @@ class ProfilePage extends React.Component {
   loadPosts = (amount) => {
     this.props.loadPosts(amount);
   }
+
+  // Firebase picture upload
+  handleUploadStart = () => this.setState({ postImageisUploading: true, postImageProgress: 0 });
+  handleProgress = progress => this.setState({ postImageProgress: progress });
+  handleUploadError = error => {
+    this.setState({ postImageisUploading: false });
+    console.error(error);
+  };
+  handleUploadSuccess = filename => {
+    this.setState({ postImage: filename, postImageProgress: 100, postImageisUploading: false });
+    firebase
+      .storage()
+      .ref("posts")
+      .child(filename)
+      .getDownloadURL()
+      .then(url => this.setState({ postImageURL: url }));
+  };
 
   render() {
     const { auth, profile } = this.props;
@@ -453,16 +478,58 @@ class ProfilePage extends React.Component {
                   </small>
                 )}
                 </div>
+                {this.state.postImageURL && 
+                <div className="pt-5 pl-5 pr-5 pb-2 text-center">
+                  <img 
+                  className="img-fluid w-100 h-auto mb-3"
+                  src={this.state.postImageURL}
+                  />
+                </div>
+                }
                 <hr/>
+                {this.state.postImageisUploading &&
+                <MDBProgress material value={this.state.postImageProgress} className="my-s" />
+                }
                 <div className="actions">
+                {this.state.postImageURL ? (
                   <MDBBtn
                   color="elegant"
                   rounded
-                  disabled
+                  tag="label"
+                  onClick={
+                    () => this.setState({postImageURL: undefined, postImage: undefined})
+                  }
                   >
-                  <MDBIcon icon="image" className="pr-2" size="lg" />
+                  <MDBIcon 
+                  icon="times"
+                  className="pr-2 text-danger"
+                  size="lg"
+                  />
                   Photo
                   </MDBBtn>
+                ) : (
+                  <MDBBtn
+                  color="elegant"
+                  rounded
+                  tag="label"
+                  >
+                  <MDBIcon 
+                  icon="image"
+                  className="pr-2"
+                  size="lg"
+                  />
+                  Photo
+                  <FileUploader
+                    hidden
+                    accept="image/*"
+                    storageRef={firebase.storage().ref('posts')}
+                    onUploadStart={this.handleUploadStart}
+                    onUploadError={this.handleUploadError}
+                    onUploadSuccess={this.handleUploadSuccess}
+                    onProgress={this.handleProgress}
+                  />
+                  </MDBBtn>
+                )}
                   <MDBDropdown className="d-inline">
                     <MDBDropdownToggle caret color="elegant" rounded>
                       <MDBIcon 
