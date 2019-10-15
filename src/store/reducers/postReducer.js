@@ -12,7 +12,13 @@ const postReducer = (state = initState, action) => {
           postError: null,
         }
       case 'CREATION_ERROR':
-        console.log('Creation error');
+        console.log('Creation error',action.err);
+        return {
+          ...state,
+          postError: action.err
+        };
+      case 'CREATION_SPAM':
+        console.log('Post is spam',action.err);
         return {
           ...state,
           postError: action.err

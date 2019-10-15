@@ -112,12 +112,14 @@ class ProfilePage extends React.Component {
   }
 
   loadMore = () => {
-    let posts = this.props.posts;
     // Prevent multiple loadings
-    if(posts.length === this.state.postsVisible){
-      this.setState({
-        postsVisible: this.state.postsVisible + 5
-      }, () => this.loadPosts(this.state.postsVisible));
+    let posts = this.props.posts;
+    if(posts){
+      if(posts.length === this.state.postsVisible){
+        this.setState({
+          postsVisible: this.state.postsVisible + 5
+        }, () => this.loadPosts(this.state.postsVisible));
+      }
     }
   }
 
