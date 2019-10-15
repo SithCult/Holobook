@@ -33,6 +33,17 @@
         }
       }
     }
+    .spinners{
+      .spinner-grow{
+        animation: spinner-grow 1s linear infinite;
+      }
+      .spinner-grow:nth-child(1){
+        animation-delay: .4s;
+      }
+      .spinner-grow:nth-child(2){
+        animation-delay: .8s;
+      }
+    }
   }
 
   .alert{

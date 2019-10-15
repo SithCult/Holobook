@@ -559,10 +559,19 @@ class ProfilePage extends React.Component {
             </MDBAlert>
             <div className="posts">
               <Posts posts={this.props.posts} update={this.loadMore} />
+              <div className="text-center spinners">
+                <div class="spinner-grow text-danger" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+                <div class="spinner-grow text-danger" role="status">
+                </div>
+                <div class="spinner-grow text-danger" role="status">
+                </div>
+              </div>
             </div>
           </MDBCol>
           <MDBCol md="3">
-          
+
           </MDBCol>
 
         </MDBRow>
