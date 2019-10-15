@@ -562,11 +562,7 @@ class ProfilePage extends React.Component {
             </div>
           </MDBCol>
           <MDBCol md="3">
-            <MDBBtn
-            onClick={() => this.loadMore()}
-            >
-            Load more
-            </MDBBtn>
+          
           </MDBCol>
 
         </MDBRow>
