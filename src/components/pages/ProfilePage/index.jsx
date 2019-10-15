@@ -150,6 +150,8 @@ class ProfilePage extends React.Component {
       post: "",
       post_languages: [],
       post_languageApproved: true,
+      postImageURL: undefined,
+      postImage: undefined,
     }, () => this.removeFeeling())
   }
 

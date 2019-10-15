@@ -113,7 +113,7 @@ class Posts extends React.Component {
                 {post.image &&
                   <div className="p-4">
                     <img 
-                    className="img-fluid"
+                    className="img-fluid w-100 h-auto"
                     src={post.image}
                     alt={"Uploaded image by "+post.author}
                     />
