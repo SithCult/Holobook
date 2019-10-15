@@ -112,9 +112,13 @@ class ProfilePage extends React.Component {
   }
 
   loadMore = () => {
-    this.setState({
-      postsVisible: this.state.postsVisible + 5
-    }, () => this.loadPosts(this.state.postsVisible));
+    let posts = this.props.posts;
+    // Prevent multiple loadings
+    if(posts.length === this.state.postsVisible){
+      this.setState({
+        postsVisible: this.state.postsVisible + 5
+      }, () => this.loadPosts(this.state.postsVisible));
+    }
   }
 
   // Feeling handler
@@ -554,7 +558,7 @@ class ProfilePage extends React.Component {
               </MDBRow>
             </MDBAlert>
             <div className="posts">
-              <Posts posts={this.props.posts} />
+              <Posts posts={this.props.posts} update={this.loadMore} />
             </div>
           </MDBCol>
           <MDBCol md="3">

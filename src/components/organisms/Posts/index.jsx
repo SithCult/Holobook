@@ -29,6 +29,30 @@ class Posts extends React.Component {
     return timeAgo.format(timestamp);
   }
 
+  componentDidMount() {
+    document.addEventListener('scroll', this.trackScrolling);
+  }
+
+  componentDidUpdate() {
+    document.addEventListener('scroll', this.trackScrolling);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.trackScrolling);
+  }
+
+  isBottom(el) {
+    return el.getBoundingClientRect().bottom <= window.innerHeight;
+  }
+
+  trackScrolling = () => {
+    const wrappedElement = document.getElementById('profile');
+    if (this.isBottom(wrappedElement)) {
+      document.removeEventListener('scroll', this.trackScrolling);
+      this.props.update();
+    }
+  };
+
   getPosts = () => {
     let posts = this.props.posts;
     if(posts){
