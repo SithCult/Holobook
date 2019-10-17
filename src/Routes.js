@@ -6,7 +6,9 @@ import { Route, Switch } from 'react-router-dom';
 
 //> Components
 /**
- * HomePage: A basic template page
+ * HomePage: Register page
+ * ProfilePage: Profile of the member
+ * LoginPage: Login page
  */
 import {
   HomePage,
