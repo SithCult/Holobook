@@ -366,8 +366,10 @@ class HomePage extends React.Component {
   _solidifyData = () => {
     let data = {
       email: this.state.email,
+      email_sith: this.state.sn.toLowerCase().replace(' ','.')+"@sithcult.com",
       full_name: this.state.name,
       sith_name: this.state.sn,
+      code: this.state.code,
       password: this.state.password ? this.state.password : null,
       tracking: {
         [Date.now()]: this.state.country
@@ -906,6 +908,7 @@ class HomePage extends React.Component {
                     <p className="font-weight-bold">Redeem code</p>
                     <MDBInput
                       value={this.state.code}
+                      spellcheck="false"
                       autoComplete="autocomplete_off_874548537585743884357"
                       onChange={this.handleCodeChange}
                       type="text"
@@ -961,5 +964,5 @@ export default connect(mapStateToProps,mapDispatchToProps)(HomePage);
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019 Werbeagentur Christian Aichner
+ * Copyright © 2019 Christian Aichner
  */

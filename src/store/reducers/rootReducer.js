@@ -1,18 +1,20 @@
 //> Reducers
 // Authentication
-import authReducer from './authReducer'
+import authReducer from './authReducer';
+import postReducer from './postReducer';
 
 //> Redux
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
 
 //> Firestore reducer
-import { firestoreReducer } from 'redux-firestore'
+import { firestoreReducer } from 'redux-firestore';
 
 //> Firebase reducer
-import { firebaseReducer } from 'react-redux-firebase'
+import { firebaseReducer } from 'react-redux-firebase';
 
 const rootReducer = combineReducers({
     auth: authReducer,
+    post: postReducer,
     firestore: firestoreReducer,
     firebase: firebaseReducer // Authentication
 })
