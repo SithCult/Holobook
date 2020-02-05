@@ -26,6 +26,8 @@ import {
   MDBIcon,
   MDBSimpleChart,
   MDBDataTable,
+  MDBView,
+  MDBMask,
 } from 'mdbreact';
 
 //> Components
@@ -197,11 +199,15 @@ class BasicTraining extends React.Component {
           </>
         )}
         </p>
-        <MDBAlert color="gold" className="mb-0 py-4">
-        <div className={!this.state.showSolution ? "basic" : ""}>
-          {this.state.activeBasic}
-        </div>
-        </MDBAlert>
+        <MDBView>
+          <MDBAlert color="gold" className="mb-0 py-4">
+          <div className={!this.state.showSolution ? "basic" : ""}>
+            {this.state.activeBasic}
+          </div>
+          </MDBAlert>
+        <MDBMask className="flex-center">
+        </MDBMask>
+        </MDBView>
         <form
         onSubmit={this.submitHandler}
         >
