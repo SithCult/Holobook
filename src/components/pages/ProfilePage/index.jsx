@@ -294,11 +294,18 @@ class ProfilePage extends React.Component {
       }
 
       // Tell Firebase to create post
-      this._resetPostForm();
-      this.props.createPost(data);
-      this.loadPosts(this.state.postsVisible);
+      this.setState({
+        postError: false,
+      }, () => {
+        this._resetPostForm();
+        this.props.createPost(data);
+        this.loadPosts(this.state.postsVisible);
+      })
+      
     } else {
-      console.log("do not post - not enough chars or no author");
+      this.setState({
+        postError: "Please make sure to write at least 5 words."
+      }, () => console.log("do not post - not enough chars or no author"));
     }
   }
   
@@ -424,7 +431,7 @@ class ProfilePage extends React.Component {
                 label="What's on your mind?"
                 name="post"
                 outline
-                className={this.state.post_basic && "basic narrow"}
+                className={this.state.post_basic && "basic hand"}
                 value={this.state.post}
                 onChange={this.changeTextareaHandler}
                 />
@@ -512,6 +519,11 @@ class ProfilePage extends React.Component {
                   {this.state.post_basic && " in Imperial Basic"}
                   </small>
                 )}
+                {this.state.postError &&
+                <small className="text-danger d-block">
+                {this.state.postError}
+                </small>
+                }
                 </div>
                 {this.state.postImageURL && 
                 <div className="pt-5 pl-5 pr-5 pb-2 text-center">
