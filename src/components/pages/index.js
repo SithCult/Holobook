@@ -4,12 +4,14 @@ import HomePage from "./HomePage";
 import ProfilePage from "./ProfilePage";
 import LoginPage from "./LoginPage";
 import ImperialBasicTraining from "./ImperialBasicTraining";
+import MessagePage from "./MessagePage";
 
 export {
     HomePage,
     ProfilePage,
     LoginPage,
     ImperialBasicTraining,
+    MessagePage,
 };
 
 /** 

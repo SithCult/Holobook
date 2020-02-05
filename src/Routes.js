@@ -15,6 +15,7 @@ import {
   ProfilePage,
   LoginPage,
   ImperialBasicTraining,
+  MessagePage,
 } from './components/pages';
 
 class Routes extends React.Component {
@@ -25,6 +26,16 @@ class Routes extends React.Component {
         <Route exact path='/me' component={ProfilePage} />
         <Route exact path='/login' component={LoginPage} />
         <Route exact path="/basic" component={ImperialBasicTraining} />
+        <Route 
+        exact
+        path='/about'
+        component={(props) => <MessagePage {...props}/>}
+        />
+        <Route
+        exact
+        path='/privacy'
+        component={(props) => <MessagePage {...props} />}
+        />
         <Route
           render={function () {
             return <h1>Not Found</h1>;
