@@ -2,7 +2,7 @@
 // Contains all the functionality necessary to define React components
 import React from 'react';
 // DOM bindings for React Router
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 //> Components
 /**
@@ -43,7 +43,7 @@ class Routes extends React.Component {
         />
         <Route
           render={function () {
-            return <h1>Not Found</h1>;
+            return <Redirect to="/" />;
           }}
         />
       </Switch>
