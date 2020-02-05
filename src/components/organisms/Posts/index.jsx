@@ -30,7 +30,8 @@ class Posts extends React.Component {
     avatar: "",
     isUploading: false,
     progress: 0,
-    avatarURL: ""
+    avatarURL: "",
+    basic: true,
   };
 
   _calculateTimeAgo = (timestamp) => {
@@ -92,12 +93,12 @@ class Posts extends React.Component {
                     {" | "}
                       <MDBIcon
                       icon="language"
-                      className={post.basic ? "text-gold" : undefined}
+                      className={post.basic ? "text-gold" : ""}
                       />
                     {" | "}
                       <MDBIcon
                       icon="globe-americas"
-                      className={post.target ? "text-gold" : undefined}
+                      className={post.target ? "text-gold" : ""}
                       />
                     </small>
                   </div>
@@ -111,8 +112,21 @@ class Posts extends React.Component {
               <div className="p-3">
                 <p 
                 dangerouslySetInnerHTML={{__html: post.content}}
-                className={post.basic ? "basic narrow" : undefined}
-                ></p>
+                className={(post.basic && this.state.basic) ? "basic hand" : ""}
+                >
+                </p>
+                {post.basic &&
+                <small
+                className="px-1 underlined"
+                onClick={() => this.setState({basic: !this.state.basic})}
+                >
+                {this.state.basic ? (
+                  "Translate"
+                ) : (
+                  "Back to basic"
+                )}
+                </small>
+                }                
                 {post.image &&
                   <div className="p-4">
                     <img 
