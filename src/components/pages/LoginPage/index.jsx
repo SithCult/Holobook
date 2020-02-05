@@ -73,7 +73,6 @@ class LoginPage extends React.Component {
     const { authErrorDetails, auth, location } = this.props;
 
     let params = location.search.substr(1) ? location.search.substr(1).split("=") : null;
-
     if(params){
       if(params[0] === "refer"){
         switch(params[1]){
@@ -84,6 +83,8 @@ class LoginPage extends React.Component {
             if(auth.uid !== undefined) return <Redirect to="/me"/>
         }
       }
+    } else {
+      if(auth.uid !== undefined) return <Redirect to="/me"/>
     }
 
     return (
