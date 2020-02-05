@@ -9,16 +9,16 @@
     "firebase": "^7.2.0",
     "javascript-time-ago": "^2.0.2",
     "languagedetect": "^1.2.0",
-    "mdbreact": "mdbreact-4.21.0.tgz",
-    "node-sass": "^4.12.0",
-    "react": "^16.8.6",
+    "mdbreact": "mdbreact-4.25.1.tgz",
+    "node-sass": "^4.13.1",
+    "random-words": "^1.1.0",
     "react-dom": "^16.8.6",
     "react-fade-in": "^0.1.6",
     "react-firebase-file-uploader": "^2.4.3",
     "react-redux": "^7.1.1",
     "react-redux-firebase": "^2.4.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
+    "react-scripts": "^3.3.1",
     "react-select-country-list": "^2.0.1",
     "redux": "^4.0.4",
     "redux-firestore": "^0.9.0",
@@ -37,7 +37,8 @@
   },
   "devDependencies": {
     "renamer": "^1.0.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "react": "^16.8.6"
   },
   "browserslist": [
     ">0.2%",

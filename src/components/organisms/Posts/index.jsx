@@ -20,6 +20,9 @@ import {
   MDBIcon,
 } from 'mdbreact';
 
+//> Images
+import defaultUserIMG from "../../../assets/images/default.gif";
+
 class Posts extends React.Component {
 
   state = {
@@ -72,7 +75,7 @@ class Posts extends React.Component {
                 <MDBCol className="flex-center">
                   <div className="p-2">
                     <img 
-                    src="https://mdbootstrap.com/img/Photos/Avatars/img%20%2810%29.jpg"
+                    src={defaultUserIMG}
                     className="rounded-circle avatar-img align-self-center mr-0"/>
                   </div>
                   <div className="p-2 author-info">

@@ -59,7 +59,8 @@ import {
 import './profilepage.scss';
 
 //> Images
-// To be added
+import defaultUserIMG from "../../../assets/images/default.gif";
+import holocronIcon from "../../../assets/images/icons/holocron.png";
 
 //> Data
 // Feelings
@@ -94,7 +95,9 @@ class ProfilePage extends React.Component {
       icon: "meh-blank"
     },
     postsVisible: 5,
-
+    disablePhotoUpload: true,
+    disablePostAsSithCult: true,
+    warningBeta: true,
   };
 
   componentDidMount = () => {
@@ -204,6 +207,16 @@ class ProfilePage extends React.Component {
             <MDBBadge pill color="gold">
             <MDBIcon fab icon="sith" className="pr-2"/>
             Hand of the Emperor
+            </MDBBadge>
+          </MDBCol>
+        )
+        break;
+      case "historic":
+        return (
+          <MDBCol key={key}>
+            <MDBBadge pill color="orange">
+            <MDBIcon icon="book" className="pr-2"/>
+            Historic
             </MDBBadge>
           </MDBCol>
         )
@@ -371,19 +384,33 @@ class ProfilePage extends React.Component {
               <MDBCardUp className='red' />
               <MDBAvatar className='mx-auto white'>
                 <img
-                  src='https://mdbootstrap.com/img/Photos/Avatars/img%20%2810%29.jpg'
-                  alt=''
+                  src={defaultUserIMG}
+                  alt="User profile picture"
                 />
               </MDBAvatar>
               <MDBCardBody>
                 <p className="lead font-weight-bold mb-0">{profile.title} {profile.sith_name}</p>
                 <p className="text-muted">{this.getCountry(profile.address)}</p>
                 {this.getBadges(profile.badges)}
+                <div className="mt-3 features pt-4">
+                  <p className="lead mb-2">
+                    <img src={holocronIcon} alt="Holocron icon" className="mr-2"/>
+                    My Holocrons
+                    <img src={holocronIcon} alt="Holocron icon" className="ml-2"/>
+                  </p>
+                  <MDBBtn
+                  color="elegant"
+                  size="md"
+                  >
+                  <MDBIcon icon="book" className="mr-2"/>
+                  Learn Imperial Basic
+                  </MDBBtn>
+                </div>
               </MDBCardBody>
             </MDBCard>
           </MDBCol>
           <MDBCol md="6">
-            <MDBCard>
+            <MDBCard className="mb-3">
               <MDBCardBody>
                 <h3>Greetings, {profile.title} {profile.sith_name}</h3>
                 <MDBInput 
@@ -463,7 +490,7 @@ class ProfilePage extends React.Component {
                   ) : (
                     <>
                       <small className="text-danger">
-                        Posting to your cluster
+                        Posting to your country
                         {this.state.post_basic && " in Imperial Basic"}
                       </small>
                       <br/>
@@ -475,7 +502,7 @@ class ProfilePage extends React.Component {
                   </>
                 ) : (
                   <small className="text-muted">
-                  Posting to your cluster
+                  Posting to your country
                   {this.state.post_basic && " in Imperial Basic"}
                   </small>
                 )}
@@ -513,6 +540,7 @@ class ProfilePage extends React.Component {
                   <MDBBtn
                   color="elegant"
                   rounded
+                  disabled={this.state.disablePhotoUpload}
                   tag="label"
                   >
                   <MDBIcon 
@@ -590,9 +618,10 @@ class ProfilePage extends React.Component {
                     color="red"
                     rounded
                     outline
+                    disabled={this.state.disablePostAsSithCult}
                     >
                       <MDBIcon fab icon="sith" className="pr-2" size="lg" />
-                      Post als SithCult
+                      Post as SithCult
                     </MDBBtn>
                   }
                   <MDBBtn
@@ -624,20 +653,29 @@ class ProfilePage extends React.Component {
               </MDBRow>
             </MDBAlert>
             }
+            {this.state.warningBeta &&
             <MDBAlert color="success" className="my-2">
               <MDBRow>
                 <MDBCol>
-                  <h4 className="alert-heading">Welcome to our closed Beta!</h4>
-                  <p>Please note, that this is an <strong>early Beta version</strong> of Holobook. 
-                  Only certain features are working - some are not yet functional.</p>
+                  <h4 className="alert-heading">Welcome to our Beta!</h4>
+                  <p>
+                  Please note, that this is an <strong>early Beta version</strong> of SithCult/ME.
+                  <br/>
+                  Only very limited features are working yet.
+                  </p>
                 </MDBCol>
                 <MDBCol md="auto" className="align-self-center">
-                  <MDBBtn color="success" rounded>
+                  <MDBBtn 
+                  color="success"
+                  rounded
+                  onClick={() => this.setState({warningBeta: false})}
+                  >
                     <MDBIcon icon="check" />
                   </MDBBtn>
                 </MDBCol>
               </MDBRow>
             </MDBAlert>
+            }
             <div className="posts">
               <Posts posts={this.props.posts} update={this.loadMore} />
               <div className="text-center spinners">
@@ -672,7 +710,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signOut: () => dispatch(signOut()),
     createPost: (newPost) => dispatch(createPost(newPost)),
     loadPosts: (amount) => dispatch(loadPosts(amount)),
   }

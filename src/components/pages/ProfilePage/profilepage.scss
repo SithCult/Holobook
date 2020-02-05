@@ -53,8 +53,12 @@
     }
   }
   .badge-row{
+    .col{
+      padding: 0;
+    }
     .badge{
       box-shadow: none;
+      padding: .5rem;
     }
     .badge-elegant-color{
       background: #3e3e3e !important;
@@ -176,6 +180,19 @@
       color: white !important;
       text-decoration: none;
       background-color: #5e5e5e !important;
+    }
+  }
+
+  .features{
+    .lead{
+      border-bottom: 2px #f44336 solid;
+      padding-left: .5rem;
+      padding-right: .5rem;
+      display: inline-block;
+      img{
+        height: 25px;
+        width: auto;
+      }
     }
   }
 }

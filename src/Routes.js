@@ -14,6 +14,7 @@ import {
   HomePage,
   ProfilePage,
   LoginPage,
+  ImperialBasicTraining,
 } from './components/pages';
 
 class Routes extends React.Component {
@@ -21,8 +22,9 @@ class Routes extends React.Component {
     return (
       <Switch>
         <Route exact path='/' component={HomePage} />
-        <Route exact path='/holobook' component={ProfilePage} />
+        <Route exact path='/me' component={ProfilePage} />
         <Route exact path='/login' component={LoginPage} />
+        <Route exact path="/basic" component={ImperialBasicTraining} />
         <Route
           render={function () {
             return <h1>Not Found</h1>;

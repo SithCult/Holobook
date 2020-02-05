@@ -460,10 +460,12 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const { authError, auth, authErrorCode } = this.props;
+    const { authError, auth, authErrorCode, authErrorDetails } = this.props;
 
     // Scroll up to error
     authErrorCode && this.firstRow.current.scrollIntoView();
+
+    console.log("Auth Error",authError,authErrorCode,authErrorDetails);
 
     return (
       <MDBContainer id="register" className="text-center text-white mt-5 pt-5">
@@ -564,7 +566,7 @@ class HomePage extends React.Component {
                 </small>
               </MDBInput>
             </MDBCol>
-            <MDBCol md="6">
+            <MDBCol md="6" className="pt-3">
               <MDBBtn
               color="red"
               onClick={this.generateName}
