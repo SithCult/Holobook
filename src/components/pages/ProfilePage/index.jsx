@@ -684,21 +684,22 @@ class ProfilePage extends React.Component {
             }
             <div className="posts">
               <Posts posts={this.props.posts} update={this.loadMore} />
-              <div className="text-center spinners">
-                <div className="spinner-grow text-danger" role="status">
-                  <span className="sr-only">Loading...</span>
+              {this.props.postLoading &&
+                <div className="text-center spinners">
+                  <div className="spinner-grow text-danger" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                  <div className="spinner-grow text-danger" role="status">
+                  </div>
+                  <div className="spinner-grow text-danger" role="status">
+                  </div>
                 </div>
-                <div className="spinner-grow text-danger" role="status">
-                </div>
-                <div className="spinner-grow text-danger" role="status">
-                </div>
-              </div>
+              }
             </div>
           </MDBCol>
           <MDBCol md="3">
 
           </MDBCol>
-
         </MDBRow>
       </MDBContainer>
     );
@@ -711,6 +712,7 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     posts: state.post.results,
+    postLoading: state.post.loading,
   }
 }
 

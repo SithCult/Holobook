@@ -25,6 +25,7 @@ export const loadPosts = (amount) => {
     return (dispatch, getState, {getFirebase, getFirestore}) => {
         const firebase = getFirebase();
         const firestore = getFirestore();
+        dispatch({ type: 'LOAD_LOADING' });
 
         firestore.collection('posts').orderBy("timestamp","desc").limit(amount).get()
         .then((querySnapshot) => {

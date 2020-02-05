@@ -28,13 +28,21 @@ const postReducer = (state = initState, action) => {
         return {
           ...state,
           authError: null,
-          results: action.results
+          results: action.results,
+          loading: false,
+        };
+      case 'LOAD_LOADING':
+        console.log('Loading...');
+        return {
+          ...state,
+          loading: true,
         };
       case 'LOAD_ERROR':
         console.log('Loading error');
         return {
           ...state,
-          authError: action.err
+          authError: action.err,
+          loading: false,
         };
       default:
         return state;
