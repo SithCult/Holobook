@@ -2,7 +2,7 @@
 // Contains all the functionality necessary to define React components
 import React from 'react';
 // Redirect from Router
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 //> Additional modules
 // Fade In Animation
@@ -175,14 +175,28 @@ class BasicTraining extends React.Component {
   render() {
     const { authErrorDetails, auth } = this.props;
 
-    console.log(this.state);
+    console.log(auth);
     
     return (
       <MDBContainer id="imperialbasictraining" className="text-center text-white pt-5 mt-5">
         <img src={logoIMG} alt="SithCult Logo" className="mt-5"/>
         <h2 className="font-weight-bold mt-2">Imperial Basic Trainer</h2>
         <p>The best way to learn Imperial Basic on this planet.</p>
-        <p className="font-weight-bold text-success mt-4">{this.state.previous.length} correct answers</p>
+        <p className="font-weight-bold text-success mt-4">
+        {this.state.previous.length === 1 ? (
+          <>
+            {this.state.previous.length} correct answer
+          </>
+        ) : (
+          <>
+            {this.state.previous.length > 1 &&
+            <>
+              {this.state.previous.length} correct answers
+            </>
+            }
+          </>
+        )}
+        </p>
         <MDBAlert color="gold" className="mb-0 py-4">
         <div className={!this.state.showSolution ? "basic" : ""}>
           {this.state.activeBasic}
@@ -233,66 +247,93 @@ class BasicTraining extends React.Component {
           Check
           </MDBBtn>
         </form>
-        <div className="results mt-5">
-          <MDBRow className="flex-center">
-            <MDBCol md="4">
-              {this.state.previous.length > 0 &&
-              <>
-              <p className="lead pb-2">Correct answers</p>
-              <MDBSimpleChart
-                width={90}
-                height={90}
-                strokeWidth={5}
-                percent={Math.round(100 / this.state.tries * this.state.previous.length)}
-                strokeColor="#4FB64E"
-                labelFontWeight="300"
-                labelColor="#fff"
-              />
-              </>
-              }
-            </MDBCol>
-            <MDBCol md="8">
-              {this.state.previous.length > 0 &&
-              <>
-              <p className="lead pb-2">Your tries</p>
-              <MDBDataTable
-                striped
-                small
-                responsive
-                borderless
-                theadTextWhite
-                searching={false}
-                paging={false}
-                noBottomColumns
-                data={{
-                columns: [
-                  {
-                    label: 'Basic',
-                    field: 'basic',
-                    sort: 'asc'
-                  },
-                  {
-                    label: 'English',
-                    field: 'english',
-                    sort: 'asc'
-                  },
-                  {
-                    label: 'Time elapsed',
-                    field: 'elapsed',
-                    sort: 'asc'
-                  },
-                  {
-                    label: 'First try',
-                    field: 'firsttry'
-                  }
-                ],
-                rows: this.getRows()}}
-              />
-              </>
-              }
-            </MDBCol>
-          </MDBRow>
-        </div>
+        {!auth.uid ? (
+          <div className="mt-5 p-4 login">
+            <p className="lead mb-1">Want to receive rewards and see your results?</p>
+            <small 
+            className="text-muted d-block mb-2"
+            >
+            Signing up is 100% free and provides you a connection to like-minded individuals.
+            </small>
+            <Link to="/login?refer=basic">
+              <MDBBtn
+              color="yellow"
+              >
+              <MDBIcon icon="angle-right" className="pr-1" />
+              Login
+              </MDBBtn>
+            </Link>
+            <Link to="/">
+              <MDBBtn
+              color="red"
+              >
+              <MDBIcon fab icon="sith" className="pr-1" />
+              Sign up
+              </MDBBtn>
+            </Link>
+          </div>
+        ) : (
+          <div className="results mt-5">
+            <MDBRow className="flex-center">
+              <MDBCol md="4">
+                {this.state.previous.length > 0 &&
+                <>
+                <p className="lead pb-2">Correct answers</p>
+                <MDBSimpleChart
+                  width={90}
+                  height={90}
+                  strokeWidth={5}
+                  percent={Math.round(100 / this.state.tries * this.state.previous.length)}
+                  strokeColor="#4FB64E"
+                  labelFontWeight="300"
+                  labelColor="#fff"
+                />
+                </>
+                }
+              </MDBCol>
+              <MDBCol md="8">
+                {this.state.previous.length > 0 &&
+                <>
+                <p className="lead pb-2">Your tries</p>
+                <MDBDataTable
+                  striped
+                  small
+                  responsive
+                  borderless
+                  theadTextWhite
+                  searching={false}
+                  paging={false}
+                  noBottomColumns
+                  data={{
+                  columns: [
+                    {
+                      label: 'Basic',
+                      field: 'basic',
+                      sort: 'asc'
+                    },
+                    {
+                      label: 'English',
+                      field: 'english',
+                      sort: 'asc'
+                    },
+                    {
+                      label: 'Time elapsed',
+                      field: 'elapsed',
+                      sort: 'asc'
+                    },
+                    {
+                      label: 'First try',
+                      field: 'firsttry'
+                    }
+                  ],
+                  rows: this.getRows()}}
+                />
+                </>
+                }
+              </MDBCol>
+            </MDBRow>
+          </div>
+        )}
       </MDBContainer>
     );
   }
