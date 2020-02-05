@@ -1,6 +1,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from 'react';
+// Router
+import { Redirect, withRouter } from "react-router-dom";
 
 //> Additional modules
 // Name generation
@@ -460,12 +462,25 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const { authError, auth, authErrorCode, authErrorDetails } = this.props;
+    const { authError, auth, authErrorCode, authErrorDetails, location } = this.props;
 
     // Scroll up to error
     authErrorCode && this.firstRow.current.scrollIntoView();
 
-    console.log("Auth Error",authError,authErrorCode,authErrorDetails);
+    let params = location.search.substr(1) ? location.search.substr(1).split("=") : null;
+    if(params){
+      if(params[0] === "refer"){
+        switch(params[1]){
+          case "basic":
+            if(auth.uid !== undefined) return <Redirect to="/basic"/> 
+            break;
+          default:
+            if(auth.uid !== undefined) return <Redirect to="/me"/>
+        }
+      }
+    } else {
+      if(auth.uid !== undefined) return <Redirect to="/me"/>
+    }
 
     return (
       <MDBContainer id="register" className="text-center text-white mt-5 pt-5">
@@ -910,7 +925,7 @@ class HomePage extends React.Component {
                     <p className="font-weight-bold">Redeem code</p>
                     <MDBInput
                       value={this.state.code}
-                      spellcheck="false"
+                      spellCheck="false"
                       autoComplete="autocomplete_off_874548537585743884357"
                       onChange={this.handleCodeChange}
                       type="text"
@@ -962,7 +977,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(HomePage));
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
