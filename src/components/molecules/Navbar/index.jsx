@@ -92,6 +92,14 @@ class Navbar extends React.Component{
             }
             {auth.uid &&
               <>
+                <Link to="/me">
+                <div className="elegant-color py-2 px-3 mr-2 text-white">
+                  <span>
+                    <MDBIcon far icon="user" className="pr-2" />
+                    Profile
+                  </span>
+                </div>
+                </Link>
                 <div className="elegant-color py-2 px-3">
                   {profile.credits &&
                     <MDBTooltip
