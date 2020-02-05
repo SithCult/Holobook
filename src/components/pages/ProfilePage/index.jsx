@@ -1,31 +1,33 @@
 //> React
 // Contains all the functionality necessary to define React components
-import React from 'react';
+import React from "react";
+// Router
+import { Link, Redirect } from "react-router-dom";
 
 //> Additional modules
 // Fade In Animation
-import FadeIn from 'react-fade-in';
+import FadeIn from "react-fade-in";
 // Country list
-import countryList from 'react-select-country-list';
+import countryList from "react-select-country-list";
 // Fetching
-import axios from 'axios';
+import axios from "axios";
 // Firebase
-import firebase from 'firebase';
+import firebase from "firebase";
 // Uploading images
-import FileUploader from 'react-firebase-file-uploader';
+import FileUploader from "react-firebase-file-uploader";
 
 //> Redux
 // Connect
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 // Actions
-import { signOut } from '../../../store/actions/authActions';
+import { signOut } from "../../../store/actions/authActions";
 import { 
   createPost,
   removePost,
   editPost,
   loadPosts,
   reportPost,
-} from '../../../store/actions/postActions';
+} from "../../../store/actions/postActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -48,15 +50,15 @@ import {
   MDBDropdownMenu,
   MDBDropdownItem,
   MDBProgress,
-} from 'mdbreact';
+} from "mdbreact";
 
 //> Components
 import {
   Posts,
-} from '../../organisms';
+} from "../../organisms";
 
 //> CSS
-import './profilepage.scss';
+import "./profilepage.scss";
 
 //> Images
 import defaultUserIMG from "../../../assets/images/default.gif";
@@ -376,6 +378,8 @@ class ProfilePage extends React.Component {
   render() {
     const { auth, profile } = this.props;
 
+    if(auth.uid === undefined) return <Redirect to="/login"/> 
+
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
         <MDBRow>
@@ -398,6 +402,7 @@ class ProfilePage extends React.Component {
                     My Holocrons
                     <img src={holocronIcon} alt="Holocron icon" className="ml-2"/>
                   </p>
+                  <Link to="/basic">
                   <MDBBtn
                   color="elegant"
                   size="md"
@@ -405,6 +410,7 @@ class ProfilePage extends React.Component {
                   <MDBIcon icon="book" className="mr-2"/>
                   Learn Imperial Basic
                   </MDBBtn>
+                  </Link>
                 </div>
               </MDBCardBody>
             </MDBCard>
