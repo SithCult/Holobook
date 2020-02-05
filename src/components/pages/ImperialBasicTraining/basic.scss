@@ -1,6 +1,8 @@
 #imperialbasictraining {
   img {
-    height: 50px;
+    &.logo{
+      height: 50px;
+    }
   }
   .md-form {
     input,

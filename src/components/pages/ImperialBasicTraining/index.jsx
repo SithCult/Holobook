@@ -38,6 +38,7 @@ import './basic.scss';
 
 //> Images
 import logoIMG from '../../../assets/images/logo_white_sm.png';
+import cheatSheetIMG from "../../../assets/images/aurek.png";
 
 //> Other words and phrases
 import { items } from "./items.js";
@@ -181,9 +182,30 @@ class BasicTraining extends React.Component {
     
     return (
       <MDBContainer id="imperialbasictraining" className="text-center text-white pt-5 mt-5">
-        <img src={logoIMG} alt="SithCult Logo" className="mt-5"/>
+        <img src={logoIMG} alt="SithCult Logo" className="mt-5 logo"/>
         <h2 className="font-weight-bold mt-2">Imperial Basic Trainer</h2>
         <p>The best way to learn Imperial Basic on this planet.</p>
+        {this.state.showSheet &&
+        <div className="cheatsheet my-4">
+          <img src={cheatSheetIMG} alt="Aurek Besh cheat sheet" className="img-fluid"/>
+        </div>
+        }
+        {this.state.showSheet ? (
+          <span 
+          className="clickable underlined"
+          onClick={() => this.setState({showSheet: false})}
+          >
+          Hide alphabet
+          </span>
+        ) : (
+          <span 
+          className="clickable underlined"
+          onClick={() => this.setState({showSheet: true})}
+          >
+          Show alphabet
+          </span>
+        )}
+        
         <p className="font-weight-bold text-success mt-4">
         {this.state.previous.length === 1 ? (
           <>
