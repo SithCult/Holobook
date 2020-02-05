@@ -37,6 +37,11 @@ class Routes extends React.Component {
         component={(props) => <MessagePage {...props} />}
         />
         <Route
+        exact
+        path='/privacy/me'
+        component={(props) => <MessagePage {...props} />}
+        />
+        <Route
           render={function () {
             return <h1>Not Found</h1>;
           }}

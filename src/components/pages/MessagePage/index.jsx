@@ -1,10 +1,16 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// Router
+import { Link } from "react-router-dom";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBContainer, MDBBtn, MDBAlert, MDBIcon } from "mdbreact";
+
+//> Redux
+// Connect
+import { connect } from "react-redux";
 
 //> CSS
 import "./messagepage.scss";
@@ -14,6 +20,8 @@ import "./messagepage.scss";
 
 class MessagePage extends React.Component {
   render() {
+    const { auth, profile } = this.props;
+    console.log(auth,profile);
     return (
       <MDBContainer id="message" className="py-5 my-5 text-center text-white">
         {this.props.location.pathname === "/about" && (
@@ -60,6 +68,59 @@ class MessagePage extends React.Component {
                   E-Mail us
                 </a>
               </p>
+            </div>
+          </>
+        )}
+        {this.props.location.pathname === "/privacy/me" && (
+          <>
+            <h2>
+              Your personal data
+              <MDBIcon icon="heart" className="pink-text ml-2" />
+            </h2>
+            <p className="lead mt-3 mb-3">
+              This application is being created and maintained by Star Wars fans
+              all over the world.
+              <br />
+              We are a <strong>non-profit</strong>, <strong>open source</strong>{" "}
+              Social Network designed for Star Wars fans.
+            </p>
+            <a
+              href="https://github.com/SithCult"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MDBBtn color="white">
+                <MDBIcon fab icon="github" className="mr-1" />
+                GitHub
+              </MDBBtn>
+            </a>
+            <div className="mt-5 text-left personal-data">
+            {auth.uid !== undefined ? (
+              <>
+              <h2 className="mb-0">What data do we have of you?</h2>
+              <p className="lead text-muted mb-4">Only you can see this information.</p>
+              <p>Your name is <span>{profile.full_name}</span>.</p>
+              {profile.address && profile.address.address ? (
+                <p>
+                Your address is <span>{profile.address.address}</span> in <span>{profile.zip+" "+profile.city}</span>
+                </p>
+              ) : (
+                <p>You did not share your personal address information.</p>
+              )}
+              <p>
+              You live in a country with the country code 
+              of <span>{profile.address && profile.address.country}</span>.
+              </p>
+              <p>
+              Your E-Mail is <span>{profile.email}</span>.
+              </p>
+              <p>
+              Your Sith name and title is <span>{profile.title+" "+profile.sith_name}</span>.
+              </p>
+              </>
+            ) : (
+              <h2 className="mb-4 text-center">Please log in to experience this feature.</h2>
+            )}
             </div>
           </>
         )}
@@ -287,7 +348,14 @@ class MessagePage extends React.Component {
                   website, we strongly encourage you to contact us immediately
                   and we will do our best efforts to promptly remove such
                   information from our records.
-                </p>{" "}
+                </p>
+                <Link to="/privacy/me">
+                <MDBBtn
+                color="yellow"
+                >
+                My data
+                </MDBBtn>
+                </Link>
               </div>
             </div>
           </>
@@ -297,7 +365,15 @@ class MessagePage extends React.Component {
   }
 }
 
-export default MessagePage;
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile,
+  }
+}
+
+export default connect(mapStateToProps)(MessagePage);
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
