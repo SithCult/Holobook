@@ -20,6 +20,20 @@ import {
   MDBIcon,
 } from 'mdbreact';
 
+//> Redux Firebase
+// Actions for posts
+import { 
+  createPost,
+  removePost,
+  editPost,
+  loadPosts,
+  reportPost,
+  likePost,
+  unlikePost,
+} from "../../../store/actions/postActions";
+// Connect
+import { connect } from 'react-redux';
+
 //> Images
 import defaultUserIMG from "../../../assets/images/default.gif";
 
@@ -65,12 +79,38 @@ class Posts extends React.Component {
     }
   };
 
+  alreadyLiked = (list) => {
+    let uid = this.props.auth.uid;
+    if(Array.isArray(list)){
+      if(list.length > 0){
+        let res = list.map((item, i) => {
+          console.log(item.uid, uid, item.uid === uid);
+          if(item.uid === uid){
+            return true;
+          } else {
+            return false;
+          }
+        });
+        if(res.includes(true)){
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   getPosts = () => {
+    console.log(this.props);
     let posts = this.props.posts;
     if(posts){
       let result = posts.map((post, key) => {
         return(
-          <MDBCard className="mb-3" key={key}>
+          <MDBCard className="mb-3 post" key={key}>
             <MDBCardBody>
               <MDBRow>
                 <MDBCol className="flex-center">
@@ -141,6 +181,37 @@ class Posts extends React.Component {
                   </div>
                 }
               </div>
+              <div className="px-2 bottom">
+              {this.alreadyLiked(post.likes) ? (
+                <>
+                <MDBIcon 
+                fab
+                icon="sith"
+                className="text-white p-2"
+                onClick={() => {
+                  this.props.unlikePost(post.id, this.props.auth.uid, post.likes);
+                  this.props.load(this.props.posts.length);
+                }}
+                size="lg"
+                />
+                {post.likes && post.likes.length}
+                </>
+              ) : (
+                <>
+                <MDBIcon 
+                fab
+                icon="sith"
+                className="text-muted p-2"
+                onClick={() => {
+                  this.props.likePost(post.id, this.props.auth.uid, post.likes);
+                  this.props.load(this.props.posts.length);
+                }}
+                size="lg"
+                />
+                {post.likes && post.likes.length}
+                </>
+              )}
+              </div>
             </MDBCardBody>
           </MDBCard>
         )
@@ -160,7 +231,24 @@ class Posts extends React.Component {
   }
 }
 
-export default Posts;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth,
+    profile: state.firebase.profile,
+    postLoading: state.post.likeError,
+    liked: state.post.liked,
+    unliked: state.post.unliked,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    likePost: (uniqueID, user, likes) => dispatch(likePost(uniqueID, user, likes)),
+    unlikePost: (uniqueID, user, likes) => dispatch(unlikePost(uniqueID, user, likes)),
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Posts);
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)

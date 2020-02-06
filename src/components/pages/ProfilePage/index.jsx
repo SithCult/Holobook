@@ -58,7 +58,10 @@ import {
 } from "../../organisms";
 
 //> CSS
+// Profile page
 import "./profilepage.scss";
+// Post
+import "../../organisms/Posts/posts.scss";
 
 //> Images
 import defaultUserIMG from "../../../assets/images/default.gif";
@@ -695,7 +698,7 @@ class ProfilePage extends React.Component {
             </MDBAlert>
             }
             <div className="posts">
-              <Posts posts={this.props.posts} update={this.loadMore} />
+              <Posts posts={this.props.posts} update={this.loadMore} load={this.props.loadPosts} />
               {this.props.postLoading &&
                 <div className="text-center spinners">
                   <div className="spinner-grow text-danger" role="status">

@@ -44,6 +44,34 @@ const postReducer = (state = initState, action) => {
           authError: action.err,
           loading: false,
         };
+      case 'LIKE_SUCCESS':
+        console.log('Like success');
+        return {
+          ...state,
+          unliked: null,
+          liked: true,
+        };
+      case 'LIKE_ERROR':
+        console.log('Like error');
+        return {
+          ...state,
+          unliked: null,
+          liked: false,
+        };
+      case 'UNLIKE_SUCCESS':
+        console.log('Unlike success');
+        return {
+          ...state,
+          liked: null,
+          unliked: true,
+        };
+      case 'UNLIKE_ERROR':
+        console.log('Unlike error');
+        return {
+          ...state,
+          liked: null,
+          unliked: false,
+        };
       default:
         return state;
   }

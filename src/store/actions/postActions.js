@@ -9,14 +9,58 @@ export const createPost = (newPost) => {
         let uniqueID = newPost.timestamp+uid.toString().substring(0,15);
 
         // Create post
-        firestore.collection('posts').doc(uniqueID)
-        .set({
-            ...newPost
+        firestore.collection('posts').doc(uniqueID).set({
+            ...newPost,
+            likes: [],
+            id: uniqueID
         }).then(() => {
             dispatch({ type: 'CREATION_SUCCESS', newPost });
             return 
         }).catch((err) => {
             dispatch({ type: 'CREATION_ERROR', err });
+        })
+    }
+}
+
+export const likePost = (uniqueID, uid, likes) => {
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firebase = getFirebase();
+        const firestore = getFirestore();
+
+        likes.push({
+            uid,
+            timestamp: Date.now()
+        });
+
+        // Create post
+        firestore.collection('posts').doc(uniqueID).update({
+            likes: likes,
+        }).then(() => {
+            dispatch({ type: 'LIKE_SUCCESS', uniqueID });
+            return 
+        }).catch((err) => {
+            dispatch({ type: 'LIKE_ERROR', err });
+        })
+    }
+}
+
+export const unlikePost = (uniqueID, uid, likes) => {
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firebase = getFirebase();
+        const firestore = getFirestore();
+
+        likes = likes.filter(function( obj ) {
+            return obj.uid !== uid;
+        });
+
+        // Create post
+        firestore.collection('posts').doc(uniqueID).update({
+            likes: likes,
+        }).then(() => {
+            dispatch({ type: 'UNLIKE_SUCCESS', uniqueID });
+            return 
+        }).catch((err) => {
+            dispatch({ type: 'UNLIKE_ERROR', err });
         })
     }
 }

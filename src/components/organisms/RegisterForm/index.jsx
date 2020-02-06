@@ -373,9 +373,12 @@ class HomePage extends React.Component {
       sith_name: this.state.sn,
       code: this.state.code,
       password: this.state.password ? this.state.password : null,
-      tracking: {
-        [Date.now()]: this.state.country
-      },
+      tracking: [
+        {
+          ...this.state.country,
+          date: Date.now()
+        }
+      ],
       details: {
         note: this.state.additional ? this.state.additional : null,
         lightsaber: {
