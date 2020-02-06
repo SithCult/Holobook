@@ -88,9 +88,13 @@ class Posts extends React.Component {
                       </i>
                     }
                     <small className="text-muted d-block">
-                    <MDBIcon icon="map-marker-alt" className="pr-1"/>
+                    {post.details.ip &&
+                      <>
+                      <MDBIcon icon="map-marker-alt" className="pr-1"/>
                       {post.details.ip.country_name}
-                    {" | "}
+                      {" | "}
+                      </>
+                    }
                       <MDBIcon
                       icon="language"
                       className={post.basic ? "text-gold" : ""}
