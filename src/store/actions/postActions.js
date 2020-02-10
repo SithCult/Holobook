@@ -4,7 +4,7 @@ export const createPost = (newPost) => {
         const firestore = getFirestore();
 
         // Get userId
-        let uid = newPost.uid;
+        let uid = newPost.author.uid;
         // Create a unique id for the post
         let uniqueID = newPost.timestamp+uid.toString().substring(0,15);
 
@@ -12,7 +12,8 @@ export const createPost = (newPost) => {
         firestore.collection('posts').doc(uniqueID).set({
             ...newPost,
             likes: [],
-            id: uniqueID
+            skin: newPost.skin ? newPost.skin : null,
+            visible: true,
         }).then(() => {
             dispatch({ type: 'CREATION_SUCCESS', newPost });
             return 
@@ -22,21 +23,30 @@ export const createPost = (newPost) => {
     }
 }
 
-export const likePost = (uniqueID, uid, likes) => {
+export const likePost = (id, uid, likes) => {
     return (dispatch, getState, {getFirebase, getFirestore}) => {
         const firebase = getFirebase();
         const firestore = getFirestore();
 
-        likes.push({
-            uid,
-            timestamp: Date.now()
-        });
+        let localLikes = likes;
+        if(localLikes){
+            if(Array.isArray(localLikes)){
+                localLikes.push({
+                    uid,
+                    timestamp: Date.now()
+                });
+            } else {
+                localLikes = [];
+            }
+        } else {
+            localLikes = [];
+        }
 
         // Create post
-        firestore.collection('posts').doc(uniqueID).update({
-            likes: likes,
-        }).then(() => {
-            dispatch({ type: 'LIKE_SUCCESS', uniqueID });
+        firestore.collection('posts').doc(id).set({
+            likes: localLikes,
+        }, { merge: true }).then(() => {
+            dispatch({ type: 'LIKE_SUCCESS', id });
             return 
         }).catch((err) => {
             dispatch({ type: 'LIKE_ERROR', err });
@@ -44,7 +54,7 @@ export const likePost = (uniqueID, uid, likes) => {
     }
 }
 
-export const unlikePost = (uniqueID, uid, likes) => {
+export const unlikePost = (id, uid, likes) => {
     return (dispatch, getState, {getFirebase, getFirestore}) => {
         const firebase = getFirebase();
         const firestore = getFirestore();
@@ -54,14 +64,35 @@ export const unlikePost = (uniqueID, uid, likes) => {
         });
 
         // Create post
-        firestore.collection('posts').doc(uniqueID).update({
+        firestore.collection('posts').doc(id).update({
             likes: likes,
         }).then(() => {
-            dispatch({ type: 'UNLIKE_SUCCESS', uniqueID });
+            dispatch({ type: 'UNLIKE_SUCCESS', id });
             return 
         }).catch((err) => {
             dispatch({ type: 'UNLIKE_ERROR', err });
         })
+    }
+}
+
+export const removePost = (uid, post) => {
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firebase = getFirebase();
+        const firestore = getFirestore();
+
+        if(uid === post.data.author.uid){
+            // Remove post
+            firestore.collection('posts').doc(post.id).set({
+                visible: false,
+            }, { merge: true }).then(() => {
+                dispatch({ type: 'REMOVE_SUCCESS', id: post.id });
+                return 
+            }).catch((err) => {
+                dispatch({ type: 'REMOVE_ERROR', err });
+            })
+        } else {
+            dispatch({ type: 'REMOVE_ERROR', err: "Not authorized." });
+        }
     }
 }
 
@@ -71,12 +102,22 @@ export const loadPosts = (amount) => {
         const firestore = getFirestore();
         dispatch({ type: 'LOAD_LOADING' });
 
-        firestore.collection('posts').orderBy("timestamp","desc").limit(amount).get()
-        .then((querySnapshot) => {
+        let posts = firestore.collection('posts');
+
+        if(amount < 0){
+            amount = 0;
+        }
+        
+        posts.orderBy('timestamp','desc').limit(amount).get().then((querySnapshot) => {
             let results = [];
             querySnapshot.forEach(function(doc) {
-                // doc.data() is never undefined for query doc snapshots
-                results.push(doc.data());
+                let data = doc.data();
+                // For deleted posts
+                // This is not yet working, once I can not yet do where and query at the same time.
+                /*if(data.visible === true){
+                    results.push({id: doc.id, data});
+                }*/
+                results.push({id: doc.id, data});
             });
             dispatch({ type: 'LOAD_SUCCESS', results });
         })

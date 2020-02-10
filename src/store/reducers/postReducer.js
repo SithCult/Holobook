@@ -38,7 +38,7 @@ const postReducer = (state = initState, action) => {
           loading: true,
         };
       case 'LOAD_ERROR':
-        console.log('Loading error');
+        console.log('Loading error',action.err);
         return {
           ...state,
           authError: action.err,
@@ -71,6 +71,16 @@ const postReducer = (state = initState, action) => {
           ...state,
           liked: null,
           unliked: false,
+        };
+      case 'REMOVE_SUCCESS':
+        console.log('Remove success');
+        return {
+          ...state,
+        };
+      case 'REMOVE_ERROR':
+        console.log('Remove error', action.err);
+        return {
+          ...state,
         };
       default:
         return state;

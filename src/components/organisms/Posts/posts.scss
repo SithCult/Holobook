@@ -1,11 +1,65 @@
-.post{
-  .bottom{
-    i{
+.post {
+  .bottom {
+    // Like button
+    i {
       cursor: pointer;
-      transition: all .1s ease;
-      &:hover{
+      transition: all 0.1s ease;
+      &:hover {
         color: lighten(#848e96, 10%) !important;
       }
+      &.text-white{
+        color: #e2264d !important;
+      }
+    }
+
+    // Delete button
+    .clickable {
+      color: #6c757d;
+      transition: color 0.1s ease;
+      &:hover {
+        color: lighten(#6c757d, 10%);
+      }
+    }
+  }
+  .toggle-basic {
+    .clickable {
+      color: #6c757d;
+      transition: color 0.1s ease;
+      &:hover {
+        color: lighten(#6c757d, 10%);
+      }
+    }
+  }
+
+  .gold {
+    border: 2px darken(gold, 20%) solid;
+    border-radius: 0.2rem;
+  }
+
+  .skin-label {
+    line-height: initial;
+    margin-top: -5px;
+    font-size: 90%;
+    text-align: right;
+    &::first-letter {
+      text-transform: uppercase;
+    }
+    .gold-label {
+      color: darken(gold, 10%);
+    }
+  }
+
+  .furtherInfo {
+    .badge {
+      border-radius: 0;
+      box-shadow: none;
+      font-size: 0.7rem;
+      padding: 0.4rem;
+      margin: 0.2rem;
+    }
+    img {
+      height: 15px !important;
+      width: auto !important;
     }
   }
 }

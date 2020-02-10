@@ -13,6 +13,7 @@
     "mdbreact": "mdbreact-4.25.1.tgz",
     "node-sass": "^4.13.1",
     "random-words": "^1.1.0",
+    "react-country-flag": "^2.0.1",
     "react-dom": "^16.8.6",
     "react-fade-in": "^0.1.6",
     "react-firebase-file-uploader": "^2.4.3",
