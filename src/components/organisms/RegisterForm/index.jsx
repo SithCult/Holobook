@@ -185,7 +185,8 @@ class HomePage extends React.Component {
               color: "danger",
               className: "form-text text-danger"
             },
-            password_input: psw
+            password_input: psw,
+            password: psw
           });
         } else {
           this.setState({
@@ -196,7 +197,8 @@ class HomePage extends React.Component {
               color: "danger",
               className: "form-text text-danger"
             },
-            password_input: psw
+            password_input: psw,
+            password: psw
           });
         }
         return false;
@@ -209,7 +211,8 @@ class HomePage extends React.Component {
             color: "danger",
             className: "form-text text-danger"
           },
-          password_input: psw
+          password_input: psw,
+          password: psw
         });
         return false;
       case 2:
@@ -221,7 +224,8 @@ class HomePage extends React.Component {
             color: "danger",
             className: "form-text text-danger"
           },
-          password_input: psw
+          password_input: psw,
+          password: psw
         });
         return false;
       case 3:
