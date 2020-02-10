@@ -197,7 +197,7 @@ class Posts extends React.Component {
                       onChange={this.handlePopoverChange}
                     >
                       <div 
-                      className="clickable"
+                      className="clickable name"
                       onClick={() => this.props.getUser(post.data.author.uid)}
                       >
                       {post.data.author.name}

@@ -1,4 +1,11 @@
 .post {
+  .name{
+    font-weight: bold;
+    transition: color .1s ease;
+    &:hover{
+      color: gold;
+    }
+  }
   .bottom {
     // Like button
     i {
