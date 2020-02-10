@@ -9,6 +9,8 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 // Flags for countries
 import ReactCountryFlag from "react-country-flag";
+// Country name by country code
+import { getName } from "country-list";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -137,7 +139,7 @@ class Posts extends React.Component {
     if(posts && auth){
       let result = posts.map((post, key) => {
         return(
-          <MDBCard className="mb-3 post" key={key}>
+          <MDBCard className={post.data.visible ? "mb-3 post" : "mb-3 post deleted"} key={key}>
             <MDBCardBody className={post.data.skin ? post.data.skin : ""}>
               <MDBRow>
                 <MDBCol className="flex-center">
@@ -244,7 +246,7 @@ class Posts extends React.Component {
                                 className="mr-1"
                                 countryCode={receivedUser.address.country}
                                 />
-                                Base of Operation
+                                {getName(receivedUser.address.country)}
                               </div>
                               </div>
                             </MDBPopoverBody>

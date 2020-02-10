@@ -6,6 +6,12 @@
       color: gold;
     }
   }
+  &.deleted{
+    opacity: 0.4;
+    .card-body{
+      border: 2px red solid;
+    }
+  }
   .bottom {
     // Like button
     i {

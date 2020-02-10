@@ -108,15 +108,36 @@ export const loadPosts = (amount) => {
             amount = 0;
         }
         
-        posts.orderBy('timestamp','desc').get().then((querySnapshot) => {
+        posts.orderBy('timestamp','desc').limit(amount).get().then((querySnapshot) => {
             let results = [];
             querySnapshot.forEach(function(doc) {
                 let data = doc.data();
-                // For deleted posts
-                // This is not yet working, once I can not yet do where and query at the same time.
-                /*if(data.visible === true){
-                    results.push({id: doc.id, data});
-                }*/
+                results.push({id: doc.id, data});
+            });
+            dispatch({ type: 'LOAD_SUCCESS', results });
+        })
+        .catch((err) => {
+            dispatch({ type: 'LOAD_ERROR', err });
+        });
+    }
+}
+
+export const loadAllPosts = (amount) => {
+    return (dispatch, getState, {getFirebase, getFirestore}) => {
+        const firebase = getFirebase();
+        const firestore = getFirestore();
+        dispatch({ type: 'LOAD_LOADING' });
+
+        let posts = firestore.collection('posts');
+
+        if(amount < 0){
+            amount = 0;
+        }
+        
+        posts.orderBy('timestamp','desc').limit(amount).get().then((querySnapshot) => {
+            let results = [];
+            querySnapshot.forEach(function(doc) {
+                let data = doc.data();
                 results.push({id: doc.id, data});
             });
             dispatch({ type: 'LOAD_SUCCESS', results });

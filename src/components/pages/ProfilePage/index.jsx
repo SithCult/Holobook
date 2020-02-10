@@ -26,6 +26,7 @@ import {
   removePost,
   editPost,
   loadPosts,
+  loadAllPosts,
   reportPost,
 } from "../../../store/actions/postActions";
 
@@ -105,7 +106,7 @@ class ProfilePage extends React.Component {
     postsVisible: 5,
     disablePhotoUpload: true,
     disablePostAsSithCult: true,
-    warningBeta: true,
+    warningBeta: false,
   };
 
   componentDidMount = () => {
@@ -370,7 +371,23 @@ class ProfilePage extends React.Component {
   }
 
   loadPosts = (amount) => {
-    this.props.loadPosts(amount);
+    if(localStorage.getItem("postOptions") === "showAll"){
+      // Check if the user is authed to be shown all posts
+      if(Array.isArray(this.props.profile.badges)){
+        // Check if the user is admin
+        if(this.props.profile.badges.includes("Admin")){
+          // Load all posts (also invisible)
+          this.props.loadAllPosts(amount);
+        } else {
+          this.props.loadPosts(amount);
+        }
+      } else {
+        this.props.loadPosts(amount);
+      }
+    } else {
+      // Load posts normally
+      this.props.loadPosts(amount);
+    }
   }
 
   // Firebase picture upload
@@ -394,6 +411,14 @@ class ProfilePage extends React.Component {
     const { auth, profile } = this.props;
 
     if(auth.uid === undefined) return <Redirect to="/login"/> 
+
+    if(profile.badges){
+      if(!this.state.postsInitialLoad){
+        this.setState({
+          postsInitialLoad: true
+        }, () => this.loadPosts(this.state.postsVisible));
+      }
+    }
 
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
@@ -737,7 +762,8 @@ class ProfilePage extends React.Component {
             </MDBAlert>
             }
             <div className="posts">
-              <Posts posts={this.props.posts} update={this.loadMore} load={this.props.loadPosts} />
+              <Posts 
+              posts={this.props.posts} update={this.loadMore} load={this.loadPosts} />
               {this.props.postLoading &&
                 <div className="text-center spinners">
                   <div className="spinner-grow text-danger" role="status">
@@ -774,6 +800,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createPost: (newPost) => dispatch(createPost(newPost)),
     loadPosts: (amount) => dispatch(loadPosts(amount)),
+    loadAllPosts: (amount) => dispatch(loadAllPosts(amount))
   }
 }
 
