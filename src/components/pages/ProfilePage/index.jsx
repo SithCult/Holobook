@@ -65,6 +65,9 @@ import "../../organisms/Posts/posts.scss";
 
 //> Images
 import defaultUserIMG from "../../../assets/images/default.gif";
+import goldUserIMG from "../../../assets/images/gold.gif";
+import lightUserIMG from "../../../assets/images/light.gif";
+import bronzeUserIMG from "../../../assets/images/bronze.gif";
 import holocronIcon from "../../../assets/images/icons/holocron.png";
 
 //> Data
@@ -253,7 +256,9 @@ class ProfilePage extends React.Component {
     let author = {
       uid: this.props.auth.uid,
       name: this.props.profile.title + " " + this.props.profile.sith_name,
+      department: this.props.profile.department,
     };
+    let skin = this.props.profile.skin;
     let timestamp = Date.now();
     let target = this.state.post_visibility;
     let wordcount = content.split(' ').length;
@@ -283,10 +288,10 @@ class ProfilePage extends React.Component {
           feeling: feeling,
           ip: ip,
         },
-        uid: author.uid,
-        author: author.name,
+        author,
         timestamp: timestamp,
         target: target,
+        skin: skin ? skin : "standard",
         language: {
           0: language[0][0],
           1: language[1][0],
@@ -396,12 +401,46 @@ class ProfilePage extends React.Component {
           <MDBCol md="3">
             <MDBCard testimonial>
               <MDBCardUp className='red' />
-              <MDBAvatar className='mx-auto white'>
-                <img
-                  src={defaultUserIMG}
-                  alt="User profile picture"
-                />
-              </MDBAvatar>
+              {(() => {
+                switch(profile.skin) {
+                  case "gold":
+                    return(
+                      <MDBAvatar className='mx-auto white'>
+                        <img
+                          src={goldUserIMG}
+                          alt="Gold user profile picture"
+                        />
+                      </MDBAvatar>
+                    );
+                  case "light":
+                    return(
+                      <MDBAvatar className='mx-auto white'>
+                        <img
+                          src={lightUserIMG}
+                          alt="Light user profile picture"
+                        />
+                      </MDBAvatar>
+                    );
+                  case "bronze":
+                    return(
+                      <MDBAvatar className='mx-auto white'>
+                        <img
+                          src={bronzeUserIMG}
+                          alt="Bronze user profile picture"
+                        />
+                      </MDBAvatar>
+                    );
+                  default:
+                    return(
+                      <MDBAvatar className='mx-auto white'>
+                        <img
+                          src={defaultUserIMG}
+                          alt="Default user profile picture"
+                        />
+                      </MDBAvatar>
+                    );
+                }
+              })()}
               <MDBCardBody>
                 <p className="lead font-weight-bold mb-0">{profile.title} {profile.sith_name}</p>
                 <p className="text-muted">{this.getCountry(profile.address)}</p>
