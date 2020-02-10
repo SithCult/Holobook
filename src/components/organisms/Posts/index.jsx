@@ -72,7 +72,9 @@ class Posts extends React.Component {
 
   componentDidMount() {
     document.addEventListener('scroll', this.trackScrolling);
-    this.interval = setInterval(() => this.props.load(this.props.posts.length), 30000);
+    this.interval = setInterval(() => {
+      this.props.load(this.props.posts.length ? this.props.posts.length : 5)
+    }, 30000);
   }
 
   componentDidUpdate() {
@@ -134,20 +136,6 @@ class Posts extends React.Component {
 
     if(posts && auth){
       let result = posts.map((post, key) => {
-        /*let liked = false;
-        let likedRes = post.data.likes.map((like, i) => {
-          // Check if user has liked this post
-          if(like.uid === auth.uid){
-            return true;
-          } else {
-            return false;
-          }
-        });
-        if(likedRes.includes(true)){
-          liked = true;
-        }*/
-        let translate = false;
-
         return(
           <MDBCard className="mb-3 post" key={key}>
             <MDBCardBody className={post.data.skin ? post.data.skin : ""}>
@@ -362,7 +350,7 @@ class Posts extends React.Component {
                   </div>
                 }
               </div>
-              <div className="px-2 bottom">
+              <div className={auth.uid === post.data.author.uid ? "px-2 bottom flex-center" : "px-2 bottom"}>
               {this.alreadyLiked(post.data.likes) ? (
                 <>
                 <MDBIcon 
@@ -418,14 +406,37 @@ class Posts extends React.Component {
                 </span>
                 </>
               )}
-              {false && auth.uid === post.data.author.uid &&
-                <div className="ml-auto p-2 mb-auto">
-                  <small 
-                  className="clickable"
-                  onClick={() => this.props.removePost(auth.uid, post)}
-                  >
-                  Delete post
-                  </small>
+              {auth.uid === post.data.author.uid &&
+                <div className="ml-auto p-2 mb-auto">                  
+                  {this.state["delete-"+post.id] ? (
+                    <>
+                    <small 
+                    className="clickable text-danger"
+                    onClick={() => {
+                      this.props.removePost(auth.uid, post);
+                      this.props.load(this.props.posts.length);
+                    }}
+                    >
+                    Remove post permanently
+                    </small>
+                    <small className="px-2 text-muted">
+                    |
+                    </small>
+                    <small 
+                    className="clickable"
+                    onClick={() => this.setState({["delete-"+post.id]: false})}
+                    >
+                    Cancel
+                    </small>
+                    </>
+                  ) : (
+                    <small 
+                    className="clickable"
+                    onClick={() => this.setState({["delete-"+post.id]: true})}
+                    >
+                    Delete post
+                    </small>
+                  )}
                 </div>
               }
               </div>

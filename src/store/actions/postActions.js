@@ -102,13 +102,13 @@ export const loadPosts = (amount) => {
         const firestore = getFirestore();
         dispatch({ type: 'LOAD_LOADING' });
 
-        let posts = firestore.collection('posts');
+        let posts = firestore.collection('posts').where("visible","==",true);
 
         if(amount < 0){
             amount = 0;
         }
         
-        posts.orderBy('timestamp','desc').limit(amount).get().then((querySnapshot) => {
+        posts.orderBy('timestamp','desc').get().then((querySnapshot) => {
             let results = [];
             querySnapshot.forEach(function(doc) {
                 let data = doc.data();
