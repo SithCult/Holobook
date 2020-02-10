@@ -74,6 +74,7 @@ class Posts extends React.Component {
 
   componentDidMount() {
     document.addEventListener('scroll', this.trackScrolling);
+    // Re-fetch posts every 30 sec
     this.interval = setInterval(() => {
       this.props.load(this.props.posts.length ? this.props.posts.length : 5)
     }, 30000);
@@ -85,6 +86,7 @@ class Posts extends React.Component {
 
   componentWillUnmount() {
     document.removeEventListener('scroll', this.trackScrolling);
+    // Clear interval of re-fetching posts to prevent memory-leakage
     clearInterval(this.interval);
   }
 
@@ -105,7 +107,6 @@ class Posts extends React.Component {
     if(Array.isArray(list)){
       if(list.length > 0){
         let res = list.map((item, i) => {
-          console.log(item.uid, uid, item.uid === uid);
           if(item.uid === uid){
             return true;
           } else {
@@ -126,14 +127,12 @@ class Posts extends React.Component {
   }
 
   handlePopoverChange = (open) => {
-    console.log(open);
     if(!open){
       this.props.clearUser();
     }
   }
 
   getPosts = () => {
-    console.log(this.props);
     const { posts, auth, receivedUser } = this.props;
 
     if(posts && auth){
@@ -306,7 +305,7 @@ class Posts extends React.Component {
                     <small className="text-muted">
                     {this._calculateTimeAgo(post.data.timestamp)}
                     </small>
-                    {post.data.skin &&
+                    {post.data.skin && post.data.skin !== "standard" &&
                     <div className="skin-label">
                       <small className={post.data.skin+"-label"}>
                         {post.data.skin} Edition

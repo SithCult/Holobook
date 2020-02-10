@@ -107,6 +107,7 @@ class ProfilePage extends React.Component {
     disablePhotoUpload: true,
     disablePostAsSithCult: true,
     warningBeta: false,
+    showDeletedPosts: false,
   };
 
   componentDidMount = () => {
@@ -377,7 +378,9 @@ class ProfilePage extends React.Component {
         // Check if the user is admin
         if(this.props.profile.badges.includes("Admin")){
           // Load all posts (also invisible)
-          this.props.loadAllPosts(amount);
+          this.setState({
+            showDeletedPosts: true,
+          }, () => this.props.loadAllPosts(amount));
         } else {
           this.props.loadPosts(amount);
         }
@@ -386,7 +389,27 @@ class ProfilePage extends React.Component {
       }
     } else {
       // Load posts normally
-      this.props.loadPosts(amount);
+      this.setState({
+        showDeletedPosts: false,
+      }, () => this.props.loadPosts(amount));
+    }
+  }
+
+  handlePostVisibilityChange = (e) => {
+    if(e.target.checked){
+      this.setState({
+        showDeletedPosts: true
+      }, () => {
+        localStorage.setItem("postOptions","showAll");
+        this.loadPosts(this.props.posts.length);
+      });
+    } else {
+      this.setState({
+        showDeletedPosts: false
+      }, () => {
+        localStorage.setItem("postOptions","showNormal");
+        this.loadPosts(this.props.posts.length);
+      });
     }
   }
 
@@ -760,6 +783,23 @@ class ProfilePage extends React.Component {
                 </MDBCol>
               </MDBRow>
             </MDBAlert>
+            }
+            {profile.badges && Array.isArray(profile.badges) && profile.badges.includes("Admin") &&
+            <div className="admin-panel p-3 mb-3">
+              <div className='custom-control custom-switch'>
+                <input
+                  type='checkbox'
+                  className='custom-control-input'
+                  id='customSwitches'
+                  readOnly
+                  checked={this.state.showDeletedPosts}
+                  onChange={this.handlePostVisibilityChange}
+                />
+                <label className='custom-control-label' htmlFor='customSwitches'>
+                  Show deleted posts
+                </label>
+              </div>
+            </div>
             }
             <div className="posts">
               <Posts 
