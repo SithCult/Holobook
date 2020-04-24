@@ -1,6 +1,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from 'react';
+// Router
+import { Link } from "react-router-dom";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -12,6 +14,7 @@ import {
     MDBCollapse,
     MDBNavItem,
     MDBContainer,
+    MDBTooltip,
     MDBBtn,
     MDBIcon,
 } from 'mdbreact';
@@ -60,8 +63,8 @@ class Navbar extends React.Component{
     return(
       <div>
         <MDBNavbar color="sithcult-dark" dark expand="md" fixed="top" scrolling>
-          <MDBContainer fluid={auth.uid}>
-            <MDBNavbarBrand href={!auth.uid ? "/" : "/holobook"} className="py-0 font-weight-bold">
+          <MDBContainer>
+            <MDBNavbarBrand href={!auth.uid ? "/" : "/me"} className="py-0 font-weight-bold">
               <img src={IMGlogo} height="50px" alt="SithCult Logo"/>
             </MDBNavbarBrand>
             <MDBNavbarToggler
@@ -72,31 +75,74 @@ class Navbar extends React.Component{
             isOpen={this.state.collapseID}
             navbar
             >
-            <MDBNavbarNav right className="text-white">
+            <MDBNavbarNav right className="text-white flex-center">
             {!auth.uid &&
-              <MDBNavItem>
-                <MDBBtn 
-                color="modern"
-                >
-                <MDBIcon icon="key" className="pr-2" />
-                Already member? Log in
-                </MDBBtn>
-              </MDBNavItem>
+              <Link to="/login">
+                <MDBNavItem>
+                  <MDBBtn 
+                  color="yellow"
+                  size="md"
+                  outline
+                  >
+                  <MDBIcon icon="angle-right" className="pr-2" />
+                  Already member? Log in
+                  </MDBBtn>
+                </MDBNavItem>
+              </Link>
             }
             {auth.uid &&
               <>
-                {profile.credits &&
+                <Link to="/me">
+                <div className="elegant-color py-2 px-3 mr-2 text-white">
                   <span>
-                    <MDBIcon fab icon="sith" className="pr-2 orange-text" />
-                    {profile.credits.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}
+                    <MDBIcon far icon="user" className="pr-2" />
+                    Profile
                   </span>
-                }
-                {profile.reputation &&
-                  <span className="ml-3">
-                    <MDBIcon icon="medal" className="pr-2 purple-text" />
-                    {profile.reputation.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}
-                  </span>
-                }
+                </div>
+                </Link>
+                <div className="elegant-color py-2 px-3">
+                  {profile.credits &&
+                    <MDBTooltip
+                      placement="bottom"
+                      domElement
+                      className="test"
+                    >
+                      <span>
+                        <MDBIcon fab icon="sith" className="pr-2 orange-text" />
+                        {profile.credits.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}
+                      </span>
+                    <span>
+                    Imperial Credits
+                    </span>
+                    </MDBTooltip>
+                  }
+                  {profile.reputation &&
+                    <MDBTooltip
+                      placement="bottom"
+                      domElement
+                      className="test"
+                    >
+                      <span className="ml-3">
+                        <MDBIcon icon="medal" className="pr-2 purple-text" />
+                        {profile.reputation.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")}
+                      </span>
+                    <span>
+                    Reputation
+                    </span>
+                    </MDBTooltip>
+                  }
+                </div>
+                <div className="mx-3" />
+                <Link to="/">
+                  <MDBBtn
+                  size="md"
+                  color="elegant"
+                  onClick={this.props.signOut}
+                  >
+                  Logout
+                  <MDBIcon icon="angle-right" className="ml-1"/>
+                  </MDBBtn>
+                </Link>
               </>
             }
             </MDBNavbarNav>

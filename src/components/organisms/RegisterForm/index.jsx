@@ -1,6 +1,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from 'react';
+// Router
+import { Redirect, withRouter } from "react-router-dom";
 
 //> Additional modules
 // Name generation
@@ -183,7 +185,8 @@ class HomePage extends React.Component {
               color: "danger",
               className: "form-text text-danger"
             },
-            password_input: psw
+            password_input: psw,
+            password: psw
           });
         } else {
           this.setState({
@@ -194,7 +197,8 @@ class HomePage extends React.Component {
               color: "danger",
               className: "form-text text-danger"
             },
-            password_input: psw
+            password_input: psw,
+            password: psw
           });
         }
         return false;
@@ -207,7 +211,8 @@ class HomePage extends React.Component {
             color: "danger",
             className: "form-text text-danger"
           },
-          password_input: psw
+          password_input: psw,
+          password: psw
         });
         return false;
       case 2:
@@ -219,7 +224,8 @@ class HomePage extends React.Component {
             color: "danger",
             className: "form-text text-danger"
           },
-          password_input: psw
+          password_input: psw,
+          password: psw
         });
         return false;
       case 3:
@@ -371,9 +377,12 @@ class HomePage extends React.Component {
       sith_name: this.state.sn,
       code: this.state.code,
       password: this.state.password ? this.state.password : null,
-      tracking: {
-        [Date.now()]: this.state.country
-      },
+      tracking: [
+        {
+          ...this.state.country,
+          date: Date.now()
+        }
+      ],
       details: {
         note: this.state.additional ? this.state.additional : null,
         lightsaber: {
@@ -460,10 +469,25 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const { authError, auth, authErrorCode } = this.props;
+    const { authError, auth, authErrorCode, authErrorDetails, location } = this.props;
 
     // Scroll up to error
     authErrorCode && this.firstRow.current.scrollIntoView();
+
+    let params = location.search.substr(1) ? location.search.substr(1).split("=") : null;
+    if(params){
+      if(params[0] === "refer"){
+        switch(params[1]){
+          case "basic":
+            if(auth.uid !== undefined) return <Redirect to="/basic"/> 
+            break;
+          default:
+            if(auth.uid !== undefined) return <Redirect to="/me"/>
+        }
+      }
+    } else {
+      if(auth.uid !== undefined) return <Redirect to="/me"/>
+    }
 
     return (
       <MDBContainer id="register" className="text-center text-white mt-5 pt-5">
@@ -564,7 +588,7 @@ class HomePage extends React.Component {
                 </small>
               </MDBInput>
             </MDBCol>
-            <MDBCol md="6">
+            <MDBCol md="6" className="pt-3">
               <MDBBtn
               color="red"
               onClick={this.generateName}
@@ -908,7 +932,7 @@ class HomePage extends React.Component {
                     <p className="font-weight-bold">Redeem code</p>
                     <MDBInput
                       value={this.state.code}
-                      spellcheck="false"
+                      spellCheck="false"
                       autoComplete="autocomplete_off_874548537585743884357"
                       onChange={this.handleCodeChange}
                       type="text"
@@ -960,7 +984,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(HomePage));
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)

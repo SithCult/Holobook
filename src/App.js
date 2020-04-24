@@ -1,8 +1,8 @@
 //> React
 // Contains all the functionality necessary to define React components
-import React from 'react';
+import React from "react";
 // DOM bindings for React Router
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from "react-router-dom";
 
 //> Components
 /**
@@ -12,21 +12,26 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import {
   Footer,
   Navbar,
-} from './components/molecules';
+} from "./components/molecules";
+import {
+  ScrollToTop,
+} from "./components/atoms";
 // Routes
-import Routes from './Routes';
+import Routes from "./Routes";
 
 class App extends React.Component {
   render() {
     return (
       <Router>
-        <div className="flyout">
-          <Navbar />
-          <main>
-            <Routes />
-          </main>
-          <Footer />
-        </div>
+        <ScrollToTop>
+          <div className="flyout">
+            <Navbar />
+            <main>
+              <Routes />
+            </main>
+            <Footer />
+          </div>
+        </ScrollToTop>
       </Router>
     );
   }

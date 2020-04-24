@@ -59,7 +59,7 @@ export const signUp = (newUser) => {
             // Check if the Sithname is not already in use
             if(!duplicate){
                 // Set default values
-                let credits, reputation, title, badges, status, department, beta;
+                let credits, reputation, title, badges, status, department, beta, skin;
 
                 credits = 1000;
                 reputation = 10;
@@ -68,6 +68,7 @@ export const signUp = (newUser) => {
                 status = null;
                 department = null;
                 beta = true;
+                skin = "standard";
 
                 if(newUser.code){
                     // Easter Egg - Feel free to use the code when enlisting
@@ -98,6 +99,7 @@ export const signUp = (newUser) => {
                         status: status,
                         department: department,
                         beta: beta,
+                        skin: skin,
                         details: newUser.details,
                         newsletter: newUser.newsletter,
                         letter: newUser.letter,

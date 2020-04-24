@@ -1,0 +1,129 @@
+#imperialbasictraining {
+  img {
+    &.logo{
+      height: 50px;
+    }
+  }
+  .md-form {
+    input,
+    textarea {
+      color: white !important;
+    }
+  }
+  .md-form.md-outline
+    > input[type]:-webkit-autofill:not(.browser-default):not([type="search"])
+    + label,
+  .md-form.md-outline > input[type="time"]:not(.browser-default) + label {
+    background: #2e2e2e;
+  }
+  .md-form.md-outline label.active {
+    background: #2e2e2e;
+    color: white;
+  }
+  .md-form.md-outline input:-webkit-autofill {
+    -webkit-text-fill-color: white;
+  }
+  .select-wrapper.md-form.md-outline input.select-dropdown:focus {
+    border-color: gold;
+    box-shadow: inset 0px 0px 0px 1px gold;
+  }
+  .md-form input:not([type]):focus:not([readonly]) + label,
+  .md-form
+    input[type="text"]:not(.browser-default):focus:not([readonly])
+    + label,
+  .md-form
+    input[type="password"]:not(.browser-default):focus:not([readonly])
+    + label,
+  .md-form
+    input[type="email"]:not(.browser-default):focus:not([readonly])
+    + label,
+  .md-form
+    input[type="url"]:not(.browser-default):focus:not([readonly])
+    + label,
+  .md-form
+    input[type="time"]:not(.browser-default):focus:not([readonly])
+    + label,
+  .md-form
+    input[type="date"]:not(.browser-default):focus:not([readonly])
+    + label,
+  .md-form
+    input[type="datetime"]:not(.browser-default):focus:not([readonly])
+    + label,
+  .md-form
+    input[type="datetime-local"]:not(.browser-default):focus:not([readonly])
+    + label,
+  .md-form
+    input[type="tel"]:not(.browser-default):focus:not([readonly])
+    + label,
+  .md-form
+    input[type="number"]:not(.browser-default):focus:not([readonly])
+    + label,
+  .md-form
+    input[type="search"]:not(.browser-default):focus:not([readonly])
+    + label,
+  .md-form input[type="search-md"]:focus:not([readonly]) + label,
+  .md-form textarea.md-textarea:focus:not([readonly]) + label {
+    color: gold;
+    background: #2e2e2e;
+  }
+  .md-form input:not([type]):focus:not([readonly]),
+  .md-form input[type="text"]:not(.browser-default):focus:not([readonly]),
+  .md-form input[type="password"]:not(.browser-default):focus:not([readonly]),
+  .md-form input[type="email"]:not(.browser-default):focus:not([readonly]),
+  .md-form input[type="url"]:not(.browser-default):focus:not([readonly]),
+  .md-form input[type="time"]:not(.browser-default):focus:not([readonly]),
+  .md-form input[type="date"]:not(.browser-default):focus:not([readonly]),
+  .md-form input[type="datetime"]:not(.browser-default):focus:not([readonly]),
+  .md-form
+    input[type="datetime-local"]:not(.browser-default):focus:not([readonly]),
+  .md-form input[type="tel"]:not(.browser-default):focus:not([readonly]),
+  .md-form input[type="number"]:not(.browser-default):focus:not([readonly]),
+  .md-form input[type="search"]:not(.browser-default):focus:not([readonly]),
+  .md-form input[type="search-md"]:focus:not([readonly]),
+  .md-form textarea.md-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid gold;
+    box-shadow: 0 1px 0 0 gold;
+    border-color: gold;
+  }
+
+  // Custom alert
+  .alert-gold {
+    color: gold;
+    display: inline-block;
+    background: #1e1e1e;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+  }
+
+  .results{
+    .row{
+      align-items: initial;
+    }
+    svg{
+      color: white !important;
+    }
+    td{
+      &:first-child{
+        font-family: "Aurek-Besh";
+        font-size: 10px;
+      }
+      color: white !important;
+    }
+  }
+
+  .btn{
+    text-transform: initial;
+  }
+
+  .login{
+    background: white;
+    color: #1e1e1e;
+    display: inline-block;
+    border-radius: 2rem;
+  }
+}
+
+/** 
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019 Christian Aichner
+ */

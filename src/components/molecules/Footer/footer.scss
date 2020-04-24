@@ -1,0 +1,38 @@
+footer {
+  // List item style
+  // Footer link icons
+  ul {
+    padding: 0;
+    li {
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.1s ease;
+      cursor: pointer;
+      padding: 1rem !important;
+      align-items: center;
+      i {
+        width: 30px;
+        text-align: center;
+        padding-right: 0.5rem;
+      }
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .badge {
+        box-shadow: none;
+      }
+    }
+  }
+  // Column header separator
+  .col-md-3,
+  .col-md-4 {
+    hr {
+      width: 60px;
+      height: 1px;
+    }
+  }
+}
+
+/** 
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019 Christian Aichner
+ */

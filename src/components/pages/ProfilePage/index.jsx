@@ -1,31 +1,34 @@
 //> React
 // Contains all the functionality necessary to define React components
-import React from 'react';
+import React from "react";
+// Router
+import { Link, Redirect } from "react-router-dom";
 
 //> Additional modules
 // Fade In Animation
-import FadeIn from 'react-fade-in';
+import FadeIn from "react-fade-in";
 // Country list
-import countryList from 'react-select-country-list';
+import countryList from "react-select-country-list";
 // Fetching
-import axios from 'axios';
+import axios from "axios";
 // Firebase
-import firebase from 'firebase';
+import firebase from "firebase";
 // Uploading images
-import FileUploader from 'react-firebase-file-uploader';
+import FileUploader from "react-firebase-file-uploader";
 
 //> Redux
 // Connect
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 // Actions
-import { signOut } from '../../../store/actions/authActions';
+import { signOut } from "../../../store/actions/authActions";
 import { 
   createPost,
   removePost,
   editPost,
   loadPosts,
+  loadAllPosts,
   reportPost,
-} from '../../../store/actions/postActions';
+} from "../../../store/actions/postActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -48,18 +51,25 @@ import {
   MDBDropdownMenu,
   MDBDropdownItem,
   MDBProgress,
-} from 'mdbreact';
+} from "mdbreact";
 
 //> Components
 import {
   Posts,
-} from '../../organisms';
+} from "../../organisms";
 
 //> CSS
-import './profilepage.scss';
+// Profile page
+import "./profilepage.scss";
+// Post
+import "../../organisms/Posts/posts.scss";
 
 //> Images
-// To be added
+import defaultUserIMG from "../../../assets/images/default.gif";
+import goldUserIMG from "../../../assets/images/gold.gif";
+import lightUserIMG from "../../../assets/images/light.gif";
+import bronzeUserIMG from "../../../assets/images/bronze.gif";
+import holocronIcon from "../../../assets/images/icons/holocron.png";
 
 //> Data
 // Feelings
@@ -94,7 +104,10 @@ class ProfilePage extends React.Component {
       icon: "meh-blank"
     },
     postsVisible: 5,
-
+    disablePhotoUpload: true,
+    disablePostAsSithCult: true,
+    warningBeta: false,
+    showDeletedPosts: false,
   };
 
   componentDidMount = () => {
@@ -208,6 +221,16 @@ class ProfilePage extends React.Component {
           </MDBCol>
         )
         break;
+      case "historic":
+        return (
+          <MDBCol key={key}>
+            <MDBBadge pill color="orange">
+            <MDBIcon icon="book" className="pr-2"/>
+            Historic
+            </MDBBadge>
+          </MDBCol>
+        )
+        break;
       default:
         break;
     }
@@ -235,7 +258,9 @@ class ProfilePage extends React.Component {
     let author = {
       uid: this.props.auth.uid,
       name: this.props.profile.title + " " + this.props.profile.sith_name,
+      department: this.props.profile.department,
     };
+    let skin = this.props.profile.skin;
     let timestamp = Date.now();
     let target = this.state.post_visibility;
     let wordcount = content.split(' ').length;
@@ -265,10 +290,10 @@ class ProfilePage extends React.Component {
           feeling: feeling,
           ip: ip,
         },
-        uid: author.uid,
-        author: author.name,
+        author,
         timestamp: timestamp,
         target: target,
+        skin: skin ? skin : "standard",
         language: {
           0: language[0][0],
           1: language[1][0],
@@ -279,11 +304,18 @@ class ProfilePage extends React.Component {
       }
 
       // Tell Firebase to create post
-      this._resetPostForm();
-      this.props.createPost(data);
-      this.loadPosts(this.state.postsVisible);
+      this.setState({
+        postError: false,
+      }, () => {
+        this._resetPostForm();
+        this.props.createPost(data);
+        this.loadPosts(this.state.postsVisible);
+      })
+      
     } else {
-      console.log("do not post - not enough chars or no author");
+      this.setState({
+        postError: "Please make sure to write at least 5 words."
+      }, () => console.log("do not post - not enough chars or no author"));
     }
   }
   
@@ -340,7 +372,45 @@ class ProfilePage extends React.Component {
   }
 
   loadPosts = (amount) => {
-    this.props.loadPosts(amount);
+    if(localStorage.getItem("postOptions") === "showAll"){
+      // Check if the user is authed to be shown all posts
+      if(Array.isArray(this.props.profile.badges)){
+        // Check if the user is admin
+        if(this.props.profile.badges.includes("Admin")){
+          // Load all posts (also invisible)
+          this.setState({
+            showDeletedPosts: true,
+          }, () => this.props.loadAllPosts(amount));
+        } else {
+          this.props.loadPosts(amount);
+        }
+      } else {
+        this.props.loadPosts(amount);
+      }
+    } else {
+      // Load posts normally
+      this.setState({
+        showDeletedPosts: false,
+      }, () => this.props.loadPosts(amount));
+    }
+  }
+
+  handlePostVisibilityChange = (e) => {
+    if(e.target.checked){
+      this.setState({
+        showDeletedPosts: true
+      }, () => {
+        localStorage.setItem("postOptions","showAll");
+        this.loadPosts(this.props.posts.length);
+      });
+    } else {
+      this.setState({
+        showDeletedPosts: false
+      }, () => {
+        localStorage.setItem("postOptions","showNormal");
+        this.loadPosts(this.props.posts.length);
+      });
+    }
   }
 
   // Firebase picture upload
@@ -363,27 +433,87 @@ class ProfilePage extends React.Component {
   render() {
     const { auth, profile } = this.props;
 
+    if(auth.uid === undefined) return <Redirect to="/login"/> 
+
+    if(profile.badges){
+      if(!this.state.postsInitialLoad){
+        this.setState({
+          postsInitialLoad: true
+        }, () => this.loadPosts(this.state.postsVisible));
+      }
+    }
+
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
         <MDBRow>
           <MDBCol md="3">
             <MDBCard testimonial>
               <MDBCardUp className='red' />
-              <MDBAvatar className='mx-auto white'>
-                <img
-                  src='https://mdbootstrap.com/img/Photos/Avatars/img%20%2810%29.jpg'
-                  alt=''
-                />
-              </MDBAvatar>
+              {(() => {
+                switch(profile.skin) {
+                  case "gold":
+                    return(
+                      <MDBAvatar className='mx-auto white'>
+                        <img
+                          src={goldUserIMG}
+                          alt="Gold user profile picture"
+                        />
+                      </MDBAvatar>
+                    );
+                  case "light":
+                    return(
+                      <MDBAvatar className='mx-auto white'>
+                        <img
+                          src={lightUserIMG}
+                          alt="Light user profile picture"
+                        />
+                      </MDBAvatar>
+                    );
+                  case "bronze":
+                    return(
+                      <MDBAvatar className='mx-auto white'>
+                        <img
+                          src={bronzeUserIMG}
+                          alt="Bronze user profile picture"
+                        />
+                      </MDBAvatar>
+                    );
+                  default:
+                    return(
+                      <MDBAvatar className='mx-auto white'>
+                        <img
+                          src={defaultUserIMG}
+                          alt="Default user profile picture"
+                        />
+                      </MDBAvatar>
+                    );
+                }
+              })()}
               <MDBCardBody>
                 <p className="lead font-weight-bold mb-0">{profile.title} {profile.sith_name}</p>
                 <p className="text-muted">{this.getCountry(profile.address)}</p>
                 {this.getBadges(profile.badges)}
+                <div className="mt-3 features pt-4">
+                  <p className="lead mb-2">
+                    <img src={holocronIcon} alt="Holocron icon" className="mr-2"/>
+                    My Holocrons
+                    <img src={holocronIcon} alt="Holocron icon" className="ml-2"/>
+                  </p>
+                  <Link to="/basic">
+                  <MDBBtn
+                  color="elegant"
+                  size="md"
+                  >
+                  <MDBIcon icon="book" className="mr-2"/>
+                  Learn Imperial Basic
+                  </MDBBtn>
+                  </Link>
+                </div>
               </MDBCardBody>
             </MDBCard>
           </MDBCol>
           <MDBCol md="6">
-            <MDBCard>
+            <MDBCard className="mb-3">
               <MDBCardBody>
                 <h3>Greetings, {profile.title} {profile.sith_name}</h3>
                 <MDBInput 
@@ -391,7 +521,7 @@ class ProfilePage extends React.Component {
                 label="What's on your mind?"
                 name="post"
                 outline
-                className={this.state.post_basic && "basic narrow"}
+                className={this.state.post_basic && "basic hand"}
                 value={this.state.post}
                 onChange={this.changeTextareaHandler}
                 />
@@ -463,7 +593,7 @@ class ProfilePage extends React.Component {
                   ) : (
                     <>
                       <small className="text-danger">
-                        Posting to your cluster
+                        Posting to your country
                         {this.state.post_basic && " in Imperial Basic"}
                       </small>
                       <br/>
@@ -475,10 +605,15 @@ class ProfilePage extends React.Component {
                   </>
                 ) : (
                   <small className="text-muted">
-                  Posting to your cluster
+                  Posting to your country
                   {this.state.post_basic && " in Imperial Basic"}
                   </small>
                 )}
+                {this.state.postError &&
+                <small className="text-danger d-block">
+                {this.state.postError}
+                </small>
+                }
                 </div>
                 {this.state.postImageURL && 
                 <div className="pt-5 pl-5 pr-5 pb-2 text-center">
@@ -513,6 +648,7 @@ class ProfilePage extends React.Component {
                   <MDBBtn
                   color="elegant"
                   rounded
+                  disabled={this.state.disablePhotoUpload}
                   tag="label"
                   >
                   <MDBIcon 
@@ -590,9 +726,10 @@ class ProfilePage extends React.Component {
                     color="red"
                     rounded
                     outline
+                    disabled={this.state.disablePostAsSithCult}
                     >
                       <MDBIcon fab icon="sith" className="pr-2" size="lg" />
-                      Post als SithCult
+                      Post as SithCult
                     </MDBBtn>
                   }
                   <MDBBtn
@@ -624,37 +761,65 @@ class ProfilePage extends React.Component {
               </MDBRow>
             </MDBAlert>
             }
+            {this.state.warningBeta &&
             <MDBAlert color="success" className="my-2">
               <MDBRow>
                 <MDBCol>
-                  <h4 className="alert-heading">Welcome to our closed Beta!</h4>
-                  <p>Please note, that this is an <strong>early Beta version</strong> of Holobook. 
-                  Only certain features are working - some are not yet functional.</p>
+                  <h4 className="alert-heading">Welcome to our Beta!</h4>
+                  <p>
+                  Please note, that this is an <strong>early Beta version</strong> of SithCult/ME.
+                  <br/>
+                  Only very limited features are working yet.
+                  </p>
                 </MDBCol>
                 <MDBCol md="auto" className="align-self-center">
-                  <MDBBtn color="success" rounded>
+                  <MDBBtn 
+                  color="success"
+                  rounded
+                  onClick={() => this.setState({warningBeta: false})}
+                  >
                     <MDBIcon icon="check" />
                   </MDBBtn>
                 </MDBCol>
               </MDBRow>
             </MDBAlert>
-            <div className="posts">
-              <Posts posts={this.props.posts} update={this.loadMore} />
-              <div className="text-center spinners">
-                <div className="spinner-grow text-danger" role="status">
-                  <span className="sr-only">Loading...</span>
-                </div>
-                <div className="spinner-grow text-danger" role="status">
-                </div>
-                <div className="spinner-grow text-danger" role="status">
-                </div>
+            }
+            {profile.badges && Array.isArray(profile.badges) && profile.badges.includes("Admin") &&
+            <div className="admin-panel p-3 mb-3">
+              <div className='custom-control custom-switch'>
+                <input
+                  type='checkbox'
+                  className='custom-control-input'
+                  id='customSwitches'
+                  readOnly
+                  checked={this.state.showDeletedPosts}
+                  onChange={this.handlePostVisibilityChange}
+                />
+                <label className='custom-control-label' htmlFor='customSwitches'>
+                  Show deleted posts
+                </label>
               </div>
+            </div>
+            }
+            <div className="posts">
+              <Posts 
+              posts={this.props.posts} update={this.loadMore} load={this.loadPosts} />
+              {this.props.postLoading &&
+                <div className="text-center spinners">
+                  <div className="spinner-grow text-danger" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                  <div className="spinner-grow text-danger" role="status">
+                  </div>
+                  <div className="spinner-grow text-danger" role="status">
+                  </div>
+                </div>
+              }
             </div>
           </MDBCol>
           <MDBCol md="3">
 
           </MDBCol>
-
         </MDBRow>
       </MDBContainer>
     );
@@ -667,14 +832,15 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     posts: state.post.results,
+    postLoading: state.post.loading,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signOut: () => dispatch(signOut()),
     createPost: (newPost) => dispatch(createPost(newPost)),
     loadPosts: (amount) => dispatch(loadPosts(amount)),
+    loadAllPosts: (amount) => dispatch(loadAllPosts(amount))
   }
 }
 

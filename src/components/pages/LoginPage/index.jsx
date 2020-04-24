@@ -2,7 +2,7 @@
 // Contains all the functionality necessary to define React components
 import React from 'react';
 // Redirect from Router
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 
 //> Additional modules
 // Fade In Animation
@@ -70,9 +70,22 @@ class LoginPage extends React.Component {
   }
 
   render() {
-    const { authErrorDetails, auth } = this.props;
-    
-    if(auth.uid !== undefined) return <Redirect to="/holobook"/> 
+    const { authErrorDetails, auth, location } = this.props;
+
+    let params = location.search.substr(1) ? location.search.substr(1).split("=") : null;
+    if(params){
+      if(params[0] === "refer"){
+        switch(params[1]){
+          case "basic":
+            if(auth.uid !== undefined) return <Redirect to="/basic"/> 
+            break;
+          default:
+            if(auth.uid !== undefined) return <Redirect to="/me"/>
+        }
+      }
+    } else {
+      if(auth.uid !== undefined) return <Redirect to="/me"/>
+    }
 
     return (
       <MDBContainer id="login" className="text-center text-white pt-5 mt-5">
@@ -110,19 +123,19 @@ class LoginPage extends React.Component {
           <MDBCol md="12"></MDBCol>
           <MDBCol md="4">
             <MDBInput
-                  value={this.state.password}
-                  onChange={this.changeHandler}
-                  type="password"
-                  id="materialFormRegisterConfirmEx4"
-                  outline
-                  name="password"
-                  label="Password"
-                  required
-                >
-                  <small id="passwordHelp" className="form-text text-muted text-right">
-                    <a className="underlined" href="mailto:center@sithcult.com">Forgot password?</a><br/>
-                  </small>
-                </MDBInput>
+              value={this.state.password}
+              onChange={this.changeHandler}
+              type="password"
+              id="materialFormRegisterConfirmEx4"
+              outline
+              name="password"
+              label="Password"
+              required
+            >
+              <small id="passwordHelp" className="form-text text-muted text-right">
+                <a className="underlined" href="mailto:center@sithcult.com">Forgot password?</a><br/>
+              </small>
+            </MDBInput>
           </MDBCol>
           </MDBRow>
           <MDBBtn
@@ -151,7 +164,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(LoginPage));
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)

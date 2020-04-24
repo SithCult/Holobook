@@ -1,183 +1,208 @@
-#profile{
-  .col-md-3, .col-md-6{
-    padding-left: 5px;
-    padding-right: 5px;
-  }
+#profile {
+	.col-md-3,
+	.col-md-6 {
+		padding-left: 5px;
+		padding-right: 5px;
+	}
 
-  // Custom cards
-  .card{
+	// Custom cards
+	.card {
+		background: #1e1e1e;
+		color: white;
+		.text-muted {
+			color: #848e96;
+		}
+	}
+	.posts {
+		.card {
+			background: #3e3e3e;
+			.avatar-img {
+				width: 2.5rem;
+			}
+			.author-info {
+				.feeling {
+					margin: 0;
+					color: lightgreen;
+					i {
+						margin-left: 0;
+						margin-right: 7px;
+					}
+				}
+				i {
+					margin-left: 0.2em;
+					margin-right: 0.2em;
+				}
+			}
+		}
+		.spinners {
+			.spinner-grow {
+				animation: spinner-grow 1s linear infinite;
+			}
+			.spinner-grow:nth-child(1) {
+				animation-delay: 0.4s;
+			}
+			.spinner-grow:nth-child(2) {
+				animation-delay: 0.8s;
+			}
+		}
+	}
+
+	.alert {
+		&.alert-danger {
+			background: #f44336 !important;
+			color: white;
+		}
+	}
+	.badge-row {
+		.col {
+			padding: 0;
+		}
+		.badge {
+			box-shadow: none;
+			padding: 0.5rem;
+		}
+		.badge-elegant-color {
+			background: #3e3e3e !important;
+		}
+		.badge-gold {
+			margin-top: 1em;
+			margin-bottom: 1em;
+			background: linear-gradient(-45deg, gold 10%, #ffe866 70%, gold 50%);
+			padding-right: 1em;
+			font-size: 0.8em;
+			padding-left: 1em;
+			padding-top: 0.5em;
+			padding-bottom: 0.5em;
+			box-shadow: 0px 0px 10px #ab930a;
+			color: #2e2e2e !important;
+		}
+	}
+
+	// Action buttons below post textarea
+	.actions {
+		.btn {
+			padding: 0.7rem 1.5rem;
+			i {
+				color: gold;
+			}
+		}
+	}
+
+	// Tooltips
+	.tooltip {
+		span {
+			color: white !important;
+		}
+	}
+
+	// Headings
+	hr {
+		border-top: 1px solid rgba(255, 255, 255, 0.2);
+	}
+
+	// Custom buttons
+	.btn-outline-red {
+		color: white !important;
+	}
+
+	// Language switch
+	.post-settings {
+		span {
+			margin-right: 10px;
+			cursor: pointer;
+			color: #5e5e5e;
+			transition: color 0.1s ease;
+			&:hover {
+				color: #7e7e7e;
+			}
+		}
+	}
+
+	// Custom textarea
+	textarea {
+		resize: none;
+		min-height: 59px;
+		height: 59px;
+		padding-top: 10px;
+		overflow: hidden;
+		padding-bottom: 25px; /* increased! */
+	}
+	.md-form.md-outline {
+		margin-bottom: 0;
+		label.active {
+			background: #1e1e1e;
+			color: gold;
+		}
+	}
+	.md-form textarea.md-textarea:focus:not([readonly]) {
+		border-bottom: 1px solid gold;
+		box-shadow: 0 1px 0 0 gold;
+		border-color: gold;
+	}
+	.md-form textarea.md-textarea:focus:not([readonly]) + label {
+		color: gold;
+		background: #2e2e2e;
+	}
+	.md-form {
+		input,
+		textarea {
+			color: white !important;
+		}
+	}
+	.form-control:focus {
+		border-color: gold;
+	}
+
+	// Custom dropdown
+	.dropdown-menu {
+		background: #3e3e3e;
+		padding: 0;
+		button {
+			color: white;
+			i {
+				width: 30px;
+				color: lightgrey;
+			}
+		}
+	}
+	.dropdown-item {
+		&.remove {
+			background-color: #63403d;
+			display: flex;
+			justify-content: space-between;
+			i {
+				align-self: center;
+				width: auto;
+			}
+		}
+		&:focus,
+		&:hover,
+		&.active {
+			box-shadow: none;
+			color: white !important;
+			text-decoration: none;
+			background-color: #5e5e5e !important;
+		}
+	}
+
+	.features {
+		.lead {
+			border-bottom: 2px #f44336 solid;
+			padding-left: 0.5rem;
+			padding-right: 0.5rem;
+			display: inline-block;
+			img {
+				height: 25px;
+				width: auto;
+			}
+		}
+	}
+
+	// Admin panel
+	.admin-panel {
     background: #1e1e1e;
     color: white;
-    .text-muted{
-      color: #848e96 !important;
-    }
-  }
-  .posts{
-    .card{
-      background: #3e3e3e;
-      .avatar-img{
-        width: 2.5rem;
-      }
-      .author-info{
-        .feeling{
-          margin: 0;
-          color: lightgreen;
-          i{
-            margin-left: 0;
-            margin-right: 7px;
-          }
-        }
-        i{
-          margin-left: .2em;
-          margin-right: .2em;
-        }
-      }
-    }
-    .spinners{
-      .spinner-grow{
-        animation: spinner-grow 1s linear infinite;
-      }
-      .spinner-grow:nth-child(1){
-        animation-delay: .4s;
-      }
-      .spinner-grow:nth-child(2){
-        animation-delay: .8s;
-      }
-    }
-  }
-
-  .alert{
-    &.alert-danger{
-      background: #f44336 !important;
-      color: white;
-    }
-  }
-  .badge-row{
-    .badge{
-      box-shadow: none;
-    }
-    .badge-elegant-color{
-      background: #3e3e3e !important;
-    }
-    .badge-gold{
-      margin-top: 1em;
-      margin-bottom: 1em;
-      background: linear-gradient(-45deg, gold 10%, #ffe866 70%, gold 50%);
-      padding-right: 1em;
-      font-size: .8em;
-      padding-left: 1em;
-      padding-top: .5em;
-      padding-bottom: .5em;
-      box-shadow: 0px 0px 10px #ab930a;
-      color: #2e2e2e !important;
-    }
-  }
-
-  // Action buttons below post textarea
-  .actions{
-    .btn{
-      padding: 0.7rem 1.5rem;
-      i{
-        color: gold;
-      }
-    }
-  }
-
-  // Tooltips
-  .tooltip{
-    span{
-      color: white !important;
-    }
-  }
-
-  // Headings
-  hr{
-    border-top: 1px solid rgba(255,255,255,.2);
-  }
-
-  // Custom buttons
-  .btn-outline-red{
-    color: white !important;
-  }
-
-  // Language switch
-  .post-settings{
-    span{
-      margin-right: 10px;
-      cursor: pointer;
-      color: #5e5e5e;
-      transition: color .1s ease;
-      &:hover{
-        color: #7e7e7e;
-      }
-    }
-  }
-
-  // Custom textarea
-  textarea{
-    resize: none;
-    min-height: 59px;
-    height: 59px;
-    padding-top:10px;
-    overflow: hidden;
-    padding-bottom:25px; /* increased! */
-  }
-  .md-form.md-outline{
-    margin-bottom: 0;
-    label.active {
-      background: #1e1e1e;
-      color: gold;
-    }
-  }
-  .md-form textarea.md-textarea:focus:not([readonly]) {
-    border-bottom: 1px solid gold;
-    box-shadow: 0 1px 0 0 gold;
-    border-color: gold;
-  }
-  .md-form textarea.md-textarea:focus:not([readonly]) + label {
-    color: gold;
-    background: #2e2e2e;
-  }
-  .md-form {
-    input,
-    textarea {
-      color: white !important;
-    }
-  }
-  .form-control:focus {
-    border-color: gold;
-  }
-
-  // Custom dropdown
-  .dropdown-menu{
-    background: #3e3e3e;
-    padding: 0;
-    button{
-      color: white;
-      i{
-        width: 30px;
-        color: lightgrey;
-      }
-    }
-  }
-  .dropdown-item{
-    &.remove{
-      background-color: #63403d;
-      display: flex;
-      justify-content: space-between;
-        i{
-          align-self: center;
-          width: auto;
-        }
-      
-    }
-    &:focus, &:hover, &.active{
-      box-shadow: none;
-      color: white !important;
-      text-decoration: none;
-      background-color: #5e5e5e !important;
-    }
-  }
+	}
 }
 
 /** 
