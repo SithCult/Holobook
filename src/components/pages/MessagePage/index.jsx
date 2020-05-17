@@ -21,7 +21,7 @@ import "./messagepage.scss";
 class MessagePage extends React.Component {
   render() {
     const { auth, profile } = this.props;
-    console.log(auth,profile);
+    console.log(auth, profile);
     return (
       <MDBContainer id="message" className="py-5 my-5 text-center text-white">
         {this.props.location.pathname === "/about" && (
@@ -95,32 +95,40 @@ class MessagePage extends React.Component {
               </MDBBtn>
             </a>
             <div className="mt-5 text-left personal-data">
-            {auth.uid !== undefined ? (
-              <>
-              <h2 className="mb-0">What data do we have of you?</h2>
-              <p className="lead text-muted mb-4">Only you can see this information.</p>
-              <p>Your name is <span>{profile.full_name}</span>.</p>
-              {profile.address && profile.address.address ? (
-                <p>
-                Your address is <span>{profile.address.address}</span> in <span>{profile.zip+" "+profile.city}</span>
-                </p>
+              {auth.uid !== undefined ? (
+                <>
+                  <h2 className="mb-0">What data do we have of you?</h2>
+                  <p className="lead text-muted mb-4">
+                    Only you can see this information.
+                  </p>
+                  <p>
+                    Your name is <span>{profile.full_name}</span>.
+                  </p>
+                  {profile.address && profile.address.address ? (
+                    <p>
+                      Your address is <span>{profile.address.address}</span> in{" "}
+                      <span>{profile.zip + " " + profile.city}</span>
+                    </p>
+                  ) : (
+                    <p>You did not share your personal address information.</p>
+                  )}
+                  <p>
+                    You live in a country with the country code of{" "}
+                    <span>{profile.address && profile.address.country}</span>.
+                  </p>
+                  <p>
+                    Your E-Mail is <span>{profile.email}</span>.
+                  </p>
+                  <p>
+                    Your Sith name and title is{" "}
+                    <span>{profile.title + " " + profile.sith_name}</span>.
+                  </p>
+                </>
               ) : (
-                <p>You did not share your personal address information.</p>
+                <h2 className="mb-4 text-center">
+                  Please log in to experience this feature.
+                </h2>
               )}
-              <p>
-              You live in a country with the country code 
-              of <span>{profile.address && profile.address.country}</span>.
-              </p>
-              <p>
-              Your E-Mail is <span>{profile.email}</span>.
-              </p>
-              <p>
-              Your Sith name and title is <span>{profile.title+" "+profile.sith_name}</span>.
-              </p>
-              </>
-            ) : (
-              <h2 className="mb-4 text-center">Please log in to experience this feature.</h2>
-            )}
             </div>
           </>
         )}
@@ -350,11 +358,7 @@ class MessagePage extends React.Component {
                   information from our records.
                 </p>
                 <Link to="/privacy/me">
-                <MDBBtn
-                color="yellow"
-                >
-                My data
-                </MDBBtn>
+                  <MDBBtn color="yellow">My data</MDBBtn>
                 </Link>
               </div>
             </div>
@@ -370,8 +374,8 @@ const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps)(MessagePage);
 

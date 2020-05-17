@@ -1,14 +1,14 @@
 .post {
-  .name{
+  .name {
     font-weight: bold;
-    transition: color .1s ease;
-    &:hover{
+    transition: color 0.1s ease;
+    &:hover {
       color: gold;
     }
   }
-  &.deleted{
+  &.deleted {
     opacity: 0.4;
-    .card-body{
+    .card-body {
       border-left: 10px red solid;
     }
   }
@@ -20,7 +20,7 @@
       &:hover {
         color: lighten(#848e96, 10%) !important;
       }
-      &.text-white{
+      &.text-white {
         color: #e2264d !important;
       }
     }
