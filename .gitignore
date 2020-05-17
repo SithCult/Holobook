@@ -12,6 +12,9 @@ package-lock.json
 # testing
 /coverage
 
+# environment varialbes
+.env
+
 # production
 /build
 
