@@ -385,5 +385,5 @@ export default connect(mapStateToProps)(BasicTraining);
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019 Christian Aichner
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
  */
