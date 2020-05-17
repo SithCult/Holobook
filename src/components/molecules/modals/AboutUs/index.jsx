@@ -23,6 +23,7 @@ class ModalPage extends React.Component {
 
   toggle = (nr) => () => {
     let modalNumber = "modal" + nr;
+
     this.setState({
       [modalNumber]: !this.state[modalNumber],
     });

@@ -6,18 +6,14 @@ export const getUser = (uid) => {
     // Get loading
     dispatch({ type: "USERLOAD_LOADING" });
 
-    console.log(uid);
-
     firestore
       .collection("users")
       .doc(uid)
       .get()
       .then((doc) => {
         if (!doc.exists) {
-          console.log("User no longer exists!");
           dispatch({ type: "USERLOAD_ERROR", err: "User no longer exists." });
         } else {
-          console.log("Document data:", doc.data());
           dispatch({ type: "USERLOAD_SUCCESS", results: doc.data() });
         }
       })

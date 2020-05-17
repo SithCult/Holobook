@@ -21,7 +21,7 @@ import "./messagepage.scss";
 class MessagePage extends React.Component {
   render() {
     const { auth, profile } = this.props;
-    console.log(auth, profile);
+
     return (
       <MDBContainer id="message" className="py-5 my-5 text-center text-white">
         {this.props.location.pathname === "/about" && (

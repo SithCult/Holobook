@@ -28,7 +28,7 @@ class Footer extends React.Component {
               <h5 className="title">Public Services</h5>
               <ul>
                 <Link to="/basic">
-                  <li className="list-unstyled">Lern Imperial Basic</li>
+                  <li className="list-unstyled">Learn Imperial Basic</li>
                 </Link>
               </ul>
             </MDBCol>
@@ -69,7 +69,7 @@ class Footer extends React.Component {
                   rel="noopener noreferrer"
                 >
                   <li className="list-unstyled">
-                    Support of on Patreon
+                    Support us on Patreon
                     <MDBIcon
                       icon="external-link-alt"
                       className="ml-1"
@@ -107,7 +107,7 @@ class Footer extends React.Component {
             <p>
               SithCult is a worldwide Star Wars fan-club organization comprised
               of and operated by Star Wars fans. While it is not sponsored by
-              Lucasfilm Ltd., it it follows generally accepted ground rules for
+              Lucasfilm Ltd., it follows generally accepted ground rules for
               Star Wars fan groups. Star Wars, its characters, costumes, and all
               associated items are the intellectual property of Lucasfilm. © & ™
               Lucasfilm Ltd. All rights reserved.

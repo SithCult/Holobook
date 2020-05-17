@@ -39,8 +39,6 @@ export const signUp = (newUser) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
-    console.log(newUser);
-
     // Check for Sithname duplicates
     firestore
       .collection("users")
@@ -48,9 +46,11 @@ export const signUp = (newUser) => {
       .then((querySnapshot) => {
         let result = undefined;
         let duplicate = false;
+
         querySnapshot.forEach(function (doc) {
           // doc.data() is never undefined for query doc snapshots
           result = doc.data();
+
           if (result) {
             if (result.sith_name === newUser.sith_name) {
               duplicate = true;

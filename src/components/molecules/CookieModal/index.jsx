@@ -46,6 +46,7 @@ class ModalPage extends React.Component {
         marketing: this.state.marketing ? true : false,
       })
     );
+
     this.setState({ modal1: false }, () => this.props.saveCookie());
   }
 

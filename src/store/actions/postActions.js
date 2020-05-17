@@ -32,8 +32,8 @@ export const likePost = (id, uid, likes) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
-
     let localLikes = likes;
+
     if (localLikes) {
       if (Array.isArray(localLikes)) {
         localLikes.push({
@@ -126,6 +126,7 @@ export const loadPosts = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
+
     dispatch({ type: "LOAD_LOADING" });
 
     let posts = firestore.collection("posts").where("visible", "==", true);
@@ -140,10 +141,13 @@ export const loadPosts = (amount) => {
       .get()
       .then((querySnapshot) => {
         let results = [];
+
         querySnapshot.forEach(function (doc) {
           let data = doc.data();
+
           results.push({ id: doc.id, data });
         });
+
         dispatch({ type: "LOAD_SUCCESS", results });
       })
       .catch((err) => {
@@ -156,6 +160,7 @@ export const loadAllPosts = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
+
     dispatch({ type: "LOAD_LOADING" });
 
     let posts = firestore.collection("posts");
@@ -170,10 +175,13 @@ export const loadAllPosts = (amount) => {
       .get()
       .then((querySnapshot) => {
         let results = [];
+
         querySnapshot.forEach(function (doc) {
           let data = doc.data();
+
           results.push({ id: doc.id, data });
         });
+
         dispatch({ type: "LOAD_SUCCESS", results });
       })
       .catch((err) => {

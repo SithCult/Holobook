@@ -75,6 +75,7 @@ class LoginPage extends React.Component {
     let params = location.search.substr(1)
       ? location.search.substr(1).split("=")
       : null;
+
     if (params) {
       if (params[0] === "refer") {
         switch (params[1]) {

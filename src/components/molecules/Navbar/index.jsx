@@ -54,10 +54,7 @@ class Navbar extends React.Component {
     );
 
     const { collapseID } = this.state;
-
     const { auth, profile } = this.props;
-
-    console.log(profile);
 
     return (
       <div>
