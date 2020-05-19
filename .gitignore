@@ -12,6 +12,9 @@ package-lock.json
 # testing
 /coverage
 
+# environment varialbes
+.env
+
 # production
 /build
 
@@ -30,4 +33,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # SPDX-License-Identifier: (EUPL-1.2)
-# Copyright © 2019 Werbeagentur Christian Aichner
+# Copyright © 2019-2020 Werbeagentur Christian Aichner

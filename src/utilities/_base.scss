@@ -1,73 +1,73 @@
 .flyout {
-	display:flex;
-	flex-direction: column;
-	min-height:100vh;
-	justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: space-between;
 }
 
 // Custom colors
-.sithcult-dark{
-	background-color: $sithcultDark !important;
-	&.darken-1{
-		background-color: darken($sithcultDark, 5%) !important;
-	}
-	&.darken-2{
-		background-color: darken($sithcultDark, 10%) !important;
-	}
-	&.darken-3{
-		background-color: darken($sithcultDark, 15%) !important;
-	}
-	&.lighten-1{
-		background-color: lighten($sithcultDark, 10%) !important;
-	}
-	&.lighten-2{
-		background-color: lighten($sithcultDark, 20%) !important;
-	}
-	&.lighten-3{
-		background-color: lighten($sithcultDark, 30%) !important;
-	}
+.sithcult-dark {
+  background-color: $sithcultDark !important;
+  &.darken-1 {
+    background-color: darken($sithcultDark, 5%) !important;
+  }
+  &.darken-2 {
+    background-color: darken($sithcultDark, 10%) !important;
+  }
+  &.darken-3 {
+    background-color: darken($sithcultDark, 15%) !important;
+  }
+  &.lighten-1 {
+    background-color: lighten($sithcultDark, 10%) !important;
+  }
+  &.lighten-2 {
+    background-color: lighten($sithcultDark, 20%) !important;
+  }
+  &.lighten-3 {
+    background-color: lighten($sithcultDark, 30%) !important;
+  }
 }
-.sithcult-red{
-	background-color: $sithcultRed !important;
-	&.darken-1{
-		background-color: darken($sithcultRed, 10%) !important;
-	}
-	&.darken-2{
-		background-color: darken($sithcultRed, 20%) !important;
-	}
-	&.darken-3{
-		background-color: darken($sithcultRed, 30%) !important;
-	}
-	&.lighten-1{
-		background-color: lighten($sithcultRed, 10%) !important;
-	}
-	&.lighten-2{
-		background-color: lighten($sithcultRed, 20%) !important;
-	}
-	&.lighten-3{
-		background-color: lighten($sithcultRed, 30%) !important;
-	}
+.sithcult-red {
+  background-color: $sithcultRed !important;
+  &.darken-1 {
+    background-color: darken($sithcultRed, 10%) !important;
+  }
+  &.darken-2 {
+    background-color: darken($sithcultRed, 20%) !important;
+  }
+  &.darken-3 {
+    background-color: darken($sithcultRed, 30%) !important;
+  }
+  &.lighten-1 {
+    background-color: lighten($sithcultRed, 10%) !important;
+  }
+  &.lighten-2 {
+    background-color: lighten($sithcultRed, 20%) !important;
+  }
+  &.lighten-3 {
+    background-color: lighten($sithcultRed, 30%) !important;
+  }
 }
 
 // Custom text
-.text-red{
-	color: $sithcultRed !important;
+.text-red {
+  color: $sithcultRed !important;
 }
-.text-gold{
-	color: gold !important;
+.text-gold {
+  color: gold !important;
 }
-.text-white{
-	color: white !important;
+.text-white {
+  color: white !important;
 }
 
-body{
-	background-color: #2e2e2e !important;
+body {
+  background-color: #2e2e2e !important;
 }
 
 // Custom buttons
 .underlined {
-	cursor: pointer;
-	font-weight: bold;
+  cursor: pointer;
+  font-weight: bold;
   text-decoration: none;
   color: gold;
   padding-bottom: 0.15em;
@@ -81,21 +81,21 @@ body{
   }
 }
 
-.clickable{
-	cursor: pointer;
+.clickable {
+  cursor: pointer;
 }
 
 .btn-modern {
-	overflow: visible !important;
+  overflow: visible !important;
   position: relative;
   background: none;
   color: gold;
-	text-transform: uppercase;
-	font-size: .9em;
+  text-transform: uppercase;
+  font-size: 0.9em;
   text-decoration: none;
   border: 0.2em solid gold;
-	padding: 0.5em 1em;
-	box-shadow: none;
+  padding: 0.5em 1em;
+  box-shadow: none;
   &::before {
     content: "";
     display: block;
@@ -123,27 +123,27 @@ body{
     transition: all 0.45s cubic-bezier(0.86, 0, 0.07, 1);
   }
   &:hover {
-		color: gold;
+    color: gold;
     &::before {
       right: 80%;
     }
     &::after {
       left: 80%;
     }
-	}
+  }
 }
 
-.btn{
-	box-shadow: none;
-	&:hover{
-		box-shadow: none;
-	}
-	&:focus{
-		box-shadow: none;
-	}
-	&:active{
-		box-shadow: none;
-	}
+.btn {
+  box-shadow: none;
+  &:hover {
+    box-shadow: none;
+  }
+  &:focus {
+    box-shadow: none;
+  }
+  &:active {
+    box-shadow: none;
+  }
 }
 
 // Custom scrollbar
@@ -162,5 +162,5 @@ body{
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019 Christian Aichner
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
  */

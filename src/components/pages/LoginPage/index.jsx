@@ -1,18 +1,18 @@
 //> React
 // Contains all the functionality necessary to define React components
-import React from 'react';
+import React from "react";
 // Redirect from Router
-import { Redirect, withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from "react-router-dom";
 
 //> Additional modules
 // Fade In Animation
-import FadeIn from 'react-fade-in';
+import FadeIn from "react-fade-in";
 
 //> Redux
 // Connect
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 // Actions
-import { signIn } from '../../../store/actions/authActions';
+import { signIn } from "../../../store/actions/authActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -24,16 +24,16 @@ import {
   MDBInput,
   MDBBtn,
   MDBIcon,
-} from 'mdbreact';
+} from "mdbreact";
 
 //> Components
 // To be added
 
 //> CSS
-import './loginpage.scss';
+import "./loginpage.scss";
 
 //> Images
-import IMGlogo from '../../../assets/images/logo_sm.png';
+import IMGlogo from "../../../assets/images/logo_sm.png";
 
 class LoginPage extends React.Component {
   state = {
@@ -41,109 +41,111 @@ class LoginPage extends React.Component {
     password: "",
   };
 
-  submitHandler = event => {
+  submitHandler = (event) => {
     event.preventDefault();
 
     this._loginUser();
-  }
+  };
 
-  changeHandler = event => {
+  changeHandler = (event) => {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
-  }
+  };
 
   _loginUser = () => {
     let email = this.state.email;
     let psw = this.state.password;
 
-    if(email && psw){
+    if (email && psw) {
       this.props.signIn({
         email: email,
-        password: psw
+        password: psw,
       });
     } else {
       this.setState({
-        error: true
+        error: true,
       });
     }
-  }
+  };
 
   render() {
     const { authErrorDetails, auth, location } = this.props;
 
-    let params = location.search.substr(1) ? location.search.substr(1).split("=") : null;
-    if(params){
-      if(params[0] === "refer"){
-        switch(params[1]){
+    let params = location.search.substr(1)
+      ? location.search.substr(1).split("=")
+      : null;
+
+    if (params) {
+      if (params[0] === "refer") {
+        switch (params[1]) {
           case "basic":
-            if(auth.uid !== undefined) return <Redirect to="/basic"/> 
+            if (auth.uid !== undefined) return <Redirect to="/basic" />;
             break;
           default:
-            if(auth.uid !== undefined) return <Redirect to="/me"/>
+            if (auth.uid !== undefined) return <Redirect to="/me" />;
         }
       }
     } else {
-      if(auth.uid !== undefined) return <Redirect to="/me"/>
+      if (auth.uid !== undefined) return <Redirect to="/me" />;
     }
 
     return (
       <MDBContainer id="login" className="text-center text-white pt-5 mt-5">
-        <img src={IMGlogo} alt="SithCult logo" className="img-fluid"/>
+        <img src={IMGlogo} alt="SithCult logo" className="img-fluid" />
         <h2 className="font-weight-bold mt-5">Login</h2>
-        <form
-        onSubmit={this.submitHandler}
-        >
+        <form onSubmit={this.submitHandler}>
           <MDBRow className="flex-center">
-          <MDBCol md="4">
-            {authErrorDetails &&
-              <MDBAlert color="gold">
-              <p
-              className="text-gold"
+            <MDBCol md="4">
+              {authErrorDetails && (
+                <MDBAlert color="gold">
+                  <p className="text-gold">
+                    The password is invalid or the user does not exist.
+                  </p>
+                </MDBAlert>
+              )}
+              <MDBInput
+                value={this.state.email}
+                onChange={this.changeHandler}
+                type="email"
+                id="materialFormRegisterConfirmEx2"
+                name="email"
+                outline
+                label="Your email"
+                required
               >
-              The password is invalid or the user does not exist.
-              </p>
-              </MDBAlert>
-            }
-            <MDBInput
-              value={this.state.email}
-              onChange={this.changeHandler}
-              type="email"
-              id="materialFormRegisterConfirmEx2"
-              name="email"
-              outline
-              label="Your email"
-              required
-            > 
-            <small id="emailHelp" className="form-text text-muted">
-              You can use your SithCult E-Mail (sithname@sithcult.com)
-            </small>
-            </MDBInput>
-          </MDBCol>
-          <MDBCol md="12"></MDBCol>
-          <MDBCol md="4">
-            <MDBInput
-              value={this.state.password}
-              onChange={this.changeHandler}
-              type="password"
-              id="materialFormRegisterConfirmEx4"
-              outline
-              name="password"
-              label="Password"
-              required
-            >
-              <small id="passwordHelp" className="form-text text-muted text-right">
-                <a className="underlined" href="mailto:center@sithcult.com">Forgot password?</a><br/>
-              </small>
-            </MDBInput>
-          </MDBCol>
+                <small id="emailHelp" className="form-text text-muted">
+                  You can use your SithCult E-Mail (sithname@sithcult.com)
+                </small>
+              </MDBInput>
+            </MDBCol>
+            <MDBCol md="12"></MDBCol>
+            <MDBCol md="4">
+              <MDBInput
+                value={this.state.password}
+                onChange={this.changeHandler}
+                type="password"
+                id="materialFormRegisterConfirmEx4"
+                outline
+                name="password"
+                label="Password"
+                required
+              >
+                <small
+                  id="passwordHelp"
+                  className="form-text text-muted text-right"
+                >
+                  <a className="underlined" href="mailto:center@sithcult.com">
+                    Forgot password?
+                  </a>
+                  <br />
+                </small>
+              </MDBInput>
+            </MDBCol>
           </MDBRow>
-          <MDBBtn
-          color="red"
-          type="submit"
-          >
-          <MDBIcon icon="key" className="pr-2" />
-          Login
+          <MDBBtn color="red" type="submit">
+            <MDBIcon icon="key" className="pr-2" />
+            Login
           </MDBBtn>
         </form>
       </MDBContainer>
@@ -154,19 +156,22 @@ class LoginPage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     authErrorDetails: state.auth.authErrorDetails,
-    auth: state.firebase.auth
-  }
-}
+    auth: state.firebase.auth,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signIn: (credentials) => dispatch(signIn(credentials))
-  }
-}
+    signIn: (credentials) => dispatch(signIn(credentials)),
+  };
+};
 
-export default connect(mapStateToProps,mapDispatchToProps)(withRouter(LoginPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(LoginPage));
 
-/** 
+/**
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019 Christian Aichner
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
  */

@@ -1,6 +1,6 @@
 #imperialbasictraining {
   img {
-    &.logo{
+    &.logo {
       height: 50px;
     }
   }
@@ -95,15 +95,15 @@
     line-height: 1.5rem;
   }
 
-  .results{
-    .row{
+  .results {
+    .row {
       align-items: initial;
     }
-    svg{
+    svg {
       color: white !important;
     }
-    td{
-      &:first-child{
+    td {
+      &:first-child {
         font-family: "Aurek-Besh";
         font-size: 10px;
       }
@@ -111,11 +111,11 @@
     }
   }
 
-  .btn{
+  .btn {
     text-transform: initial;
   }
 
-  .login{
+  .login {
     background: white;
     color: #1e1e1e;
     display: inline-block;
@@ -125,5 +125,5 @@
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019 Christian Aichner
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
  */

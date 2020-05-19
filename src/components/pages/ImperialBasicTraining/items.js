@@ -1,4 +1,4 @@
-export const items  = [
+export const items = [
   "The Sith are eternal",
   "Glory",
   "Sith",
@@ -24,14 +24,14 @@ export const items  = [
   "power",
   "victory",
   "chains",
-  "cult"
-]
+  "cult",
+];
 
 export default {
   items,
-}
+};
 
-/** 
+/**
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019 Christian Aichner
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
  */

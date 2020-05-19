@@ -1,16 +1,16 @@
 //> Utilities
 // Variables
-@import 'utilities/variables';
+@import "utilities/variables";
 // Global CSS
-@import 'utilities/base';
+@import "utilities/base";
 // Fonts
-@import 'utilities/fonts';
+@import "utilities/fonts";
 
 //> Components
 // Homepage (Template page)
-@import 'components/pages/HomePage/HomePage.scss';
+@import "components/pages/HomePage/HomePage.scss";
 
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019 Werbeagentur Christian Aichner
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
  */

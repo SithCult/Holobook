@@ -77,4 +77,4 @@ to [contribute to our project](#contributing).
 ![GitHub repository license](https://img.shields.io/badge/license-EUPL--1.2-blue)
 
 SPDX-License-Identifier: (EUPL-1.2)
-Copyright © 2019 Christian Aichner
+Copyright © 2019-2020 Werbeagentur Christian Aichner

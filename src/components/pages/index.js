@@ -6,15 +6,9 @@ import LoginPage from "./LoginPage";
 import ImperialBasicTraining from "./ImperialBasicTraining";
 import MessagePage from "./MessagePage";
 
-export {
-    HomePage,
-    ProfilePage,
-    LoginPage,
-    ImperialBasicTraining,
-    MessagePage,
-};
+export { HomePage, ProfilePage, LoginPage, ImperialBasicTraining, MessagePage };
 
-/** 
+/**
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019 Christian Aichner
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
  */
