@@ -7,13 +7,13 @@ import React from "react";
 import { RegisterForm } from "../../organisms";
 
 class HomePage extends React.Component {
-  render() {
-    return (
-      <>
-        <RegisterForm />
-      </>
-    );
-  }
+	render() {
+		return (
+			<>
+				<RegisterForm />
+			</>
+		);
+	}
 }
 
 export default HomePage;
