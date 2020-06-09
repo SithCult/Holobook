@@ -102,7 +102,6 @@ class ProfilePage extends React.Component {
       icon: "meh-blank",
     },
     postsVisible: 5,
-    disablePhotoUpload: true,
     disablePostAsSithCult: true,
     warningBeta: false,
     showDeletedPosts: false,
@@ -276,7 +275,6 @@ class ProfilePage extends React.Component {
         : this.state.post_feeling;
     let basic = this.state.post_basic;
     let ip = this.state.post_ip ? this.state.post_ip : null;
-    let image = this.state.postImageURL ? this.state.postImageURL : null;
 
     // Check if the content is English for a
     if (target) {
@@ -299,8 +297,8 @@ class ProfilePage extends React.Component {
           ip: ip,
         },
         author,
-        timestamp: timestamp,
-        target: target,
+        timestamp,
+        target,
         skin: skin ? skin : "standard",
         language: {
           0: language[0][0],

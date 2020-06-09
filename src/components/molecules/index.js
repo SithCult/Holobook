@@ -1,10 +1,16 @@
 //> Components
 // Import all components to export them for easy access from parent components
-import Footer from "./Footer";
-import Navbar from "./Navbar";
 import CookieModal from "./CookieModal";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
+import ReceivedUser from "./ReceivedUser";
 
-export { Footer, Navbar, CookieModal };
+export {
+  CookieModal,
+  Footer,
+  Navbar,
+  ReceivedUser,
+};
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

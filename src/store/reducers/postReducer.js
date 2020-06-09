@@ -82,6 +82,16 @@ const postReducer = (state = initState, action) => {
         return {
           ...state,
         };
+      case 'COMMENT_SUCCESS':
+        console.log('Comment created', action.postId);
+        return {
+          ...state,
+        };
+      case 'COMMENT_ERROR':
+        console.log('Comment not created', action.err);
+        return {
+          ...state,
+        };
       default:
         return state;
   }
