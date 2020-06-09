@@ -26,6 +26,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.3.1",
     "react-select-country-list": "^2.0.1",
+    "react-stripe-checkout": "^2.6.3",
     "redux": "^4.0.4",
     "redux-firestore": "^0.9.0",
     "redux-thunk": "^2.3.0",
@@ -52,5 +53,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "prettier": {
+    "useTabs": false
+  }
 }

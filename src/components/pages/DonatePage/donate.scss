@@ -1,0 +1,33 @@
+@import "../../../utilities/variables";
+
+#donate {
+  .md-progress {
+    background: lighten(black, 30%);
+    height: 10px;
+    .progress-bar {
+      background: #ff3547;
+      height: 10px;
+    }
+  }
+  .embed-responsive {
+    div {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  }
+  .btn {
+    i {
+      margin-right: 0.3rem;
+    }
+  }
+}
+
+/** 
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
+ */
