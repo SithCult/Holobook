@@ -306,7 +306,6 @@ class ProfilePage extends React.Component {
           2: language[2][0],
         },
         basic: basic,
-        image: image,
       };
 
       // Tell Firebase to create post
