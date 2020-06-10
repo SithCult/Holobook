@@ -105,6 +105,7 @@ class ProfilePage extends React.Component {
     disablePostAsSithCult: true,
     warningBeta: false,
     showDeletedPosts: false,
+    disablePhotoUpload: true,
   };
 
   componentDidMount = () => {

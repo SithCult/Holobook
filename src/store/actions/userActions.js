@@ -23,6 +23,46 @@ export const getUser = (uid) => {
   };
 };
 
+export const updateBadgesDonate = (badges, details, credits, reputation) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+
+    const uid = firebase.auth().currentUser.uid;
+    let newBadges = [];
+
+    if (!badges.includes("phase1")) {
+      newBadges.push("phase1");
+    }
+    if (!badges.includes("founder")) {
+      newBadges.push("founder");
+    }
+
+    Array.prototype.push.apply(badges, newBadges);
+
+    // Check amount
+    const amount = details?.purchase_units[0]?.amount?.value;
+
+    const newCredits = credits + amount * 9;
+    const newReputation = reputation + amount / 2;
+
+    firestore
+      .collection("users")
+      .doc(uid)
+      .set(
+        {
+          badges,
+          credits: newCredits,
+          reputation: newReputation,
+          donations: {
+            [new Date().getTime()]: details,
+          },
+        },
+        { merge: true }
+      );
+  };
+};
+
 export const clearUser = () => {
   return (dispatch) => {
     // Clear currently selected user

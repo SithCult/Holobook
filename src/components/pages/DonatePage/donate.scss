@@ -20,9 +20,34 @@
       border: 0;
     }
   }
+  .badge {
+    padding: 0.4rem;
+    &.white {
+      color: #2c2e2f !important;
+    }
+  }
   .btn {
     i {
       margin-right: 0.3rem;
+    }
+    &.btn-blue {
+      background: white !important;
+      color: #3f51b5;
+    }
+  }
+  .thankyou {
+    position: relative;
+    .old {
+      position: relative;
+      background: transparent;
+      z-index: 1;
+    }
+    .new {
+      position: absolute;
+      top: 0;
+      .progress-bar{
+        background: lightcoral;
+      }
     }
   }
 }
