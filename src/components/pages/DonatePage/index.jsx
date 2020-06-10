@@ -4,6 +4,7 @@ import React from "react";
 
 //> Additional
 import { PayPalButton } from "react-paypal-button-v2";
+import moment from "moment";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -33,25 +34,52 @@ import {
 // Connect
 import { connect } from "react-redux";
 // Actions
-import { updateBadgesDonate } from "../../../store/actions/userActions";
+import {
+  updateBadgesDonate,
+  writeDonation,
+  getDonations,
+} from "../../../store/actions/userActions";
 
 //> CSS
 import "./donate.scss";
 
 class DonatePage extends React.Component {
   state = {
-    reached: 500,
     selectedAmount: 25,
     customAmount: false,
     success: false,
   };
 
+  componentDidMount = () => {
+    this.props.getDonations();
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.donations) {
+      this.calculateCurrent(nextProps.donations);
+    }
+  };
+
+  calculateCurrent = (donations) => {
+    let sum = 0;
+
+    Object.keys(donations).map((donation, i) => {
+      sum += parseInt(donations[donation].amount);
+    });
+
+    if (!this.state.reached) {
+      this.setState({
+        reached: sum,
+      });
+    }
+  };
+
   render() {
-    const { auth, profile } = this.props;
+    const { auth, profile, donations } = this.props;
 
     return (
       <MDBContainer className="white-text mt-5 pt-5" id="donate">
-        {!this.state.success ? (
+        {this.state.success ? (
           <div className="text-center thankyou">
             <MDBProgress material value={17} className="old" animated={true} />
             <MDBProgress material value={20} className="new" animated={true} />
@@ -260,7 +288,12 @@ class DonatePage extends React.Component {
                                 profile.badges,
                                 details,
                                 profile.credits,
-                                profile.reputation
+                                profile.reputation,
+                                profile.sith_name
+                              );
+                            } else {
+                              this.props.writeDonation(
+                                this.state.selectedAmount
                               );
                             }
                           }
@@ -314,14 +347,14 @@ class DonatePage extends React.Component {
                     get?
                   </strong>
                   <br />
-                  You will receive a "Founder" and "Phase 1" badge in our social
-                  network "Holobook", along with {this.state.selectedAmount /
-                    2}{" "}
-                  reputation and {this.state.selectedAmount * 9} virtual
-                  Imperial credits on Holobook. This can be used to gain higher
-                  ranks and make others feel your presence and influence. Every
-                  supporter will receive a personal certificate which will
-                  reflect your passion for Sith Cult and the Sith Empire.
+                  When logged in, you will receive a "Founder" and "Phase 1"
+                  badge in our social network "Holobook", along with{" "}
+                  {this.state.selectedAmount / 2} reputation and{" "}
+                  {this.state.selectedAmount * 9} virtual Imperial credits on
+                  Holobook. This can be used to gain higher ranks and make
+                  others feel your presence and influence. Every supporter will
+                  receive a personal certificate which will reflect your passion
+                  for Sith Cult and the Sith Empire.
                 </p>
                 <div className="mb-3">
                   <MDBBadge pill color="white" className="mr-2">
@@ -358,6 +391,36 @@ class DonatePage extends React.Component {
                 </p>
               </MDBCol>
             </MDBRow>
+            <MDBRow className="my-4 d-flex justify-content-center">
+              {donations &&
+                Object.keys(donations).map((donation, i) => {
+                  console.log(donation);
+                  return (
+                    <MDBCol md="4" key={i} className="mb-4">
+                      <MDBCard className="text-dark text-left">
+                        <MDBCardBody>
+                          <div className="d-flex justify-content-between">
+                            <p className="font-weight-bold">
+                              {donations[donation].sith_name}
+                            </p>
+                            <p className="text-muted">
+                              {moment.unix(donation / 1000).format("MMM Do YY")}
+                            </p>
+                          </div>
+                          <div>
+                            <h3 className="indigo-text mb-0">
+                              <MDBIcon icon="dollar-sign" />{" "}
+                              <span className="font-weight-bold">
+                                {donations[donation].amount},-
+                              </span>
+                            </h3>
+                          </div>
+                        </MDBCardBody>
+                      </MDBCard>
+                    </MDBCol>
+                  );
+                })}
+            </MDBRow>
           </>
         )}
       </MDBContainer>
@@ -366,16 +429,22 @@ class DonatePage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state);
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
+    donations: state.user.donations,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateBadgesDonate: (badges, details, credits, reputation) =>
-      dispatch(updateBadgesDonate(badges, details, credits, reputation)),
+    updateBadgesDonate: (badges, details, credits, reputation, sith_name) =>
+      dispatch(
+        updateBadgesDonate(badges, details, credits, reputation, sith_name)
+      ),
+    writeDonation: (amount) => dispatch(writeDonation(amount)),
+    getDonations: () => dispatch(getDonations()),
   };
 };
 

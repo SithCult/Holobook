@@ -23,7 +23,31 @@ export const getUser = (uid) => {
   };
 };
 
-export const updateBadgesDonate = (badges, details, credits, reputation) => {
+export const getDonations = (uid) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+
+    firestore
+      .collection("donations")
+      .doc("allDonations")
+      .get()
+      .then((doc) => {
+        dispatch({ type: "GETDONATIONS_SUCCESS", donations: doc.data() });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+};
+
+export const updateBadgesDonate = (
+  badges,
+  details,
+  credits,
+  reputation,
+  sith_name
+) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
@@ -56,6 +80,38 @@ export const updateBadgesDonate = (badges, details, credits, reputation) => {
           reputation: newReputation,
           donations: {
             [new Date().getTime()]: details,
+          },
+        },
+        { merge: true }
+      );
+
+    firestore
+      .collection("donations")
+      .doc("allDonations")
+      .set(
+        {
+          [new Date().getTime()]: {
+            sith_name,
+            amount,
+          },
+        },
+        { merge: true }
+      );
+  };
+};
+
+export const writeDonation = (amount) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    firestore
+      .collection("donations")
+      .doc("allDonations")
+      .set(
+        {
+          [new Date().getTime()]: {
+            sith_name: "Unknown Sith",
+            amount,
           },
         },
         { merge: true }

@@ -13,6 +13,7 @@
     "js-sha256": "^0.9.0",
     "languagedetect": "^1.2.0",
     "mdbreact": "mdbreact-4.25.1.tgz",
+    "moment": "^2.26.0",
     "node-sass": "^4.13.1",
     "random-words": "^1.1.0",
     "react-country-flag": "^2.0.1",
