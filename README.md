@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://www.sithcult.com/" target="_blank" rel="noopener noreferrer">
-    <img src="https://www.sithcult.com/img/logo/holobook_web.jpg" alt="Agency Logo" height="150px">
+    <img src="https://github.com/SithCult/Holobook/blob/master/src/assets/images/logo_sm.png?raw=true" alt="SithCult Logo" height="150px">
   </a>
 </p>
 
@@ -13,15 +13,14 @@
   <a href="https://github.com/SithCult/Holobook/issues/new?template=bug_report.md">Report bug</a>
   ·
   <a href="https://github.com/SithCult/Holobook/issues/new?template=feature_request.md">Request feature</a>
+  ·
+  <a href="https://www.sithcult.com">Join SithCult</a>
   <br>
   <br>
   <a href="https://www.codacy.com/app/SithCult/Holobook">
     <img src="https://api.codacy.com/project/badge/Grade/579c145ee6cf4d7e8ae7c1c78a13617a" />
   </a>
 </p>
-
-<a href="https://www.buymeacoffee.com/M4SVRWQ" target="_blank"><img src="https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/yellow_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
-
 
 ## Table of contents
 
