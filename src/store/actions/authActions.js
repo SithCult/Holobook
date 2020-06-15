@@ -39,8 +39,6 @@ export const signUp = (newUser) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
-    console.log(newUser);
-
     // Check for Sithname duplicates
     firestore
       .collection("users")
@@ -97,18 +95,14 @@ export const signUp = (newUser) => {
             }
           }
 
-          console.log(newUser);
-
           // Create new user to firebase
           firebase
             .auth()
             .createUserWithEmailAndPassword(newUser.email, newUser.password)
             .then(async (response) => {
-              console.log(response.user.uid);
-
               // Create data for user we just created
               return firestore
-                .collection("test")
+                .collection("users")
                 .doc(response.user.uid)
                 .set({
                   full_name: newUser.full_name ? newUser.full_name : null,
@@ -128,6 +122,12 @@ export const signUp = (newUser) => {
                   letter: newUser.letter ? newUser.letter : null,
                   address: newUser.address ? newUser.address : null,
                   law: newUser.law ? newUser.law : null,
+                })
+                .then(function () {
+                  console.log("User successfully written!");
+                })
+                .catch(function (error) {
+                  console.error("Error creating user: ", error);
                 });
             })
             .then(() => {
