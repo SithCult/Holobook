@@ -109,8 +109,6 @@ class ProfilePage extends React.Component {
   };
 
   componentDidMount = () => {
-    // Get IP data once every page call
-    this._getIPData();
     let basic = localStorage.getItem("language_basic");
     let visibility = localStorage.getItem("post_visibility");
     if (basic) {
@@ -275,7 +273,6 @@ class ProfilePage extends React.Component {
         ? null
         : this.state.post_feeling;
     let basic = this.state.post_basic;
-    let ip = this.state.post_ip ? this.state.post_ip : null;
 
     // Check if the content is English for a
     if (target) {
@@ -291,11 +288,10 @@ class ProfilePage extends React.Component {
       let data = {
         content: content.replace(/\r\n|\r|\n/g, "</br>"),
         details: {
-          characters: characters,
+          characters,
           words: wordcount,
           avgWordLength: parseInt(characters) / parseInt(wordcount),
-          feeling: feeling,
-          ip: ip,
+          feeling,
         },
         author,
         timestamp,
@@ -328,21 +324,6 @@ class ProfilePage extends React.Component {
         () => console.log("do not post - not enough chars or no author")
       );
     }
-  };
-
-  _getIPData = async () => {
-    // Get country data from ipapi
-    await axios
-      .get("https://ipapi.co/json/")
-      .then((response) => {
-        let data = response.data;
-        this.setState({
-          post_ip: data,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   _detectLanguage = (text, words) => {

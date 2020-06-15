@@ -39,6 +39,8 @@ export const signUp = (newUser) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
+    console.log(newUser);
+
     // Check for Sithname duplicates
     firestore
       .collection("users")
@@ -61,6 +63,8 @@ export const signUp = (newUser) => {
             }
           }
         });
+
+        console.log(result, duplicate);
 
         // Check if the Sithname is not already in use
         if (!duplicate) {
@@ -93,39 +97,49 @@ export const signUp = (newUser) => {
             }
           }
 
+          console.log(newUser);
+
           // Create new user to firebase
           firebase
             .auth()
             .createUserWithEmailAndPassword(newUser.email, newUser.password)
-            .then((response) => {
+            .then(async (response) => {
+              console.log(response.user.uid);
+
               // Create data for user we just created
-              return firestore.collection("users").doc(response.user.uid).set({
-                full_name: newUser.full_name,
-                sith_name: newUser.sith_name,
-                email: newUser.email,
-                email_sith: newUser.email_sith,
-                tracking: newUser.tracking,
-                credits: credits,
-                reputation: reputation,
-                title: title,
-                badges: badges,
-                status: status,
-                department: department,
-                beta: beta,
-                skin: skin,
-                details: newUser.details,
-                newsletter: newUser.newsletter,
-                letter: newUser.letter,
-                address: newUser.address,
-                law: newUser.law,
-              });
+              return firestore
+                .collection("test")
+                .doc(response.user.uid)
+                .set({
+                  full_name: newUser.full_name ? newUser.full_name : null,
+                  sith_name: newUser.sith_name ? newUser.sith_name : null,
+                  email: newUser.email ? newUser.email : null,
+                  email_sith: newUser.email_sith ? newUser.email_sith : null,
+                  credits: credits ? credits : 0,
+                  reputation: reputation ? reputation : 0,
+                  title: title ? title : "Acolyte",
+                  badges: badges ? badges : [],
+                  status: status ? status : null,
+                  department: department ? department : null,
+                  beta: true, // Undo for further versions
+                  skin: skin ? skin : "standard",
+                  details: newUser.details ? newUser.details : null,
+                  newsletter: newUser.newsletter ? newUser.newsletter : null,
+                  letter: newUser.letter ? newUser.letter : null,
+                  address: newUser.address ? newUser.address : null,
+                  law: newUser.law ? newUser.law : null,
+                });
             })
             .then(() => {
+              console.log("Success Signup");
+
               dispatch({
                 type: "SIGNUP_SUCCESS",
               });
             })
             .catch((err) => {
+              console.log(err);
+
               dispatch({
                 type: "SIGNUP_ERROR",
                 errCode: 1,

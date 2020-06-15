@@ -55,14 +55,16 @@ export const updateBadgesDonate = (
     const uid = firebase.auth().currentUser.uid;
     let newBadges = [];
 
-    if (!badges.includes("phase1")) {
-      newBadges.push("phase1");
-    }
-    if (!badges.includes("founder")) {
-      newBadges.push("founder");
-    }
+    if (badges) {
+      if (!badges.includes("phase1")) {
+        newBadges.push("phase1");
+      }
+      if (!badges.includes("founder")) {
+        newBadges.push("founder");
+      }
 
-    Array.prototype.push.apply(badges, newBadges);
+      Array.prototype.push.apply(badges, newBadges);
+    }
 
     // Check amount
     const amount = details?.purchase_units[0]?.amount?.value;
@@ -75,7 +77,7 @@ export const updateBadgesDonate = (
       .doc(uid)
       .set(
         {
-          badges,
+          badges: badges ? badges : ["phase1", "founder"],
           credits: newCredits,
           reputation: newReputation,
           donations: {
