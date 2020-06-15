@@ -30,10 +30,23 @@ export const getDonations = (uid) => {
 
     firestore
       .collection("donations")
-      .doc("allDonations")
       .get()
-      .then((doc) => {
-        dispatch({ type: "GETDONATIONS_SUCCESS", donations: doc.data() });
+      .then((querySnapshot) => {
+        let results = [];
+
+        !querySnapshot.empty &&
+          querySnapshot.forEach((doc) => {
+            let data = doc.data();
+            if (uid) {
+              if (data.uid == uid) {
+                results.push(data);
+              }
+            } else {
+              results.push(data);
+            }
+          });
+        console.log(results);
+        dispatch({ type: "GETDONATIONS_SUCCESS", donations: results });
       })
       .catch((err) => {
         console.error(err);
@@ -66,6 +79,12 @@ export const updateBadgesDonate = (
       Array.prototype.push.apply(badges, newBadges);
     }
 
+    // Get current timestamp
+    const timestamp = new Date().getTime();
+
+    // Generate unique ID for Donation entry
+    const uniqueid = timestamp + uid.toString().substring(0, 15);
+
     // Check amount
     const amount = details?.purchase_units[0]?.amount?.value;
 
@@ -81,24 +100,20 @@ export const updateBadgesDonate = (
           credits: newCredits,
           reputation: newReputation,
           donations: {
-            [new Date().getTime()]: details,
+            [timestamp]: details,
           },
         },
         { merge: true }
       );
 
-    firestore
-      .collection("donations")
-      .doc("allDonations")
-      .set(
-        {
-          [new Date().getTime()]: {
-            sith_name,
-            amount,
-          },
-        },
-        { merge: true }
-      );
+    firestore.collection("donations").doc(uniqueid).set(
+      {
+        timestamp: timestamp,
+        sith_name,
+        amount,
+      },
+      { merge: true }
+    );
   };
 };
 
@@ -106,18 +121,17 @@ export const writeDonation = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
-    firestore
-      .collection("donations")
-      .doc("allDonations")
-      .set(
-        {
-          [new Date().getTime()]: {
-            sith_name: "Unknown Sith",
-            amount,
-          },
-        },
-        { merge: true }
-      );
+    // Get current timestamp
+    const timestamp = new Date().getTime();
+
+    firestore.collection("donations").doc().set(
+      {
+        timestamp: timestamp,
+        sith_name: "Unknown Sith",
+        amount,
+      },
+      { merge: true }
+    );
   };
 };
 
