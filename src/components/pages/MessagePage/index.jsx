@@ -157,7 +157,7 @@ class MessagePage extends React.Component {
             </a>
             <div className="mt-5 text-left">
               <h2 className="mb-4">Privacy Policy for www.sithcult.com</h2>
-              <div class="preview">
+              <div className="preview">
                 <p>
                   At SithCult, accessible from www.sithcult.com, one of our main
                   priorities is the privacy of our visitors. This Privacy Policy
@@ -370,7 +370,6 @@ class MessagePage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
