@@ -19,7 +19,7 @@ package-lock.json
 /build
 
 # MDB React Pro
-mdbreact-*
+mdb*
 
 # misc
 .DS_Store
