@@ -43,11 +43,18 @@ import {
 //> CSS
 import "./donate.scss";
 
+const formatter = new Intl.NumberFormat("de-DE", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 class DonatePage extends React.Component {
   state = {
     selectedAmount: 25,
     customAmount: false,
     success: false,
+    donationgoal: 10000,
+    reached: 0,
   };
 
   componentDidMount = () => {
@@ -60,11 +67,12 @@ class DonatePage extends React.Component {
     }
   };
 
+  // Calculate current reached donations from array of all donations
   calculateCurrent = (donations) => {
     let sum = 0;
 
-    Object.keys(donations).map((donation, i) => {
-      sum += parseInt(donations[donation].amount);
+    donations.map((donation) => {
+      sum += parseInt(donation.amount);
     });
 
     if (!this.state.reached) {
@@ -74,6 +82,11 @@ class DonatePage extends React.Component {
     }
   };
 
+  // Calculate the percentual completion of a progressbar
+  calculateProgressBarValue(amount, maximum = this.state.donationgoal) {
+    return (100 / maximum) * amount;
+  }
+
   render() {
     const { auth, profile, donations } = this.props;
 
@@ -81,8 +94,18 @@ class DonatePage extends React.Component {
       <MDBContainer className="white-text mt-5 pt-5" id="donate">
         {this.state.success ? (
           <div className="text-center thankyou">
-            <MDBProgress material value={17} className="old" animated={true} />
-            <MDBProgress material value={20} className="new" animated={true} />
+            <MDBProgress
+              material
+              value={this.calculateProgressBarValue(this.state.oldReached)}
+              className="old"
+              animated={true}
+            />
+            <MDBProgress
+              material
+              value={this.calculateProgressBarValue(this.state.reached)}
+              className="new"
+              animated={true}
+            />
             <h2 className="font-weight-bold mb-1">
               Thank you for supporting us!{" "}
               <MDBIcon icon="heart" className="pink-text" />
@@ -96,7 +119,9 @@ class DonatePage extends React.Component {
                   <MDBCardBody>
                     <div className="d-flex justify-content-between">
                       <p className="font-weight-bold">
-                        {profile.title} {profile.sith_name}
+                        {profile.sithname
+                          ? profile.title + " " + profile.sith_name
+                          : "Unknown Sith"}
                       </p>
                       <p className="text-muted">Just now</p>
                     </div>
@@ -131,14 +156,14 @@ class DonatePage extends React.Component {
               )}
               <MDBProgress
                 material
-                value={(100 / 10000) * this.state.reached}
+                value={this.calculateProgressBarValue(this.state.reached)}
                 className="mt-s"
                 animated={true}
               />
               <div className="d-flex justify-content-between align-items-center">
                 <h3>
                   <small className="text-danger font-weight-bold">
-                    $ {this.state.reached},-
+                    $ {formatter.format(this.state.reached) + "-"}
                   </small>{" "}
                   / $ 10.000,-
                 </h3>
@@ -281,8 +306,13 @@ class DonatePage extends React.Component {
                         this.setState(
                           {
                             success: true,
+                            oldReached: this.state.reached,
+                            reached:
+                              this.state.reached + this.state.selectedAmount,
                           },
                           () => {
+                            window.scrollTo(0, 0);
+
                             if (auth.uid) {
                               this.props.updateBadgesDonate(
                                 profile.badges,
@@ -310,7 +340,7 @@ class DonatePage extends React.Component {
                 <p>
                   <strong>Who will benefit?</strong>
                   <br />
-                  {profile &&
+                  {profile.sith_name &&
                     "You, " + profile.title + " " + profile.sith_name + ". "}
                   Humanity. All members of Sith Cult and beyond who long for a
                   Sith Imperial society.
@@ -393,25 +423,26 @@ class DonatePage extends React.Component {
             </MDBRow>
             <MDBRow className="my-4 d-flex justify-content-center">
               {donations &&
-                Object.keys(donations).map((donation, i) => {
-                  console.log(donation);
+                donations.map((donation, i) => {
                   return (
                     <MDBCol md="4" key={i} className="mb-4">
                       <MDBCard className="text-dark text-left">
                         <MDBCardBody>
                           <div className="d-flex justify-content-between">
                             <p className="font-weight-bold">
-                              {donations[donation].sith_name}
+                              {donation.sith_name}
                             </p>
                             <p className="text-muted">
-                              {moment.unix(donation / 1000).format("MMM Do YY")}
+                              {moment
+                                .unix(donation.timestamp / 1000)
+                                .format("MMM Do YY")}
                             </p>
                           </div>
                           <div>
                             <h3 className="indigo-text mb-0">
                               <MDBIcon icon="dollar-sign" />{" "}
                               <span className="font-weight-bold">
-                                {donations[donation].amount},-
+                                {donation.amount},-
                               </span>
                             </h3>
                           </div>
@@ -429,7 +460,6 @@ class DonatePage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
