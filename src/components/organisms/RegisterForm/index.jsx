@@ -75,8 +75,8 @@ class HomePage extends React.Component {
   };
 
   componentDidMount = () => {
-    this._getIPData();
-  }
+    this._fetchAllCountries();
+  };
 
   submitHandler = event => {
     event.preventDefault();
@@ -474,10 +474,12 @@ class HomePage extends React.Component {
     // Scroll up to error
     authErrorCode && this.firstRow.current.scrollIntoView();
 
-    let params = location.search.substr(1) ? location.search.substr(1).split("=") : null;
-    if(params){
-      if(params[0] === "refer"){
-        switch(params[1]){
+    let params = location.search.substr(1)
+      ? location.search.substr(1).split("=")
+      : null;
+    if (params) {
+      if (params[0] === "refer") {
+        switch (params[1]) {
           case "basic":
             if(auth.uid !== undefined) return <Redirect to="/basic"/> 
             break;
