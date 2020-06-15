@@ -919,7 +919,7 @@ class HomePage extends React.Component {
                           />
                           <MDBInput
                             label="I agree, that the data from this form is being stored and used by 
-                  SithCult in order for you to receive any service"
+                  SithCult in order for me to receive any service"
                             type="checkbox"
                             containerClass="my-2"
                             checked={this.state.checkData}
@@ -1006,5 +1006,5 @@ export default connect(
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
- * Copyright © 2019 Christian Aichner
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
  */
