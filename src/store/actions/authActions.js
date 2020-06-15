@@ -62,8 +62,6 @@ export const signUp = (newUser) => {
           }
         });
 
-        console.log(result, duplicate);
-
         // Check if the Sithname is not already in use
         if (!duplicate) {
           // Set default values

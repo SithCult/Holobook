@@ -80,9 +80,9 @@ class HomePage extends React.Component {
 
     let result = this._signUserUp();
     if (result.value) {
-      console.log("Success");
+      console.log("Created user.");
     } else {
-      console.log(result);
+      console.error("Error creating user:", result);
     }
   };
 
