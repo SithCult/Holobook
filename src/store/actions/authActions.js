@@ -97,7 +97,7 @@ export const signUp = (newUser) => {
           firebase
             .auth()
             .createUserWithEmailAndPassword(newUser.email, newUser.password)
-            .then(async (response) => {
+            .then((response) => {
               // Create data for user we just created
               return firestore
                 .collection("users")
@@ -136,8 +136,6 @@ export const signUp = (newUser) => {
               });
             })
             .catch((err) => {
-              console.log(err);
-
               dispatch({
                 type: "SIGNUP_ERROR",
                 errCode: 1,
