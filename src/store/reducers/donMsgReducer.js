@@ -19,26 +19,6 @@ const donMsgReducer = (state = initState, action) => {
         ...state,
         donationid: undefined,
       };
-    case "DONMESSAGELOAD_LOADING":
-      return {
-        ...state,
-        receivedDonMessage: true,
-      };
-    case "DONMESSAGELOAD_SUCCESS":
-      console.log(
-        "Donation Messages successfully loaded",
-        action.donationMessages
-      );
-      return {
-        ...state,
-        donationMessages: action.donationMessages,
-      };
-    case "DONMESSAGELOAD_ERROR":
-      console.log("Error occured while loading donation messages", action.err);
-      return {
-        ...state,
-        donationMessages: undefined,
-      };
     default:
       return state;
   }
