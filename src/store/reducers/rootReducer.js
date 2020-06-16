@@ -1,29 +1,31 @@
 //> Reducers
 // Authentication
-import authReducer from './authReducer';
-import postReducer from './postReducer';
-import userReducer from './userReducer';
+import authReducer from "./authReducer";
+import postReducer from "./postReducer";
+import userReducer from "./userReducer";
+import donMsgReducer from "./donMsgReducer";
 
 //> Redux
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 
 //> Firestore reducer
-import { firestoreReducer } from 'redux-firestore';
+import { firestoreReducer } from "redux-firestore";
 
 //> Firebase reducer
-import { firebaseReducer } from 'react-redux-firebase';
+import { firebaseReducer } from "react-redux-firebase";
 
 const rootReducer = combineReducers({
-    auth: authReducer,
-    post: postReducer,
-    user: userReducer,
-    firestore: firestoreReducer,
-    firebase: firebaseReducer // Authentication
-})
+  auth: authReducer,
+  post: postReducer,
+  user: userReducer,
+  donMsg: donMsgReducer,
+  firestore: firestoreReducer,
+  firebase: firebaseReducer, // Authentication
+});
 
 export default rootReducer;
 
-/** 
+/**
  * SPDX-License-Identifier: (EUPL-1.2)
  * Copyright © 2019-2020 Werbeagentur Christian Aichner
  */
