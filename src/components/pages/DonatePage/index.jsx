@@ -5,6 +5,7 @@ import React from "react";
 //> Additional
 import { PayPalButton } from "react-paypal-button-v2";
 import moment from "moment";
+import Confetti from "react-confetti";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -14,20 +15,15 @@ import {
   MDBCol,
   MDBCard,
   MDBCardBody,
-  MDBCardUp,
-  MDBAvatar,
-  MDBAlert,
   MDBBtn,
   MDBBadge,
   MDBInput,
   MDBIcon,
-  MDBTooltip,
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-  MDBDropdownItem,
   MDBProgress,
   MDBIframe,
+  MDBTypography,
+  MDBBox,
+  MDBSpinner,
 } from "mdbreact";
 
 //> Redux
@@ -39,6 +35,8 @@ import {
   writeDonation,
   getDonations,
 } from "../../../store/actions/userActions";
+
+import { writeDonationMessage } from "../../../store/actions/donMsgActions";
 
 //> CSS
 import "./donate.scss";
@@ -55,16 +53,28 @@ class DonatePage extends React.Component {
     success: false,
     donationgoal: 5000,
     reached: 0,
+    savedMessage: false,
+    loading: false,
   };
 
   componentDidMount = () => {
-    this.props.getDonations();
+    this.initDonations();
+
+    // Window size
+    this.setState({
+      width: window.screen.width,
+      height: window.screen.height,
+    });
   };
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.donations) {
       this.calculateCurrent(nextProps.donations);
     }
+  };
+
+  initDonations = () => {
+    this.props.getDonations();
   };
 
   // Calculate current reached donations from array of all donations
@@ -88,10 +98,25 @@ class DonatePage extends React.Component {
   }
 
   render() {
-    const { auth, profile, donations } = this.props;
+    const { auth, profile, donations, selectedDonation } = this.props;
 
     return (
       <MDBContainer className="white-text mt-5 pt-5" id="donate">
+        <Confetti
+          width={this.state.width}
+          height={this.state.height}
+          recycle={false}
+          initialVelocityY={80}
+          numberOfPieces={1000}
+          run={this.state.success}
+          gravity={0.3}
+          className="confetti"
+        />
+        {this.state.loading && (
+          <div className="loadingscreen">
+            <MDBSpinner red size="lg" />
+          </div>
+        )}
         {this.state.success ? (
           <div className="text-center thankyou">
             <MDBProgress
@@ -113,6 +138,14 @@ class DonatePage extends React.Component {
             <p className="lead">
               You have been added to the global list of supporters.
             </p>
+            <MDBBadge pill color="white" className="mr-2">
+              <MDBIcon icon="fire" className="pr-2" />
+              Founder
+            </MDBBadge>
+            <MDBBadge pill color="orange" className="mr-2">
+              <MDBIcon fab icon="sith" className="pr-2" />
+              Phase 1
+            </MDBBadge>
             <MDBRow className="my-4 d-flex justify-content-center">
               <MDBCol md="4">
                 <MDBCard className="text-dark text-left">
@@ -126,12 +159,50 @@ class DonatePage extends React.Component {
                       <p className="text-muted">Just now</p>
                     </div>
                     <div>
-                      <h3 className="indigo-text mb-0">
+                      {!this.state.savedMessage ? (
+                        <MDBInput
+                          type="textarea"
+                          label="Your Message (Optional)"
+                          rows="2"
+                          id="donmsginput"
+                          maxLength="250"
+                          outline
+                          onChange={(evt) => {
+                            this.setState({
+                              donationmessage: evt.target.value,
+                            });
+                          }}
+                        />
+                      ) : (
+                        <p>{this.state.donationmessage}</p>
+                      )}
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <h3 className="indigo-text mb-0" id="donamountdisplay">
                         <MDBIcon icon="dollar-sign" />{" "}
                         <span className="font-weight-bold">
                           {formatter.format(this.state.selectedAmount) + "-"}
                         </span>
                       </h3>
+                      {!this.state.savedMessage && (
+                        <MDBBtn
+                          size="md"
+                          id="savemsgbtn"
+                          disabled={!this.state.donationmessage}
+                          color="green"
+                          onClick={() => {
+                            if (selectedDonation) {
+                              this.props.writeDonationMessage(
+                                selectedDonation,
+                                this.state.donationmessage
+                              );
+                              this.setState({ savedMessage: true });
+                            }
+                          }}
+                        >
+                          Share your story
+                        </MDBBtn>
+                      )}
                     </div>
                   </MDBCardBody>
                 </MDBCard>
@@ -139,6 +210,19 @@ class DonatePage extends React.Component {
             </MDBRow>
             <MDBBtn color="white">
               <MDBIcon icon="share" /> Share
+            </MDBBtn>
+            <MDBBtn
+              color="white"
+              onClick={() => {
+                this.setState({
+                  success: false,
+                  savedMessage: false,
+                  donationmessage: "",
+                });
+                this.initDonations();
+              }}
+            >
+              Go back to main page
             </MDBBtn>
           </div>
         ) : (
@@ -151,7 +235,9 @@ class DonatePage extends React.Component {
                 </>
               ) : (
                 <>
-                  <h2 className="font-weight-bold mb-4">Support our cause</h2>
+                  <h2 className="font-weight-bold mb-4">
+                    Contribute to our cause
+                  </h2>
                 </>
               )}
               <MDBProgress
@@ -296,16 +382,14 @@ class DonatePage extends React.Component {
                     <PayPalButton
                       amount={this.state.selectedAmount}
                       // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                      onClick={() => {
+                        this.setState({ loading: true });
+                      }}
                       onSuccess={(details, data) => {
-                        console.log(
-                          "Transaction completed by " +
-                            details.payer.name.given_name,
-                          details,
-                          data
-                        );
                         this.setState(
                           {
                             success: true,
+                            loading: false,
                             oldReached: this.state.reached,
                             reached:
                               this.state.reached + this.state.selectedAmount,
@@ -424,34 +508,59 @@ class DonatePage extends React.Component {
             </MDBRow>
             <MDBRow className="my-4 d-flex justify-content-center">
               {donations &&
-                donations.map((donation, i) => {
-                  return (
-                    <MDBCol md="4" key={i} className="mb-4">
-                      <MDBCard className="text-dark text-left">
-                        <MDBCardBody>
-                          <div className="d-flex justify-content-between">
-                            <p className="font-weight-bold">
-                              {donation.sith_name}
-                            </p>
-                            <p className="text-muted">
-                              {moment
-                                .unix(donation.timestamp / 1000)
-                                .format("MMM Do YY")}
-                            </p>
-                          </div>
-                          <div>
-                            <h3 className="indigo-text mb-0">
-                              <MDBIcon icon="dollar-sign" />{" "}
-                              <span className="font-weight-bold">
-                                {formatter.format(donation.amount) + "-"}
-                              </span>
-                            </h3>
-                          </div>
-                        </MDBCardBody>
-                      </MDBCard>
-                    </MDBCol>
-                  );
-                })}
+                []
+                  .concat(donations)
+                  .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1))
+                  .map((donation, i) => {
+                    return (
+                      <MDBCol md="4" key={i} className="mb-4">
+                        <MDBCard className="text-dark text-left">
+                          <MDBCardBody>
+                            <div className="d-flex justify-content-between">
+                              <div className="font-weight-bold">
+                                <p className="mb-0">
+                                  {donation.sith_name}{" "}
+                                  <MDBIcon
+                                    icon="award"
+                                    className="green-text"
+                                  />
+                                </p>
+                              </div>
+                              <p className="text-muted">
+                                {moment
+                                  .unix(donation.timestamp / 1000)
+                                  .format("MMM Do YY")}
+                              </p>
+                            </div>
+                            {donation.msg && (
+                              <MDBTypography blockquote>
+                                <MDBBox tag="p" mb={0}>
+                                  <small>{donation.msg}</small>
+                                </MDBBox>
+                                <MDBBox
+                                  tag="footer"
+                                  mb={3}
+                                  className="blockquote-footer"
+                                >
+                                  <cite title="Source Title">
+                                    <small>{donation.sith_name}</small>
+                                  </cite>
+                                </MDBBox>
+                              </MDBTypography>
+                            )}
+                            <div>
+                              <h3 className="indigo-text mb-0">
+                                <MDBIcon icon="dollar-sign" />{" "}
+                                <span className="font-weight-bold">
+                                  {formatter.format(donation.amount) + "-"}
+                                </span>
+                              </h3>
+                            </div>
+                          </MDBCardBody>
+                        </MDBCard>
+                      </MDBCol>
+                    );
+                  })}
             </MDBRow>
           </>
         )}
@@ -465,6 +574,7 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     donations: state.user.donations,
+    selectedDonation: state.user.selectedDonation,
   };
 };
 
@@ -476,6 +586,8 @@ const mapDispatchToProps = (dispatch) => {
       ),
     writeDonation: (amount) => dispatch(writeDonation(amount)),
     getDonations: () => dispatch(getDonations()),
+    writeDonationMessage: (uid, msg) =>
+      dispatch(writeDonationMessage(uid, msg)),
   };
 };
 
