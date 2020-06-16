@@ -36,7 +36,7 @@ export const getDonations = (uid) => {
 
         !querySnapshot.empty &&
           querySnapshot.forEach((doc) => {
-            let data = doc.data();
+            let data = { ...doc.data(), id: doc.id };
             if (uid) {
               if (data.uid == uid) {
                 results.push(data);
@@ -45,7 +45,6 @@ export const getDonations = (uid) => {
               results.push(data);
             }
           });
-        console.log(results);
         dispatch({ type: "GETDONATIONS_SUCCESS", donations: results });
       })
       .catch((err) => {
@@ -121,14 +120,16 @@ export const writeDonation = (amount) => {
     // Get current timestamp
     const timestamp = new Date().getTime();
 
-    firestore.collection("donations").doc().set(
-      {
+    firestore
+      .collection("donations")
+      .add({
         timestamp: timestamp,
         sith_name: "Unknown Sith",
         amount,
-      },
-      { merge: true }
-    );
+      })
+      .then((docRef) => {
+        dispatch({ type: "GET_ID", uid: docRef.id });
+      });
   };
 };
 

@@ -1,6 +1,8 @@
 // Have initial state for when state is not ready to be passed
 const initState = {
   receivedUser: undefined,
+  selectedDonation: undefined,
+  donations: undefined,
 };
 
 const userReducer = (state = initState, action) => {
@@ -21,6 +23,11 @@ const userReducer = (state = initState, action) => {
       return {
         ...state,
         donations: action.donations,
+      };
+    case "GET_ID":
+      return {
+        ...state,
+        selectedDonation: action.uid,
       };
     case "USERLOAD_LOADING":
       return {
