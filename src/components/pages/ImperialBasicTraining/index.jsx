@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -42,7 +43,9 @@ import cheatSheetIMG from "../../../assets/images/aurek.png";
 
 //> Other words and phrases
 import { items } from "./items.js";
+//#endregion
 
+//#region > Components
 class BasicTraining extends React.Component {
   constructor(props) {
     super(props);
@@ -369,7 +372,9 @@ class BasicTraining extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Functions
 const mapStateToProps = (state) => {
   return {
     authError: state.auth.authError,
@@ -378,8 +383,11 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
   };
 };
+//#endregion
 
+//#region > Exports
 export default connect(mapStateToProps)(BasicTraining);
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

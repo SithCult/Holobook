@@ -23,6 +23,7 @@ export const getUser = (uid) => {
   };
 };
 
+//  Retrieve donations from Firestore
 export const getDonations = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -37,6 +38,7 @@ export const getDonations = (uid) => {
         !querySnapshot.empty &&
           querySnapshot.forEach((doc) => {
             let data = { ...doc.data(), id: doc.id };
+
             if (uid) {
               if (data.uid == uid) {
                 results.push(data);
@@ -53,6 +55,7 @@ export const getDonations = (uid) => {
   };
 };
 
+//  Store donation and update user badges
 export const updateBadgesDonate = (
   badges,
   details,
@@ -64,7 +67,9 @@ export const updateBadgesDonate = (
     const firebase = getFirebase();
     const firestore = getFirestore();
 
+    //  Get the unique ID of the current user
     const uid = firebase.auth().currentUser.uid;
+
     let newBadges = [];
 
     if (badges) {
@@ -84,6 +89,7 @@ export const updateBadgesDonate = (
     // Check amount
     const amount = details?.purchase_units[0]?.amount?.value;
 
+    // Add Imperial Credits and reputation to the Sith user
     const newCredits = Math.round(credits + amount * 9);
     const newReputation = Math.round(reputation + amount / 2);
 
@@ -113,6 +119,7 @@ export const updateBadgesDonate = (
   };
 };
 
+//  Store donation
 export const writeDonation = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();

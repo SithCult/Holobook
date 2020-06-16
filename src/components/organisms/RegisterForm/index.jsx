@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -46,12 +47,18 @@ import "./registerform.scss";
 //> Images
 import IMGgroup from "../../../assets/images/group.png";
 import IMGlogo from "../../../assets/images/logo_white.png";
+//#endregion
 
+//#region > Data
 // Country list
 const countries = countryList().getData();
+//#endregion
+
+//#region > Components
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
+
     this.firstRow = React.createRef();
   }
 
@@ -79,6 +86,7 @@ class HomePage extends React.Component {
     event.preventDefault();
 
     let result = this._signUserUp();
+
     if (result.value) {
       console.log("Created user.");
     } else {
@@ -983,7 +991,9 @@ class HomePage extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Functions
 const mapStateToProps = (state) => {
   return {
     authError: state.auth.authError,
@@ -998,11 +1008,14 @@ const mapDispatchToProps = (dispatch) => {
     signUp: (newUser) => dispatch(signUp(newUser)),
   };
 };
+//#endregion
 
+//#region > Exports
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(HomePage));
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

@@ -15,11 +15,11 @@ import { firestoreReducer } from "redux-firestore";
 import { firebaseReducer } from "react-redux-firebase";
 
 const rootReducer = combineReducers({
-  auth: authReducer,
-  post: postReducer,
-  user: userReducer,
-  donMsg: donMsgReducer,
-  firestore: firestoreReducer,
+  auth: authReducer, // User authentication
+  post: postReducer, // Post management
+  user: userReducer, // User related functionality
+  donMsg: donMsgReducer, // Donation messages
+  firestore: firestoreReducer, // Database
   firebase: firebaseReducer, // Authentication
 });
 

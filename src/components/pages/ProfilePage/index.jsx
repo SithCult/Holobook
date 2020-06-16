@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -68,7 +69,9 @@ import goldUserIMG from "../../../assets/images/gold.gif";
 import lightUserIMG from "../../../assets/images/light.gif";
 import bronzeUserIMG from "../../../assets/images/bronze.gif";
 import holocronIcon from "../../../assets/images/icons/holocron.png";
+//#endregion
 
+//#region > Data
 //> Data
 // Feelings
 const feelings = [
@@ -84,7 +87,9 @@ const feelings = [
   { name: "dead", icon: "dizzy" },
   { name: "flushed", icon: "flushed" },
 ];
+//#endregion
 
+//#region > Components
 class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
@@ -884,9 +889,10 @@ class ProfilePage extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Functions
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
@@ -902,8 +908,11 @@ const mapDispatchToProps = (dispatch) => {
     loadAllPosts: (amount) => dispatch(loadAllPosts(amount)),
   };
 };
+//#endregion
 
+//#region > Exports
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

@@ -28,6 +28,7 @@ class ReceivedUser extends React.Component {
 
   render() {
     const { receivedUser, author } = this.props;
+
     return (
       <MDBPopover
         placement="top"

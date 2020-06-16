@@ -1,10 +1,14 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
 
 //> Additional
+//  Enables PayPal integration
 import { PayPalButton } from "react-paypal-button-v2";
+//  Date/Time formatting
 import moment from "moment";
+//  Enables CONFETTI!
 import Confetti from "react-confetti";
 
 //> MDB
@@ -40,12 +44,16 @@ import { writeDonationMessage } from "../../../store/actions/donMsgActions";
 
 //> CSS
 import "./donate.scss";
+//#endregion
 
+//#region > Global functions
 const formatter = new Intl.NumberFormat("de-DE", {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
+//#endregion
 
+//#region > Components
 class DonatePage extends React.Component {
   state = {
     selectedAmount: 25,
@@ -253,9 +261,6 @@ class DonatePage extends React.Component {
                   </small>{" "}
                   / $ {formatter.format(this.state.donationgoal) + "-"}
                 </h3>
-                <MDBBtn color="danger" size="md">
-                  Support
-                </MDBBtn>
               </div>
             </div>
             <MDBRow className="mt-3">
@@ -435,7 +440,7 @@ class DonatePage extends React.Component {
                   We will use our gained ressources to
                   <br />- further promote SithCult
                   <br />- provide international SithCult clusters with funds to
-                  create banners and flyer
+                  create banners and flyers
                   <br /> - expand our Social Network "Holobook" to provide a
                   platform for all members
                   <br />- create Uniforms, Sith robes and more for our members
@@ -467,7 +472,7 @@ class DonatePage extends React.Component {
                   {Math.round(this.state.selectedAmount * 9)} virtual Imperial
                   credits on Holobook. This can be used to gain higher ranks and
                   make others feel your presence and influence. Every supporter
-                  will receive a personal certificate which will reflect your
+                  will receive a personal certificate which will reflect their
                   passion for Sith Cult and the Sith Empire.
                 </p>
                 <div className="mb-3">
@@ -568,7 +573,9 @@ class DonatePage extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Functions
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
@@ -590,8 +597,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(writeDonationMessage(uid, msg)),
   };
 };
+//#endregion
 
+//#region > Exports
 export default connect(mapStateToProps, mapDispatchToProps)(DonatePage);
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

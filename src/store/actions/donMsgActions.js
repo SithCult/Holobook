@@ -1,3 +1,4 @@
+//  Store donation message in donation
 export const writeDonationMessage = (uid, donationMessage) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();

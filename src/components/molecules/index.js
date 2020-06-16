@@ -5,12 +5,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ReceivedUser from "./ReceivedUser";
 
-export {
-  CookieModal,
-  Footer,
-  Navbar,
-  ReceivedUser,
-};
+export { CookieModal, Navbar, Footer, ReceivedUser };
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
