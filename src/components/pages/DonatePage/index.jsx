@@ -53,7 +53,7 @@ class DonatePage extends React.Component {
     selectedAmount: 25,
     customAmount: false,
     success: false,
-    donationgoal: 10000,
+    donationgoal: 5000,
     reached: 0,
   };
 
@@ -129,7 +129,7 @@ class DonatePage extends React.Component {
                       <h3 className="indigo-text mb-0">
                         <MDBIcon icon="dollar-sign" />{" "}
                         <span className="font-weight-bold">
-                          {this.state.selectedAmount},-
+                          {formatter.format(this.state.selectedAmount) + "-"}
                         </span>
                       </h3>
                     </div>
@@ -165,7 +165,7 @@ class DonatePage extends React.Component {
                   <small className="text-danger font-weight-bold">
                     $ {formatter.format(this.state.reached) + "-"}
                   </small>{" "}
-                  / $ 10.000,-
+                  / $ {formatter.format(this.state.donationgoal) + "-"}
                 </h3>
                 <MDBBtn color="danger" size="md">
                   Support
@@ -379,12 +379,12 @@ class DonatePage extends React.Component {
                   <br />
                   When logged in, you will receive a "Founder" and "Phase 1"
                   badge in our social network "Holobook", along with{" "}
-                  {this.state.selectedAmount / 2} reputation and{" "}
-                  {this.state.selectedAmount * 9} virtual Imperial credits on
-                  Holobook. This can be used to gain higher ranks and make
-                  others feel your presence and influence. Every supporter will
-                  receive a personal certificate which will reflect your passion
-                  for Sith Cult and the Sith Empire.
+                  {Math.round(this.state.selectedAmount / 2)} reputation and{" "}
+                  {Math.round(this.state.selectedAmount * 9)} virtual Imperial
+                  credits on Holobook. This can be used to gain higher ranks and
+                  make others feel your presence and influence. Every supporter
+                  will receive a personal certificate which will reflect your
+                  passion for Sith Cult and the Sith Empire.
                 </p>
                 <div className="mb-3">
                   <MDBBadge pill color="white" className="mr-2">
@@ -398,11 +398,12 @@ class DonatePage extends React.Component {
                   <div className="mt-3">
                     <span className="text-white d-block">
                       <MDBIcon icon="medal" className="pr-2" />{" "}
-                      {this.state.selectedAmount / 2} Reputation
+                      {Math.round(this.state.selectedAmount / 2)} Reputation
                     </span>
                     <span className="text-white d-block">
                       <MDBIcon fab icon="sith" className="pr-2" />{" "}
-                      {this.state.selectedAmount * 9} Imperial credits
+                      {Math.round(this.state.selectedAmount * 9)} Imperial
+                      credits
                     </span>
                   </div>
                 </div>
@@ -442,7 +443,7 @@ class DonatePage extends React.Component {
                             <h3 className="indigo-text mb-0">
                               <MDBIcon icon="dollar-sign" />{" "}
                               <span className="font-weight-bold">
-                                {donation.amount},-
+                                {formatter.format(donation.amount) + "-"}
                               </span>
                             </h3>
                           </div>
