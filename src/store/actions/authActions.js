@@ -129,8 +129,6 @@ export const signUp = (newUser) => {
                 });
             })
             .then(() => {
-              console.log("Success Signup");
-
               dispatch({
                 type: "SIGNUP_SUCCESS",
               });
