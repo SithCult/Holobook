@@ -82,14 +82,11 @@ export const updateBadgesDonate = (
     // Get current timestamp
     const timestamp = new Date().getTime();
 
-    // Generate unique ID for Donation entry
-    const uniqueid = timestamp + uid.toString().substring(0, 15);
-
     // Check amount
     const amount = details?.purchase_units[0]?.amount?.value;
 
-    const newCredits = credits + amount * 9;
-    const newReputation = reputation + amount / 2;
+    const newCredits = Math.round(credits + amount * 9);
+    const newReputation = Math.round(reputation + amount / 2);
 
     firestore
       .collection("users")
@@ -106,7 +103,7 @@ export const updateBadgesDonate = (
         { merge: true }
       );
 
-    firestore.collection("donations").doc(uniqueid).set(
+    firestore.collection("donations").doc().set(
       {
         timestamp: timestamp,
         sith_name,
