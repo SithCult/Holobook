@@ -28,6 +28,9 @@ import {
   MDBTypography,
   MDBBox,
   MDBSpinner,
+  MDBPopover,
+  MDBPopoverBody,
+  MDBPopoverHeader,
 } from "mdbreact";
 
 //> Redux
@@ -174,9 +177,9 @@ class DonatePage extends React.Component {
                           id="donmsginput"
                           maxLength="250"
                           outline
-                          onChange={(evt) => {
+                          onChange={(e) => {
                             this.setState({
-                              donationmessage: evt.target.value,
+                              donationmessage: e.target.value,
                             });
                           }}
                         />
@@ -199,11 +202,14 @@ class DonatePage extends React.Component {
                           color="green"
                           onClick={() => {
                             if (selectedDonation) {
-                              this.props.writeDonationMessage(
-                                selectedDonation,
-                                this.state.donationmessage
+                              this.setState({ savedMessage: true }, () =>
+                                this.props.writeDonationMessage(
+                                  selectedDonation,
+                                  this.state.donationmessage
+                                )
                               );
-                              this.setState({ savedMessage: true });
+                            } else {
+                              console.log("bruh");
                             }
                           }}
                         >
@@ -237,7 +243,9 @@ class DonatePage extends React.Component {
             <div className="text-center">
               {auth?.uid && profile && profile.isLoaded ? (
                 <>
-                  <h2 className="font-weight-bold mb-1">Support our cause</h2>
+                  <h2 className="font-weight-bold mb-1">
+                    Contribute to our cause
+                  </h2>
                   <p className="lead mb-3">{`${profile.title} ${profile.sith_name}`}</p>
                 </>
               ) : (
@@ -417,6 +425,9 @@ class DonatePage extends React.Component {
                           }
                         );
                       }}
+                      onCancel={() =>
+                        this.setState({ loading: false, success: false })
+                      }
                       options={{
                         clientId: process.env.REACT_APP_PAYPAL,
                       }}
@@ -524,10 +535,69 @@ class DonatePage extends React.Component {
                               <div className="font-weight-bold">
                                 <p className="mb-0">
                                   {donation.sith_name}{" "}
-                                  <MDBIcon
-                                    icon="award"
-                                    className="green-text"
-                                  />
+                                  {donation.hash ? (
+                                    <MDBPopover
+                                      placement="right"
+                                      domElement
+                                      clickable
+                                      popover
+                                      tag="span"
+                                      id="popper1"
+                                    >
+                                      <span>
+                                        <MDBIcon
+                                          icon="award"
+                                          className="green-text ml-1 clickable"
+                                        />
+                                      </span>
+                                      <div>
+                                        <MDBPopoverHeader className="green-text font-weight-bold">
+                                          Verified contribution
+                                        </MDBPopoverHeader>
+                                        <MDBPopoverBody>
+                                          <div className="align-items-center m-0">
+                                            This contribution has been{" "}
+                                            <strong>verified.</strong>
+                                            <br />
+                                            <small className="word-break-all">
+                                              <code>{donation.hash}</code>
+                                            </small>
+                                          </div>
+                                        </MDBPopoverBody>
+                                      </div>
+                                    </MDBPopover>
+                                  ) : (
+                                    <MDBPopover
+                                      placement="right"
+                                      domElement
+                                      clickable
+                                      popover
+                                      tag="span"
+                                      id="popper1"
+                                    >
+                                      <span>
+                                        <MDBIcon
+                                          icon="award"
+                                          className="grey-text ml-1 clickable"
+                                        />
+                                      </span>
+                                      <div>
+                                        <MDBPopoverHeader>
+                                          Not verified
+                                        </MDBPopoverHeader>
+                                        <MDBPopoverBody>
+                                          <div>
+                                            We can not verify the contribution
+                                            based on the transaction hash.
+                                            <br />
+                                            <small className="word-break-all">
+                                              <code>NULL</code>
+                                            </small>
+                                          </div>
+                                        </MDBPopoverBody>
+                                      </div>
+                                    </MDBPopover>
+                                  )}
                                 </p>
                               </div>
                               <p className="text-muted">
