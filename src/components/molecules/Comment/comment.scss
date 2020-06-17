@@ -1,5 +1,49 @@
-.subcom {
-  margin-left: 20px;
+.comment {
+  margin-bottom: 0.3rem;
+  .img {
+    background: lighten(#1e1e1e, 3%);
+    border-right: 1px grey solid;
+    border-top-left-radius: 1.5rem;
+    border-bottom-left-radius: 1rem;
+    position: relative;
+    overflow: hidden;
+    img {
+      position: relative;
+      z-index: 1;
+    }
+    &::after {
+      content: "Peace is a lie. There is only passion. Through passion I gain strength. Through strength power.";
+      position: absolute;
+      top: 10%;
+      line-height: 0px;
+      left: 50%;
+      font-size: 1rem;
+      height: 100vw;
+      writing-mode: tb;
+      text-orientation: upright;
+      font-family: "Aurek-Besh Hand";
+      color: darken(#696565, 15%);
+      z-index: 0;
+    }
+  }
+  .content {
+    background: lighten(#1e1e1e, 10%);
+    width: 100%;
+    .time {
+      white-space: pre;
+    }
+    .name {
+      display: inline;
+    }
+  }
+  &.child-comment {
+    margin-left: 25px;
+    border-left: 3px lighten(grey, 30%) solid;
+    .img {
+      border-top-left-radius: 0rem;
+      border-bottom-left-radius: 0rem;
+    }
+  }
 }
 
 /** 

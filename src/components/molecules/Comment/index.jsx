@@ -47,6 +47,9 @@ import defaultUserIMG from "../../../assets/images/default.gif";
 import goldUserIMG from "../../../assets/images/gold.gif";
 import lightUserIMG from "../../../assets/images/light.gif";
 import bronzeUserIMG from "../../../assets/images/bronze.gif";
+
+//> CSS
+import "./comment.scss";
 //#endregion
 
 //#region > Components
@@ -74,18 +77,18 @@ class Comment extends React.Component {
   };
 
   render() {
-    const { comment } = this.props;
+    const { comment, child } = this.props;
     const { receivedUser } = this.state;
 
     return (
-      <MDBRow
+      <div
         className={
-          this.props.subcom
-            ? "comment d-flex justify-content-between subcom"
+          child
+            ? "comment d-flex justify-content-between child-comment"
             : "comment d-flex justify-content-between"
         }
       >
-        <MDBCol className="p-2">
+        <div className="p-2 img">
           {receivedUser &&
             (() => {
               switch (receivedUser.skin) {
@@ -119,10 +122,10 @@ class Comment extends React.Component {
                   );
               }
             })()}
-        </MDBCol>
-        <MDBCol>
-          <MDBRow className="p-2 author-info d-flex justify-content-between">
-            <MDBCol>
+        </div>
+        <div className="content">
+          <div className="p-2 author-info d-flex justify-content-between align-items-center">
+            <div>
               <MDBPopover
                 placement="top"
                 popover
@@ -237,20 +240,18 @@ class Comment extends React.Component {
                   )}
                 </div>
               </MDBPopover>
-            </MDBCol>
-            <MDBCol className="ml-auto p-2 mb-auto">
+            </div>
+            <div className="ml-auto p-2 mb-auto time">
               <small className="text-muted">
                 {comment.timestamp && this._calculateTimeAgo(comment.timestamp)}
               </small>
-            </MDBCol>
-          </MDBRow>
-          <MDBRow>
-            <MDBCol></MDBCol>
-            <MDBCol></MDBCol>
-            <MDBCol></MDBCol>
-          </MDBRow>
-        </MDBCol>
-      </MDBRow>
+            </div>
+          </div>
+          <div className="px-3 pb-3">
+            <p className="mb-0">{comment.msg}</p>
+          </div>
+        </div>
+      </div>
     );
   }
 }

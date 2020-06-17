@@ -422,7 +422,8 @@ class Post extends React.Component {
               </div>
             )}
           </div>
-          <div className="card-footer mt-3">
+          <hr />
+          <div className="mt-3">
             <Comments items={comments} />
           </div>
         </MDBCardBody>
