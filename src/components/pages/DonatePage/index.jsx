@@ -208,8 +208,6 @@ class DonatePage extends React.Component {
                                   this.state.donationmessage
                                 )
                               );
-                            } else {
-                              console.log("bruh");
                             }
                           }}
                         >
