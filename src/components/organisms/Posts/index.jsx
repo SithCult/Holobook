@@ -36,7 +36,7 @@ class Posts extends React.Component {
     // Re-fetch posts every 30 sec
     this.interval = setInterval(() => {
       this.props.load(this.props.posts.length ? this.props.posts.length : 5);
-    }, 30000);
+    }, 10000);
   }
 
   componentDidUpdate() {
@@ -97,6 +97,7 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     postLoading: state.post.likeError,
+    comments: state.comment.comments,
   };
 };
 

@@ -1,3 +1,4 @@
+// Sign in database action
 export const signIn = (credentials) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
@@ -19,6 +20,7 @@ export const signIn = (credentials) => {
   };
 };
 
+// Sign out database action
 export const signOut = () => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
@@ -34,6 +36,7 @@ export const signOut = () => {
   };
 };
 
+// Sign up database action
 export const signUp = (newUser) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();

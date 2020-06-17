@@ -32,11 +32,15 @@ import {
 
 //> Redux Firebase
 // Getting user information
-import { getUser } from "../../../store/actions/userActions";
-// Likes
 import { createLike } from "../../../store/actions/likeActions";
+import { getUser } from "../../../store/actions/userActions";
+// Getting comments
+import { loadComments } from "../../../store/actions/commentActions";
 // Connect
 import { connect } from "react-redux";
+
+//> Components
+import { Comments } from "../../organisms/";
 
 //> Images
 import defaultUserIMG from "../../../assets/images/default.gif";
@@ -54,6 +58,7 @@ class Post extends React.Component {
   componentDidMount = async () => {
     this.setState({
       receivedUser: await this.props.getUser(this.props.uid),
+      comments: await this.props.loadComments(this.props.post.id),
     });
   };
 
@@ -66,7 +71,9 @@ class Post extends React.Component {
 
   render() {
     const { auth, post, key } = this.props;
-    const { receivedUser } = this.state;
+    const { receivedUser, comments } = this.state;
+
+    console.log(this.state);
 
     return (
       <MDBCard
@@ -418,7 +425,7 @@ class Post extends React.Component {
             )}
           </div>
           <div className="card-footer mt-3">
-            <p className="text-muted">Comments to be added soon</p>
+            <Comments comments={comments} />
           </div>
         </MDBCardBody>
       </MDBCard>
@@ -432,12 +439,14 @@ const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     receivedUser: state.user.receivedUser,
+    comments: state.comment.results,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getUser: (uid) => dispatch(getUser(uid)),
+    loadComments: (pid) => dispatch(loadComments(pid)),
     createLike: (pid) => dispatch(createLike(pid)),
   };
 };

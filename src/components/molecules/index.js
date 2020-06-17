@@ -5,11 +5,12 @@ import CookieModal from "./CookieModal";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ReceivedUser from "./ReceivedUser";
+import Comment from "./Comment";
 import Post from "./Post";
 //#endregion
 
 //#region > Exports
-export { CookieModal, Navbar, Footer, ReceivedUser, Post };
+export { CookieModal, Navbar, Footer, ReceivedUser, Comment, Post };
 //#endregion
 
 /**

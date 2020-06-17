@@ -3,10 +3,11 @@
 // Import all components to export them for easy access from parent components
 import RegisterForm from "./RegisterForm";
 import Posts from "./Posts";
+import Comments from "./Comments";
 //#endregion
 
 //#region > Exports
-export { RegisterForm, Posts };
+export { RegisterForm, Posts, Comments };
 //#endregion
 
 /**
