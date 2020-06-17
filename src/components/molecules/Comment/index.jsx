@@ -78,7 +78,13 @@ class Comment extends React.Component {
     const { receivedUser } = this.state;
 
     return (
-      <MDBRow className="d-flex justify-content-between">
+      <MDBRow
+        className={
+          this.props.subcom
+            ? "comment d-flex justify-content-between subcom"
+            : "comment d-flex justify-content-between"
+        }
+      >
         <MDBCol className="p-2">
           {receivedUser &&
             (() => {

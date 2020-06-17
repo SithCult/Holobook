@@ -66,11 +66,18 @@ class Comments extends React.Component {
             console.log(comment);
             return (
               <>
-                <Comment comment={comment.data} key={i} />
+                {!comment.data.cid && (
+                  <Comment comment={comment.data} key={i} />
+                )}
                 {items.map((subcomm, subkey) => {
-                  if (subcomm.data.pid === comment.id) {
+                  if (subcomm.data.cid === comment.id) {
+                    console.log(subcomm.data.cid, comment.id);
                     return (
-                      <Comment comment={subcomm.data} key={subkey}></Comment>
+                      <Comment
+                        comment={subcomm.data}
+                        key={subkey}
+                        subcomm
+                      ></Comment>
                     );
                   }
                 })}

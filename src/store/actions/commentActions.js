@@ -5,18 +5,20 @@ export const createComment = (newComment) => {
 
     // Get userId
     let uid = newComment.author.uid;
+    // Generate timestamp
+    let timestamp = new Date().getTime();
     // Create a unique id for the comment
-    let uniqueID = newComment.timestamp + uid.toString().substring(0, 15);
+    let uniqueID = timestamp + uid.toString().substring(0, 15);
 
     // Create comment
     firestore
-      .collection("comments")
+      .collection("comment")
       .doc(uniqueID)
       .set({
         ...newComment,
         msg: newComment.msg,
         author: newComment.author,
-        timestamp: newComment.timestamp,
+        timestamp: timestamp,
         pid: newComment.pid,
       })
       .then(() => {
@@ -82,7 +84,7 @@ export const unlikeComment = (id, uid, likes) => {
 
     // Create comment
     firestore
-      .collection("comments")
+      .collection("likes")
       .doc(id)
       .update({
         likes: likes,
@@ -154,41 +156,6 @@ export const loadComments = (pid) => {
         console.error(err);
 
         return false;
-      });
-  };
-};
-
-// Load all comments
-export const loadAllComments = (amount) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
-    const firestore = getFirestore();
-
-    dispatch({ type: "LOAD_LOADING" });
-
-    let comments = firestore.collection("comments");
-
-    if (amount < 0) {
-      amount = 0;
-    }
-
-    comments
-      .orderBy("timestamp", "desc")
-      .limit(amount)
-      .get()
-      .then((querySnapshot) => {
-        let results = [];
-
-        querySnapshot.forEach(function (doc) {
-          let data = doc.data();
-
-          results.push({ id: doc.id, data });
-        });
-
-        dispatch({ type: "LOAD_SUCCESS", results });
-      })
-      .catch((err) => {
-        dispatch({ type: "LOAD_ERROR", err });
       });
   };
 };
