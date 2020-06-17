@@ -80,38 +80,39 @@ class Comment extends React.Component {
     return (
       <MDBRow className="d-flex justify-content-between">
         <MDBCol className="p-2">
-          {(() => {
-            switch (true) {
-              case "gold":
-                return (
-                  <img
-                    src={goldUserIMG}
-                    className="rounded-circle avatar-img align-self-center mr-0"
-                  />
-                );
-              case "light":
-                return (
-                  <img
-                    src={lightUserIMG}
-                    className="rounded-circle avatar-img align-self-center mr-0"
-                  />
-                );
-              case "bronze":
-                return (
-                  <img
-                    src={bronzeUserIMG}
-                    className="rounded-circle avatar-img align-self-center mr-0"
-                  />
-                );
-              default:
-                return (
-                  <img
-                    src={defaultUserIMG}
-                    className="rounded-circle avatar-img align-self-center mr-0"
-                  />
-                );
-            }
-          })()}
+          {receivedUser &&
+            (() => {
+              switch (receivedUser.skin) {
+                case "gold":
+                  return (
+                    <img
+                      src={goldUserIMG}
+                      className="rounded-circle avatar-img align-self-center mr-0"
+                    />
+                  );
+                case "light":
+                  return (
+                    <img
+                      src={lightUserIMG}
+                      className="rounded-circle avatar-img align-self-center mr-0"
+                    />
+                  );
+                case "bronze":
+                  return (
+                    <img
+                      src={bronzeUserIMG}
+                      className="rounded-circle avatar-img align-self-center mr-0"
+                    />
+                  );
+                default:
+                  return (
+                    <img
+                      src={defaultUserIMG}
+                      className="rounded-circle avatar-img align-self-center mr-0"
+                    />
+                  );
+              }
+            })()}
         </MDBCol>
         <MDBCol>
           <MDBRow className="p-2 author-info d-flex justify-content-between">
