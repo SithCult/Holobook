@@ -15,10 +15,10 @@ import { connect } from "react-redux";
 
 //> CSS
 import "./messagepage.scss";
-//#endregion
 
 //> Images
 // To be added
+//#endregion
 
 //#region > Components
 class MessagePage extends React.Component {
