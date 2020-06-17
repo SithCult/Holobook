@@ -73,8 +73,6 @@ class Post extends React.Component {
     const { auth, post, key } = this.props;
     const { receivedUser, comments } = this.state;
 
-    console.log(this.state);
-
     return (
       <MDBCard
         className={post.data.visible ? "mb-3 post" : "mb-3 post deleted"}
@@ -425,7 +423,7 @@ class Post extends React.Component {
             )}
           </div>
           <div className="card-footer mt-3">
-            <Comments comments={comments} />
+            <Comments items={comments} />
           </div>
         </MDBCardBody>
       </MDBCard>

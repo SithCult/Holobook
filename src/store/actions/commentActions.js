@@ -136,14 +136,13 @@ export const loadComments = (pid) => {
     const comments = firestore.collection("comment").where("pid", "==", pid);
 
     // Get comments and order them
-    comments
+    return comments
       .orderBy("timestamp", "desc")
       .get()
       .then((querySnapshot) => {
         let results = [];
 
         querySnapshot.forEach(function (doc) {
-          console.log("doc", doc.data());
           let data = doc.data();
 
           results.push({ id: doc.id, data });

@@ -55,31 +55,30 @@ class Comments extends React.Component {
     basic: true,
   };
 
-  getComments = (uid = "") => {
-    const { comments, auth } = this.props;
-
-    if (comments && auth) {
-      let result = comments.map((comment, key) => {
-        if (comment.data.pid === uid) {
-          return (
-            <>
-              <Comment comment={comment.data} key={key}></Comment>
-              {comments.map((subcomm, subkey) => {
-                if (subcomm.data.pid === comment.id) {
-                  return (
-                    <Comment comment={subcomm.data} key={subkey}></Comment>
-                  );
-                }
-              })}
-            </>
-          );
-        }
-      });
-    }
-  };
-
   render() {
-    return <>{this.getComments(this.props.uid)}</>;
+    const { items } = this.props;
+
+    return (
+      <>
+        {items &&
+          items.length > 0 &&
+          items.map((comment, i) => {
+            console.log(comment);
+            return (
+              <>
+                <Comment comment={comment.data} key={i} />
+                {items.map((subcomm, subkey) => {
+                  if (subcomm.data.pid === comment.id) {
+                    return (
+                      <Comment comment={subcomm.data} key={subkey}></Comment>
+                    );
+                  }
+                })}
+              </>
+            );
+          })}
+      </>
+    );
   }
 }
 

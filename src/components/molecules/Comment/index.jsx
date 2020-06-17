@@ -53,6 +53,13 @@ import bronzeUserIMG from "../../../assets/images/bronze.gif";
 class Comment extends React.Component {
   state = {};
 
+  componentDidMount = async () => {
+    console.log("PROPS", this.props);
+    this.setState({
+      receivedUser: await this.props.getUser(this.props.comment.author.uid),
+    });
+  };
+
   _calculateTimeAgo = (timestamp) => {
     TimeAgo.addLocale(en);
     const timeAgo = new TimeAgo("en-US");
@@ -66,16 +73,15 @@ class Comment extends React.Component {
     }
   };
 
-  componentDidMount() {}
-
   render() {
-    const { posts, auth, receivedUser, comment } = this.props;
+    const { comment } = this.props;
+    const { receivedUser } = this.state;
 
     return (
       <MDBRow className="d-flex justify-content-between">
         <MDBCol className="p-2">
           {(() => {
-            switch (comment.data.skin) {
+            switch (true) {
               case "gold":
                 return (
                   <img
@@ -120,9 +126,9 @@ class Comment extends React.Component {
               >
                 <div
                   className="clickable name"
-                  onClick={() => this.props.getUser(comment.data.author.uid)}
+                  onClick={() => this.props.getUser(comment.author.uid)}
                 >
-                  {comment.data.author.name}
+                  {comment.author.name}
                 </div>
                 <div>
                   {receivedUser !== true && receivedUser !== undefined ? (
@@ -227,15 +233,8 @@ class Comment extends React.Component {
             </MDBCol>
             <MDBCol className="ml-auto p-2 mb-auto">
               <small className="text-muted">
-                {this._calculateTimeAgo(comment.data.timestamp)}
+                {comment.timestamp && this._calculateTimeAgo(comment.timestamp)}
               </small>
-              {comment.data.skin && comment.data.skin !== "standard" && (
-                <div className="skin-label">
-                  <small className={comment.data.skin + "-label"}>
-                    {comment.data.skin} Edition
-                  </small>
-                </div>
-              )}
             </MDBCol>
           </MDBRow>
           <MDBRow>

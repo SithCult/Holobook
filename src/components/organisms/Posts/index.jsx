@@ -72,7 +72,6 @@ class Posts extends React.Component {
 
     if (posts && auth) {
       let result = posts.map((post, i) => {
-        console.log(post);
         return (
           <Post
             post={post}
