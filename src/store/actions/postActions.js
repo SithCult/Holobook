@@ -1,3 +1,4 @@
+// Create a new post
 export const createPost = (newPost) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -28,6 +29,7 @@ export const createPost = (newPost) => {
   };
 };
 
+// Like a post
 export const likePost = (id, uid, likes) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -67,6 +69,7 @@ export const likePost = (id, uid, likes) => {
   };
 };
 
+// Unlike a post
 export const unlikePost = (id, uid, likes) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -93,6 +96,7 @@ export const unlikePost = (id, uid, likes) => {
   };
 };
 
+// Delete a post
 export const removePost = (uid, post) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -122,6 +126,7 @@ export const removePost = (uid, post) => {
   };
 };
 
+// Load <amount> amount of posts
 export const loadPosts = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -156,6 +161,7 @@ export const loadPosts = (amount) => {
   };
 };
 
+//
 export const commentPost = (postId, comment, previousComments) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -195,6 +201,7 @@ export const commentPost = (postId, comment, previousComments) => {
   };
 };
 
+// Load all posts
 export const loadAllPosts = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();

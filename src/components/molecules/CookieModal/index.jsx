@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -18,7 +19,9 @@ import {
 
 //> CSS
 import "./cookie.scss";
+//#endregion
 
+//#region > Components
 class ModalPage extends React.Component {
   state = {
     modal1: localStorage.getItem("cookie") ? false : true,
@@ -132,8 +135,11 @@ class ModalPage extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Exports
 export default ModalPage;
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

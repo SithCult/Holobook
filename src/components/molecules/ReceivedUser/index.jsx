@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -18,7 +19,9 @@ import {
   MDBSpinner,
   MDBIcon,
 } from "mdbreact";
+//#endregion
 
+//#region > Components
 class ReceivedUser extends React.Component {
   handlePopoverChange = (open) => {
     if (!open) {
@@ -127,8 +130,11 @@ class ReceivedUser extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Exports
 export default ReceivedUser;
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -50,7 +51,9 @@ import defaultUserIMG from "../../../assets/images/default.gif";
 import goldUserIMG from "../../../assets/images/gold.gif";
 import lightUserIMG from "../../../assets/images/light.gif";
 import bronzeUserIMG from "../../../assets/images/bronze.gif";
+//#endregion
 
+//#region > Components
 class Posts extends React.Component {
   state = {
     username: "",
@@ -498,7 +501,9 @@ class Posts extends React.Component {
     return <>{this.getPosts()}</>;
   }
 }
+//#endregion
 
+//#region > Functions
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
@@ -521,8 +526,11 @@ const mapDispatchToProps = (dispatch) => {
     removePost: (uid, postID) => dispatch(removePost(uid, postID)),
   };
 };
+//#endregion
 
+//#region > Exports
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

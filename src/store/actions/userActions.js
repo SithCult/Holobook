@@ -1,3 +1,4 @@
+// Get user by uid
 export const getUser = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -23,7 +24,7 @@ export const getUser = (uid) => {
   };
 };
 
-//  Retrieve donations from Firestore
+// Retrieve donations from Firestore
 export const getDonations = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -55,7 +56,7 @@ export const getDonations = (uid) => {
   };
 };
 
-//  Store donation and update user badges
+// Store donation and update user badges
 export const updateBadgesDonate = (
   badges,
   details,
@@ -67,7 +68,7 @@ export const updateBadgesDonate = (
     const firebase = getFirebase();
     const firestore = getFirestore();
 
-    //  Get the unique ID of the current user
+    // Get the unique ID of the current user
     const uid = firebase.auth().currentUser.uid;
 
     let newBadges = [];
@@ -119,7 +120,7 @@ export const updateBadgesDonate = (
   };
 };
 
-//  Store donation
+// Store donation
 export const writeDonation = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
@@ -140,6 +141,7 @@ export const writeDonation = (amount) => {
   };
 };
 
+// Sends dispatch to clear received user
 export const clearUser = () => {
   return (dispatch) => {
     // Clear currently selected user
