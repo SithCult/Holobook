@@ -424,7 +424,7 @@ class Post extends React.Component {
           </div>
           <hr />
           <div className="mt-3">
-            <Comments items={comments} />
+            <Comments items={comments} pid={post.id} load={this.props.load} />
           </div>
         </MDBCardBody>
       </MDBCard>

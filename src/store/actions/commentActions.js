@@ -6,20 +6,18 @@ export const createComment = (newComment) => {
     // Get userId
     let uid = newComment.author.uid;
     // Generate timestamp
-    let timestamp = new Date().getTime();
-    // Create a unique id for the comment
-    let uniqueID = timestamp + uid.toString().substring(0, 15);
+    let timestamp = newComment.timestamp;
 
     // Create comment
     firestore
       .collection("comment")
-      .doc(uniqueID)
+      .doc()
       .set({
-        ...newComment,
-        msg: newComment.msg,
+        msg: newComment.comment,
         author: newComment.author,
         timestamp: timestamp,
         pid: newComment.pid,
+        cid: newComment.cid,
       })
       .then(() => {
         dispatch({ type: "CREATION_SUCCESS", newComment });

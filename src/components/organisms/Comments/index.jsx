@@ -55,25 +55,106 @@ class Comments extends React.Component {
     basic: true,
   };
 
+  changeTextareaHandler = (event) => {
+    event.target.style.overflow = "hidden";
+    event.target.style.height = 0;
+    event.target.style.height = event.target.scrollHeight + "px";
+
+    if (event.target.value.length <= 500) {
+      this.setState({
+        comment: event.target.value,
+      });
+    }
+  };
+
+  createPost = (pid, cid) => {
+    console.log(pid, cid);
+    let content = this.state.comment;
+    let author = {
+      uid: this.props.auth.uid,
+      name: this.props.profile.title + " " + this.props.profile.sith_name,
+    };
+    let timestamp = new Date().getTime();
+    let basic = this.state.post_basic;
+    if (content && author) {
+      // Normalize data
+      let data = {
+        comment: content.replace(/\r\n|\r|\n/g, "</br>"),
+        author,
+        timestamp,
+        pid,
+        cid,
+        basic: basic,
+      };
+
+      // Tell Firebase to create post
+      this.setState(
+        {
+          postError: false,
+        },
+        () => {
+          this.setState({ comment: "" });
+          this.props.createComment(data);
+          this.props.load();
+        }
+      );
+    } else {
+      console.log("do not post - not enough chars or no author");
+    }
+  };
+
   render() {
     const { items } = this.props;
 
     return (
       <>
+        <MDBInput
+          type="textarea"
+          label="Add a comment"
+          name="comment"
+          outline
+          className={this.state.post_basic ? "basic hand" : undefined}
+          value={this.state.comment}
+          onChange={this.changeTextareaHandler}
+        />
+        <MDBBtn
+          color="elegant"
+          rounded
+          onClick={() => this.createPost(this.props.pid, null)}
+        ></MDBBtn>
         {items &&
           items.length > 0 &&
           items.map((comment, i) => {
-            console.log(comment);
             return (
               <>
                 {!comment.data.cid && (
-                  <Comment comment={comment.data} key={i} />
+                  <>
+                    <Comment comment={comment.data} key={i} />
+                    <MDBInput
+                      type="textarea"
+                      label="Add a comment"
+                      name="comment"
+                      outline
+                      className={this.state.post_basic ? "basic hand" : null}
+                      value={this.state.comment}
+                      onChange={this.changeTextareaHandler}
+                    />
+                    <MDBBtn
+                      color="elegant"
+                      rounded
+                      onClick={() =>
+                        this.createPost(comment.data.pid, comment.id)
+                      }
+                    >
+                      <MDBIcon icon="paper-plane" className="pr-2" size="lg" />
+                      Post
+                    </MDBBtn>
+                  </>
                 )}
                 {items.map((child, c) => {
                   if (child.data.cid === comment.id) {
-                    console.log(child.data.cid, comment.id);
                     return (
-                      <Comment comment={child.data} key={c} child={true} />
+                      <Comment comment={child.data} key={c} child></Comment>
                     );
                   }
                 })}
@@ -97,6 +178,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadComments: () => dispatch(loadComments()),
+    createComment: (comment) => dispatch(createComment(comment)),
   };
 };
 //#endregion
