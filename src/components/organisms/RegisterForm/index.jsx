@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -46,13 +47,18 @@ import "./registerform.scss";
 //> Images
 import IMGgroup from "../../../assets/images/group.png";
 import IMGlogo from "../../../assets/images/logo_white.png";
+//#endregion
 
+//#region > Data
 // Country list
 const countries = countryList().getData();
+//#endregion
 
+//#region > Components
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
+
     this.firstRow = React.createRef();
   }
 
@@ -73,17 +79,18 @@ class HomePage extends React.Component {
   };
 
   componentDidMount = () => {
-    this._getIPData();
+    this._fetchAllCountries();
   };
 
   submitHandler = (event) => {
     event.preventDefault();
 
     let result = this._signUserUp();
+
     if (result.value) {
-      console.log("Success");
+      console.log("Created user.");
     } else {
-      console.log(result);
+      console.error("Error creating user:", result);
     }
   };
 
@@ -354,24 +361,6 @@ class HomePage extends React.Component {
     });
   };
 
-  _getIPData = async () => {
-    // Get country data from ipapi
-    await axios
-      .get("https://ipapi.co/json/")
-      .then((response) => {
-        let data = response.data;
-        this.setState(
-          {
-            country: data,
-          },
-          () => this._fetchAllCountries(data.country)
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   _solidifyData = () => {
     let data = {
       email: this.state.email,
@@ -381,12 +370,6 @@ class HomePage extends React.Component {
       sith_name: this.state.sn,
       code: this.state.code,
       password: this.state.password ? this.state.password : null,
-      tracking: [
-        {
-          ...this.state.country,
-          date: Date.now(),
-        },
-      ],
       details: {
         note: this.state.additional ? this.state.additional : null,
         lightsaber: {
@@ -944,7 +927,7 @@ class HomePage extends React.Component {
                           />
                           <MDBInput
                             label="I agree, that the data from this form is being stored and used by 
-                  SithCult in order for you to receive any service"
+                  SithCult in order for me to receive any service"
                             type="checkbox"
                             containerClass="my-2"
                             checked={this.state.checkData}
@@ -1008,7 +991,9 @@ class HomePage extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Functions
 const mapStateToProps = (state) => {
   return {
     authError: state.auth.authError,
@@ -1023,11 +1008,14 @@ const mapDispatchToProps = (dispatch) => {
     signUp: (newUser) => dispatch(signUp(newUser)),
   };
 };
+//#endregion
 
+//#region > Exports
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withRouter(HomePage));
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

@@ -156,6 +156,45 @@ export const loadPosts = (amount) => {
   };
 };
 
+export const commentPost = (postId, comment, previousComments) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+
+    let localComments = previousComments;
+
+    if (localComments) {
+      if (Array.isArray(localComments)) {
+        localComments.push(comment);
+      } else {
+        localComments = [];
+        localComments.push(comment);
+      }
+    } else {
+      localComments = [];
+      localComments.push(comment);
+    }
+
+    // Create post
+    firestore
+      .collection("posts")
+      .doc(postId)
+      .set(
+        {
+          comments: localComments,
+        },
+        { merge: true }
+      )
+      .then(() => {
+        dispatch({ type: "COMMENT_SUCCESS", postId });
+        return;
+      })
+      .catch((err) => {
+        dispatch({ type: "COMMENT_ERROR", err });
+      });
+  };
+};
+
 export const loadAllPosts = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();

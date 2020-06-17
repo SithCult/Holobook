@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -68,7 +69,9 @@ import goldUserIMG from "../../../assets/images/gold.gif";
 import lightUserIMG from "../../../assets/images/light.gif";
 import bronzeUserIMG from "../../../assets/images/bronze.gif";
 import holocronIcon from "../../../assets/images/icons/holocron.png";
+//#endregion
 
+//#region > Data
 //> Data
 // Feelings
 const feelings = [
@@ -84,7 +87,9 @@ const feelings = [
   { name: "dead", icon: "dizzy" },
   { name: "flushed", icon: "flushed" },
 ];
+//#endregion
 
+//#region > Components
 class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
@@ -102,15 +107,13 @@ class ProfilePage extends React.Component {
       icon: "meh-blank",
     },
     postsVisible: 5,
-    disablePhotoUpload: true,
     disablePostAsSithCult: true,
     warningBeta: false,
     showDeletedPosts: false,
+    disablePhotoUpload: true,
   };
 
   componentDidMount = () => {
-    // Get IP data once every page call
-    this._getIPData();
     let basic = localStorage.getItem("language_basic");
     let visibility = localStorage.getItem("post_visibility");
     if (basic) {
@@ -275,8 +278,6 @@ class ProfilePage extends React.Component {
         ? null
         : this.state.post_feeling;
     let basic = this.state.post_basic;
-    let ip = this.state.post_ip ? this.state.post_ip : null;
-    let image = this.state.postImageURL ? this.state.postImageURL : null;
 
     // Check if the content is English for a
     if (target) {
@@ -292,15 +293,14 @@ class ProfilePage extends React.Component {
       let data = {
         content: content.replace(/\r\n|\r|\n/g, "</br>"),
         details: {
-          characters: characters,
+          characters,
           words: wordcount,
           avgWordLength: parseInt(characters) / parseInt(wordcount),
-          feeling: feeling,
-          ip: ip,
+          feeling,
         },
         author,
-        timestamp: timestamp,
-        target: target,
+        timestamp,
+        target,
         skin: skin ? skin : "standard",
         language: {
           0: language[0][0],
@@ -308,7 +308,6 @@ class ProfilePage extends React.Component {
           2: language[2][0],
         },
         basic: basic,
-        image: image,
       };
 
       // Tell Firebase to create post
@@ -330,21 +329,6 @@ class ProfilePage extends React.Component {
         () => console.log("do not post - not enough chars or no author")
       );
     }
-  };
-
-  _getIPData = async () => {
-    // Get country data from ipapi
-    await axios
-      .get("https://ipapi.co/json/")
-      .then((response) => {
-        let data = response.data;
-        this.setState({
-          post_ip: data,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   _detectLanguage = (text, words) => {
@@ -534,7 +518,10 @@ class ProfilePage extends React.Component {
                 </p>
                 <p className="text-muted">{this.getCountry(profile.address)}</p>
                 {this.getBadges(profile.badges)}
-                <div className="mt-3 features pt-4">
+                <p className="mt-3">
+                  <small>{profile.status}</small>
+                </p>
+                <div className="mt-3 features">
                   <p className="lead mb-2">
                     <img
                       src={holocronIcon}
@@ -569,7 +556,7 @@ class ProfilePage extends React.Component {
                   label="What's on your mind?"
                   name="post"
                   outline
-                  className={this.state.post_basic && "basic hand"}
+                  className={this.state.post_basic ? "basic hand" : undefined}
                   value={this.state.post}
                   onChange={this.changeTextareaHandler}
                 />
@@ -593,7 +580,9 @@ class ProfilePage extends React.Component {
                         <MDBIcon
                           icon="language"
                           size="lg"
-                          className={this.state.post_basic && "text-gold"}
+                          className={
+                            this.state.post_basic ? "text-gold" : undefined
+                          }
                         />
                       </span>
                       <span>Toggle Imperial Basic</span>
@@ -617,10 +606,11 @@ class ProfilePage extends React.Component {
                           icon="globe-americas"
                           size="lg"
                           className={
-                            this.state.post_visibility &&
-                            (this.state.post_languageApproved
-                              ? "text-gold"
-                              : "text-danger")
+                            this.state.post_visibility
+                              ? this.state.post_languageApproved
+                                ? "text-gold"
+                                : "text-danger"
+                              : undefined
                           }
                         />
                       </span>
@@ -758,8 +748,9 @@ class ProfilePage extends React.Component {
                             key={i}
                             name={feeling.name}
                             className={
-                              this.state.post_feeling.name === feeling.name &&
-                              "active"
+                              this.state.post_feeling.name === feeling.name
+                                ? "active"
+                                : undefined
                             }
                             onClick={(event) =>
                               this.handleFeeling(event, feeling)
@@ -769,8 +760,9 @@ class ProfilePage extends React.Component {
                               icon={feeling.icon}
                               size="lg"
                               className={
-                                this.state.post_feeling.name === feeling.name &&
-                                "text-gold"
+                                this.state.post_feeling.name === feeling.name
+                                  ? "text-gold"
+                                  : undefined
                               }
                             />
                             {feeling.name}
@@ -897,9 +889,10 @@ class ProfilePage extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Functions
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
@@ -915,8 +908,11 @@ const mapDispatchToProps = (dispatch) => {
     loadAllPosts: (amount) => dispatch(loadAllPosts(amount)),
   };
 };
+//#endregion
 
+//#region > Exports
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage);
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

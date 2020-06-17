@@ -5,8 +5,16 @@ import ProfilePage from "./ProfilePage";
 import LoginPage from "./LoginPage";
 import ImperialBasicTraining from "./ImperialBasicTraining";
 import MessagePage from "./MessagePage";
+import DonatePage from "./DonatePage";
 
-export { HomePage, ProfilePage, LoginPage, ImperialBasicTraining, MessagePage };
+export {
+  HomePage,
+  ProfilePage,
+  LoginPage,
+  ImperialBasicTraining,
+  MessagePage,
+  DonatePage,
+};
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
