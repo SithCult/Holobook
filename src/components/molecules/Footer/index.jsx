@@ -114,7 +114,55 @@ class Footer extends React.Component {
             </p>
           </MDBContainer>
           <MDBContainer fluid>
-            &copy; {new Date().getFullYear()} Copyright: SithCult
+            <div>
+              &copy; {new Date().getFullYear()} Copyright: SithCult
+              <p className="my-2 font-weight-bold">
+                Made with
+                <i
+                  className="fas fa-heart pulse red-text ml-1 mr-1"
+                  aria-hidden="true"
+                ></i>
+                by
+                <a
+                  href="https://www.aichner-christian.com"
+                  target="_blank"
+                  className="ml-1"
+                  rel="noopener noreferrer"
+                >
+                  us
+                </a>
+                .
+              </p>
+            </div>
+            <div className="">
+              <small>
+                Stable release
+                {process.env.REACT_APP_VERSION && (
+                  <>
+                    <span className="pl-2 pr-2">·</span>
+                    Version v{process.env.REACT_APP_VERSION}
+                  </>
+                )}
+                <span className="pl-2 pr-2">·</span>
+                <a
+                  href="https://github.com/SithCult/Holobook"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <MDBIcon fab icon="github" className="pr-2" />
+                  View on GitHub
+                </a>
+                <span className="pl-2 pr-2">·</span>
+                <a
+                  href="https://github.com/SithCult/Holobook/issues/new?template=bug_report.md"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <MDBIcon icon="bug" className="pr-2" />
+                  Report bug
+                </a>
+              </small>
+            </div>
           </MDBContainer>
         </div>
       </MDBFooter>
