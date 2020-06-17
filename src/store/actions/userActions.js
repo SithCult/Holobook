@@ -4,6 +4,7 @@
 import sha256 from "js-sha256";
 //#endregion
 
+//#region > Exports
 export const getUser = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -162,6 +163,7 @@ export const clearUser = () => {
     dispatch({ type: "USERLOAD_CLEAR" });
   };
 };
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
