@@ -30,16 +30,18 @@ export const createPost = (newPost) => {
 };
 
 // Delete a post
-export const removePost = (uid, post) => {
+export const removePost = (pid, uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
-    if (uid === post.data.author.uid) {
+    const curUid = firebase.auth().currentUser.uid;
+
+    if (curUid === uid) {
       // Remove post
       firestore
         .collection("posts")
-        .doc(post.id)
+        .doc(pid)
         .set(
           {
             visible: false,
@@ -47,7 +49,7 @@ export const removePost = (uid, post) => {
           { merge: true }
         )
         .then(() => {
-          dispatch({ type: "REMOVE_SUCCESS", id: post.id });
+          dispatch({ type: "REMOVE_SUCCESS", pid });
           return;
         })
         .catch((err) => {

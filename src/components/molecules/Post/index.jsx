@@ -32,7 +32,9 @@ import {
 
 //> Redux Firebase
 // Getting user information
-import { getUser, clearUser } from "../../../store/actions/userActions";
+import { getUser } from "../../../store/actions/userActions";
+// Likes
+import { createLike } from "../../../store/actions/likeActions";
 // Connect
 import { connect } from "react-redux";
 
@@ -46,12 +48,13 @@ import bronzeUserIMG from "../../../assets/images/bronze.gif";
 //#region > Components
 class Post extends React.Component {
   state = {
-    likes: 0,
+    liked: false,
   };
 
-  componentDidMount = () => {
-    console.log(this.props.uid);
-    this.props.getUser(this.props.uid);
+  componentDidMount = async () => {
+    this.setState({
+      receivedUser: await this.props.getUser(this.props.uid),
+    });
   };
 
   calculateTimeAgo = (timestamp) => {
@@ -62,7 +65,8 @@ class Post extends React.Component {
   };
 
   render() {
-    const { auth, post, receivedUser, key } = this.props;
+    const { auth, post, key } = this.props;
+    const { receivedUser } = this.state;
 
     return (
       <MDBCard
@@ -115,12 +119,7 @@ class Post extends React.Component {
                   className="furtherInfo"
                   onChange={this.handlePopoverChange}
                 >
-                  <div
-                    className="clickable name"
-                    onClick={() => this.props.getUser(post.data.author.uid)}
-                  >
-                    {post.data.author.name}
-                  </div>
+                  <div className="clickable name">{post.data.author.name}</div>
                   <div>
                     {receivedUser !== true && receivedUser !== undefined ? (
                       <>
@@ -314,20 +313,16 @@ class Post extends React.Component {
                 icon="angle-up"
                 className="text-white p-2"
                 onClick={() => {
-                  this.props.createLike(post.id);
+                  this.setState(
+                    {
+                      liked: true,
+                    },
+                    () => this.props.createLike(post.id)
+                  );
                 }}
                 size="lg"
               />
-              <span className="text-muted">
-                {post.data.likes.length !== 0 ? (
-                  <>
-                    {post.data.likes.length + " "}
-                    {post.data.likes.length > 1 ? "approvals" : "approval"}
-                  </>
-                ) : (
-                  "0 approvals"
-                )}
-              </span>
+              <span className="text-muted">blyat</span>
             </>
             {/*this.alreadyLiked(post.data.likes) ? (
                   <>
@@ -393,8 +388,8 @@ class Post extends React.Component {
                     <small
                       className="clickable text-danger"
                       onClick={() => {
-                        this.props.removePost(auth.uid, post);
-                        this.props.load(this.props.posts.length);
+                        this.props.removePost(post.id, post.data.author.uid);
+                        this.props.load();
                       }}
                     >
                       Remove post permanently
@@ -443,7 +438,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getUser: (uid) => dispatch(getUser(uid)),
-    clearUser: () => dispatch(clearUser()),
+    createLike: (pid) => dispatch(createLike(pid)),
   };
 };
 //#endregion

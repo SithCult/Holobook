@@ -15,7 +15,7 @@ export const createLike = (pid) => {
         uid,
         timestamp: new Date().getTime(),
       })
-      .then(() => {
+      .then((res) => {
         dispatch({ type: "CREATION_SUCCESS", pid, uid });
       })
       .catch((err) => {

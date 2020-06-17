@@ -7,19 +7,19 @@ export const getUser = (uid) => {
     // Get loading
     dispatch({ type: "USERLOAD_LOADING" });
 
-    firestore
+    return firestore
       .collection("users")
       .doc(uid)
       .get()
       .then((doc) => {
         if (!doc.exists) {
-          dispatch({ type: "USERLOAD_ERROR", err: "User no longer exists." });
+          return false;
         } else {
-          dispatch({ type: "USERLOAD_SUCCESS", results: doc.data() });
+          return doc.data();
         }
       })
       .catch((err) => {
-        dispatch({ type: "USERLOAD_ERROR", err });
+        return false;
       });
   };
 };
