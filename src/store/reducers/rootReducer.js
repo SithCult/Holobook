@@ -3,6 +3,7 @@
 import authReducer from "./authReducer";
 import postReducer from "./postReducer";
 import userReducer from "./userReducer";
+import likeReducer from "./likeReducer";
 import donMsgReducer from "./donMsgReducer";
 
 //> Redux
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   auth: authReducer, // User authentication
   post: postReducer, // Post management
   user: userReducer, // User related functionality
+  like: likeReducer, // Like of posts or comments
   donMsg: donMsgReducer, // Donation messages
   firestore: firestoreReducer, // Database
   firebase: firebaseReducer, // Authentication

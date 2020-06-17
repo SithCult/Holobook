@@ -38,8 +38,6 @@ import {
   editPost,
   loadPosts,
   reportPost,
-  likePost,
-  unlikePost,
 } from "../../../store/actions/postActions";
 // Getting user information
 import { getUser, clearUser } from "../../../store/actions/userActions";
@@ -62,6 +60,7 @@ class Posts extends React.Component {
     progress: 0,
     avatarURL: "",
     basic: true,
+    approvals: 0,
   };
 
   _calculateTimeAgo = (timestamp) => {
@@ -412,10 +411,12 @@ class Posts extends React.Component {
                       {post.data.likes.length !== 0 ? (
                         <>
                           {post.data.likes.length + " "}
-                          {post.data.likes.length > 1 ? "approves" : "approve"}
+                          {post.data.likes.length > 1
+                            ? "approvals"
+                            : "approval"}
                         </>
                       ) : (
-                        "0 approves"
+                        "0 approvals"
                       )}
                     </span>
                   </>
@@ -438,10 +439,12 @@ class Posts extends React.Component {
                       {post.data.likes.length !== 0 ? (
                         <>
                           {post.data.likes.length + " "}
-                          {post.data.likes.length > 1 ? "approves" : "approve"}
+                          {post.data.likes.length > 1
+                            ? "approvals"
+                            : "approval"}
                         </>
                       ) : (
-                        "0 approves"
+                        "0 approvals"
                       )}
                     </span>
                   </>
@@ -515,12 +518,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    likePost: (uniqueID, user, likes) =>
-      dispatch(likePost(uniqueID, user, likes)),
     getUser: (uid) => dispatch(getUser(uid)),
     clearUser: () => dispatch(clearUser()),
-    unlikePost: (uniqueID, user, likes) =>
-      dispatch(unlikePost(uniqueID, user, likes)),
     removePost: (uid, postID) => dispatch(removePost(uid, postID)),
   };
 };

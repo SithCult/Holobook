@@ -22,6 +22,9 @@
       }
       &.text-white {
         color: #e2264d !important;
+        &:hover {
+          color: lighten(#e2264d, 10%) !important;
+        }
       }
     }
 
