@@ -396,8 +396,7 @@ class Posts extends React.Component {
                 {this.alreadyLiked(post.data.likes) ? (
                   <>
                     <MDBIcon
-                      fab
-                      icon="sith"
+                      icon="angle-up"
                       className="text-white p-2"
                       onClick={() => {
                         this.props.unlikePost(
@@ -423,8 +422,7 @@ class Posts extends React.Component {
                 ) : (
                   <>
                     <MDBIcon
-                      fab
-                      icon="sith"
+                      icon="angle-up"
                       className="text-muted p-2"
                       onClick={() => {
                         this.props.likePost(
