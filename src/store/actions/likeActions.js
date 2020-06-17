@@ -16,7 +16,7 @@ export const createLike = (pid) => {
         timestamp: new Date().getTime(),
       })
       .then(() => {
-        dispatch({ type: "CREATION_SUCCESS", newPost });
+        dispatch({ type: "CREATION_SUCCESS", pid, uid });
       })
       .catch((err) => {
         dispatch({ type: "CREATION_ERROR", err });
@@ -35,7 +35,7 @@ export const removeLike = (lid) => {
       .doc(lid)
       .delete()
       .then(() => {
-        dispatch({ type: "REMOVE_SUCCESS", newPost });
+        dispatch({ type: "REMOVE_SUCCESS", lid });
       })
       .catch((err) => {
         dispatch({ type: "REMOVE_ERROR", err });
