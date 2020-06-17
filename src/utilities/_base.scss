@@ -85,6 +85,10 @@ body {
   cursor: pointer;
 }
 
+.word-break-all {
+  word-break: break-all !important;
+}
+
 .btn-modern {
   overflow: visible !important;
   position: relative;

@@ -6,7 +6,14 @@ import { Link } from "react-router-dom";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import { MDBContainer, MDBBtn, MDBAlert, MDBIcon } from "mdbreact";
+import {
+  MDBContainer,
+  MDBBtn,
+  MDBAlert,
+  MDBIcon,
+  MDBRow,
+  MDBCol,
+} from "mdbreact";
 
 //> Redux
 // Connect
@@ -35,7 +42,7 @@ class MessagePage extends React.Component {
               all over the world.
               <br />
               We are a <strong>non-profit</strong>, <strong>open source</strong>{" "}
-              Social Network designed for Star Wars fans.
+              Social Network designed by and for Star Wars fans.
             </p>
             <a
               href="https://github.com/SithCult"
@@ -47,28 +54,35 @@ class MessagePage extends React.Component {
                 GitHub
               </MDBBtn>
             </a>
-            <div className="mt-5 text-left">
-              <h2 className="mb-4">Contact information</h2>
-              <p className="lead font-weight-bold mb-0">Head Engineer</p>
-              <small className="text-muted">
-                Department of Media Technology and Software Development
-              </small>
-              <p className="mt-2">
-                Christian Aichner
-                <br />
-                Emailwerkstraße 29
-                <br />
-                A-9523 Landskron
-              </p>
-              <p>
-                <a
-                  className="underlined px-2"
-                  href="mailto:center@sithcult.com"
-                >
-                  E-Mail us
-                </a>
-              </p>
-            </div>
+            <MDBRow>
+              <MDBCol md="4">
+                <div className="mt-5 text-left">
+                  <h2 className="mb-4">Contact information</h2>
+                  <p className="lead font-weight-bold mb-0">Contractor</p>
+                  <small className="text-success">
+                    Holobook is being developed and maintained by the external
+                    contractor "Werbeagentur Christian Aichner", a advertisement
+                    agency based in Austria, Europe. SithCult is in no way
+                    affiliated with this company.
+                  </small>
+                  <p className="mt-2">
+                    Christian Aichner
+                    <br />
+                    Emailwerkstraße 29
+                    <br />
+                    AT-9523 Landskron
+                  </p>
+                  <p>
+                    <a
+                      className="underlined px-2"
+                      href="mailto:center@sithcult.com"
+                    >
+                      E-Mail us
+                    </a>
+                  </p>
+                </div>
+              </MDBCol>
+            </MDBRow>
           </>
         )}
         {this.props.location.pathname === "/privacy/me" && (
