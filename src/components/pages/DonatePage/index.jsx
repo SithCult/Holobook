@@ -221,9 +221,6 @@ class DonatePage extends React.Component {
                 </MDBCard>
               </MDBCol>
             </MDBRow>
-            <MDBBtn color="white">
-              <MDBIcon icon="share" /> Share
-            </MDBBtn>
             <MDBBtn
               color="white"
               onClick={() => {
