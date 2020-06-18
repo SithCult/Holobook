@@ -30,6 +30,7 @@ import {
   loadAllPosts,
   reportPost,
 } from "../../../store/actions/postActions";
+import { loadComments } from "../../../store/actions/commentActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -128,7 +129,14 @@ class ProfilePage extends React.Component {
     }
 
     // Load posts
-    this.loadPosts(this.state.postsVisible);
+    this.refreshData();
+  };
+
+  refreshData = () => {
+    this.props.loadPosts(
+      this.props?.posts?.length ? this.props.posts.length : 5
+    );
+    this.props.loadComments();
   };
 
   loadMore = () => {
@@ -451,8 +459,7 @@ class ProfilePage extends React.Component {
   };
 
   render() {
-    const { auth, profile } = this.props;
-
+    const { auth, profile, comments } = this.props;
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
     if (profile.badges) {
@@ -465,7 +472,6 @@ class ProfilePage extends React.Component {
         );
       }
     }
-
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
         <MDBRow>
@@ -867,10 +873,15 @@ class ProfilePage extends React.Component {
                 </div>
               )}
             <div className="posts">
+              <MDBBtn onClick={this.refreshData}>
+                <MDBIcon icon="sync"></MDBIcon> Refresh
+              </MDBBtn>
+              ;
               <Posts
                 posts={this.props.posts}
+                comments={this.props.comments}
                 update={this.loadMore}
-                load={this.loadPosts}
+                load={this.props.loadPosts}
               />
               {this.props.postLoading && (
                 <div className="text-center spinners">
@@ -898,6 +909,7 @@ const mapStateToProps = (state) => {
     profile: state.firebase.profile,
     posts: state.post.results,
     postLoading: state.post.loading,
+    comments: state.comment.comments,
   };
 };
 
@@ -906,6 +918,7 @@ const mapDispatchToProps = (dispatch) => {
     createPost: (newPost) => dispatch(createPost(newPost)),
     loadPosts: (amount) => dispatch(loadPosts(amount)),
     loadAllPosts: (amount) => dispatch(loadAllPosts(amount)),
+    loadComments: () => dispatch(loadComments()),
   };
 };
 //#endregion

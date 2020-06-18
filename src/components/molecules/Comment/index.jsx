@@ -28,6 +28,8 @@ import {
   MDBPopoverHeader,
   MDBSpinner,
   MDBBadge,
+  MDBListGroup,
+  MDBListGroupItem,
 } from "mdbreact";
 
 //> Redux Firebase
@@ -62,9 +64,11 @@ class Comment extends React.Component {
   componentDidMount = async () => {
     this.setState(
       {
-        receivedUser: await this.props.getUser(this.props.comment.author.uid),
+        receivedUser: await this.props.getUser(
+          this.props.comment.data.author.uid
+        ),
       },
-      () => this.checkTag(this.props.comment.msg)
+      () => this.checkTag(this.props.comment.data.msg)
     );
   };
 
@@ -103,10 +107,8 @@ class Comment extends React.Component {
   };
 
   render() {
-    const { auth, comment, child } = this.props;
+    const { auth, comment, child, cid } = this.props;
     const { receivedUser, message } = this.state;
-
-    console.log(receivedUser);
 
     return (
       <>
@@ -151,7 +153,7 @@ class Comment extends React.Component {
                     );
                 }
               })()}
-            {auth.uid === comment.author.uid && (
+            {auth.uid === comment.data.author.uid && (
               <div className="w-100 text-center settings">
                 <MDBIcon
                   icon="ellipsis-v"
@@ -175,9 +177,9 @@ class Comment extends React.Component {
                 >
                   <div
                     className="clickable name"
-                    onClick={() => this.props.getUser(comment.author.uid)}
+                    onClick={() => this.props.getUser(comment.data.author.uid)}
                   >
-                    {comment.author.name}
+                    {comment.data.author.name}
                   </div>
                   <div>
                     {receivedUser !== true && receivedUser !== undefined ? (
@@ -282,8 +284,8 @@ class Comment extends React.Component {
               </div>
               <div className="ml-auto p-2 mb-auto time">
                 <small className="text-muted">
-                  {comment.timestamp &&
-                    this._calculateTimeAgo(comment.timestamp)}
+                  {comment.data.timestamp &&
+                    this._calculateTimeAgo(comment.data.timestamp)}
                 </small>
               </div>
             </div>
@@ -295,7 +297,18 @@ class Comment extends React.Component {
             </div>
           </div>
         </div>
-        {this.state.settings && <div className="settings-tab">Functions</div>}
+        {this.state.settings && (
+          <div className="settings-tab">
+            <MDBListGroup className="commentoptions">
+              <MDBListGroupItem>Edit</MDBListGroupItem>
+              <MDBListGroupItem
+                onClick={() => this.props.removeComment(comment)}
+              >
+                Delete
+              </MDBListGroupItem>
+            </MDBListGroup>
+          </div>
+        )}
       </>
     );
   }
@@ -319,7 +332,7 @@ const mapDispatchToProps = (dispatch) => {
     getUserByName: (sithName) => dispatch(getUserByName(sithName)),
     unlikeComment: (uniqueID, user, likes) =>
       dispatch(unlikeComment(uniqueID, user, likes)),
-    removeComment: (uid, commentID) => dispatch(removeComment(uid, commentID)),
+    removeComment: (comment) => dispatch(removeComment(comment)),
   };
 };
 //#endregion

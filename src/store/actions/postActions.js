@@ -67,14 +67,12 @@ export const loadPosts = (amount) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
-    dispatch({ type: "LOAD_LOADING" });
-
     let posts = firestore.collection("posts").where("visible", "==", true);
 
     if (amount < 0) {
       amount = 0;
     }
-
+    console.log(amount);
     posts
       .orderBy("timestamp", "desc")
       .limit(amount)
@@ -87,8 +85,8 @@ export const loadPosts = (amount) => {
 
           results.push({ id: doc.id, data });
         });
-
-        dispatch({ type: "LOAD_SUCCESS", results });
+        console.log(results);
+        dispatch({ type: "LOADPOSTS_SUCCESS", results });
       })
       .catch((err) => {
         dispatch({ type: "LOAD_ERROR", err });
@@ -123,7 +121,7 @@ export const loadAllPosts = (amount) => {
           results.push({ id: doc.id, data });
         });
 
-        dispatch({ type: "LOAD_SUCCESS", results });
+        dispatch({ type: "LOADPOSTS_SUCCESS", results });
       })
       .catch((err) => {
         dispatch({ type: "LOAD_ERROR", err });

@@ -18,6 +18,7 @@ export const createComment = (newComment) => {
         timestamp: timestamp,
         pid: newComment.pid,
         cid: newComment.cid,
+        visible: true,
       })
       .then(() => {
         dispatch({ type: "CREATION_SUCCESS", newComment });
@@ -98,15 +99,17 @@ export const unlikeComment = (id, uid, likes) => {
 };
 
 // Delete a comment
-export const removeComment = (uid, comment) => {
+export const removeComment = (comment) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
+    const uid = firebase.auth().currentUser.uid;
+
     if (uid === comment.data.author.uid) {
       // Remove comment
       firestore
-        .collection("comments")
+        .collection("comment")
         .doc(comment.id)
         .set(
           {
@@ -128,12 +131,12 @@ export const removeComment = (uid, comment) => {
 };
 
 // Load <amount> amount of comments
-export const loadComments = (pid) => {
+export const loadComments = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
     // Apply where condition
-    const comments = firestore.collection("comment").where("pid", "==", pid);
+    const comments = firestore.collection("comment");
 
     // Get comments and order them
     return comments
@@ -147,12 +150,11 @@ export const loadComments = (pid) => {
 
           results.push({ id: doc.id, data });
         });
-
-        return results;
+        console.log(results);
+        dispatch({ type: "LOADCOMMENTS_SUCCESS", results });
       })
       .catch((err) => {
         console.error(err);
-
         return false;
       });
   };

@@ -117,7 +117,7 @@ class Comments extends React.Component {
 
   render() {
     const { items } = this.props;
-
+    console.log(this.props.pid);
     return (
       <div className="comment-container">
         <div className="mb-3">
@@ -145,54 +145,65 @@ class Comments extends React.Component {
         </div>
         {items &&
           items.length > 0 &&
-          items.map((comment, i) => {
-            return (
-              <React.Fragment key={i}>
-                {!comment.data.cid && (
-                  <>
-                    <Comment comment={comment.data} key={i} />
-                    <div className="child-input">
-                      <MDBInput
-                        type="textarea"
-                        label={`Reply to ${comment.data.author.name}`}
-                        name="comment"
-                        outline
-                        className={
-                          this.state["comment_" + comment.id]
-                            ? "keep"
-                            : undefined
-                        }
-                        value={this.state["comment_" + comment.id]}
-                        onChange={(e) =>
-                          this.changeTextareaHandler(e, comment.id)
-                        }
-                      />
-                      {this.state["comment_" + comment.id] && (
-                        <div className="text-right">
-                          <MDBBtn
-                            color="elegant"
-                            onClick={() =>
-                              this.createPost(comment.data.pid, comment.id)
+          items
+            .filter((c) => c.data.pid === this.props.pid)
+            .map((comment, i) => {
+              if (comment.data.visible) {
+                return (
+                  <React.Fragment key={i}>
+                    {!comment.data.cid && (
+                      <>
+                        <Comment comment={comment} key={i} />
+                        <div className="child-input">
+                          <MDBInput
+                            type="textarea"
+                            label={`Reply to ${comment.data.author.name}`}
+                            name="comment"
+                            outline
+                            className={
+                              this.state["comment_" + comment.id]
+                                ? "keep"
+                                : undefined
                             }
-                          >
-                            <MDBIcon icon="comment-alt" className="pr-2" />
-                            Reply
-                          </MDBBtn>
+                            value={this.state["comment_" + comment.id]}
+                            onChange={(e) =>
+                              this.changeTextareaHandler(e, comment.id)
+                            }
+                          />
+                          {this.state["comment_" + comment.id] && (
+                            <div className="text-right">
+                              <MDBBtn
+                                color="elegant"
+                                onClick={() =>
+                                  this.createPost(comment.data.pid, comment.id)
+                                }
+                              >
+                                <MDBIcon icon="comment-alt" className="pr-2" />
+                                Reply
+                              </MDBBtn>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                  </>
-                )}
-                {items.map((child, c) => {
-                  if (child.data.cid === comment.id) {
-                    return (
-                      <Comment comment={child.data} key={c} child></Comment>
-                    );
-                  }
-                })}
-              </React.Fragment>
-            );
-          })}
+                      </>
+                    )}
+                    {items.map((child, c) => {
+                      if (child.data.cid === comment.id) {
+                        if (child.data.visible) {
+                          return (
+                            <Comment
+                              comment={child}
+                              key={c}
+                              cid={child.id}
+                              child
+                            ></Comment>
+                          );
+                        } else return null;
+                      }
+                    })}
+                  </React.Fragment>
+                );
+              } else return null;
+            })}
       </div>
     );
   }

@@ -23,7 +23,7 @@ const commentReducer = (state = initState, action) => {
         ...state,
         commentError: action.err,
       };
-    case "LOAD_SUCCESS":
+    case "LOADCOMMENTS_SUCCESS":
       console.log("Loading success");
       return {
         ...state,

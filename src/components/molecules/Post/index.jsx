@@ -58,13 +58,13 @@ class Post extends React.Component {
   componentDidMount = async () => {
     this.setState({
       receivedUser: await this.props.getUser(this.props.uid),
-      comments: await this.props.loadComments(this.props.post.id),
+      comments: this.props.comments,
     });
   };
 
   componentWillReceiveProps = async () => {
     this.setState({
-      comments: await this.props.loadComments(this.props.post.id),
+      comments: await this.props.comments,
     });
   };
 
@@ -78,7 +78,6 @@ class Post extends React.Component {
   render() {
     const { auth, post, key } = this.props;
     const { receivedUser, comments } = this.state;
-
     return (
       <MDBCard
         className={post.data.visible ? "mb-3 post" : "mb-3 post deleted"}
@@ -451,7 +450,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getUser: (uid) => dispatch(getUser(uid)),
-    loadComments: (pid) => dispatch(loadComments(pid)),
     createLike: (pid) => dispatch(createLike(pid)),
   };
 };

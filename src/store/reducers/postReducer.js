@@ -23,7 +23,7 @@ const postReducer = (state = initState, action) => {
         ...state,
         postError: action.err,
       };
-    case "LOAD_SUCCESS":
+    case "LOADPOSTS_SUCCESS":
       console.log("Loading success");
       return {
         ...state,

@@ -17,6 +17,8 @@ import {
 } from "../../../store/actions/postActions";
 // Connect
 import { connect } from "react-redux";
+import { loadComments } from "../../../store/actions/commentActions";
+import { MDBBtn } from "mdbreact";
 //#endregion
 
 //#region > Components
@@ -33,10 +35,6 @@ class Posts extends React.Component {
 
   componentDidMount() {
     document.addEventListener("scroll", this.trackScrolling);
-    // Re-fetch posts every 30 sec
-    /*this.interval = setInterval(() => {
-      this.props.load(this.props.posts.length ? this.props.posts.length : 5);
-    }, 10000);*/
   }
 
   componentDidUpdate() {
@@ -68,8 +66,7 @@ class Posts extends React.Component {
   };
 
   render() {
-    const { posts, auth } = this.props;
-
+    const { posts, auth, comments } = this.props;
     if (posts && auth) {
       let result = posts.map((post, i) => {
         return (
@@ -77,6 +74,7 @@ class Posts extends React.Component {
             post={post}
             key={i}
             uid={post?.data?.author?.uid}
+            comments={comments}
             removePost={this.props.removePost}
             load={() => this.props.load(this.props.posts.length)}
           />
@@ -103,6 +101,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     removePost: (pid, uid) => dispatch(removePost(pid, uid)),
+    loadComments: () => dispatch(loadComments()),
   };
 };
 //#endregion
