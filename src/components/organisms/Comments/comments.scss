@@ -1,12 +1,33 @@
 .comment-container {
+  .md-form.md-outline label.active {
+    background: transparent !important;
+  }
+  textarea {
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    &:focus {
+      background: #383838;
+    }
+  }
   .child-input {
     margin-left: 25px;
     textarea {
       border-left: 3px lighten(grey, 30%) solid;
-
+      border-color: lighten(grey, 20%);
+      border-top: none;
+      border-right: none;
+      border-bottom: none;
       &:focus {
         border-left: 3px gold solid;
       }
+    }
+  }
+  .btn-elegant {
+    border: 1px #2e2e2e solid;
+    &:hover {
+      background: #343527 !important;
+      border: 1px gold solid;
     }
   }
 }
