@@ -87,9 +87,6 @@ class Comment extends React.Component {
       let result = msg;
 
       await re.forEach(async (item, i) => {
-        const parts = item.split("@");
-        const name = parts[1];
-
         result = result.replace(
           item,
           `<span class="orange-text">${item}</span>`
