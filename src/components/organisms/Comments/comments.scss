@@ -1,3 +1,10 @@
+.comment-container {
+  .child-input {
+    margin-left: 25px;
+    border-left: 3px lighten(grey, 30%) solid;
+  }
+}
+
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
  * Copyright © 2019-2020 Werbeagentur Christian Aichner

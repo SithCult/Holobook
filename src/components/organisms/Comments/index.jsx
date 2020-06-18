@@ -41,10 +41,14 @@ import {
 // Connect
 import { connect } from "react-redux";
 
-// Comment element
+//> Components
 import { Comment } from "../../molecules";
+
+//> CSS
+import "./comments.scss";
 //#endregion
 
+//#region > Components
 class Comments extends React.Component {
   state = {
     username: "",
@@ -107,10 +111,10 @@ class Comments extends React.Component {
     const { items } = this.props;
 
     return (
-      <>
+      <div className="comment-container">
         <MDBInput
           type="textarea"
-          label="Add a comment"
+          label="Add comment"
           name="comment"
           outline
           className={this.state.post_basic ? "basic hand" : undefined}
@@ -130,15 +134,19 @@ class Comments extends React.Component {
                 {!comment.data.cid && (
                   <>
                     <Comment comment={comment.data} key={i} />
-                    <MDBInput
-                      type="textarea"
-                      label="Add a comment"
-                      name="comment"
-                      outline
-                      className={this.state.post_basic ? "basic hand" : null}
-                      value={this.state.comment}
-                      onChange={this.changeTextareaHandler}
-                    />
+                    <div className="child-input">
+                      <MDBInput
+                        type="textarea"
+                        label={`Reply to ${comment.data.author.name}`}
+                        name="comment"
+                        outline
+                        className={
+                          this.state.post_basic ? "basic hand" : undefined
+                        }
+                        value={this.state.comment}
+                        onChange={this.changeTextareaHandler}
+                      />
+                    </div>
                     <MDBBtn
                       color="elegant"
                       rounded
@@ -161,10 +169,11 @@ class Comments extends React.Component {
               </>
             );
           })}
-      </>
+      </div>
     );
   }
 }
+//#endregion
 
 //#region > Functions
 const mapStateToProps = (state) => {
