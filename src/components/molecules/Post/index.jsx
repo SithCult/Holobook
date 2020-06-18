@@ -62,6 +62,12 @@ class Post extends React.Component {
     });
   };
 
+  componentWillReceiveProps = async () => {
+    this.setState({
+      comments: await this.props.loadComments(this.props.post.id),
+    });
+  };
+
   calculateTimeAgo = (timestamp) => {
     TimeAgo.addLocale(en);
     const timeAgo = new TimeAgo("en-US");

@@ -73,13 +73,22 @@ class Comments extends React.Component {
   };
 
   createPost = (pid, cid) => {
-    let content = this.state.comment;
+    let content = "";
+
+    if (cid) {
+      content = this.state["comment_" + cid];
+    } else {
+      content = this.state.comment;
+    }
+
     let author = {
       uid: this.props.auth.uid,
       name: this.props.profile.title + " " + this.props.profile.sith_name,
     };
+
     let timestamp = new Date().getTime();
     let basic = this.state.post_basic;
+
     if (content && author) {
       // Normalize data
       let data = {
@@ -94,7 +103,8 @@ class Comments extends React.Component {
       // Tell Firebase to create post
       this.setState(
         {
-          postError: false,
+          comment: cid ? this.state.comment : "",
+          ["comment_" + cid]: cid ? "" : this.state["comment_" + cid],
         },
         () => {
           this.setState({ comment: "" });
@@ -102,8 +112,6 @@ class Comments extends React.Component {
           this.props.load();
         }
       );
-    } else {
-      console.log("do not post - not enough chars or no author");
     }
   };
 
@@ -139,7 +147,7 @@ class Comments extends React.Component {
           items.length > 0 &&
           items.map((comment, i) => {
             return (
-              <>
+              <React.Fragment key={i}>
                 {!comment.data.cid && (
                   <>
                     <Comment comment={comment.data} key={i} />
@@ -182,7 +190,7 @@ class Comments extends React.Component {
                     );
                   }
                 })}
-              </>
+              </React.Fragment>
             );
           })}
       </div>
