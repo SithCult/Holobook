@@ -51,28 +51,28 @@ import "./comments.scss";
 //#region > Components
 class Comments extends React.Component {
   state = {
-    username: "",
-    avatar: "",
-    isUploading: false,
-    progress: 0,
-    avatarURL: "",
-    basic: true,
+    comment: "",
   };
 
-  changeTextareaHandler = (event) => {
+  changeTextareaHandler = (event, cid) => {
     event.target.style.overflow = "hidden";
     event.target.style.height = 0;
     event.target.style.height = event.target.scrollHeight + "px";
 
     if (event.target.value.length <= 500) {
-      this.setState({
-        comment: event.target.value,
-      });
+      if (cid) {
+        this.setState({
+          ["comment_" + cid]: event.target.value,
+        });
+      } else {
+        this.setState({
+          comment: event.target.value,
+        });
+      }
     }
   };
 
   createPost = (pid, cid) => {
-    console.log(pid, cid);
     let content = this.state.comment;
     let author = {
       uid: this.props.auth.uid,
@@ -119,7 +119,7 @@ class Comments extends React.Component {
           outline
           className={this.state.post_basic ? "basic hand" : undefined}
           value={this.state.comment}
-          onChange={this.changeTextareaHandler}
+          onChange={(e) => this.changeTextareaHandler(e, null)}
         />
         <MDBBtn
           color="elegant"
@@ -143,20 +143,23 @@ class Comments extends React.Component {
                         className={
                           this.state.post_basic ? "basic hand" : undefined
                         }
-                        value={this.state.comment}
-                        onChange={this.changeTextareaHandler}
+                        value={this.state["comment_" + comment.id]}
+                        onChange={(e) =>
+                          this.changeTextareaHandler(e, comment.id)
+                        }
                       />
+                      <div className="text-right">
+                        <MDBBtn
+                          color="elegant"
+                          onClick={() =>
+                            this.createPost(comment.data.pid, comment.id)
+                          }
+                        >
+                          <MDBIcon icon="paper-plane" className="pr-2" />
+                          Post
+                        </MDBBtn>
+                      </div>
                     </div>
-                    <MDBBtn
-                      color="elegant"
-                      rounded
-                      onClick={() =>
-                        this.createPost(comment.data.pid, comment.id)
-                      }
-                    >
-                      <MDBIcon icon="paper-plane" className="pr-2" size="lg" />
-                      Post
-                    </MDBBtn>
                   </>
                 )}
                 {items.map((child, c) => {

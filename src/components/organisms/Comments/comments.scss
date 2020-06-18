@@ -1,7 +1,13 @@
 .comment-container {
   .child-input {
     margin-left: 25px;
-    border-left: 3px lighten(grey, 30%) solid;
+    textarea {
+      border-left: 3px lighten(grey, 30%) solid;
+
+      &:focus {
+        border-left: 3px gold solid;
+      }
+    }
   }
 }
 
