@@ -34,9 +34,9 @@ class Posts extends React.Component {
   componentDidMount() {
     document.addEventListener("scroll", this.trackScrolling);
     // Re-fetch posts every 30 sec
-    this.interval = setInterval(() => {
+    /*this.interval = setInterval(() => {
       this.props.load(this.props.posts.length ? this.props.posts.length : 5);
-    }, 10000);
+    }, 10000);*/
   }
 
   componentDidUpdate() {

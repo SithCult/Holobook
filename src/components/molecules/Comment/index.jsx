@@ -38,7 +38,7 @@ import {
   unlikeComment,
 } from "../../../store/actions/commentActions";
 // Getting user information
-import { getUser, clearUser } from "../../../store/actions/userActions";
+import { getUser, getUserByName } from "../../../store/actions/userActions";
 // Connect
 import { connect } from "react-redux";
 
@@ -60,9 +60,12 @@ class Comment extends React.Component {
   };
 
   componentDidMount = async () => {
-    this.setState({
-      receivedUser: await this.props.getUser(this.props.comment.author.uid),
-    });
+    this.setState(
+      {
+        receivedUser: await this.props.getUser(this.props.comment.author.uid),
+      },
+      () => this.checkTag(this.props.comment.msg)
+    );
   };
 
   _calculateTimeAgo = (timestamp) => {
@@ -72,9 +75,36 @@ class Comment extends React.Component {
     return timeAgo.format(timestamp);
   };
 
+  checkTag = async (msg) => {
+    if (msg.includes("@")) {
+      const regExpression = /@\w+/g;
+      const re = msg.match(regExpression);
+
+      let result = msg;
+
+      await re.forEach(async (item, i) => {
+        const parts = item.split("@");
+        const name = parts[1];
+
+        result = result.replace(
+          item,
+          `<span class="orange-text">${item}</span>`
+        );
+      });
+
+      this.setState({
+        message: result,
+      });
+    } else {
+      this.setState({
+        message: msg,
+      });
+    }
+  };
+
   render() {
     const { auth, comment, child } = this.props;
-    const { receivedUser } = this.state;
+    const { receivedUser, message } = this.state;
 
     console.log(receivedUser);
 
@@ -260,7 +290,7 @@ class Comment extends React.Component {
             <div className="px-3 pb-3">
               <p
                 className="mb-0"
-                dangerouslySetInnerHTML={{ __html: comment.msg }}
+                dangerouslySetInnerHTML={{ __html: message }}
               ></p>
             </div>
           </div>
@@ -286,7 +316,7 @@ const mapDispatchToProps = (dispatch) => {
     likeComment: (uniqueID, user, likes) =>
       dispatch(likeComment(uniqueID, user, likes)),
     getUser: (uid) => dispatch(getUser(uid)),
-    clearUser: () => dispatch(clearUser()),
+    getUserByName: (sithName) => dispatch(getUserByName(sithName)),
     unlikeComment: (uniqueID, user, likes) =>
       dispatch(unlikeComment(uniqueID, user, likes)),
     removeComment: (uid, commentID) => dispatch(removeComment(uid, commentID)),

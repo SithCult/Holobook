@@ -4,9 +4,6 @@ export const getUser = (uid) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
-    // Get loading
-    dispatch({ type: "USERLOAD_LOADING" });
-
     return firestore
       .collection("users")
       .doc(uid)
@@ -19,6 +16,37 @@ export const getUser = (uid) => {
         }
       })
       .catch((err) => {
+        return false;
+      });
+  };
+};
+
+// Get user by sith name
+export const getUserByName = (sith_name) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    const users = firestore
+      .collection("users")
+      .where("sith_name", "==", sith_name);
+
+    // Get comments and order them
+    return users
+      .get()
+      .then((querySnapshot) => {
+        let results = [];
+
+        querySnapshot.forEach(function (doc) {
+          let data = doc.data();
+
+          results.push({ id: doc.id, data });
+        });
+
+        return results;
+      })
+      .catch((err) => {
+        console.error(err);
+
         return false;
       });
   };
@@ -138,14 +166,6 @@ export const writeDonation = (amount) => {
       .then((docRef) => {
         dispatch({ type: "GET_ID", uid: docRef.id });
       });
-  };
-};
-
-// Sends dispatch to clear received user
-export const clearUser = () => {
-  return (dispatch) => {
-    // Clear currently selected user
-    dispatch({ type: "USERLOAD_CLEAR" });
   };
 };
 
