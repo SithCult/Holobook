@@ -133,10 +133,10 @@ class ProfilePage extends React.Component {
   };
 
   refreshData = () => {
+    this.props.loadComments();
     this.props.loadPosts(
       this.props?.posts?.length ? this.props.posts.length : 5
     );
-    this.props.loadComments();
   };
 
   loadMore = () => {

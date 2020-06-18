@@ -117,7 +117,6 @@ class Comments extends React.Component {
 
   render() {
     const { items } = this.props;
-    console.log(this.props.pid);
     return (
       <div className="comment-container">
         <div className="mb-3">
@@ -153,7 +152,11 @@ class Comments extends React.Component {
                   <React.Fragment key={i}>
                     {!comment.data.cid && (
                       <>
-                        <Comment comment={comment} key={i} />
+                        <Comment
+                          comment={comment}
+                          key={i}
+                          load={this.props.load}
+                        />
                         <div className="child-input">
                           <MDBInput
                             type="textarea"
@@ -194,6 +197,7 @@ class Comments extends React.Component {
                               comment={child}
                               key={c}
                               cid={child.id}
+                              load={this.props.load}
                               child
                             ></Comment>
                           );

@@ -5,13 +5,13 @@ const initState = {
 
 const postReducer = (state = initState, action) => {
   switch (action.type) {
-    case "CREATION_SUCCESS":
+    case "POSTCREATION_SUCCESS":
       console.log("Creation success");
       return {
         ...state,
         postError: null,
       };
-    case "CREATION_ERROR":
+    case "POSTCREATION_ERROR":
       console.log("Creation error", action.err);
       return {
         ...state,
@@ -31,25 +31,25 @@ const postReducer = (state = initState, action) => {
         results: action.results,
         loading: false,
       };
-    case "LOAD_LOADING":
+    case "LOADPOSTS_LOADING":
       console.log("Loading...");
       return {
         ...state,
         loading: true,
       };
-    case "LOAD_ERROR":
+    case "LOADPOSTS_ERROR":
       console.log("Loading error", action.err);
       return {
         ...state,
         authError: action.err,
         loading: false,
       };
-    case "REMOVE_SUCCESS":
+    case "REMOVEPOSTS_SUCCESS":
       console.log("Remove success");
       return {
         ...state,
       };
-    case "REMOVE_ERROR":
+    case "REMOVEPOSTS_ERROR":
       console.log("Remove error", action.err);
       return {
         ...state,

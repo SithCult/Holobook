@@ -10,35 +10,67 @@ export const createLike = (pid) => {
     // Create like
     firestore
       .collection("likes")
-      .add({
+      .doc(pid + uid)
+      .set({
         pid,
         uid,
         timestamp: new Date().getTime(),
       })
       .then((res) => {
-        dispatch({ type: "CREATION_SUCCESS", pid, uid });
+        dispatch({ type: "LIKECREATION_SUCCESS", pid, uid });
       })
       .catch((err) => {
-        dispatch({ type: "CREATION_ERROR", err });
+        dispatch({ type: "LIKECREATION_ERROR", err });
       });
   };
 };
 
 // Remove a like
-export const removeLike = (lid) => {
+export const removeLike = (pid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
+    const firebase = getFirebase();
+
+    // Get userId
+    const uid = firebase.auth().currentUser.uid;
 
     // Remove like
     firestore
       .collection("likes")
-      .doc(lid)
+      .doc(pid + uid)
       .delete()
       .then(() => {
-        dispatch({ type: "REMOVE_SUCCESS", lid });
+        dispatch({ type: "REMOVELIKE_SUCCESS", pid, uid });
       })
       .catch((err) => {
-        dispatch({ type: "REMOVE_ERROR", err });
+        dispatch({ type: "REMOVELIKE_ERROR", err });
+      });
+  };
+};
+
+// See if user has liked post already
+export const hasLiked = (pid) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+    const firebase = getFirebase();
+
+    // Get userId
+    const uid = firebase.auth().currentUser.uid;
+
+    // Remove like
+    return firestore
+      .collection("likes")
+      .doc(pid + uid)
+      .get()
+      .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        dispatch({ type: "HASLIKED_ERROR", err });
       });
   };
 };

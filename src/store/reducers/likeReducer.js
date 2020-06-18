@@ -5,29 +5,41 @@ const initState = {
 
 const likeReducer = (state = initState, action) => {
   switch (action.type) {
-    case "CREATION_SUCCESS":
+    case "LIKECREATION_SUCCESS":
       console.log("Creation success");
       return {
         ...state,
         postError: null,
       };
-    case "CREATION_ERROR":
+    case "LIKECREATION_ERROR":
       console.log("Creation error", action.err);
       return {
         ...state,
         postError: action.err,
       };
-    case "REMOVE_SUCCESS":
+    case "REMOVELIKE_SUCCESS":
       console.log("Removal success");
       return {
         ...state,
         postError: null,
       };
-    case "REMOVE_ERROR":
+    case "REMOVELIKE_ERROR":
       console.log("Removal error", action.err);
       return {
         ...state,
         postError: action.err,
+      };
+    case "HASLIKED_SUCCESS":
+      console.log("hasliked success");
+      return {
+        ...state,
+        liked: action.liked,
+      };
+    case "HASLIKED_ERROR":
+      console.log("hasliked error", action.err);
+      return {
+        ...state,
+        liked: false,
       };
     default:
       return state;

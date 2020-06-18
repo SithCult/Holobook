@@ -5,14 +5,14 @@ const initState = {
 
 const commentReducer = (state = initState, action) => {
   switch (action.type) {
-    case "CREATION_SUCCESS":
-      console.log("Creation success");
+    case "EDITCOMMENT_SUCCESS":
+      console.log("Edit Success");
       return {
         ...state,
         commentError: null,
       };
-    case "CREATION_ERROR":
-      console.log("Creation error", action.err);
+    case "EDITCOMMENT_ERROR":
+      console.log("Edit error", action.err);
       return {
         ...state,
         commentError: action.err,
@@ -43,34 +43,6 @@ const commentReducer = (state = initState, action) => {
         ...state,
         authError: action.err,
         loading: false,
-      };
-    case "LIKE_SUCCESS":
-      console.log("Like success");
-      return {
-        ...state,
-        unliked: null,
-        liked: true,
-      };
-    case "LIKE_ERROR":
-      console.log("Like error");
-      return {
-        ...state,
-        unliked: null,
-        liked: false,
-      };
-    case "UNLIKE_SUCCESS":
-      console.log("Unlike success");
-      return {
-        ...state,
-        liked: null,
-        unliked: true,
-      };
-    case "UNLIKE_ERROR":
-      console.log("Unlike error");
-      return {
-        ...state,
-        liked: null,
-        unliked: false,
       };
     case "REMOVE_SUCCESS":
       console.log("Remove success");

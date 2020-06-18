@@ -36,11 +36,18 @@ import {
 // Actions for comments
 import {
   removeComment,
-  likeComment,
-  unlikeComment,
+  editComment,
 } from "../../../store/actions/commentActions";
+// Like actions
+import {
+  removeLike,
+  createLike,
+  hasLiked,
+} from "../../../store/actions/likeActions";
 // Getting user information
 import { getUser, getUserByName } from "../../../store/actions/userActions";
+// Auth
+import { auth } from "firebase";
 // Connect
 import { connect } from "react-redux";
 
@@ -52,7 +59,6 @@ import bronzeUserIMG from "../../../assets/images/bronze.gif";
 
 //> CSS
 import "./comment.scss";
-import { auth } from "firebase";
 //#endregion
 
 //#region > Components
@@ -67,9 +73,42 @@ class Comment extends React.Component {
         receivedUser: await this.props.getUser(
           this.props.comment.data.author.uid
         ),
+        liked: await this.props.hasLiked(this.props.comment.id),
       },
       () => this.checkTag(this.props.comment.data.msg)
     );
+  };
+
+  // Handle edit input change
+  changeTextareaHandler = (event, cid) => {
+    event.target.style.overflow = "hidden";
+    event.target.style.height = 0;
+    event.target.style.height = event.target.scrollHeight + "px";
+
+    if (event.target.value.length <= 500) {
+      if (cid) {
+        this.setState({
+          ["edit_comment_" + cid]: event.target.value,
+        });
+      } else {
+        this.setState({
+          comment: event.target.value,
+        });
+      }
+    }
+  };
+
+  editComment = (comment, newmsg) => {
+    if (newmsg) {
+      this.setState({ comment: "", ["edit_comment_" + comment.id]: "" });
+      this.props.editComment(comment, newmsg);
+      this.props.load();
+    }
+  };
+
+  removeComment = (comment) => {
+    this.props.removeComment(comment);
+    this.props.load();
   };
 
   _calculateTimeAgo = (timestamp) => {
@@ -291,6 +330,61 @@ class Comment extends React.Component {
                 className="mb-0"
                 dangerouslySetInnerHTML={{ __html: message }}
               ></p>
+              <div>
+                <MDBIcon
+                  icon="angle-up"
+                  className={
+                    !this.props.liked ? "text-white p-2" : "text-red p-2"
+                  }
+                  onClick={() => {
+                    if (this.state.liked) {
+                      this.setState({ liked: false }, () =>
+                        this.props.removeLike(comment.id)
+                      );
+                    } else {
+                      this.setState(
+                        {
+                          liked: true,
+                        },
+                        () => this.props.createLike(comment.id)
+                      );
+                    }
+                  }}
+                  size="lg"
+                />
+                <span className="text-muted">blyat</span>
+              </div>
+              <div className="editcomment.input">
+                <MDBInput
+                  type="textarea"
+                  label={`Edit Comment`}
+                  name="editcomment"
+                  outline
+                  className={
+                    this.state["edit_comment_" + comment.id]
+                      ? "keep"
+                      : undefined
+                  }
+                  value={this.state["edit_comment_" + comment.id]}
+                  onChange={(e) => this.changeTextareaHandler(e, comment.id)}
+                />
+                {this.state["edit_comment_" + comment.id] && (
+                  <div className="text-right">
+                    <MDBBtn
+                      color="elegant"
+                      onClick={() =>
+                        this.props.editComment(
+                          comment,
+                          this.state["edit_comment_" + comment.id]
+                        )
+                      }
+                    >
+                      <MDBIcon icon="comment-alt" className="pr-2" />
+                      Save Changes
+                    </MDBBtn>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -298,9 +392,7 @@ class Comment extends React.Component {
           <div className="settings-tab">
             <MDBListGroup className="commentoptions">
               <MDBListGroupItem>Edit</MDBListGroupItem>
-              <MDBListGroupItem
-                onClick={() => this.props.removeComment(comment)}
-              >
+              <MDBListGroupItem onClick={() => this.removeComment(comment)}>
                 Delete
               </MDBListGroupItem>
             </MDBListGroup>
@@ -323,13 +415,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    likeComment: (uniqueID, user, likes) =>
-      dispatch(likeComment(uniqueID, user, likes)),
     getUser: (uid) => dispatch(getUser(uid)),
     getUserByName: (sithName) => dispatch(getUserByName(sithName)),
-    unlikeComment: (uniqueID, user, likes) =>
-      dispatch(unlikeComment(uniqueID, user, likes)),
+    createLike: (cid) => dispatch(createLike(cid)),
+    removeLike: (cid) => dispatch(removeLike(cid)),
+    hasLiked: (cid) => dispatch(hasLiked(cid)),
     removeComment: (comment) => dispatch(removeComment(comment)),
+    editComment: (comment, newmsg) => dispatch(editComment(comment, newmsg)),
   };
 };
 //#endregion

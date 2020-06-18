@@ -32,7 +32,11 @@ import {
 
 //> Redux Firebase
 // Getting user information
-import { createLike } from "../../../store/actions/likeActions";
+import {
+  createLike,
+  removeLike,
+  hasLiked,
+} from "../../../store/actions/likeActions";
 import { getUser } from "../../../store/actions/userActions";
 // Getting comments
 import { loadComments } from "../../../store/actions/commentActions";
@@ -59,6 +63,7 @@ class Post extends React.Component {
     this.setState({
       receivedUser: await this.props.getUser(this.props.uid),
       comments: this.props.comments,
+      liked: await this.props.hasLiked(this.props.post.id),
     });
   };
 
@@ -321,14 +326,26 @@ class Post extends React.Component {
             <>
               <MDBIcon
                 icon="angle-up"
-                className="text-white p-2"
+                className={
+                  !this.state.liked ? "text-white p-2" : "text-red p-2"
+                }
                 onClick={() => {
-                  this.setState(
-                    {
-                      liked: true,
-                    },
-                    () => this.props.createLike(post.id)
-                  );
+                  console.log(this.state.liked);
+                  if (this.state.liked) {
+                    this.setState(
+                      {
+                        liked: false,
+                      },
+                      () => this.props.removeLike(post.id)
+                    );
+                  } else {
+                    this.setState(
+                      {
+                        liked: true,
+                      },
+                      () => this.props.createLike(post.id)
+                    );
+                  }
                 }}
                 size="lg"
               />
@@ -451,6 +468,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getUser: (uid) => dispatch(getUser(uid)),
     createLike: (pid) => dispatch(createLike(pid)),
+    removeLike: (pid) => dispatch(removeLike(pid)),
+    hasLiked: (pid) => dispatch(hasLiked(pid)),
   };
 };
 //#endregion

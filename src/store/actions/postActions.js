@@ -20,11 +20,11 @@ export const createPost = (newPost) => {
         visible: true,
       })
       .then(() => {
-        dispatch({ type: "CREATION_SUCCESS", newPost });
+        dispatch({ type: "POSTCREATION_SUCCESS", newPost });
         return;
       })
       .catch((err) => {
-        dispatch({ type: "CREATION_ERROR", err });
+        dispatch({ type: "POSTCREATION_ERROR", err });
       });
   };
 };
@@ -49,14 +49,14 @@ export const removePost = (pid, uid) => {
           { merge: true }
         )
         .then(() => {
-          dispatch({ type: "REMOVE_SUCCESS", pid });
+          dispatch({ type: "REMOVEPOST_SUCCESS", pid });
           return;
         })
         .catch((err) => {
-          dispatch({ type: "REMOVE_ERROR", err });
+          dispatch({ type: "REMOVEPOST_ERROR", err });
         });
     } else {
-      dispatch({ type: "REMOVE_ERROR", err: "Not authorized." });
+      dispatch({ type: "REMOVEPOST_ERROR", err: "Not authorized." });
     }
   };
 };
@@ -72,7 +72,6 @@ export const loadPosts = (amount) => {
     if (amount < 0) {
       amount = 0;
     }
-    console.log(amount);
     posts
       .orderBy("timestamp", "desc")
       .limit(amount)
@@ -85,11 +84,10 @@ export const loadPosts = (amount) => {
 
           results.push({ id: doc.id, data });
         });
-        console.log(results);
         dispatch({ type: "LOADPOSTS_SUCCESS", results });
       })
       .catch((err) => {
-        dispatch({ type: "LOAD_ERROR", err });
+        dispatch({ type: "LOADPOSTS_ERROR", err });
       });
   };
 };
@@ -100,7 +98,7 @@ export const loadAllPosts = (amount) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
-    dispatch({ type: "LOAD_LOADING" });
+    dispatch({ type: "LOADPOSTS_LOADING" });
 
     let posts = firestore.collection("posts");
 
@@ -124,7 +122,7 @@ export const loadAllPosts = (amount) => {
         dispatch({ type: "LOADPOSTS_SUCCESS", results });
       })
       .catch((err) => {
-        dispatch({ type: "LOAD_ERROR", err });
+        dispatch({ type: "LOADPOSTS_ERROR", err });
       });
   };
 };

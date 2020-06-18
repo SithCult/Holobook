@@ -30,6 +30,41 @@ export const createComment = (newComment) => {
   };
 };
 
+// Edit Comments
+export const editComment = (comment, newmsg) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+
+    // Get userId
+    let uid = comment.data.author.uid;
+    let loggedinuid = firebase.auth().currentUser.uid;
+
+    if (uid === loggedinuid) {
+      // Edit comment
+      firestore
+        .collection("comment")
+        .doc(comment.id)
+        .set(
+          {
+            msg: newmsg,
+            versions: {
+              [new Date().getTime()]: comment.data.msg,
+            },
+          },
+          { merge: true }
+        )
+        .then(() => {
+          dispatch({ type: "EDITCOMMENT_SUCCESS" });
+          return;
+        })
+        .catch((err) => {
+          dispatch({ type: "EDITCOMMENT_ERROR", err });
+        });
+    }
+  };
+};
+
 // Like a comment
 export const likeComment = (id, uid, likes) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -150,7 +185,6 @@ export const loadComments = () => {
 
           results.push({ id: doc.id, data });
         });
-        console.log(results);
         dispatch({ type: "LOADCOMMENTS_SUCCESS", results });
       })
       .catch((err) => {
