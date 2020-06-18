@@ -365,7 +365,11 @@ class Comment extends React.Component {
                       ? "keep"
                       : undefined
                   }
-                  value={this.state["edit_comment_" + comment.id]}
+                  value={
+                    this.state["edit_comment_" + comment.id]
+                      ? this.state["edit_comment_" + comment.id]
+                      : comment.data.msg
+                  }
                   onChange={(e) => this.changeTextareaHandler(e, comment.id)}
                 />
                 {this.state["edit_comment_" + comment.id] && (
