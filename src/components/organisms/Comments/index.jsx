@@ -118,7 +118,7 @@ class Comments extends React.Component {
             label="Add comment"
             name="comment"
             outline
-            className={this.state.post_basic ? "basic hand" : undefined}
+            className={this.state.comment ? "keep" : undefined}
             value={this.state.comment}
             onChange={(e) => this.changeTextareaHandler(e, null)}
           />
@@ -150,7 +150,9 @@ class Comments extends React.Component {
                         name="comment"
                         outline
                         className={
-                          this.state.post_basic ? "basic hand" : undefined
+                          this.state["comment_" + comment.id]
+                            ? "keep"
+                            : undefined
                         }
                         value={this.state["comment_" + comment.id]}
                         onChange={(e) =>

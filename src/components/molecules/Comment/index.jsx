@@ -85,7 +85,7 @@ class Comment extends React.Component {
         className={
           child
             ? "comment d-flex justify-content-between child-comment"
-            : "comment d-flex justify-content-between"
+            : "comment d-flex justify-content-between mt-4"
         }
       >
         <div className="p-2 img">

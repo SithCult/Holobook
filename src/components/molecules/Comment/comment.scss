@@ -43,6 +43,9 @@
       border-top-left-radius: 0rem;
       border-bottom-left-radius: 0rem;
     }
+    &:last-child {
+      margin-bottom: 1rem;
+    }
   }
 }
 

@@ -9,6 +9,10 @@
     &:focus {
       background: #383838;
     }
+    &.keep {
+      background: #383838;
+      border-color: gold;
+    }
   }
   .child-input {
     margin-left: 25px;
@@ -19,6 +23,9 @@
       border-right: none;
       border-bottom: none;
       &:focus {
+        border-left: 3px gold solid;
+      }
+      &.keep {
         border-left: 3px gold solid;
       }
     }
