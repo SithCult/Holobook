@@ -50,14 +50,16 @@ import bronzeUserIMG from "../../../assets/images/bronze.gif";
 
 //> CSS
 import "./comment.scss";
+import { auth } from "firebase";
 //#endregion
 
 //#region > Components
 class Comment extends React.Component {
-  state = {};
+  state = {
+    settings: false,
+  };
 
   componentDidMount = async () => {
-    console.log("PROPS", this.props);
     this.setState({
       receivedUser: await this.props.getUser(this.props.comment.author.uid),
     });
@@ -70,188 +72,201 @@ class Comment extends React.Component {
     return timeAgo.format(timestamp);
   };
 
-  handlePopoverChange = (open) => {
-    if (!open) {
-      this.props.clearUser();
-    }
-  };
-
   render() {
-    const { comment, child } = this.props;
+    const { auth, comment, child } = this.props;
     const { receivedUser } = this.state;
 
+    console.log(receivedUser);
+
     return (
-      <div
-        className={
-          child
-            ? "comment d-flex justify-content-between child-comment"
-            : "comment d-flex justify-content-between mt-4"
-        }
-      >
-        <div className="p-2 img">
-          {receivedUser &&
-            (() => {
-              switch (receivedUser.skin) {
-                case "gold":
-                  return (
-                    <img
-                      src={goldUserIMG}
-                      className="rounded-circle avatar-img align-self-center mr-0"
-                    />
-                  );
-                case "light":
-                  return (
-                    <img
-                      src={lightUserIMG}
-                      className="rounded-circle avatar-img align-self-center mr-0"
-                    />
-                  );
-                case "bronze":
-                  return (
-                    <img
-                      src={bronzeUserIMG}
-                      className="rounded-circle avatar-img align-self-center mr-0"
-                    />
-                  );
-                default:
-                  return (
-                    <img
-                      src={defaultUserIMG}
-                      className="rounded-circle avatar-img align-self-center mr-0"
-                    />
-                  );
-              }
-            })()}
-        </div>
-        <div className="content">
-          <div className="p-2 author-info d-flex justify-content-between align-items-center">
-            <div>
-              <MDBPopover
-                placement="top"
-                popover
-                clickable
-                domElement
-                className="furtherInfo"
-                onChange={this.handlePopoverChange}
-              >
-                <div
-                  className="clickable name"
-                  onClick={() => this.props.getUser(comment.author.uid)}
+      <>
+        <div
+          className={
+            child
+              ? "comment d-flex justify-content-between child-comment"
+              : "comment d-flex justify-content-between mt-4"
+          }
+        >
+          <div className="p-2 img">
+            {receivedUser &&
+              (() => {
+                switch (receivedUser.skin) {
+                  case "gold":
+                    return (
+                      <img
+                        src={goldUserIMG}
+                        className="rounded-circle avatar-img align-self-center mr-0"
+                      />
+                    );
+                  case "light":
+                    return (
+                      <img
+                        src={lightUserIMG}
+                        className="rounded-circle avatar-img align-self-center mr-0"
+                      />
+                    );
+                  case "bronze":
+                    return (
+                      <img
+                        src={bronzeUserIMG}
+                        className="rounded-circle avatar-img align-self-center mr-0"
+                      />
+                    );
+                  default:
+                    return (
+                      <img
+                        src={defaultUserIMG}
+                        className="rounded-circle avatar-img align-self-center mr-0"
+                      />
+                    );
+                }
+              })()}
+            {auth.uid === comment.author.uid && (
+              <div className="w-100 text-center settings">
+                <MDBIcon
+                  icon="ellipsis-v"
+                  className="p-2"
+                  onClick={() =>
+                    this.setState({ settings: !this.state.settings })
+                  }
+                />
+              </div>
+            )}
+          </div>
+          <div className="content">
+            <div className="p-2 author-info d-flex justify-content-between align-items-center">
+              <div>
+                <MDBPopover
+                  placement="top"
+                  popover
+                  clickable
+                  domElement
+                  className="furtherInfo"
                 >
-                  {comment.author.name}
-                </div>
-                <div>
-                  {receivedUser !== true && receivedUser !== undefined ? (
-                    <>
-                      {receivedUser !== false ? (
-                        <>
-                          <MDBPopoverHeader className="flex-center">
-                            <div>
-                              {receivedUser.title +
-                                " " +
-                                receivedUser.sith_name}
-                              <small className="text-muted d-block blue-text">
-                                {receivedUser.department}
-                              </small>
-                            </div>
-                            <div className="ml-auto p-2 mb-auto">
-                              <small className="text-muted">
-                                <MDBIcon
-                                  icon="medal"
-                                  className="purple-text mr-1"
-                                />
-                                {receivedUser.reputation}
-                              </small>
-                            </div>
-                          </MDBPopoverHeader>
-                          <MDBPopoverBody>
-                            <div>
-                              {(() => {
-                                return receivedUser.badges.map((badge, i) => {
-                                  switch (badge) {
-                                    case "founder":
-                                      return (
-                                        <MDBBadge
-                                          pill
-                                          color="elegant-color"
-                                          key={i}
-                                        >
-                                          <MDBIcon
-                                            icon="fire"
-                                            className="pr-2"
-                                          />
-                                          Founder
-                                        </MDBBadge>
-                                      );
-                                    case "member":
-                                      return (
-                                        <MDBBadge pill color="red" key={i}>
-                                          <MDBIcon
-                                            icon="user"
-                                            className="pr-2"
-                                          />
-                                          Council
-                                        </MDBBadge>
-                                      );
-                                    case "historic":
-                                      return (
-                                        <MDBBadge pill color="orange" key={i}>
-                                          <MDBIcon
-                                            icon="book"
-                                            className="pr-2"
-                                          />
-                                          Historic
-                                        </MDBBadge>
-                                      );
-                                    default:
-                                      return null;
-                                  }
-                                });
-                              })()}
-                              <div className="flex-center text-left my-2">
-                                <ReactCountryFlag
-                                  svg
-                                  className="mr-1"
-                                  countryCode={receivedUser.address.country}
-                                />
-                                {getName(receivedUser.address.country)}
+                  <div
+                    className="clickable name"
+                    onClick={() => this.props.getUser(comment.author.uid)}
+                  >
+                    {comment.author.name}
+                  </div>
+                  <div>
+                    {receivedUser !== true && receivedUser !== undefined ? (
+                      <>
+                        {receivedUser !== false ? (
+                          <>
+                            <MDBPopoverHeader className="flex-center">
+                              <div>
+                                {receivedUser.title +
+                                  " " +
+                                  receivedUser.sith_name}
+                                <small className="text-muted d-block blue-text">
+                                  {receivedUser.department}
+                                </small>
                               </div>
-                            </div>
-                          </MDBPopoverBody>
-                        </>
-                      ) : (
-                        <>
-                          <MDBPopoverHeader>
-                            <div>User not found</div>
-                          </MDBPopoverHeader>
-                          <MDBPopoverBody>
-                            This person is no longer a member of SithCult.
-                          </MDBPopoverBody>
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <MDBPopoverBody className="text-center">
-                      <div>
-                        <MDBSpinner />
-                      </div>
-                      <div>Receiving current status</div>
-                    </MDBPopoverBody>
-                  )}
-                </div>
-              </MDBPopover>
+                              <div className="ml-auto p-2 mb-auto">
+                                <small className="text-muted">
+                                  <MDBIcon
+                                    icon="medal"
+                                    className="purple-text mr-1"
+                                  />
+                                  {receivedUser.reputation}
+                                </small>
+                              </div>
+                            </MDBPopoverHeader>
+                            <MDBPopoverBody>
+                              <div>
+                                {(() => {
+                                  return receivedUser.badges.map((badge, i) => {
+                                    switch (badge) {
+                                      case "founder":
+                                        return (
+                                          <MDBBadge
+                                            pill
+                                            color="elegant-color"
+                                            key={i}
+                                          >
+                                            <MDBIcon
+                                              icon="fire"
+                                              className="pr-2"
+                                            />
+                                            Founder
+                                          </MDBBadge>
+                                        );
+                                      case "member":
+                                        return (
+                                          <MDBBadge pill color="red" key={i}>
+                                            <MDBIcon
+                                              icon="user"
+                                              className="pr-2"
+                                            />
+                                            Council
+                                          </MDBBadge>
+                                        );
+                                      case "historic":
+                                        return (
+                                          <MDBBadge pill color="orange" key={i}>
+                                            <MDBIcon
+                                              icon="book"
+                                              className="pr-2"
+                                            />
+                                            Historic
+                                          </MDBBadge>
+                                        );
+                                      default:
+                                        return null;
+                                    }
+                                  });
+                                })()}
+                                <div className="flex-center text-left my-2">
+                                  <ReactCountryFlag
+                                    svg
+                                    className="mr-1"
+                                    countryCode={receivedUser.address.country}
+                                  />
+                                  {getName(receivedUser.address.country)}
+                                </div>
+                              </div>
+                            </MDBPopoverBody>
+                          </>
+                        ) : (
+                          <>
+                            <MDBPopoverHeader>
+                              <div>User not found</div>
+                            </MDBPopoverHeader>
+                            <MDBPopoverBody>
+                              This person is no longer a member of SithCult.
+                            </MDBPopoverBody>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <MDBPopoverBody className="text-center">
+                        <div>
+                          <MDBSpinner />
+                        </div>
+                        <div>Receiving current status</div>
+                      </MDBPopoverBody>
+                    )}
+                  </div>
+                </MDBPopover>
+              </div>
+              <div className="ml-auto p-2 mb-auto time">
+                <small className="text-muted">
+                  {comment.timestamp &&
+                    this._calculateTimeAgo(comment.timestamp)}
+                </small>
+              </div>
             </div>
-            <div className="ml-auto p-2 mb-auto time">
-              <small className="text-muted">
-                {comment.timestamp && this._calculateTimeAgo(comment.timestamp)}
-              </small>
+            <div className="px-3 pb-3">
+              <p
+                className="mb-0"
+                dangerouslySetInnerHTML={{ __html: comment.msg }}
+              ></p>
             </div>
-          </div>
-          <div className="px-3 pb-3">
-            <p className="mb-0">{comment.msg}</p>
           </div>
         </div>
-      </div>
+        {this.state.settings && <div className="settings-tab">Functions</div>}
+      </>
     );
   }
 }

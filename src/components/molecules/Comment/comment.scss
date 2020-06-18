@@ -26,6 +26,17 @@
       z-index: 0;
     }
   }
+
+  // Settings
+  .settings {
+    position: relative;
+    z-index: 1;
+    margin-top: 0.3rem;
+    i {
+      cursor: pointer;
+    }
+  }
+
   .content {
     background: lighten(#1e1e1e, 10%);
     width: 100%;
@@ -47,6 +58,17 @@
       margin-bottom: 1rem;
     }
   }
+}
+
+// Settings tab
+.settings-tab {
+  background: white;
+  border-top-left-radius: 0.3rem;
+  border-bottom-left-radius: 2rem;
+  border-top-right-radius: 0.3rem;
+  border-bottom-right-radius: 2rem;
+  padding: 0.5rem 1rem 1rem 1rem;
+  color: #1e1e1e;
 }
 
 /** 

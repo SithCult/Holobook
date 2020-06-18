@@ -15,7 +15,7 @@ export const getUser = (uid) => {
         if (!doc.exists) {
           return false;
         } else {
-          return doc.data();
+          return { ...doc.data(), uid: doc.id };
         }
       })
       .catch((err) => {
