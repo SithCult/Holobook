@@ -43,6 +43,7 @@ import {
   removeLike,
   createLike,
   hasLiked,
+  getLikeAmount,
 } from "../../../store/actions/likeActions";
 // Getting user information
 import { getUser, getUserByName } from "../../../store/actions/userActions";
@@ -77,6 +78,8 @@ class Comment extends React.Component {
       },
       () => this.checkTag(this.props.comment.data.msg)
     );
+
+    this.props.getLikeAmount(this.props.comment.id);
   };
 
   // Handle edit input change
@@ -338,21 +341,25 @@ class Comment extends React.Component {
                   }
                   onClick={() => {
                     if (this.state.liked) {
-                      this.setState({ liked: false }, () =>
-                        this.props.removeLike(comment.id)
-                      );
+                      this.setState({ liked: false }, () => {
+                        this.props.removeLike(comment.id);
+                        this.props.getLikeAmount(comment.id);
+                      });
                     } else {
                       this.setState(
                         {
                           liked: true,
                         },
-                        () => this.props.createLike(comment.id)
+                        () => {
+                          this.props.createLike(comment.id);
+                          this.props.getLikeAmount(comment.id);
+                        }
                       );
                     }
                   }}
                   size="lg"
                 />
-                <span className="text-muted">blyat</span>
+                <span className="text-muted">{this.props.likecount} Likes</span>
               </div>
               <div className="editcomment.input">
                 <MDBInput
@@ -414,6 +421,7 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     receivedUser: state.user.receivedUser,
+    likecount: state.like.likecount,
   };
 };
 
@@ -424,6 +432,7 @@ const mapDispatchToProps = (dispatch) => {
     createLike: (cid) => dispatch(createLike(cid)),
     removeLike: (cid) => dispatch(removeLike(cid)),
     hasLiked: (cid) => dispatch(hasLiked(cid)),
+    getLikeAmount: (cid) => dispatch(getLikeAmount(cid)),
     removeComment: (comment) => dispatch(removeComment(comment)),
     editComment: (comment, newmsg) => dispatch(editComment(comment, newmsg)),
   };

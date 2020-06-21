@@ -36,6 +36,7 @@ import {
   createLike,
   removeLike,
   hasLiked,
+  getLikeAmount,
 } from "../../../store/actions/likeActions";
 import { getUser } from "../../../store/actions/userActions";
 // Getting comments
@@ -65,6 +66,8 @@ class Post extends React.Component {
       comments: this.props.comments,
       liked: await this.props.hasLiked(this.props.post.id),
     });
+
+    this.props.getLikeAmount(this.props.post.id);
   };
 
   componentWillReceiveProps = async () => {
@@ -336,20 +339,26 @@ class Post extends React.Component {
                       {
                         liked: false,
                       },
-                      () => this.props.removeLike(post.id)
+                      () => {
+                        this.props.removeLike(post.id);
+                        this.props.getLikeAmount(post.id);
+                      }
                     );
                   } else {
                     this.setState(
                       {
                         liked: true,
                       },
-                      () => this.props.createLike(post.id)
+                      () => {
+                        this.props.createLike(post.id);
+                        this.props.getLikeAmount(post.id);
+                      }
                     );
                   }
                 }}
                 size="lg"
               />
-              <span className="text-muted">blyat</span>
+              <span className="text-muted">{this.props.likecount} Likes</span>
             </>
             {/*this.alreadyLiked(post.data.likes) ? (
                   <>
@@ -461,6 +470,7 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     receivedUser: state.user.receivedUser,
     comments: state.comment.results,
+    likecount: state.like.likecount,
   };
 };
 
@@ -470,6 +480,7 @@ const mapDispatchToProps = (dispatch) => {
     createLike: (pid) => dispatch(createLike(pid)),
     removeLike: (pid) => dispatch(removeLike(pid)),
     hasLiked: (pid) => dispatch(hasLiked(pid)),
+    getLikeAmount: (pid) => dispatch(getLikeAmount(pid)),
   };
 };
 //#endregion

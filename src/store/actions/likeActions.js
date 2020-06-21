@@ -1,4 +1,4 @@
-// Create a new post
+// Create a new like
 export const createLike = (pid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -44,6 +44,30 @@ export const removeLike = (pid) => {
       })
       .catch((err) => {
         dispatch({ type: "REMOVELIKE_ERROR", err });
+      });
+  };
+};
+
+// Get amount of likes on a post
+export const getLikeAmount = (pid) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+    const firebase = getFirebase();
+
+    // Get userId
+    const uid = firebase.auth().currentUser.uid;
+
+    let likes = firestore.collection("likes").where("pid", "==", pid);
+
+    likes
+      .get()
+      .then((querySnapshot) => {
+        let likecount = querySnapshot.size;
+
+        dispatch({ type: "GETLIKES_SUCCESS", likecount });
+      })
+      .catch((err) => {
+        dispatch({ type: "GETLIKES_ERROR", err });
       });
   };
 };
