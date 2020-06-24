@@ -16,10 +16,6 @@ import { getName } from "country-list";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
   MDBBtn,
   MDBInput,
   MDBIcon,
@@ -28,8 +24,7 @@ import {
   MDBPopoverHeader,
   MDBSpinner,
   MDBBadge,
-  MDBListGroup,
-  MDBListGroupItem,
+  MDBProgress,
 } from "mdbreact";
 
 //> Redux Firebase
@@ -57,6 +52,8 @@ import defaultUserIMG from "../../../assets/images/default.gif";
 import goldUserIMG from "../../../assets/images/gold.gif";
 import lightUserIMG from "../../../assets/images/light.gif";
 import bronzeUserIMG from "../../../assets/images/bronze.gif";
+import darkUserIMG from "../../../assets/images/dark.gif";
+import loadingUserIMG from "../../../assets/images/loading.gif";
 
 //> CSS
 import "./comment.scss";
@@ -161,6 +158,42 @@ class Comment extends React.Component {
   render() {
     const { auth, comment, child, cid } = this.props;
     const { receivedUser, message, likeCount } = this.state;
+
+    if (!receivedUser) {
+      return (
+        <>
+          <div
+            className={
+              child
+                ? "comment d-flex justify-content-between child-comment"
+                : "comment d-flex justify-content-between mt-4"
+            }
+          >
+            <div className="p-2 img">
+              <img
+                src={loadingUserIMG}
+                className="rounded-circle avatar-img align-self-center mr-0"
+              />
+            </div>
+            <div className="content">
+              <div className="p-2 author-info">
+                <div className="name">
+                  <MDBProgress material preloader className="placeholder" />
+                </div>
+              </div>
+              <div className="px-3 pb-3">
+                <MDBProgress material preloader className="placeholder" />
+                <div>
+                  <span className="text-muted">
+                    <small>Comment loading</small>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      );
+    }
 
     return (
       <>
@@ -448,7 +481,11 @@ class Comment extends React.Component {
                     <div>
                       <span
                         className="clickable text-danger"
-                        onClick={() => this.removeComment(comment)}
+                        onClick={() =>
+                          this.setState({ delete: false }, () =>
+                            this.removeComment(comment)
+                          )
+                        }
                       >
                         Remove comment permanently
                       </span>

@@ -85,6 +85,17 @@ body {
   cursor: pointer;
 }
 
+.placeholder {
+  display: block;
+  height: 15px;
+  border-radius: 1rem;
+  width: 100%;
+  background: darken(grey, 10%) !important;
+  .indeterminate {
+    background: darken(grey, 8%);
+  }
+}
+
 .btn-modern {
   overflow: visible !important;
   position: relative;

@@ -435,7 +435,7 @@ class Post extends React.Component {
                       className="clickable text-danger"
                       onClick={() => {
                         this.props.removePost(post.id, post.data.author.uid);
-                        this.props.load();
+                        this.props.refreshData();
                       }}
                     >
                       Remove post permanently
