@@ -165,7 +165,7 @@ export const removeComment = (comment) => {
   };
 };
 
-// Load <amount> amount of comments
+// Load comments
 export const loadComments = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();

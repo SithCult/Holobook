@@ -109,7 +109,7 @@ class Comments extends React.Component {
         () => {
           this.setState({ comment: "" });
           this.props.createComment(data);
-          this.props.load();
+          this.props.refreshData();
         }
       );
     }
@@ -117,6 +117,7 @@ class Comments extends React.Component {
 
   render() {
     const { items } = this.props;
+
     return (
       <div className="comment-container">
         <div className="mb-3">
@@ -147,6 +148,7 @@ class Comments extends React.Component {
           items
             .filter((c) => c.data.pid === this.props.pid)
             .map((comment, i) => {
+              console.log(comment);
               if (comment.data.visible) {
                 return (
                   <React.Fragment key={i}>
@@ -155,7 +157,7 @@ class Comments extends React.Component {
                         <Comment
                           comment={comment}
                           key={i}
-                          load={this.props.load}
+                          refreshData={this.props.refreshData}
                         />
                         <div className="child-input">
                           <MDBInput
@@ -195,11 +197,11 @@ class Comments extends React.Component {
                           return (
                             <Comment
                               comment={child}
-                              key={c}
+                              key={i + "-" + c}
                               cid={child.id}
-                              load={this.props.load}
+                              refreshData={this.props.refreshData}
                               child
-                            ></Comment>
+                            />
                           );
                         } else return null;
                       }

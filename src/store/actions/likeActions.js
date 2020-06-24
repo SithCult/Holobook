@@ -88,10 +88,8 @@ export const hasLiked = (pid) => {
       .get()
       .then((docSnapshot) => {
         if (docSnapshot.exists) {
-          console.log("FOUND " + pid + uid);
           return true;
         } else {
-          console.log("Empty for " + pid + uid);
           return false;
         }
       })

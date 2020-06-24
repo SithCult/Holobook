@@ -69,10 +69,10 @@ class Post extends React.Component {
     });
   };
 
-  componentWillReceiveProps = async (nextProps) => {
-    /*this.setState({
-      comments: await this.props.comments,
-    });*/
+  componentWillReceiveProps = (nextProps) => {
+    this.setState({
+      comments: nextProps.comments,
+    });
   };
 
   updateLikes = async (amount) => {
@@ -92,7 +92,7 @@ class Post extends React.Component {
     const { auth, post, key } = this.props;
     const { receivedUser, comments, likeCount, liked } = this.state;
 
-    console.log("STATE", likeCount, liked);
+    console.log(comments);
 
     return (
       <MDBCard
@@ -341,7 +341,6 @@ class Post extends React.Component {
                   !this.state.liked ? "text-white p-2" : "text-red p-2"
                 }
                 onClick={() => {
-                  console.log(this.state.liked);
                   if (this.state.liked) {
                     this.setState(
                       {
@@ -466,7 +465,11 @@ class Post extends React.Component {
           </div>
           <hr />
           <div className="mt-3">
-            <Comments items={comments} pid={post.id} load={this.props.load} />
+            <Comments
+              items={comments}
+              pid={post.id}
+              refreshData={this.props.refreshData}
+            />
           </div>
         </MDBCardBody>
       </MDBCard>
@@ -480,7 +483,6 @@ const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     receivedUser: state.user.receivedUser,
-    comments: state.comment.results,
   };
 };
 

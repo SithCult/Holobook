@@ -58,17 +58,21 @@
       margin-bottom: 1rem;
     }
   }
-}
 
-// Settings tab
-.settings-tab {
-  background: white;
-  border-top-left-radius: 0.3rem;
-  border-bottom-left-radius: 2rem;
-  border-top-right-radius: 0.3rem;
-  border-bottom-right-radius: 2rem;
-  padding: 0.5rem 1rem 1rem 1rem;
-  color: #1e1e1e;
+  // Settings tab
+  .settings-tab {
+    margin-top: 0.3rem;
+    background: darken(grey, 20%);
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+
+  // Edit
+  .editcomment {
+    .md-form {
+      margin-top: 0.5rem !important;
+    }
+  }
 }
 
 /** 

@@ -60,6 +60,7 @@ class Posts extends React.Component {
 
   render() {
     const { posts, auth, comments } = this.props;
+
     if (posts && auth) {
       let result = posts.map((post, i) => {
         return (
@@ -69,10 +70,11 @@ class Posts extends React.Component {
             uid={post?.data?.author?.uid}
             comments={comments}
             removePost={this.props.removePost}
-            load={() => this.props.load(this.props.posts.length)}
+            refreshData={this.props.refreshData}
           />
         );
       });
+
       return result;
     } else {
       return false;
@@ -87,14 +89,12 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     postLoading: state.post.likeError,
-    comments: state.comment.comments,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     removePost: (pid, uid) => dispatch(removePost(pid, uid)),
-    loadComments: () => dispatch(loadComments()),
   };
 };
 //#endregion

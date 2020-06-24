@@ -133,7 +133,10 @@ class ProfilePage extends React.Component {
   };
 
   refreshData = () => {
+    console.log("CALLED REFRESH");
+
     this.props.loadComments();
+
     this.props.loadPosts(
       this.props?.posts?.length ? this.props.posts.length : 5
     );
@@ -142,6 +145,7 @@ class ProfilePage extends React.Component {
   loadMore = () => {
     // Prevent multiple loadings
     let posts = this.props.posts;
+
     if (posts) {
       if (posts.length === this.state.postsVisible) {
         this.setState(
@@ -160,6 +164,7 @@ class ProfilePage extends React.Component {
       post_feeling: feeling,
     });
   };
+
   removeFeeling = (event) => {
     this.setState({
       post_feeling: {
@@ -190,6 +195,7 @@ class ProfilePage extends React.Component {
 
     // Check language
     let wordcount = event.target.value.split(" ").length;
+
     this._detectLanguage(event.target.value, wordcount);
 
     if (event.target.value.length <= 500) {
@@ -201,6 +207,7 @@ class ProfilePage extends React.Component {
 
   getCountry = (address) => {
     let country = address ? countryList().getLabel(address.country) : null;
+
     return country;
   };
 
@@ -215,7 +222,6 @@ class ProfilePage extends React.Component {
             </MDBBadge>
           </MDBCol>
         );
-        break;
       case "member":
         return (
           <MDBCol key={key}>
@@ -225,7 +231,6 @@ class ProfilePage extends React.Component {
             </MDBBadge>
           </MDBCol>
         );
-        break;
       case "hand":
         return (
           <MDBCol key={key}>
@@ -235,7 +240,6 @@ class ProfilePage extends React.Component {
             </MDBBadge>
           </MDBCol>
         );
-        break;
       case "historic":
         return (
           <MDBCol key={key}>
@@ -245,7 +249,6 @@ class ProfilePage extends React.Component {
             </MDBBadge>
           </MDBCol>
         );
-        break;
       default:
         break;
     }
@@ -439,11 +442,14 @@ class ProfilePage extends React.Component {
   // Firebase picture upload
   handleUploadStart = () =>
     this.setState({ postImageisUploading: true, postImageProgress: 0 });
+
   handleProgress = (progress) => this.setState({ postImageProgress: progress });
+
   handleUploadError = (error) => {
     this.setState({ postImageisUploading: false });
     console.error(error);
   };
+
   handleUploadSuccess = (filename) => {
     this.setState({
       postImage: filename,
@@ -462,6 +468,8 @@ class ProfilePage extends React.Component {
     const { auth, profile, comments } = this.props;
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
+    console.log("UPDATED COMPONENT", comments);
+
     if (profile.badges) {
       if (!this.state.postsInitialLoad) {
         this.setState(
@@ -472,6 +480,7 @@ class ProfilePage extends React.Component {
         );
       }
     }
+
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
         <MDBRow>
@@ -875,9 +884,9 @@ class ProfilePage extends React.Component {
             <div className="posts">
               <Posts
                 posts={this.props.posts}
-                comments={this.props.comments}
+                comments={comments}
                 update={this.loadMore}
-                load={this.props.loadPosts}
+                refreshData={this.refreshData}
               />
               {this.props.postLoading && (
                 <div className="text-center spinners">
@@ -905,7 +914,7 @@ const mapStateToProps = (state) => {
     profile: state.firebase.profile,
     posts: state.post.results,
     postLoading: state.post.loading,
-    comments: state.comment.comments,
+    comments: state.comment.results,
   };
 };
 

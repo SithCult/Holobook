@@ -81,6 +81,10 @@ class Comment extends React.Component {
     );
   };
 
+  componentWillReceiveProps = (nextProps) => {
+    this.checkTag(nextProps.comment.data.msg);
+  };
+
   // Handle edit input change
   changeTextareaHandler = (event, cid) => {
     event.target.style.overflow = "hidden";
@@ -104,7 +108,7 @@ class Comment extends React.Component {
     if (newmsg) {
       this.setState({ comment: "", ["edit_comment_" + comment.id]: "" });
       this.props.editComment(comment, newmsg);
-      this.props.load();
+      this.props.refreshData();
     }
   };
 
@@ -116,7 +120,7 @@ class Comment extends React.Component {
 
   removeComment = (comment) => {
     this.props.removeComment(comment);
-    this.props.load();
+    this.props.refreshData();
   };
 
   _calculateTimeAgo = (timestamp) => {
@@ -153,8 +157,6 @@ class Comment extends React.Component {
   render() {
     const { auth, comment, child, cid } = this.props;
     const { receivedUser, message, likeCount } = this.state;
-
-    console.log(this.state);
 
     return (
       <>
@@ -336,86 +338,131 @@ class Comment extends React.Component {
               </div>
             </div>
             <div className="px-3 pb-3">
-              <p
-                className="mb-0"
-                dangerouslySetInnerHTML={{ __html: message }}
-              ></p>
-              <div>
-                <MDBIcon
-                  icon="angle-up clickable"
-                  className={
-                    !this.state.liked ? "text-white p-2" : "text-red p-2"
-                  }
-                  onClick={() => {
-                    if (this.state.liked) {
-                      this.setState({ liked: false }, () => {
-                        this.props.removeLike(comment.id);
-                        this.updateLikes(-1);
-                      });
-                    } else {
-                      this.setState(
-                        {
-                          liked: true,
-                        },
-                        () => {
-                          this.props.createLike(comment.id);
-                          this.updateLikes(1);
-                        }
-                      );
+              {this.state.edit ? (
+                <div className="editcomment">
+                  <MDBInput
+                    type="textarea"
+                    label={`Edit Comment`}
+                    name="editcomment"
+                    outline
+                    className={
+                      this.state["edit_comment_" + comment.id]
+                        ? "keep"
+                        : undefined
                     }
-                  }}
-                  size="lg"
-                />
-                <span className="text-muted">{likeCount} Likes</span>
-              </div>
-              <div className="editcomment.input">
-                <MDBInput
-                  type="textarea"
-                  label={`Edit Comment`}
-                  name="editcomment"
-                  outline
-                  className={
-                    this.state["edit_comment_" + comment.id]
-                      ? "keep"
-                      : undefined
-                  }
-                  value={
-                    this.state["edit_comment_" + comment.id]
-                      ? this.state["edit_comment_" + comment.id]
-                      : comment.data.msg
-                  }
-                  onChange={(e) => this.changeTextareaHandler(e, comment.id)}
-                />
-                {this.state["edit_comment_" + comment.id] && (
-                  <div className="text-right">
-                    <MDBBtn
-                      color="elegant"
-                      onClick={() =>
-                        this.props.editComment(
-                          comment,
-                          this.state["edit_comment_" + comment.id]
-                        )
+                    value={
+                      this.state["edit_comment_" + comment.id]
+                        ? this.state["edit_comment_" + comment.id]
+                        : comment.data.msg
+                    }
+                    onChange={(e) => this.changeTextareaHandler(e, comment.id)}
+                  />
+                  {this.state["edit_comment_" + comment.id] && (
+                    <div className="text-right">
+                      <MDBBtn
+                        color="elegant"
+                        size="md"
+                        onClick={() =>
+                          this.props.editComment(
+                            comment,
+                            this.state["edit_comment_" + comment.id]
+                          )
+                        }
+                      >
+                        <MDBIcon icon="comment-alt" className="pr-2" />
+                        Save Changes
+                      </MDBBtn>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p
+                  className="mb-0"
+                  dangerouslySetInnerHTML={{ __html: message }}
+                ></p>
+              )}
+
+              <div>
+                {auth.uid !== comment.data.author.uid && (
+                  <MDBIcon
+                    icon="angle-up clickable"
+                    className={
+                      !this.state.liked ? "text-white p-2" : "text-red p-2"
+                    }
+                    onClick={() => {
+                      if (this.state.liked) {
+                        this.setState({ liked: false }, () => {
+                          this.props.removeLike(comment.id);
+                          this.updateLikes(-1);
+                        });
+                      } else {
+                        this.setState(
+                          {
+                            liked: true,
+                          },
+                          () => {
+                            this.props.createLike(comment.id);
+                            this.updateLikes(1);
+                          }
+                        );
                       }
-                    >
-                      <MDBIcon icon="comment-alt" className="pr-2" />
-                      Save Changes
-                    </MDBBtn>
-                  </div>
+                    }}
+                    size="lg"
+                  />
                 )}
+                <span className="text-muted">
+                  <small>{likeCount} Likes</small>
+                </span>
               </div>
+              {this.state.settings && (
+                <div className="settings-tab">
+                  {!this.state.delete ? (
+                    <div>
+                      <span
+                        className="clickable"
+                        onClick={() => this.setState({ delete: true })}
+                      >
+                        Delete
+                      </span>
+                      <span className="mx-2">|</span>
+                      {!this.state.edit ? (
+                        <span
+                          className="clickable"
+                          onClick={() => this.setState({ edit: true })}
+                        >
+                          Edit
+                        </span>
+                      ) : (
+                        <span
+                          className="clickable"
+                          onClick={() => this.setState({ edit: false })}
+                        >
+                          Cancel Edit
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    <div>
+                      <span
+                        className="clickable text-danger"
+                        onClick={() => this.removeComment(comment)}
+                      >
+                        Remove comment permanently
+                      </span>
+                      <span className="mx-2">|</span>
+                      <span
+                        className="clickable"
+                        onClick={() => this.setState({ delete: false })}
+                      >
+                        Cancel
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
-        {this.state.settings && (
-          <div className="settings-tab">
-            <MDBListGroup className="commentoptions">
-              <MDBListGroupItem>Edit</MDBListGroupItem>
-              <MDBListGroupItem onClick={() => this.removeComment(comment)}>
-                Delete
-              </MDBListGroupItem>
-            </MDBListGroup>
-          </div>
-        )}
       </>
     );
   }
@@ -428,7 +475,6 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     receivedUser: state.user.receivedUser,
-    likecount: state.like.likecount,
   };
 };
 
