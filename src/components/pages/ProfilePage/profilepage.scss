@@ -16,6 +16,10 @@
   .posts {
     .card {
       background: #3e3e3e;
+      box-shadow: none;
+      border: 2px darken(#3e3e3e, 7%) solid;
+      border-radius: 0.5rem;
+
       .avatar-img {
         width: 2.5rem;
       }
