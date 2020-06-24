@@ -158,22 +158,31 @@ class Comment extends React.Component {
   };
 
   checkTag = async (msg) => {
-    if (msg.includes("@")) {
-      const regExpression = /@\w+/g;
-      const re = msg.match(regExpression);
+    // Tags have been disabled for this version
+    const enabled = false;
 
-      let result = msg;
+    if (enabled) {
+      if (msg.includes("@")) {
+        const regExpression = /@\w+/g;
+        const re = msg.match(regExpression);
 
-      await re.forEach(async (item, i) => {
-        result = result.replace(
-          item,
-          `<span class="orange-text">${item}</span>`
-        );
-      });
+        let result = msg;
 
-      this.setState({
-        message: result,
-      });
+        await re.forEach(async (item, i) => {
+          result = result.replace(
+            item,
+            `<span class="orange-text">${item}</span>`
+          );
+        });
+
+        this.setState({
+          message: result,
+        });
+      } else {
+        this.setState({
+          message: msg,
+        });
+      }
     } else {
       this.setState({
         message: msg,
