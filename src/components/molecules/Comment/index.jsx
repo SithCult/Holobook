@@ -106,9 +106,13 @@ class Comment extends React.Component {
 
   editComment = (comment, newmsg) => {
     if (newmsg) {
-      this.setState({ comment: "", ["edit_comment_" + comment.id]: "" });
-      this.props.editComment(comment, newmsg);
-      this.props.refreshData();
+      this.setState(
+        { comment: "", ["edit_comment_" + comment.id]: "", edit: false },
+        () => {
+          this.props.editComment(comment, newmsg);
+          this.checkTag(newmsg);
+        }
+      );
     }
   };
 
@@ -363,7 +367,7 @@ class Comment extends React.Component {
                         color="elegant"
                         size="md"
                         onClick={() =>
-                          this.props.editComment(
+                          this.editComment(
                             comment,
                             this.state["edit_comment_" + comment.id]
                           )
@@ -381,7 +385,6 @@ class Comment extends React.Component {
                   dangerouslySetInnerHTML={{ __html: message }}
                 ></p>
               )}
-
               <div>
                 {auth.uid !== comment.data.author.uid && (
                   <MDBIcon

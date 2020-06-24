@@ -38,9 +38,9 @@ export const editComment = (comment, newmsg) => {
 
     // Get userId
     let uid = comment.data.author.uid;
-    let loggedinuid = firebase.auth().currentUser.uid;
+    let loggedInUid = firebase.auth().currentUser.uid;
 
-    if (uid === loggedinuid) {
+    if (uid === loggedInUid) {
       // Edit comment
       firestore
         .collection("comment")
@@ -56,7 +56,6 @@ export const editComment = (comment, newmsg) => {
         )
         .then(() => {
           dispatch({ type: "EDITCOMMENT_SUCCESS" });
-          return;
         })
         .catch((err) => {
           dispatch({ type: "EDITCOMMENT_ERROR", err });
@@ -154,7 +153,6 @@ export const removeComment = (comment) => {
         )
         .then(() => {
           dispatch({ type: "REMOVE_SUCCESS", id: comment.id });
-          return;
         })
         .catch((err) => {
           dispatch({ type: "REMOVE_ERROR", err });
@@ -171,7 +169,9 @@ export const loadComments = () => {
     const firestore = getFirestore();
 
     // Apply where condition
-    const comments = firestore.collection("comment");
+    const comments = firestore
+      .collection("comment")
+      .where("visible", "==", true);
 
     // Get comments and order them
     return comments
