@@ -52,12 +52,6 @@ export const removeLike = (pid) => {
 export const getLikeAmount = (pid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
-    const firebase = getFirebase();
-
-    console.log("GET LIKE AMOUNT CALLED");
-
-    // Get userId
-    const uid = firebase.auth().currentUser.uid;
 
     const likes = firestore.collection("likes").where("pid", "==", pid);
 

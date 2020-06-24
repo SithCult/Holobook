@@ -3,7 +3,7 @@
 import sha256 from "js-sha256";
 //#endregion
 
-//#region > Exports
+//#region > Functions
 // Get user by uid
 export const getUser = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {

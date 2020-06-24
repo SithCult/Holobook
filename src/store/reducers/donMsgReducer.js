@@ -9,12 +9,14 @@ const donMsgReducer = (state = initState, action) => {
   switch (action.type) {
     case "DONMESSAGESAVE_SUCCESS":
       console.log("Message successfully stored!");
+
       return {
         ...state,
         donationid: action.donationid,
       };
     case "DONMESSAGESAVE_ERROR":
       console.log("An error occured while storing message", action.err);
+
       return {
         ...state,
         donationid: undefined,

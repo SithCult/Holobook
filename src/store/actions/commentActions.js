@@ -37,8 +37,8 @@ export const editComment = (comment, newmsg) => {
     const firestore = getFirestore();
 
     // Get userId
-    let uid = comment.data.author.uid;
-    let loggedInUid = firebase.auth().currentUser.uid;
+    const uid = comment.data.author.uid;
+    const loggedInUid = firebase.auth().currentUser.uid;
 
     if (uid === loggedInUid) {
       // Edit comment
@@ -67,8 +67,8 @@ export const editComment = (comment, newmsg) => {
 // Like a comment
 export const likeComment = (id, uid, likes) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
     const firestore = getFirestore();
+
     let localLikes = likes;
 
     if (localLikes) {
@@ -108,7 +108,6 @@ export const likeComment = (id, uid, likes) => {
 // Unlike a comment
 export const unlikeComment = (id, uid, likes) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
     const firestore = getFirestore();
 
     likes = likes.filter(function (obj) {

@@ -141,10 +141,10 @@ class ProfilePage extends React.Component {
   };
 
   refreshData = () => {
-    console.log("CALLED REFRESH");
-
+    // Loads all comments
     this.props.loadComments();
 
+    // Loads n posts, but 5 at minimum
     this.props.loadPosts(
       this.props?.posts?.length ? this.props.posts.length : 5
     );
@@ -154,6 +154,7 @@ class ProfilePage extends React.Component {
     // Prevent multiple loadings
     let posts = this.props.posts;
 
+    // Check if posts have already loaded
     if (posts) {
       if (posts.length === this.state.postsVisible) {
         this.setState(
@@ -173,6 +174,7 @@ class ProfilePage extends React.Component {
     });
   };
 
+  // Remove feeling
   removeFeeling = (event) => {
     this.setState({
       post_feeling: {
@@ -182,7 +184,7 @@ class ProfilePage extends React.Component {
     });
   };
 
-  _resetPostForm = () => {
+  resetPostForm = () => {
     this.setState(
       {
         post_charlength: 0,
@@ -204,7 +206,7 @@ class ProfilePage extends React.Component {
     // Check language
     let wordcount = event.target.value.split(" ").length;
 
-    this._detectLanguage(event.target.value, wordcount);
+    this.detectLanguage(event.target.value, wordcount);
 
     if (event.target.value.length <= 500) {
       this.setState({
@@ -219,7 +221,7 @@ class ProfilePage extends React.Component {
     return country;
   };
 
-  _renderBadge = (badge, key) => {
+  renderBadge = (badge, key) => {
     switch (badge.toLowerCase()) {
       case "founder":
         return (
@@ -267,7 +269,7 @@ class ProfilePage extends React.Component {
 
     if (badges) {
       result = badges.map((badge, key) => {
-        return this._renderBadge(badge, key);
+        return this.renderBadge(badge, key);
       });
     }
 
@@ -335,7 +337,7 @@ class ProfilePage extends React.Component {
           postError: false,
         },
         () => {
-          this._resetPostForm();
+          this.resetPostForm();
           this.props.createPost(data);
           this.loadPosts(this.state.postsVisible);
         }
@@ -350,7 +352,7 @@ class ProfilePage extends React.Component {
     }
   };
 
-  _detectLanguage = (text, words) => {
+  detectLanguage = (text, words) => {
     if (words >= 5) {
       const LanguageDetect = require("languagedetect");
       const lngDetector = new LanguageDetect();
@@ -360,14 +362,14 @@ class ProfilePage extends React.Component {
         {
           post_languages: results,
         },
-        () => this._getLanguageApproved()
+        () => this.getLanguageApproved()
       );
     } else {
       return false;
     }
   };
 
-  _getLanguageApproved = () => {
+  getLanguageApproved = () => {
     if (this.state.post_visibility) {
       if (this.state.post_languages.length > 0) {
         if (this.state.post_languages[0][0] === "english") {
@@ -474,9 +476,8 @@ class ProfilePage extends React.Component {
 
   render() {
     const { auth, profile, comments } = this.props;
-    if (auth.uid === undefined) return <Redirect to="/login" />;
 
-    console.log("UPDATED COMPONENT", comments);
+    if (auth.uid === undefined) return <Redirect to="/login" />;
 
     if (profile.badges) {
       if (!this.state.postsInitialLoad) {
