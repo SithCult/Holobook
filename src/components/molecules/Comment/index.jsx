@@ -150,7 +150,7 @@ class Comment extends React.Component {
     this.props.refreshData();
   };
 
-  _calculateTimeAgo = (timestamp) => {
+  calculateTimeAgo = (timestamp) => {
     TimeAgo.addLocale(en);
     const timeAgo = new TimeAgo("en-US");
 
@@ -412,7 +412,7 @@ class Comment extends React.Component {
               <div className="ml-auto p-2 mb-auto time">
                 <small className="text-muted">
                   {comment.data.timestamp &&
-                    this._calculateTimeAgo(comment.data.timestamp)}
+                    this.calculateTimeAgo(comment.data.timestamp)}
                 </small>
               </div>
             </div>

@@ -79,13 +79,13 @@ class HomePage extends React.Component {
   };
 
   componentDidMount = () => {
-    this._fetchAllCountries();
+    this.fetchAllCountries();
   };
 
   submitHandler = (event) => {
     event.preventDefault();
 
-    const result = this._signUserUp();
+    const result = this.signUserUp();
 
     if (result.value) {
       console.log("Created user.");
@@ -94,7 +94,7 @@ class HomePage extends React.Component {
     }
   };
 
-  _checkSithname(value) {
+  checkSithname(value) {
     const forbidden = [
       "Darth",
       "Lord",
@@ -149,7 +149,7 @@ class HomePage extends React.Component {
   changeHandler = (event) => {
     // Check Sithname
     if (event.target.name === "sn") {
-      this._checkSithname(event.target.value);
+      this.checkSithname(event.target.value);
     }
     this.setState({
       [event.target.name]: event.target.value,
@@ -289,7 +289,7 @@ class HomePage extends React.Component {
     }
   };
 
-  _fetchAllCountries = (country) => {
+  fetchAllCountries = (country) => {
     let allCountries = countries.map((c, i) => {
       return {
         text: c.label,
@@ -302,7 +302,7 @@ class HomePage extends React.Component {
     });
   };
 
-  _generateRandomName = () => {
+  generateRandomName = () => {
     let creatures = [
       "angel",
       "cavePerson",
@@ -355,13 +355,13 @@ class HomePage extends React.Component {
      * "elf" and "highelf" has been removed due to its special chars in its name.
      * It was tested using 1.000.000 names - which seems solid.
      */
-    let generation = this._generateRandomName();
+    let generation = this.generateRandomName();
     this.setState({
       sn: generation.name,
     });
   };
 
-  _solidifyData = () => {
+  solidifyData = () => {
     let data = {
       email: this.state.email,
       email_sith:
@@ -408,7 +408,7 @@ class HomePage extends React.Component {
     return data;
   };
 
-  _signUserUp = () => {
+  signUserUp = () => {
     if (
       this.state.email &&
       this.state.name &&
@@ -436,7 +436,7 @@ class HomePage extends React.Component {
         }
       }
       // All local checks OK
-      this.props.signUp(this._solidifyData());
+      this.props.signUp(this.solidifyData());
       return {
         value: true,
         code: null,

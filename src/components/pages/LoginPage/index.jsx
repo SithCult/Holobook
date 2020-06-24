@@ -47,7 +47,7 @@ class LoginPage extends React.Component {
   submitHandler = (event) => {
     event.preventDefault();
 
-    this._loginUser();
+    this.loginUser();
   };
 
   changeHandler = (event) => {
@@ -56,7 +56,7 @@ class LoginPage extends React.Component {
     });
   };
 
-  _loginUser = () => {
+  loginUser = () => {
     let email = this.state.email;
     let psw = this.state.password;
 

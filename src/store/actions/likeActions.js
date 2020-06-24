@@ -73,23 +73,27 @@ export const hasLiked = (pid) => {
     const firebase = getFirebase();
 
     // Get userId
-    const uid = firebase.auth().currentUser.uid;
+    const uid = firebase.auth().currentUser?.uid;
 
-    const likes = firestore.collection("likes").doc(pid + uid);
+    if (uid) {
+      const likes = firestore.collection("likes").doc(pid + uid);
 
-    // Remove like
-    return likes
-      .get()
-      .then((docSnapshot) => {
-        if (docSnapshot.exists) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .catch((err) => {
-        dispatch({ type: "HASLIKED_ERROR", err });
-      });
+      // Remove like
+      return likes
+        .get()
+        .then((docSnapshot) => {
+          if (docSnapshot.exists) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+        .catch((err) => {
+          dispatch({ type: "HASLIKED_ERROR", err });
+        });
+    } else {
+      dispatch({ type: "HASLIKED_ERROR", err: "Not logged" });
+    }
   };
 };
 
