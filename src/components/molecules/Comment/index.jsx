@@ -75,11 +75,10 @@ class Comment extends React.Component {
           this.props.comment.data.author.uid
         ),
         liked: await this.props.hasLiked(this.props.comment.id),
+        likeCount: await this.props.getLikeAmount(this.props.comment.id),
       },
       () => this.checkTag(this.props.comment.data.msg)
     );
-
-    this.props.getLikeAmount(this.props.comment.id);
   };
 
   // Handle edit input change
@@ -107,6 +106,12 @@ class Comment extends React.Component {
       this.props.editComment(comment, newmsg);
       this.props.load();
     }
+  };
+
+  updateLikes = (amount) => {
+    this.setState({
+      likeCount: this.state.likeCount + amount,
+    });
   };
 
   removeComment = (comment) => {
@@ -147,7 +152,9 @@ class Comment extends React.Component {
 
   render() {
     const { auth, comment, child, cid } = this.props;
-    const { receivedUser, message } = this.state;
+    const { receivedUser, message, likeCount } = this.state;
+
+    console.log(this.state);
 
     return (
       <>
@@ -335,15 +342,15 @@ class Comment extends React.Component {
               ></p>
               <div>
                 <MDBIcon
-                  icon="angle-up"
+                  icon="angle-up clickable"
                   className={
-                    !this.props.liked ? "text-white p-2" : "text-red p-2"
+                    !this.state.liked ? "text-white p-2" : "text-red p-2"
                   }
                   onClick={() => {
                     if (this.state.liked) {
                       this.setState({ liked: false }, () => {
                         this.props.removeLike(comment.id);
-                        this.props.getLikeAmount(comment.id);
+                        this.updateLikes(-1);
                       });
                     } else {
                       this.setState(
@@ -352,14 +359,14 @@ class Comment extends React.Component {
                         },
                         () => {
                           this.props.createLike(comment.id);
-                          this.props.getLikeAmount(comment.id);
+                          this.updateLikes(1);
                         }
                       );
                     }
                   }}
                   size="lg"
                 />
-                <span className="text-muted">{this.props.likecount} Likes</span>
+                <span className="text-muted">{likeCount} Likes</span>
               </div>
               <div className="editcomment.input">
                 <MDBInput
