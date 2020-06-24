@@ -66,7 +66,7 @@ class Posts extends React.Component {
         return (
           <Post
             post={post}
-            key={i}
+            key={post.id}
             uid={post?.data?.author?.uid}
             comments={comments}
             removePost={this.props.removePost}

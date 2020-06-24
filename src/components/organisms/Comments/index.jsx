@@ -156,7 +156,7 @@ class Comments extends React.Component {
                       <>
                         <Comment
                           comment={comment}
-                          key={i}
+                          key={comment.id}
                           refreshData={this.props.refreshData}
                         />
                         <div className="child-input">
@@ -197,7 +197,7 @@ class Comments extends React.Component {
                           return (
                             <Comment
                               comment={child}
-                              key={i + "-" + c}
+                              key={comment.id}
                               cid={child.id}
                               refreshData={this.props.refreshData}
                               child

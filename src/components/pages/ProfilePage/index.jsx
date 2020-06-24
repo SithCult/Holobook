@@ -70,6 +70,7 @@ import goldUserIMG from "../../../assets/images/gold.gif";
 import lightUserIMG from "../../../assets/images/light.gif";
 import bronzeUserIMG from "../../../assets/images/bronze.gif";
 import holocronIcon from "../../../assets/images/icons/holocron.png";
+import darkUserIMG from "../../../assets/images/dark.gif";
 //#endregion
 
 //#region > Data
@@ -512,6 +513,15 @@ class ProfilePage extends React.Component {
                       <MDBAvatar className="mx-auto white">
                         <img
                           src={bronzeUserIMG}
+                          alt="Bronze user profile picture"
+                        />
+                      </MDBAvatar>
+                    );
+                  case "dark":
+                    return (
+                      <MDBAvatar className="mx-auto white">
+                        <img
+                          src={darkUserIMG}
                           alt="Bronze user profile picture"
                         />
                       </MDBAvatar>

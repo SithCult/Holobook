@@ -229,6 +229,13 @@ class Comment extends React.Component {
                         className="rounded-circle avatar-img align-self-center mr-0"
                       />
                     );
+                  case "dark":
+                    return (
+                      <img
+                        src={darkUserIMG}
+                        className="rounded-circle avatar-img align-self-center mr-0"
+                      />
+                    );
                   default:
                     return (
                       <img

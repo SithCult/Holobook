@@ -52,6 +52,7 @@ import defaultUserIMG from "../../../assets/images/default.gif";
 import goldUserIMG from "../../../assets/images/gold.gif";
 import lightUserIMG from "../../../assets/images/light.gif";
 import bronzeUserIMG from "../../../assets/images/bronze.gif";
+import darkUserIMG from "../../../assets/images/dark.gif";
 //#endregion
 
 //#region > Components
@@ -123,6 +124,13 @@ class Post extends React.Component {
                       return (
                         <img
                           src={bronzeUserIMG}
+                          className="rounded-circle avatar-img align-self-center mr-0"
+                        />
+                      );
+                    case "dark":
+                      return (
+                        <img
+                          src={darkUserIMG}
                           className="rounded-circle avatar-img align-self-center mr-0"
                         />
                       );
