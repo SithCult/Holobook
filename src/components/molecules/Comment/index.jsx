@@ -59,6 +59,32 @@ import loadingUserIMG from "../../../assets/images/loading.gif";
 import "./comment.scss";
 //#endregion
 
+//#region > Functions
+function replaceAll(string, search, replace) {
+  return string.split(search).join(replace);
+}
+
+String.prototype.escape = function () {
+  // Replace those tags with HTML equivalent
+  const tagsToReplace = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+  };
+
+  // Replace </br> with ||/br|| so it is not affected by the replacement
+  const pre = replaceAll(this, "</br>", "||/br||");
+
+  // Replace all <, > and & with the HTML equivalent
+  const result = pre.replace(/[&<br>]/g, function (tag) {
+    return tagsToReplace[tag] || tag;
+  });
+
+  // Change ||/br|| back to </br>
+  return replaceAll(result, "||/br||", "</br>");
+};
+//#endregion
+
 //#region > Components
 class Comment extends React.Component {
   state = {
@@ -422,7 +448,9 @@ class Comment extends React.Component {
               ) : (
                 <p
                   className="mb-0"
-                  dangerouslySetInnerHTML={{ __html: message }}
+                  dangerouslySetInnerHTML={{
+                    __html: message && message.escape(),
+                  }}
                 ></p>
               )}
               <div>

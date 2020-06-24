@@ -55,6 +55,32 @@ import bronzeUserIMG from "../../../assets/images/bronze.gif";
 import darkUserIMG from "../../../assets/images/dark.gif";
 //#endregion
 
+//#region > Functions
+function replaceAll(string, search, replace) {
+  return string.split(search).join(replace);
+}
+
+String.prototype.escape = function () {
+  // Replace those tags with HTML equivalent
+  const tagsToReplace = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+  };
+
+  // Replace </br> with ||/br|| so it is not affected by the replacement
+  const pre = replaceAll(this, "</br>", "||/br||");
+
+  // Replace all <, > and & with the HTML equivalent
+  const result = pre.replace(/[&<br>]/g, function (tag) {
+    return tagsToReplace[tag] || tag;
+  });
+
+  // Change ||/br|| back to </br>
+  return replaceAll(result, "||/br||", "</br>");
+};
+//#endregion
+
 //#region > Components
 class Post extends React.Component {
   state = {
@@ -92,8 +118,6 @@ class Post extends React.Component {
   render() {
     const { auth, post, key } = this.props;
     const { receivedUser, comments, likeCount, liked } = this.state;
-
-    console.log(comments);
 
     return (
       <MDBCard
@@ -299,7 +323,9 @@ class Post extends React.Component {
           </MDBRow>
           <div className="p-3">
             <p
-              dangerouslySetInnerHTML={{ __html: post.data.content }}
+              dangerouslySetInnerHTML={{
+                __html: post.data.content.escape(),
+              }}
               className={
                 post.data.basic && this.state.basic !== post.id
                   ? "basic hand"
@@ -378,63 +404,6 @@ class Post extends React.Component {
                 {this.state.likeCount === 1 ? "Like" : "Likes"}
               </span>
             </>
-            {/*this.alreadyLiked(post.data.likes) ? (
-                  <>
-                    <MDBIcon
-                      icon="angle-up"
-                      className="text-white p-2"
-                      onClick={() => {
-                        this.props.unlikePost(
-                          post.id,
-                          this.props.auth.uid,
-                          post.data.likes
-                        );
-                        this.props.load(this.props.posts.length);
-                      }}
-                      size="lg"
-                    />
-                    <span className="text-muted">
-                      {post.data.likes.length !== 0 ? (
-                        <>
-                          {post.data.likes.length + " "}
-                          {post.data.likes.length > 1
-                            ? "approvals"
-                            : "approval"}
-                        </>
-                      ) : (
-                        "0 approvals"
-                      )}
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <MDBIcon
-                      icon="angle-up"
-                      className="text-muted p-2"
-                      onClick={() => {
-                        this.props.likePost(
-                          post.id,
-                          this.props.auth.uid,
-                          post.data.likes
-                        );
-                        this.props.load(this.props.posts.length);
-                      }}
-                      size="lg"
-                    />
-                    <span className="text-muted">
-                      {post.data.likes.length !== 0 ? (
-                        <>
-                          {post.data.likes.length + " "}
-                          {post.data.likes.length > 1
-                            ? "approvals"
-                            : "approval"}
-                        </>
-                      ) : (
-                        "0 approvals"
-                      )}
-                    </span>
-                  </>
-                      )*/}
             {auth.uid === post.data.author.uid && (
               <div className="ml-auto p-2 mb-auto">
                 {this.state["delete-" + post.id] ? (

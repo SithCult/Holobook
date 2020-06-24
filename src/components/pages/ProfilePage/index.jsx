@@ -131,6 +131,13 @@ class ProfilePage extends React.Component {
 
     // Load posts
     this.refreshData();
+
+    // Fetch new posts and comments every 60 seconds
+    this.interval = setInterval(() => this.refreshData(), 60000);
+  };
+
+  componentWillUnmount = () => {
+    clearInterval(this.interval);
   };
 
   refreshData = () => {
