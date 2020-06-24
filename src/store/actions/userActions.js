@@ -1,3 +1,9 @@
+//#region > Imports
+// SHA265 algorithm
+import sha256 from "js-sha256";
+//#endregion
+
+//#region > Exports
 // Get user by uid
 export const getUser = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -137,14 +143,20 @@ export const updateBadgesDonate = (
         { merge: true }
       );
 
-    firestore.collection("donations").doc().set(
-      {
-        timestamp: timestamp,
+    // Create transaction hash
+    const hash = sha256(timestamp.toString());
+
+    firestore
+      .collection("donations")
+      .add({
+        timestamp,
         sith_name,
+        hash,
         amount,
-      },
-      { merge: true }
-    );
+      })
+      .then((docRef) => {
+        dispatch({ type: "GET_ID", uid: docRef.id });
+      });
   };
 };
 
@@ -156,11 +168,15 @@ export const writeDonation = (amount) => {
     // Get current timestamp
     const timestamp = new Date().getTime();
 
+    // Create transaction hash
+    const hash = sha256(timestamp.toString());
+
     firestore
       .collection("donations")
       .add({
-        timestamp: timestamp,
+        timestamp,
         sith_name: "Unknown Sith",
+        hash,
         amount,
       })
       .then((docRef) => {

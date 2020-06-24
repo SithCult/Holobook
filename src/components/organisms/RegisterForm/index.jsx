@@ -85,7 +85,7 @@ class HomePage extends React.Component {
   submitHandler = (event) => {
     event.preventDefault();
 
-    let result = this._signUserUp();
+    const result = this._signUserUp();
 
     if (result.value) {
       console.log("Created user.");
@@ -457,11 +457,17 @@ class HomePage extends React.Component {
       auth,
       authErrorCode,
       authErrorDetails,
+      profile,
       location,
     } = this.props;
 
+    console.log(this.props);
+
     // Scroll up to error
-    authErrorCode && this.firstRow.current.scrollIntoView();
+    authErrorCode &&
+      this.firstRow &&
+      this.firstRow.current &&
+      this.firstRow.current.scrollIntoView();
 
     let params = location.search.substr(1)
       ? location.search.substr(1).split("=")
@@ -477,7 +483,8 @@ class HomePage extends React.Component {
         }
       }
     } else {
-      if (auth.uid !== undefined) return <Redirect to="/me" />;
+      if (auth.uid !== undefined && profile.isLoaded && !profile.isEmpty)
+        return <Redirect to="/me" />;
     }
 
     return (
@@ -1000,6 +1007,7 @@ const mapStateToProps = (state) => {
     authErrorCode: state.auth.authErrorCode,
     authErrorDetails: state.auth.authErrorDetails,
     auth: state.firebase.auth,
+    profile: state.firebase.profile,
   };
 };
 
