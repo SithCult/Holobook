@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -24,7 +25,9 @@ import "./messagepage.scss";
 
 //> Images
 // To be added
+//#endregion
 
+//#region > Components
 class MessagePage extends React.Component {
   render() {
     const { auth, profile } = this.props;
@@ -382,15 +385,20 @@ class MessagePage extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Functions
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
   };
 };
+//#endregion
 
+//#region
 export default connect(mapStateToProps)(MessagePage);
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

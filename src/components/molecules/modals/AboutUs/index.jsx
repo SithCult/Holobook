@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -15,7 +16,9 @@ import {
 
 //> CSS
 import "./aboutus.scss";
+//#endregion
 
+//#region > Components
 class ModalPage extends React.Component {
   state = {
     modal11: false,
@@ -101,8 +104,11 @@ class ModalPage extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Exports
 export default ModalPage;
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

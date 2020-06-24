@@ -4,11 +4,11 @@
 import React from "react";
 
 //> Additional
-//  Enables PayPal integration
+// Enables PayPal integration
 import { PayPalButton } from "react-paypal-button-v2";
-//  Date/Time formatting
+// Date/Time formatting
 import moment from "moment";
-//  Enables CONFETTI!
+// Enables CONFETTI!
 import Confetti from "react-confetti";
 
 //> MDB

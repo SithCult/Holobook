@@ -1,32 +1,32 @@
 // Have initial state for when state is not ready to be passed
 const initState = {
-  postError: null,
+  commentError: null,
 };
 
-const postReducer = (state = initState, action) => {
+const commentReducer = (state = initState, action) => {
   switch (action.type) {
-    case "POSTCREATION_SUCCESS":
-      console.log("Creation success");
+    case "EDITCOMMENT_SUCCESS":
+      console.log("Edit Success");
 
       return {
         ...state,
-        postError: null,
+        commentError: null,
       };
-    case "POSTCREATION_ERROR":
-      console.log("Creation error", action.err);
+    case "EDITCOMMENT_ERROR":
+      console.log("Edit error", action.err);
 
       return {
         ...state,
-        postError: action.err,
+        commentError: action.err,
       };
     case "CREATION_SPAM":
-      console.log("Post is spam", action.err);
+      console.log("comment is spam", action.err);
 
       return {
         ...state,
-        postError: action.err,
+        commentError: action.err,
       };
-    case "LOADPOSTS_SUCCESS":
+    case "LOADCOMMENTS_SUCCESS":
       console.log("Loading success");
 
       return {
@@ -35,14 +35,14 @@ const postReducer = (state = initState, action) => {
         results: action.results,
         loading: false,
       };
-    case "LOADPOSTS_LOADING":
+    case "LOAD_LOADING":
       console.log("Loading...");
 
       return {
         ...state,
         loading: true,
       };
-    case "LOADPOSTS_ERROR":
+    case "LOAD_ERROR":
       console.log("Loading error", action.err);
 
       return {
@@ -50,20 +50,20 @@ const postReducer = (state = initState, action) => {
         authError: action.err,
         loading: false,
       };
-    case "REMOVEPOSTS_SUCCESS":
+    case "REMOVE_SUCCESS":
       console.log("Remove success");
 
       return {
         ...state,
       };
-    case "REMOVEPOSTS_ERROR":
+    case "REMOVE_ERROR":
       console.log("Remove error", action.err);
 
       return {
         ...state,
       };
     case "COMMENT_SUCCESS":
-      console.log("Comment created", action.postId);
+      console.log("Comment created", action.commentId);
 
       return {
         ...state,
@@ -79,7 +79,7 @@ const postReducer = (state = initState, action) => {
   }
 };
 
-export default postReducer;
+export default commentReducer;
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

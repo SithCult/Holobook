@@ -1,36 +1,64 @@
 //#region > Imports
-//> Additional
 // SHA265 algorithm
 import sha256 from "js-sha256";
 //#endregion
 
-//#region > Exports
+//#region > Functions
+// Get user by uid
 export const getUser = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
-    // Get loading
-    dispatch({ type: "USERLOAD_LOADING" });
-
-    firestore
+    return firestore
       .collection("users")
       .doc(uid)
       .get()
       .then((doc) => {
         if (!doc.exists) {
-          dispatch({ type: "USERLOAD_ERROR", err: "User no longer exists." });
+          return false;
         } else {
-          dispatch({ type: "USERLOAD_SUCCESS", results: doc.data() });
+          return { ...doc.data(), uid: doc.id };
         }
       })
       .catch((err) => {
-        dispatch({ type: "USERLOAD_ERROR", err });
+        return false;
       });
   };
 };
 
-//  Retrieve donations from Firestore
+// Get user by sith name
+export const getUserByName = (sith_name) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    const users = firestore
+      .collection("users")
+      .where("sith_name", "==", sith_name);
+
+    // Get comments and order them
+    return users
+      .get()
+      .then((querySnapshot) => {
+        let results = [];
+
+        querySnapshot.forEach(function (doc) {
+          let data = doc.data();
+
+          results.push({ id: doc.id, data });
+        });
+
+        return results;
+      })
+      .catch((err) => {
+        console.error(err);
+
+        return false;
+      });
+  };
+};
+
+// Retrieve donations from Firestore
 export const getDonations = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -62,7 +90,7 @@ export const getDonations = (uid) => {
   };
 };
 
-//  Store donation and update user badges
+// Store donation and update user badges
 export const updateBadgesDonate = (
   badges,
   details,
@@ -74,7 +102,7 @@ export const updateBadgesDonate = (
     const firebase = getFirebase();
     const firestore = getFirestore();
 
-    //  Get the unique ID of the current user
+    // Get the unique ID of the current user
     const uid = firebase.auth().currentUser.uid;
 
     let newBadges = [];
@@ -132,7 +160,7 @@ export const updateBadgesDonate = (
   };
 };
 
-//  Store donation
+// Store donation
 export const writeDonation = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
@@ -156,14 +184,6 @@ export const writeDonation = (amount) => {
       });
   };
 };
-
-export const clearUser = () => {
-  return (dispatch) => {
-    // Clear currently selected user
-    dispatch({ type: "USERLOAD_CLEAR" });
-  };
-};
-//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

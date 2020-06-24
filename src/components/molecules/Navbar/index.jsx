@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -28,7 +29,9 @@ import { signOut } from "../../../store/actions/authActions";
 //> Images
 // Logo
 import IMGlogo from "../../../assets/images/logo_white_sm.png";
+//#endregion
 
+//#region > Components
 class Navbar extends React.Component {
   state = {
     collapseID: "",
@@ -156,7 +159,9 @@ class Navbar extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Functions
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
@@ -169,8 +174,11 @@ const mapDispatchToProps = (dispatch) => {
     signOut: () => dispatch(signOut()),
   };
 };
+//#endregion
 
+//#region > Exports
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

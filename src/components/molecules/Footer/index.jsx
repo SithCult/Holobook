@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -10,7 +11,9 @@ import { MDBFooter, MDBRow, MDBCol, MDBContainer, MDBIcon } from "mdbreact";
 
 //> Footer
 import "./footer.scss";
+//#endregion
 
+//#region > Components
 class Footer extends React.Component {
   render() {
     return (
@@ -169,8 +172,11 @@ class Footer extends React.Component {
     );
   }
 }
+//#endregion
 
+//#region > Exports
 export default Footer;
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

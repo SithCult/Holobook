@@ -1,3 +1,4 @@
+// Create a new post
 export const createPost = (newPost) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -19,90 +20,28 @@ export const createPost = (newPost) => {
         visible: true,
       })
       .then(() => {
-        dispatch({ type: "CREATION_SUCCESS", newPost });
+        dispatch({ type: "POSTCREATION_SUCCESS", newPost });
         return;
       })
       .catch((err) => {
-        dispatch({ type: "CREATION_ERROR", err });
+        dispatch({ type: "POSTCREATION_ERROR", err });
       });
   };
 };
 
-export const likePost = (id, uid, likes) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
-    const firestore = getFirestore();
-    let localLikes = likes;
-
-    if (localLikes) {
-      if (Array.isArray(localLikes)) {
-        localLikes.push({
-          uid,
-          timestamp: Date.now(),
-        });
-      } else {
-        localLikes = [];
-      }
-    } else {
-      localLikes = [];
-    }
-
-    // Create post
-    firestore
-      .collection("posts")
-      .doc(id)
-      .set(
-        {
-          likes: localLikes,
-        },
-        { merge: true }
-      )
-      .then(() => {
-        dispatch({ type: "LIKE_SUCCESS", id });
-        return;
-      })
-      .catch((err) => {
-        dispatch({ type: "LIKE_ERROR", err });
-      });
-  };
-};
-
-export const unlikePost = (id, uid, likes) => {
+// Delete a post
+export const removePost = (pid, uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
-    likes = likes.filter(function (obj) {
-      return obj.uid !== uid;
-    });
+    const curUid = firebase.auth().currentUser.uid;
 
-    // Create post
-    firestore
-      .collection("posts")
-      .doc(id)
-      .update({
-        likes: likes,
-      })
-      .then(() => {
-        dispatch({ type: "UNLIKE_SUCCESS", id });
-        return;
-      })
-      .catch((err) => {
-        dispatch({ type: "UNLIKE_ERROR", err });
-      });
-  };
-};
-
-export const removePost = (uid, post) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
-    const firestore = getFirestore();
-
-    if (uid === post.data.author.uid) {
+    if (curUid === uid) {
       // Remove post
       firestore
         .collection("posts")
-        .doc(post.id)
+        .doc(pid)
         .set(
           {
             visible: false,
@@ -110,31 +49,29 @@ export const removePost = (uid, post) => {
           { merge: true }
         )
         .then(() => {
-          dispatch({ type: "REMOVE_SUCCESS", id: post.id });
+          dispatch({ type: "REMOVEPOST_SUCCESS", pid });
           return;
         })
         .catch((err) => {
-          dispatch({ type: "REMOVE_ERROR", err });
+          dispatch({ type: "REMOVEPOST_ERROR", err });
         });
     } else {
-      dispatch({ type: "REMOVE_ERROR", err: "Not authorized." });
+      dispatch({ type: "REMOVEPOST_ERROR", err: "Not authorized." });
     }
   };
 };
 
+// Load <amount> amount of posts
 export const loadPosts = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
-
-    dispatch({ type: "LOAD_LOADING" });
 
     let posts = firestore.collection("posts").where("visible", "==", true);
 
     if (amount < 0) {
       amount = 0;
     }
-
     posts
       .orderBy("timestamp", "desc")
       .limit(amount)
@@ -147,60 +84,21 @@ export const loadPosts = (amount) => {
 
           results.push({ id: doc.id, data });
         });
-
-        dispatch({ type: "LOAD_SUCCESS", results });
+        dispatch({ type: "LOADPOSTS_SUCCESS", results });
       })
       .catch((err) => {
-        dispatch({ type: "LOAD_ERROR", err });
+        dispatch({ type: "LOADPOSTS_ERROR", err });
       });
   };
 };
 
-export const commentPost = (postId, comment, previousComments) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
-    const firestore = getFirestore();
-
-    let localComments = previousComments;
-
-    if (localComments) {
-      if (Array.isArray(localComments)) {
-        localComments.push(comment);
-      } else {
-        localComments = [];
-        localComments.push(comment);
-      }
-    } else {
-      localComments = [];
-      localComments.push(comment);
-    }
-
-    // Create post
-    firestore
-      .collection("posts")
-      .doc(postId)
-      .set(
-        {
-          comments: localComments,
-        },
-        { merge: true }
-      )
-      .then(() => {
-        dispatch({ type: "COMMENT_SUCCESS", postId });
-        return;
-      })
-      .catch((err) => {
-        dispatch({ type: "COMMENT_ERROR", err });
-      });
-  };
-};
-
+// Load all posts
 export const loadAllPosts = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
-    dispatch({ type: "LOAD_LOADING" });
+    dispatch({ type: "LOADPOSTS_LOADING" });
 
     let posts = firestore.collection("posts");
 
@@ -221,10 +119,10 @@ export const loadAllPosts = (amount) => {
           results.push({ id: doc.id, data });
         });
 
-        dispatch({ type: "LOAD_SUCCESS", results });
+        dispatch({ type: "LOADPOSTS_SUCCESS", results });
       })
       .catch((err) => {
-        dispatch({ type: "LOAD_ERROR", err });
+        dispatch({ type: "LOADPOSTS_ERROR", err });
       });
   };
 };
