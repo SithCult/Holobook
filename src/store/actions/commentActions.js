@@ -22,7 +22,6 @@ export const createComment = (newComment) => {
       })
       .then(() => {
         dispatch({ type: "CREATION_SUCCESS", newComment });
-        return;
       })
       .catch((err) => {
         dispatch({ type: "CREATION_ERROR", err });
@@ -97,7 +96,6 @@ export const likeComment = (id, uid, likes) => {
       )
       .then(() => {
         dispatch({ type: "LIKE_SUCCESS", id });
-        return;
       })
       .catch((err) => {
         dispatch({ type: "LIKE_ERROR", err });
@@ -123,7 +121,6 @@ export const unlikeComment = (id, uid, likes) => {
       })
       .then(() => {
         dispatch({ type: "UNLIKE_SUCCESS", id });
-        return;
       })
       .catch((err) => {
         dispatch({ type: "UNLIKE_ERROR", err });
