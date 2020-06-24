@@ -8,17 +8,10 @@ import { Post } from "../../molecules";
 
 //> Redux Firebase
 // Actions for posts
-import {
-  createPost,
-  removePost,
-  editPost,
-  loadPosts,
-  reportPost,
-} from "../../../store/actions/postActions";
+import { removePost } from "../../../store/actions/postActions";
 // Connect
 import { connect } from "react-redux";
 import { loadComments } from "../../../store/actions/commentActions";
-import { MDBBtn } from "mdbreact";
 //#endregion
 
 //#region > Components

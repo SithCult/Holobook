@@ -65,14 +65,19 @@ class Post extends React.Component {
       receivedUser: await this.props.getUser(this.props.uid),
       comments: this.props.comments,
       liked: await this.props.hasLiked(this.props.post.id),
+      likeCount: await this.props.getLikeAmount(this.props.post.id),
     });
-
-    this.props.getLikeAmount(this.props.post.id);
   };
 
-  componentWillReceiveProps = async () => {
-    this.setState({
+  componentWillReceiveProps = async (nextProps) => {
+    /*this.setState({
       comments: await this.props.comments,
+    });*/
+  };
+
+  updateLikes = async (amount) => {
+    this.setState({
+      likeCount: this.state.likeCount + amount,
     });
   };
 
@@ -85,7 +90,10 @@ class Post extends React.Component {
 
   render() {
     const { auth, post, key } = this.props;
-    const { receivedUser, comments } = this.state;
+    const { receivedUser, comments, likeCount, liked } = this.state;
+
+    console.log("STATE", likeCount, liked);
+
     return (
       <MDBCard
         className={post.data.visible ? "mb-3 post" : "mb-3 post deleted"}
@@ -341,7 +349,7 @@ class Post extends React.Component {
                       },
                       () => {
                         this.props.removeLike(post.id);
-                        this.props.getLikeAmount(post.id);
+                        this.updateLikes(-1);
                       }
                     );
                   } else {
@@ -351,14 +359,17 @@ class Post extends React.Component {
                       },
                       () => {
                         this.props.createLike(post.id);
-                        this.props.getLikeAmount(post.id);
+                        this.updateLikes(1);
                       }
                     );
                   }
                 }}
                 size="lg"
               />
-              <span className="text-muted">{this.props.likecount} Likes</span>
+              <span className="text-muted">
+                {this.state.likeCount}{" "}
+                {this.state.likeCount === 1 ? "Like" : "Likes"}
+              </span>
             </>
             {/*this.alreadyLiked(post.data.likes) ? (
                   <>
@@ -470,7 +481,6 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     receivedUser: state.user.receivedUser,
     comments: state.comment.results,
-    likecount: state.like.likecount,
   };
 };
 

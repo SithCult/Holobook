@@ -54,20 +54,20 @@ export const getLikeAmount = (pid) => {
     const firestore = getFirestore();
     const firebase = getFirebase();
 
+    console.log("GET LIKE AMOUNT CALLED");
+
     // Get userId
     const uid = firebase.auth().currentUser.uid;
 
-    let likes = firestore.collection("likes").where("pid", "==", pid);
+    const likes = firestore.collection("likes").where("pid", "==", pid);
 
-    likes
+    return likes
       .get()
       .then((querySnapshot) => {
-        let likecount = querySnapshot.size;
-
-        dispatch({ type: "GETLIKES_SUCCESS", likecount });
+        return querySnapshot.size;
       })
       .catch((err) => {
-        dispatch({ type: "GETLIKES_ERROR", err });
+        return false;
       });
   };
 };
@@ -81,15 +81,17 @@ export const hasLiked = (pid) => {
     // Get userId
     const uid = firebase.auth().currentUser.uid;
 
+    const likes = firestore.collection("likes").doc(pid + uid);
+
     // Remove like
-    return firestore
-      .collection("likes")
-      .doc(pid + uid)
+    return likes
       .get()
-      .then((querySnapshot) => {
-        if (!querySnapshot.empty) {
+      .then((docSnapshot) => {
+        if (docSnapshot.exists) {
+          console.log("FOUND " + pid + uid);
           return true;
         } else {
+          console.log("Empty for " + pid + uid);
           return false;
         }
       })

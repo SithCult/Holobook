@@ -873,10 +873,6 @@ class ProfilePage extends React.Component {
                 </div>
               )}
             <div className="posts">
-              <MDBBtn onClick={this.refreshData}>
-                <MDBIcon icon="sync"></MDBIcon> Refresh
-              </MDBBtn>
-              ;
               <Posts
                 posts={this.props.posts}
                 comments={this.props.comments}

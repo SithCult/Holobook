@@ -43,18 +43,6 @@ const likeReducer = (state = initState, action) => {
         ...state,
         liked: false,
       };
-    case "GETLIKES_SUCCESS":
-      console.log("GETLIKES success");
-      return {
-        ...state,
-        likecount: action.likecount,
-      };
-    case "GETLIKES_ERROR":
-      console.log("hasliked error", action.err);
-      return {
-        ...state,
-        likecount: null,
-      };
     default:
       return state;
   }
