@@ -492,6 +492,12 @@ class Comment extends React.Component {
                 )}
                 <span className="text-muted">
                   <small>{likeCount} Likes</small>
+                  {comment?.data?.versions && (
+                    <>
+                      <span className="mx-2">|</span>
+                      <small>Edited</small>
+                    </>
+                  )}
                 </span>
               </div>
               {this.state.settings && (
