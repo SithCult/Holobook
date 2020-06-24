@@ -456,7 +456,7 @@ class Comment extends React.Component {
                   }}
                 ></p>
               )}
-              <div>
+              <div className="like-container">
                 {auth.uid !== comment.data.author.uid && (
                   <MDBIcon
                     icon="angle-up clickable"
