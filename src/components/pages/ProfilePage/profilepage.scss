@@ -60,21 +60,27 @@
     .badge {
       box-shadow: none;
       padding: 0.5rem;
+      margin-bottom: 0.4rem;
     }
     .badge-elegant-color {
-      background: #3e3e3e !important;
+      background: transparentize($color: #3e3e3e, $amount: 0.7) !important;
+      border-radius: 0.5rem;
+      border: 2px darken(#3e3e3e, 15%) solid !important;
+    }
+    .badge-orange {
+      background: transparentize($color: #ff9800, $amount: 0.7) !important;
+      border-radius: 0.5rem;
+      border: 2px darken(#ff9800, 15%) solid !important;
+    }
+    .badge-red {
+      background: transparentize($color: #f44336, $amount: 0.7) !important;
+      border-radius: 0.5rem;
+      border: 2px darken(#f44336, 15%) solid !important;
     }
     .badge-gold {
-      margin-top: 1em;
-      margin-bottom: 1em;
-      background: linear-gradient(-45deg, gold 10%, #ffe866 70%, gold 50%);
-      padding-right: 1em;
-      font-size: 0.8em;
-      padding-left: 1em;
-      padding-top: 0.5em;
-      padding-bottom: 0.5em;
-      box-shadow: 0px 0px 10px #ab930a;
-      color: #2e2e2e !important;
+      background: transparentize($color: gold, $amount: 0.7) !important;
+      border-radius: 0.5rem;
+      border: 2px darken(gold, 15%) solid !important;
     }
   }
 
