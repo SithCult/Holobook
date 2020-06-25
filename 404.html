@@ -1,0 +1,168 @@
+<!--
+  SPDX-License-Identifier: (EUPL-1.2)
+  Copyright © 2019-2020 Werbeagentur Christian Aichner
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
+    <link
+      rel="apple-touch-icon"
+      sizes="57x57"
+      href="%PUBLIC_URL%/fav/apple-icon-57x57.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="60x60"
+      href="%PUBLIC_URL%/fav/apple-icon-60x60.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="72x72"
+      href="%PUBLIC_URL%/fav/apple-icon-72x72.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="%PUBLIC_URL%/fav/apple-icon-76x76.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="%PUBLIC_URL%/fav/apple-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="%PUBLIC_URL%/fav/apple-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="%PUBLIC_URL%/fav/apple-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="%PUBLIC_URL%/fav/apple-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="%PUBLIC_URL%/fav/apple-icon-180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="%PUBLIC_URL%/fav/android-icon-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="%PUBLIC_URL%/fav/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="%PUBLIC_URL%/fav/favicon-96x96.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="%PUBLIC_URL%/fav/favicon-16x16.png"
+    />
+    <link rel="manifest" href="%PUBLIC_URL%/fav/manifest.json" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta
+      name="msapplication-TileImage"
+      content="%PUBLIC_URL%/fav/ms-icon-144x144.png"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <!-- Primary Meta Tags -->
+    <title>SithCult - The Real Sith Empire</title>
+    <meta name="title" content="SithCult - The Real Sith Empire" />
+    <meta
+      name="description"
+      content="Would you actually want to live in a world controlled by the Sith Empire? 
+We provide the closest thing to an Imperial society."
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://sithcult.com/" />
+    <meta property="og:title" content="SithCult - The Real Sith Empire" />
+    <meta
+      property="og:description"
+      content="Would you actually want to live in a world controlled by the Sith Empire? 
+We provide the closest thing to an Imperial society."
+    />
+    <meta property="og:image" content="https://www.sithcult.com/fav/og.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="http://sithcult.com/" />
+    <meta property="twitter:title" content="SithCult - The Real Sith Empire" />
+    <meta
+      property="twitter:description"
+      content="Would you actually want to live in a world controlled by the Sith Empire? 
+We provide the closest thing to an Imperial society."
+    />
+    <meta
+      property="twitter:image"
+      content="https://www.sithcult.com/fav/og.jpg"
+    />
+    <title>SithCult - The Real Sith Empire</title>
+    <script type="text/javascript">
+      // Single Page Apps for GitHub Pages
+      // https://github.com/rafrex/spa-github-pages
+      // Copyright (c) 2016 Rafael Pedicini, licensed under the MIT License
+      // ----------------------------------------------------------------------
+      // This script takes the current url and converts the path and query
+      // string into just a query string, and then redirects the browser
+      // to the new url with only a query string and hash fragment,
+      // e.g. http://www.foo.tld/one/two?a=b&c=d#qwe, becomes
+      // http://www.foo.tld/?p=/one/two&q=a=b~and~c=d#qwe
+      // Note: this 404.html file must be at least 512 bytes for it to work
+      // with Internet Explorer (it is currently > 512 bytes)
+
+      // If you're creating a Project Pages site and NOT using a custom domain,
+      // then set segmentCount to 1 (enterprise users may need to set it to > 1).
+      // This way the code will only replace the route part of the path, and not
+      // the real directory in which the app resides, for example:
+      // https://username.github.io/repo-name/one/two?a=b&c=d#qwe becomes
+      // https://username.github.io/repo-name/?p=/one/two&q=a=b~and~c=d#qwe
+      // Otherwise, leave segmentCount as 0.
+      var segmentCount = 0;
+      var l = window.location;
+
+      l.replace(
+        l.protocol +
+          "//" +
+          l.hostname +
+          (l.port ? ":" + l.port : "") +
+          l.pathname
+            .split("/")
+            .slice(0, 1 + segmentCount)
+            .join("/") +
+          "/?p=/" +
+          l.pathname
+            .slice(1)
+            .split("/")
+            .slice(segmentCount)
+            .join("/")
+            .replace(/&/g, "~and~") +
+          (l.search ? "&q=" + l.search.slice(1).replace(/&/g, "~and~") : "") +
+          l.hash
+      );
+    </script>
+  </head>
+</html>
