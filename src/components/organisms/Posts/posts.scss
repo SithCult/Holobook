@@ -21,6 +21,10 @@
     background: transparentize($color: #f44336, $amount: 0.2) !important;
     border: 2px darken(#f44336, 15%) solid !important;
   }
+  .badge-info {
+    background: transparentize($color: #33b5e5, $amount: 0.3) !important;
+    border: 2px darken(#33b5e5, 5%) solid !important;
+  }
   .badge-gold {
     background: transparentize($color: gold, $amount: 0.2) !important;
     border: 2px darken(gold, 15%) solid !important;

@@ -230,39 +230,38 @@ class ProfilePage extends React.Component {
     switch (badge.toLowerCase()) {
       case "founder":
         return (
-          <MDBCol key={key}>
-            <MDBBadge pill color="elegant-color">
-              <MDBIcon icon="fire" className="pr-2" />
-              Founder
-            </MDBBadge>
-          </MDBCol>
+          <MDBBadge pill color="elegant-color" key={key}>
+            <MDBIcon icon="fire" className="pr-2" />
+            Founder
+          </MDBBadge>
         );
       case "member":
         return (
-          <MDBCol key={key}>
-            <MDBBadge pill color="red">
-              <MDBIcon icon="user" className="pr-2" />
-              Member
-            </MDBBadge>
-          </MDBCol>
+          <MDBBadge pill color="red" key={key}>
+            <MDBIcon icon="user" className="pr-2" />
+            Member
+          </MDBBadge>
         );
       case "hand":
         return (
-          <MDBCol key={key}>
-            <MDBBadge pill color="gold">
-              <MDBIcon fab icon="sith" className="pr-2" />
-              Hand of the Emperor
-            </MDBBadge>
-          </MDBCol>
+          <MDBBadge pill color="gold" key={key}>
+            <MDBIcon fab icon="sith" className="pr-2" />
+            Hand of the Emperor
+          </MDBBadge>
         );
       case "historic":
         return (
-          <MDBCol key={key}>
-            <MDBBadge pill color="orange">
-              <MDBIcon icon="book" className="pr-2" />
-              Historic
-            </MDBBadge>
-          </MDBCol>
+          <MDBBadge pill color="orange" key={key}>
+            <MDBIcon icon="book" className="pr-2" />
+            Historic
+          </MDBBadge>
+        );
+      case "moff":
+        return (
+          <MDBBadge pill color="info" key={key}>
+            <MDBIcon icon="angle-up" className="pr-2" />
+            Moff
+          </MDBBadge>
         );
       default:
         break;
@@ -281,7 +280,7 @@ class ProfilePage extends React.Component {
     if (result === "") {
       return null;
     } else {
-      return <MDBRow className="text-center badge-row">{result}</MDBRow>;
+      return result;
     }
   };
 
@@ -568,7 +567,9 @@ class ProfilePage extends React.Component {
                 </p>
                 <p className="small text-info mb-0">{profile.department}</p>
                 <p className="text-muted">{this.getCountry(profile.address)}</p>
-                {this.getBadges(profile.badges)}
+                <div className="badge-row">
+                  {this.getBadges(profile.badges)}
+                </div>
                 <p className="mt-3">
                   <small>{profile.status}</small>
                 </p>
@@ -618,7 +619,7 @@ class ProfilePage extends React.Component {
             </MDBCard>
           </MDBCol>
           <MDBCol md="6">
-            <MDBCard className="mb-3">
+            <MDBCard className="mb-3 newpost">
               <MDBCardBody>
                 <h3>
                   Greetings, {profile.title} {profile.sith_name}
@@ -926,28 +927,6 @@ class ProfilePage extends React.Component {
                 </MDBRow>
               </MDBAlert>
             )}
-            {profile.badges &&
-              Array.isArray(profile.badges) &&
-              profile.badges.includes("Admin") && (
-                <div className="admin-panel p-3 mb-3">
-                  <div className="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id="customSwitches"
-                      readOnly
-                      checked={this.state.showDeletedPosts}
-                      onChange={this.handlePostVisibilityChange}
-                    />
-                    <label
-                      className="custom-control-label"
-                      htmlFor="customSwitches"
-                    >
-                      Show deleted posts
-                    </label>
-                  </div>
-                </div>
-              )}
             <div className="posts">
               <Posts
                 posts={this.props.posts}
@@ -970,7 +949,7 @@ class ProfilePage extends React.Component {
             <MDBCard className="award text-center">
               <MDBCardBody>
                 <p className="lead mb-1">Get rewards</p>
-                <p className="small text-muted">
+                <p className="small text-muted mb-1">
                   Contribute to SithCult and achieve greatness.
                 </p>
                 <Link to="/contribute">
@@ -981,6 +960,33 @@ class ProfilePage extends React.Component {
                 </Link>
               </MDBCardBody>
             </MDBCard>
+            {profile.badges &&
+              Array.isArray(profile.badges) &&
+              profile.badges.includes("Admin") && (
+                <MDBCard className="mt-3">
+                  <MDBCardBody>
+                    <div className="admin-panel">
+                      <p className="lead">Admin Panel</p>
+                      <div className="custom-control custom-switch">
+                        <input
+                          type="checkbox"
+                          className="custom-control-input"
+                          id="customSwitches"
+                          readOnly
+                          checked={this.state.showDeletedPosts}
+                          onChange={this.handlePostVisibilityChange}
+                        />
+                        <label
+                          className="custom-control-label"
+                          htmlFor="customSwitches"
+                        >
+                          Show deleted posts
+                        </label>
+                      </div>
+                    </div>
+                  </MDBCardBody>
+                </MDBCard>
+              )}
           </MDBCol>
         </MDBRow>
       </MDBContainer>

@@ -365,6 +365,16 @@ class Comment extends React.Component {
                                             Historic
                                           </MDBBadge>
                                         );
+                                      case "moff":
+                                        return (
+                                          <MDBBadge pill color="info" key={i}>
+                                            <MDBIcon
+                                              icon="angle-up"
+                                              className="pr-2"
+                                            />
+                                            Moff
+                                          </MDBBadge>
+                                        );
                                       default:
                                         return null;
                                     }
@@ -373,7 +383,7 @@ class Comment extends React.Component {
                                 <div className="flex-center text-left my-2">
                                   <ReactCountryFlag
                                     svg
-                                    className="mr-1"
+                                    className="mr-2"
                                     countryCode={receivedUser.address.country}
                                   />
                                   {getName(receivedUser.address.country)}
