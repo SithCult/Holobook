@@ -162,7 +162,7 @@ class DonatePage extends React.Component {
                   <MDBCardBody>
                     <div className="d-flex justify-content-between">
                       <p className="font-weight-bold">
-                        {profile.sithname
+                        {profile.sith_name
                           ? profile.title + " " + profile.sith_name
                           : "Unknown Sith"}
                       </p>
