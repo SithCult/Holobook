@@ -351,13 +351,14 @@ class Post extends React.Component {
                 )}
               </div>
             )}
-            {post.data.image && (
-              <div className="p-4">
-                <img
-                  className="img-fluid w-100 h-auto"
-                  src={post.data.image}
-                  alt={"Uploaded image by " + post.data.author}
-                />
+            {post.data.youtubeId && (
+              <div className="embed-responsive embed-responsive-16by9 mt-3">
+                <iframe
+                  className="embed-responsive-item"
+                  src={"//www.youtube.com/embed/" + post.data.youtubeId}
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
               </div>
             )}
           </div>
