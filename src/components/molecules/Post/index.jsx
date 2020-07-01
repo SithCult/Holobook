@@ -250,8 +250,8 @@ class Post extends React.Component {
                 <iframe
                   className="embed-responsive-item"
                   src={"//www.youtube.com/embed/" + post.data.youtubeId}
-                  frameborder="0"
-                  allowfullscreen
+                  frameBorder="0"
+                  allowFullScreen
                 ></iframe>
               </div>
             )}

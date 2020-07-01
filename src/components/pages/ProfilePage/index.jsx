@@ -859,8 +859,8 @@ class ProfilePage extends React.Component {
                           src={
                             "//www.youtube.com/embed/" + this.state.youtubeId
                           }
-                          frameborder="0"
-                          allowfullscreen
+                          frameBorder="0"
+                          allowFullScreen
                         ></iframe>
                       </div>
                     )}
@@ -969,7 +969,7 @@ class ProfilePage extends React.Component {
             </MDBCard>
             {profile.badges &&
               Array.isArray(profile.badges) &&
-              profile.badges.includes("Admin") && (
+              profile.badges.includes("admin") && (
                 <MDBCard className="mt-3">
                   <MDBCardBody>
                     <div className="admin-panel">
