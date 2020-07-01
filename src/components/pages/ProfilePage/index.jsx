@@ -194,6 +194,10 @@ class ProfilePage extends React.Component {
         post_languageApproved: true,
         postImageURL: undefined,
         postImage: undefined,
+        youtubeLink: undefined,
+        youtubeLinkError: undefined,
+        youtubeId: undefined,
+        youtubeActive: false,
       },
       () => this.removeFeeling()
     );
