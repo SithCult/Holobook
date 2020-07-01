@@ -492,11 +492,11 @@ class DonatePage extends React.Component {
                   </MDBBadge>
                   <div className="mt-3">
                     <span className="text-white d-block">
-                      <MDBIcon icon="medal" className="pr-2" />{" "}
+                      <MDBIcon icon="medal" className="pr-2 purple-text" />{" "}
                       {Math.round(this.state.selectedAmount / 2)} Reputation
                     </span>
                     <span className="text-white d-block">
-                      <MDBIcon fab icon="sith" className="pr-2" />{" "}
+                      <MDBIcon fab icon="sith" className="pr-2 orange-text" />{" "}
                       {Math.round(this.state.selectedAmount * 9)} Imperial
                       credits
                     </span>
