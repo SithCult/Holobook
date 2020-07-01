@@ -36,6 +36,7 @@ class Posts extends React.Component {
 
   componentWillUnmount() {
     document.removeEventListener("scroll", this.trackScrolling);
+
     // Clear interval of re-fetching posts to prevent memory-leakage
     clearInterval(this.interval);
   }
@@ -46,6 +47,7 @@ class Posts extends React.Component {
 
   trackScrolling = () => {
     const wrappedElement = document.getElementById("profile");
+
     if (this.isBottom(wrappedElement)) {
       document.removeEventListener("scroll", this.trackScrolling);
       this.props.update();
