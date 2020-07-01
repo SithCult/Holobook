@@ -12,6 +12,11 @@
     background: transparentize($color: #2e2e2e, $amount: 0.8);
     border-radius: 0.5rem;
     border: 2px #2e2e2e solid;
+    i {
+      &.fa-medal {
+        color: lighten(#9c27b0, 10%) !important;
+      }
+    }
   }
 }
 

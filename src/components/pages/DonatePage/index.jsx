@@ -420,6 +420,7 @@ class DonatePage extends React.Component {
                           }
                         );
                       }}
+                      onError={() => console.error("Can not make payment.")}
                       onCancel={() =>
                         this.setState({ loading: false, success: false })
                       }

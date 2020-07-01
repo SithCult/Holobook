@@ -5,6 +5,23 @@
     padding-right: 5px;
   }
 
+  // Award section
+  .award {
+    .btn {
+      background: transparentize($color: #33b5e5, $amount: 0.5) !important;
+      border: 2px #33b5e5 solid;
+      border-radius: 0.5rem;
+      text-transform: initial;
+      &:hover {
+        background: transparentize($color: #33b5e5, $amount: 0.4) !important;
+      }
+      &.btn-black {
+        background: transparentize($color: black, $amount: 0.5) !important;
+        border: 2px black solid;
+      }
+    }
+  }
+
   // YouTube add section
   .youtube {
     input {
