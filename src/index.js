@@ -23,7 +23,7 @@ import "./index.scss";
 // Root component
 import App from "./App";
 
-import registerServiceWorker from "./registerServiceWorker";
+import { unregister } from "./registerServiceWorker";
 
 //> Redux
 // Store, Middleware, Compose
@@ -44,6 +44,9 @@ import { reduxFirestore, getFirestore } from "redux-firestore";
 import { reactReduxFirebase, getFirebase } from "react-redux-firebase";
 // Firebase config
 import fbInit from "./config/fbInit";
+
+// Unregister registerServiceWorker to display latest version
+unregister();
 
 /**
  * Create Redux data-store and store it in store
@@ -76,7 +79,6 @@ store.firebaseAuthIsReady.then(() => {
     </Provider>,
     document.getElementById("root")
   );
-  registerServiceWorker();
 });
 
 /**
