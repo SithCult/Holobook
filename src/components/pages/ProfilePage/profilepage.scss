@@ -17,8 +17,12 @@
   .card {
     background: #1e1e1e;
     color: white;
+    box-shadow: none;
     .text-muted {
       color: #848e96;
+    }
+    .basic {
+      font-size: 1.3em !important;
     }
   }
   .posts {
@@ -212,6 +216,19 @@
       img {
         height: 25px;
         width: auto;
+      }
+    }
+    .btn {
+      background: transparentize($color: #ff3547, $amount: 0.5) !important;
+      border: 2px #ff3547 solid;
+      border-radius: 0.5rem;
+      text-transform: initial;
+      &:hover {
+        background: transparentize($color: #ff3547, $amount: 0.4) !important;
+      }
+      &.btn-black {
+        background: transparentize($color: black, $amount: 0.5) !important;
+        border: 2px black solid;
       }
     }
   }

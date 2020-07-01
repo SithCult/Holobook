@@ -1,0 +1,21 @@
+.navbar {
+  .btn {
+    background: transparentize($color: #2e2e2e, $amount: 0.8) !important;
+    border-radius: 0.5rem;
+    border: 2px #2e2e2e solid;
+    &:hover {
+      background: transparentize($color: #2e2e2e, $amount: 0.5) !important;
+    }
+  }
+
+  .perks {
+    background: transparentize($color: #2e2e2e, $amount: 0.8);
+    border-radius: 0.5rem;
+    border: 2px #2e2e2e solid;
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
+ */

@@ -566,13 +566,18 @@ class ProfilePage extends React.Component {
                 <p className="lead font-weight-bold mb-0">
                   {profile.title} {profile.sith_name}
                 </p>
+                <p className="small text-info mb-0">{profile.department}</p>
                 <p className="text-muted">{this.getCountry(profile.address)}</p>
                 {this.getBadges(profile.badges)}
                 <p className="mt-3">
                   <small>{profile.status}</small>
                 </p>
-                <div className="mt-3 features">
-                  <p className="lead mb-2">
+              </MDBCardBody>
+            </MDBCard>
+            <MDBCard className="mt-3 text-center">
+              <MDBCardBody>
+                <div className="mt-1 features">
+                  <p className="lead mb-1">
                     <img
                       src={holocronIcon}
                       alt="Holocron icon"
@@ -585,12 +590,29 @@ class ProfilePage extends React.Component {
                       className="ml-2"
                     />
                   </p>
+                  <p className="small text-muted mb-2">
+                    Your holocrons contain valuable lessons and interactions
+                    that can strengthen your connection to the force and
+                    yourself.
+                  </p>
                   <Link to="/basic">
                     <MDBBtn color="elegant" size="md">
                       <MDBIcon icon="book" className="mr-2" />
-                      Learn Imperial Basic
+                      Imperial Basic Trainer
                     </MDBBtn>
                   </Link>
+                  <MDBBtn color="black" size="md" disabled>
+                    <MDBIcon icon="question" className="mr-2" />
+                    Hidden
+                  </MDBBtn>
+                  <MDBBtn color="black" size="md" disabled>
+                    <MDBIcon icon="question" className="mr-2" />
+                    Hidden
+                  </MDBBtn>
+                  <MDBBtn color="black" size="md" disabled>
+                    <MDBIcon icon="question" className="mr-2" />
+                    Hidden
+                  </MDBBtn>
                 </div>
               </MDBCardBody>
             </MDBCard>
@@ -838,8 +860,8 @@ class ProfilePage extends React.Component {
                 )}
                 {this.state.post.length > 0 && (
                   <FadeIn>
-                    <div className="text-right">
-                      {profile.title.toLowerCase() === "darth" && (
+                    <div className="text-right send">
+                      {/*profile.title.toLowerCase() === "darth" && (
                         <MDBBtn
                           color="red"
                           rounded
@@ -849,7 +871,7 @@ class ProfilePage extends React.Component {
                           <MDBIcon fab icon="sith" className="pr-2" size="lg" />
                           Post as SithCult
                         </MDBBtn>
-                      )}
+                      )*/}
                       <MDBBtn color="elegant" rounded onClick={this.createPost}>
                         <MDBIcon
                           icon="paper-plane"
