@@ -86,7 +86,7 @@ class Navbar extends React.Component {
                     <MDBNavItem>
                       <MDBBtn color="yellow" size="md" outline>
                         <MDBIcon icon="angle-right" className="pr-2" />
-                        Already member? Log in
+                        Log in
                       </MDBBtn>
                     </MDBNavItem>
                   </Link>

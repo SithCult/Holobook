@@ -35,7 +35,7 @@ class ModalPage extends React.Component {
   render() {
     return (
       <>
-        <MDBBtn onClick={this.toggle(11)} color="danger">
+        <MDBBtn onClick={this.toggle(11)} color="red">
           What is SithCult?
         </MDBBtn>
         <MDBModal

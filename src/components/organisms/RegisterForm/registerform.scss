@@ -5,10 +5,29 @@
     }
   }
 
+  .btn-red {
+    background: transparentize($color: #f44336, $amount: 0.7) !important;
+    border-radius: 0.5rem;
+    border: 2px darken(#f44336, 15%) solid !important;
+    &:hover {
+      background: transparentize($color: #f44336, $amount: 0.6) !important;
+    }
+  }
+
+  .btn-green {
+    background: transparentize($color: #00c851, $amount: 0.9) !important;
+    border-radius: 0.5rem;
+    border: 2px darken(#00c851, 15%) solid !important;
+    &:hover {
+      background: transparentize($color: #00c851, $amount: 0.8) !important;
+    }
+  }
+
   .md-form {
     input,
     textarea {
       color: white !important;
+      border-radius: 0.3rem;
     }
   }
 
