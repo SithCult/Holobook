@@ -231,20 +231,20 @@ class ProfilePage extends React.Component {
       case "founder":
         return (
           <MDBBadge pill color="elegant-color" key={key}>
-            <MDBIcon icon="fire" className="pr-2" />
+            <MDBIcon icon="award" className="pr-2" />
             Founder
           </MDBBadge>
         );
-      case "member":
+      case "council":
         return (
           <MDBBadge pill color="red" key={key}>
-            <MDBIcon icon="user" className="pr-2" />
-            Member
+            <MDBIcon icon="fire" className="pr-2" />
+            Council
           </MDBBadge>
         );
       case "hand":
         return (
-          <MDBBadge pill color="gold" key={key}>
+          <MDBBadge pill color="secondary" key={key}>
             <MDBIcon fab icon="sith" className="pr-2" />
             Hand of the Emperor
           </MDBBadge>
@@ -261,6 +261,13 @@ class ProfilePage extends React.Component {
           <MDBBadge pill color="info" key={key}>
             <MDBIcon icon="angle-up" className="pr-2" />
             Moff
+          </MDBBadge>
+        );
+      case "phase1":
+        return (
+          <MDBBadge pill color="amber" key={key}>
+            <MDBIcon icon="dollar-sign" className="pr-2" />
+            Phase 1 Contributor
           </MDBBadge>
         );
       default:

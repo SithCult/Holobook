@@ -116,10 +116,20 @@
       border-radius: 0.5rem;
       border: 2px #33b5e5 solid !important;
     }
-    .badge-gold {
-      background: transparentize($color: gold, $amount: 0.7) !important;
+    .badge-amber {
+      background: transparentize($color: #ffc107, $amount: 0.6) !important;
       border-radius: 0.5rem;
-      border: 2px darken(gold, 15%) solid !important;
+      border: 2px #ffc107 solid !important;
+    }
+    .badge-secondary {
+      background: transparentize($color: #bc37d3, $amount: 0.6) !important;
+      border-radius: 0.5rem;
+      border: 2px #bc37d3 solid !important;
+    }
+    .badge-gold {
+      background: transparentize($color: gold, $amount: 0.6) !important;
+      border-radius: 0.5rem;
+      border: 2px gold solid !important;
     }
   }
 
