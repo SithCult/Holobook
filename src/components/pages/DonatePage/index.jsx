@@ -482,13 +482,13 @@ class DonatePage extends React.Component {
                   passion for Sith Cult and the Sith Empire.
                 </p>
                 <div className="mb-3">
-                  <MDBBadge pill color="white" className="mr-2">
-                    <MDBIcon icon="fire" className="pr-2" />
+                  <MDBBadge pill color="elegant-color" className="mr-2">
+                    <MDBIcon icon="award" className="pr-2" />
                     Founder
                   </MDBBadge>
-                  <MDBBadge pill color="orange" className="mr-2">
-                    <MDBIcon fab icon="sith" className="pr-2" />
-                    Phase 1
+                  <MDBBadge pill color="amber" className="mr-2">
+                    <MDBIcon icon="dollar-sign" className="pr-2" />
+                    Phase 1 Contributor
                   </MDBBadge>
                   <div className="mt-3">
                     <span className="text-white d-block">
