@@ -35,9 +35,12 @@
     "cSpell.words": [
         "browserslist",
         "homescreen",
+        "link",
         "precached",
         "renamer",
-        "webfonts"
+        "webfonts",
+        "youtube",
+        "youtube link"
     ],
     "editor.tabSize": 2,
     "editor.formatOnSave": true

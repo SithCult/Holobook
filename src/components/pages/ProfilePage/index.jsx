@@ -112,7 +112,8 @@ class ProfilePage extends React.Component {
     disablePostAsSithCult: true,
     warningBeta: false,
     showDeletedPosts: false,
-    disablePhotoUpload: true,
+    youtubeActive: false,
+    youtubeLink: "",
   };
 
   componentDidMount = () => {
@@ -299,6 +300,7 @@ class ProfilePage extends React.Component {
         ? null
         : this.state.post_feeling;
     let basic = this.state.post_basic;
+    let youtubeId = this.state.youtubeId ? this.state.youtubeId : null;
 
     // Check if the content is English for a
     if (target) {
@@ -329,6 +331,7 @@ class ProfilePage extends React.Component {
           2: language[2][0],
         },
         basic: basic,
+        youtubeId,
       };
 
       // Tell Firebase to create post
@@ -449,29 +452,39 @@ class ProfilePage extends React.Component {
     }
   };
 
-  // Firebase picture upload
-  handleUploadStart = () =>
-    this.setState({ postImageisUploading: true, postImageProgress: 0 });
+  getYouTubeVideoId = (url) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
 
-  handleProgress = (progress) => this.setState({ postImageProgress: progress });
-
-  handleUploadError = (error) => {
-    this.setState({ postImageisUploading: false });
-    console.error(error);
+    return match && match[2].length === 11 ? match[2] : null;
   };
 
-  handleUploadSuccess = (filename) => {
-    this.setState({
-      postImage: filename,
-      postImageProgress: 100,
-      postImageisUploading: false,
-    });
-    firebase
-      .storage()
-      .ref("posts")
-      .child(filename)
-      .getDownloadURL()
-      .then((url) => this.setState({ postImageURL: url }));
+  onChangeYouTubeHandler = (e) => {
+    const url = e.target.value;
+
+    if (url.includes("youtube.com")) {
+      const videoId = this.getYouTubeVideoId(url);
+
+      if (videoId) {
+        this.setState({
+          youtubeLink: url,
+          youtubeId: videoId,
+          youtubeLinkError: false,
+        });
+      } else {
+        this.setState({
+          youtubeLink: url,
+          youtubeId: false,
+          youtubeLinkError: true,
+        });
+      }
+    } else {
+      this.setState({
+        youtubeLink: url,
+        youtubeId: false,
+        youtubeLinkError: true,
+      });
+    }
   };
 
   render() {
@@ -711,45 +724,26 @@ class ProfilePage extends React.Component {
                   />
                 )}
                 <div className="actions">
-                  {this.state.postImageURL ? (
-                    <MDBBtn
-                      color="elegant"
-                      rounded
-                      tag="label"
-                      onClick={() =>
-                        this.setState({
-                          postImageURL: undefined,
-                          postImage: undefined,
-                        })
+                  <MDBBtn
+                    color="elegant"
+                    rounded
+                    tag="label"
+                    onClick={() =>
+                      this.setState({
+                        youtubeActive: !this.state.youtubeActive,
+                      })
+                    }
+                  >
+                    <MDBIcon
+                      fab
+                      icon="youtube"
+                      className={
+                        this.state.youtubeActive ? "pr-2 text-danger" : "pr-2"
                       }
-                    >
-                      <MDBIcon
-                        icon="times"
-                        className="pr-2 text-danger"
-                        size="lg"
-                      />
-                      Photo
-                    </MDBBtn>
-                  ) : (
-                    <MDBBtn
-                      color="elegant"
-                      rounded
-                      disabled={this.state.disablePhotoUpload}
-                      tag="label"
-                    >
-                      <MDBIcon icon="image" className="pr-2" size="lg" />
-                      Photo
-                      <FileUploader
-                        hidden
-                        accept="image/*"
-                        storageRef={firebase.storage().ref("posts")}
-                        onUploadStart={this.handleUploadStart}
-                        onUploadError={this.handleUploadError}
-                        onUploadSuccess={this.handleUploadSuccess}
-                        onProgress={this.handleProgress}
-                      />
-                    </MDBBtn>
-                  )}
+                      size="lg"
+                    />
+                    YouTube
+                  </MDBBtn>
                   <MDBDropdown className="d-inline">
                     <MDBDropdownToggle caret color="elegant" rounded>
                       <MDBIcon
@@ -809,6 +803,35 @@ class ProfilePage extends React.Component {
                     Tag
                   </MDBBtn>
                 </div>
+                {this.state.youtubeActive && (
+                  <div className="youtube p-3">
+                    <input
+                      type="text"
+                      name="youtube"
+                      className="form-control"
+                      value={this.state.youtubeLink}
+                      onChange={(e) => this.onChangeYouTubeHandler(e)}
+                      placeholder="YouTube Video Link"
+                    />
+                    {this.state.youtubeLinkError && (
+                      <small className="text-danger">
+                        It looks like your Link is not valid.
+                      </small>
+                    )}
+                    {this.state.youtubeId && (
+                      <div className="embed-responsive embed-responsive-16by9">
+                        <iframe
+                          className="embed-responsive-item"
+                          src={
+                            "//www.youtube.com/embed/" + this.state.youtubeId
+                          }
+                          frameborder="0"
+                          allowfullscreen
+                        ></iframe>
+                      </div>
+                    )}
+                  </div>
+                )}
                 {this.state.post.length > 0 && (
                   <FadeIn>
                     <div className="text-right">
