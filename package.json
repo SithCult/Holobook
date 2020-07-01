@@ -30,7 +30,6 @@
     "redux": "^4.0.4",
     "redux-firestore": "^0.9.0",
     "redux-thunk": "^2.3.0",
-    "valid-url": "^1.0.9",
     "zxcvbn": "^4.4.2"
   },
   "repository": {

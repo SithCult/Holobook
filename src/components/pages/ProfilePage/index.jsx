@@ -460,10 +460,9 @@ class ProfilePage extends React.Component {
   };
 
   onChangeYouTubeHandler = (e) => {
-    const validUrl = require("valid-url");
     const url = e.target.value;
 
-    if (validUrl.isUri(url) && url.includes("youtube.com")) {
+    if (url.includes("youtube.com")) {
       const videoId = this.getYouTubeVideoId(url);
 
       if (videoId) {
