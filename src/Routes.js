@@ -17,6 +17,7 @@ import {
   ImperialBasicTraining,
   MessagePage,
   DonatePage,
+  CountryPage,
 } from "./components/pages";
 
 class Routes extends React.Component {
@@ -28,6 +29,7 @@ class Routes extends React.Component {
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/contribute" component={DonatePage} />
         <Route exact path="/basic" component={ImperialBasicTraining} />
+        <Route exact path="/c/:country" component={CountryPage} />
         <Route
           exact
           path="/about"

@@ -1,0 +1,59 @@
+#country {
+  // Custom cards
+  .card {
+    background: #1e1e1e;
+    color: white;
+    box-shadow: none;
+    border-radius: 0.3rem;
+    .text-muted {
+      color: #848e96;
+    }
+    .basic {
+      font-size: 0.5em !important;
+    }
+
+    // Country flag
+    .flag {
+      margin: auto;
+      width: 100px;
+      overflow: hidden;
+      border: 2px solid #fff;
+      border-radius: 1rem;
+      img {
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+
+    // User avatars
+    .avatar {
+      width: 30px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: inline-block;
+      img {
+        width: 100%;
+      }
+    }
+
+    // Titles
+    .title {
+      display: inline-block;
+      padding: 0.1rem 0.5rem;
+      border-radius: 0.5rem;
+      &.moff {
+        background: transparentize($color: #33b5e5, $amount: 0.6) !important;
+        border: 2px #33b5e5 solid !important;
+      }
+      &.members {
+        background: transparentize($color: #f44336, $amount: 0.7) !important;
+        border: 2px darken(#f44336, 15%) solid !important;
+      }
+    }
+  }
+}
+
+/** 
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
+ */
