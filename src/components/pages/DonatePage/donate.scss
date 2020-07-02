@@ -21,11 +21,46 @@
     }
   }
   .badge {
-    padding: 0.4rem;
-    &.white {
-      color: #2c2e2f !important;
-    }
+    box-shadow: none;
+    padding: 0.5rem;
+    margin: 0.2rem;
   }
+  .badge-elegant-color {
+    background: transparentize($color: #3e3e3e, $amount: 0.7) !important;
+    border-radius: 0.5rem;
+    border: 2px darken(#3e3e3e, 15%) solid !important;
+  }
+  .badge-orange {
+    background: transparentize($color: #ff9800, $amount: 0.7) !important;
+    border-radius: 0.5rem;
+    border: 2px darken(#ff9800, 15%) solid !important;
+  }
+  .badge-red {
+    background: transparentize($color: #f44336, $amount: 0.7) !important;
+    border-radius: 0.5rem;
+    border: 2px darken(#f44336, 15%) solid !important;
+  }
+  .badge-info {
+    background: transparentize($color: #33b5e5, $amount: 0.6) !important;
+    border-radius: 0.5rem;
+    border: 2px #33b5e5 solid !important;
+  }
+  .badge-amber {
+    background: transparentize($color: #ffc107, $amount: 0.6) !important;
+    border-radius: 0.5rem;
+    border: 2px #ffc107 solid !important;
+  }
+  .badge-secondary {
+    background: transparentize($color: #bc37d3, $amount: 0.6) !important;
+    border-radius: 0.5rem;
+    border: 2px #bc37d3 solid !important;
+  }
+  .badge-gold {
+    background: transparentize($color: gold, $amount: 0.6) !important;
+    border-radius: 0.5rem;
+    border: 2px gold solid !important;
+  }
+
   .btn {
     i {
       margin-right: 0.3rem;

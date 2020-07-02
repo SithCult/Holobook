@@ -148,7 +148,6 @@ class Comments extends React.Component {
           items
             .filter((c) => c.data.pid === this.props.pid)
             .map((comment, i) => {
-              console.log(comment);
               if (comment.data.visible) {
                 return (
                   <React.Fragment key={i}>
@@ -156,7 +155,7 @@ class Comments extends React.Component {
                       <>
                         <Comment
                           comment={comment}
-                          key={comment.id}
+                          key={this.props.pid + comment.id}
                           refreshData={this.props.refreshData}
                         />
                         <div className="child-input">
@@ -197,7 +196,7 @@ class Comments extends React.Component {
                           return (
                             <Comment
                               comment={child}
-                              key={comment.id}
+                              key={this.props.pid + comment.id + child.data.cid}
                               cid={child.id}
                               refreshData={this.props.refreshData}
                               child

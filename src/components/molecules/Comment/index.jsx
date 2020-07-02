@@ -55,6 +55,9 @@ import bronzeUserIMG from "../../../assets/images/bronze.gif";
 import darkUserIMG from "../../../assets/images/dark.gif";
 import loadingUserIMG from "../../../assets/images/loading.gif";
 
+//> Components
+import ReceivedUser from "../ReceivedUser";
+
 //> CSS
 import "./comment.scss";
 //#endregion
@@ -289,119 +292,10 @@ class Comment extends React.Component {
           <div className="content">
             <div className="p-2 author-info d-flex justify-content-between align-items-center">
               <div>
-                <MDBPopover
-                  placement="top"
-                  popover
-                  clickable
-                  domElement
-                  className="furtherInfo"
-                >
-                  <div
-                    className="clickable name"
-                    onClick={() => this.props.getUser(comment.data.author.uid)}
-                  >
-                    {comment.data.author.name}
-                  </div>
-                  <div>
-                    {receivedUser !== true && receivedUser !== undefined ? (
-                      <>
-                        {receivedUser !== false ? (
-                          <>
-                            <MDBPopoverHeader className="flex-center">
-                              <div>
-                                {receivedUser.title +
-                                  " " +
-                                  receivedUser.sith_name}
-                                <small className="text-muted d-block blue-text">
-                                  {receivedUser.department}
-                                </small>
-                              </div>
-                              <div className="ml-auto p-2 mb-auto">
-                                <small className="text-muted">
-                                  <MDBIcon
-                                    icon="medal"
-                                    className="purple-text mr-1"
-                                  />
-                                  {receivedUser.reputation}
-                                </small>
-                              </div>
-                            </MDBPopoverHeader>
-                            <MDBPopoverBody>
-                              <div>
-                                {(() => {
-                                  return receivedUser.badges.map((badge, i) => {
-                                    switch (badge) {
-                                      case "founder":
-                                        return (
-                                          <MDBBadge
-                                            pill
-                                            color="elegant-color"
-                                            key={i}
-                                          >
-                                            <MDBIcon
-                                              icon="fire"
-                                              className="pr-2"
-                                            />
-                                            Founder
-                                          </MDBBadge>
-                                        );
-                                      case "member":
-                                        return (
-                                          <MDBBadge pill color="red" key={i}>
-                                            <MDBIcon
-                                              icon="user"
-                                              className="pr-2"
-                                            />
-                                            Council
-                                          </MDBBadge>
-                                        );
-                                      case "historic":
-                                        return (
-                                          <MDBBadge pill color="orange" key={i}>
-                                            <MDBIcon
-                                              icon="book"
-                                              className="pr-2"
-                                            />
-                                            Historic
-                                          </MDBBadge>
-                                        );
-                                      default:
-                                        return null;
-                                    }
-                                  });
-                                })()}
-                                <div className="flex-center text-left my-2">
-                                  <ReactCountryFlag
-                                    svg
-                                    className="mr-1"
-                                    countryCode={receivedUser.address.country}
-                                  />
-                                  {getName(receivedUser.address.country)}
-                                </div>
-                              </div>
-                            </MDBPopoverBody>
-                          </>
-                        ) : (
-                          <>
-                            <MDBPopoverHeader>
-                              <div>User not found</div>
-                            </MDBPopoverHeader>
-                            <MDBPopoverBody>
-                              This person is no longer a member of SithCult.
-                            </MDBPopoverBody>
-                          </>
-                        )}
-                      </>
-                    ) : (
-                      <MDBPopoverBody className="text-center">
-                        <div>
-                          <MDBSpinner />
-                        </div>
-                        <div>Receiving current status</div>
-                      </MDBPopoverBody>
-                    )}
-                  </div>
-                </MDBPopover>
+                <ReceivedUser
+                  receivedUser={receivedUser}
+                  name={comment.data.author.name}
+                />
               </div>
               <div className="ml-auto p-2 mb-auto time">
                 <small className="text-muted">

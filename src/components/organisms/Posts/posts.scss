@@ -1,27 +1,8 @@
 .post {
-  .badge {
-    i {
-      margin-right: 0 !important;
-      padding-right: 0.2rem !important;
-    }
-    border-radius: 0.5rem !important;
+  .basic {
+    font-size: 1.3em !important;
   }
-  .badge-elegant-color {
-    background: transparentize($color: #3e3e3e, $amount: 0.2) !important;
-    border: 2px darken(#3e3e3e, 15%) solid !important;
-  }
-  .badge-orange {
-    background: transparentize($color: #ff9800, $amount: 0.2) !important;
-    border: 2px darken(#ff9800, 15%) solid !important;
-  }
-  .badge-red {
-    background: transparentize($color: #f44336, $amount: 0.2) !important;
-    border: 2px darken(#f44336, 15%) solid !important;
-  }
-  .badge-gold {
-    background: transparentize($color: gold, $amount: 0.2) !important;
-    border: 2px darken(gold, 15%) solid !important;
-  }
+
   .name {
     font-weight: bold;
     transition: color 0.1s ease;
