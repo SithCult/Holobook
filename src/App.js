@@ -88,7 +88,9 @@ class App extends React.Component {
   };
 
   render() {
-    if (!this.state.initialized) {
+    const { auth } = this.props;
+
+    if (!this.state.initialized && auth.uid) {
       this.setState({ initialized: true }, () =>
         this.props.initPresenceHandler()
       );
