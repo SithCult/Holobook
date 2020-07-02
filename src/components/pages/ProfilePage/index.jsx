@@ -56,8 +56,9 @@ import {
   MDBProgress,
 } from "mdbreact";
 
-//> Components
+//> Additional Components
 import { Posts } from "../../organisms";
+import { OnlineUsers } from "../../molecules";
 
 //> CSS
 // Profile page
@@ -72,7 +73,6 @@ import lightUserIMG from "../../../assets/images/light.gif";
 import bronzeUserIMG from "../../../assets/images/bronze.gif";
 import holocronIcon from "../../../assets/images/icons/holocron.png";
 import darkUserIMG from "../../../assets/images/dark.gif";
-import { OnlineUsers } from "../../molecules";
 //#endregion
 
 //#region > Data

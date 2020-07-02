@@ -184,6 +184,7 @@ export const writeDonation = (amount) => {
       });
   };
 };
+
 // Initialize Presence
 export const initPresenceHandler = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -252,6 +253,7 @@ export const getOnlineUserCount = () => {
       });
   };
 };
+
 // Get array of all online users IDs
 export const getOnlineUsers = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {

@@ -30,6 +30,7 @@ class OnlineUsers extends Component {
   componentDidMount() {
     this.props.getOnlineUserCount();
   }
+
   render() {
     return (
       <div id="onlineusers">
