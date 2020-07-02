@@ -39,6 +39,7 @@ import {
   MDBCardBody,
   MDBAvatar,
   MDBBadge,
+  MDBProgress,
 } from "mdbreact";
 
 //> Components
@@ -62,9 +63,21 @@ class CountryPage extends React.Component {
     country: "Loading",
   };
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
+    this.init(this.props.match?.params?.country);
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    if (
+      this.props.match?.params.country.toLowerCase().trim() !==
+      nextProps.match.params.country.toLowerCase().trim()
+    ) {
+      this.init(nextProps.match.params.country);
+    }
+  };
+
+  init = async (country) => {
     const { match } = this.props;
-    const country = match?.params?.country;
 
     if (country) {
       this.setState({
@@ -185,7 +198,7 @@ class CountryPage extends React.Component {
   };
 
   render() {
-    const { auth } = this.props;
+    const { auth, profile } = this.props;
     const { users, country_code, country } = this.state;
 
     // Redirect unauthorized users
@@ -263,7 +276,41 @@ class CountryPage extends React.Component {
               </MDBCardBody>
             </MDBCard>
           </MDBCol>
-          <MDBCol md="8">Test</MDBCol>
+          <MDBCol md="8">
+            <MDBCard>
+              <MDBCardBody>
+                {profile && country_code && profile.isLoaded ? (
+                  <>
+                    {profile.address?.country.toLowerCase().trim() ===
+                    country_code.toLowerCase().trim() ? (
+                      <p>Test</p>
+                    ) : (
+                      <>
+                        <p className="lead">
+                          You are not part of this country.
+                        </p>
+                        <Link
+                          to={
+                            "/c/" +
+                            profile.address?.country?.toLowerCase().trim()
+                          }
+                        >
+                          <MDBBtn color="red">
+                            Go back to{" "}
+                            {countryList().getLabel(
+                              profile.address?.country.toLowerCase().trim()
+                            )}
+                          </MDBBtn>
+                        </Link>
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <MDBProgress material preloader className="placeholder" />
+                )}
+              </MDBCardBody>
+            </MDBCard>
+          </MDBCol>
         </MDBRow>
       </MDBContainer>
     );
@@ -278,6 +325,7 @@ const mapStateToProps = (state) => {
     authErrorCode: state.auth.authErrorCode,
     authErrorDetails: state.auth.authErrorDetails,
     auth: state.firebase.auth,
+    profile: state.firebase.profile,
   };
 };
 

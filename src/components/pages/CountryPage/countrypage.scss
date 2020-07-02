@@ -92,6 +92,15 @@
       }
     }
   }
+
+  .btn-red {
+    background: transparentize($color: #f44336, $amount: 0.7) !important;
+    border-radius: 0.5rem;
+    border: 2px darken(#f44336, 15%) solid !important;
+    &:hover {
+      background: transparentize($color: #f44336, $amount: 0.6) !important;
+    }
+  }
 }
 
 /** 
