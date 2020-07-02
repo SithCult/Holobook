@@ -117,7 +117,12 @@ class CountryPage extends React.Component {
               <MDBCard className="text-left">
                 <div className="d-flex justify-content-between">
                   <div>
-                    {this.getPicture(found.data.skin, found.data.badges, f)}
+                    {this.getPicture(
+                      found.data.skin,
+                      found.data.badges,
+                      found.id,
+                      f
+                    )}
                   </div>
                   <span className="small text-muted">
                     {found.data.title.toLowerCase().trim() === "darth" && (
@@ -126,23 +131,7 @@ class CountryPage extends React.Component {
                     {found.data.title}
                   </span>
                 </div>
-                <span>
-                  {this.getStatus(found.id) ? (
-                    <MDBIcon
-                      className="text-success mr-1"
-                      icon="circle"
-                      size="sm"
-                    ></MDBIcon>
-                  ) : (
-                    <MDBIcon
-                      className="text-danger mr-1"
-                      far
-                      icon="circle"
-                      size="sm"
-                    ></MDBIcon>
-                  )}
-                  {found.data.sith_name}
-                </span>
+                {found.data.sith_name}
                 {found.data.donations && (
                   <MDBBadge pill color="amber" className="mt-2">
                     <MDBIcon icon="dollar-sign" /> Supporter
@@ -158,13 +147,15 @@ class CountryPage extends React.Component {
     }
   };
 
-  getPicture = (skin, badges, index) => {
+  getPicture = (skin, badges, uid, index) => {
     switch (skin) {
       case "gold":
         return (
           <MDBAvatar
             className={
-              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+              this.getStatus(uid)
+                ? "mx-auto white online"
+                : "mx-auto white offline"
             }
             key={index}
           >
@@ -175,7 +166,9 @@ class CountryPage extends React.Component {
         return (
           <MDBAvatar
             className={
-              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+              this.getStatus(uid)
+                ? "mx-auto white online"
+                : "mx-auto white offline"
             }
             key={index}
           >
@@ -186,7 +179,9 @@ class CountryPage extends React.Component {
         return (
           <MDBAvatar
             className={
-              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+              this.getStatus(uid)
+                ? "mx-auto white online"
+                : "mx-auto white offline"
             }
             key={index}
           >
@@ -197,7 +192,9 @@ class CountryPage extends React.Component {
         return (
           <MDBAvatar
             className={
-              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+              this.getStatus(uid)
+                ? "mx-auto white online"
+                : "mx-auto white offline"
             }
             key={index}
           >
@@ -208,7 +205,9 @@ class CountryPage extends React.Component {
         return (
           <MDBAvatar
             className={
-              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+              this.getStatus(uid)
+                ? "mx-auto white online"
+                : "mx-auto white offline"
             }
             key={index}
           >
@@ -220,9 +219,9 @@ class CountryPage extends React.Component {
 
   // Returns either a red circle for offline or a green circle for online
   getStatus = (uid) => {
+    console.log(uid);
     if (this.props.onlineusers) {
       if (this.props.onlineusers.some((u) => u.uid === uid)) {
-        console.log(uid);
         return true;
       } else {
         return false;
@@ -278,6 +277,7 @@ class CountryPage extends React.Component {
                               {this.getPicture(
                                 user.data.skin,
                                 user.data.badges,
+                                user.id,
                                 i
                               )}
                             </div>
@@ -296,23 +296,7 @@ class CountryPage extends React.Component {
                               {user.data.title}
                             </span>
                           </div>
-                          <span>
-                            {this.getStatus(user.id) ? (
-                              <MDBIcon
-                                className="text-success mr-1"
-                                icon="circle"
-                                size="sm"
-                              ></MDBIcon>
-                            ) : (
-                              <MDBIcon
-                                className="text-danger mr-1"
-                                far
-                                icon="circle"
-                                size="sm"
-                              ></MDBIcon>
-                            )}
-                            {user.data.sith_name}
-                          </span>
+                          {user.data.sith_name}
                           {user.data.donations && (
                             <MDBBadge pill color="amber" className="mt-2">
                               <MDBIcon icon="dollar-sign" /> Supporter

@@ -303,7 +303,6 @@ export const getOnlineUsers = () => {
 
         !snapshot.empty &&
           snapshot.forEach((u) => {
-            console.log(u.val());
             onlineusers = [...onlineusers, u.val()];
           });
 
