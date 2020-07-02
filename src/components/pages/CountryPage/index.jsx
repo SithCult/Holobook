@@ -116,26 +116,40 @@ class CountryPage extends React.Component {
             return (
               <MDBCard className="text-left">
                 <div className="d-flex justify-content-between">
-                  <div>
+                  <div className="d-flex align-items-center">
                     {this.getPicture(
                       found.data.skin,
                       found.data.badges,
                       found.id,
                       f
                     )}
+                    <span className="pl-2">
+                      {found.data.title} {found.data.sith_name}
+                    </span>
                   </div>
                   <span className="small text-muted">
                     {found.data.title.toLowerCase().trim() === "darth" && (
-                      <MDBIcon icon="crown" className="pr-1 amber-text" />
+                      <MDBIcon
+                        icon="crown"
+                        className={
+                          found.data.badges.includes("moff")
+                            ? "pr-1 amber-text"
+                            : "pr-1"
+                        }
+                      />
                     )}
                     {found.data.title}
                   </span>
                 </div>
-                {found.data.sith_name}
+                <span className="d-block small text-info my-1">
+                  {found.data.department}
+                </span>
                 {found.data.donations && (
-                  <MDBBadge pill color="amber" className="mt-2">
-                    <MDBIcon icon="dollar-sign" /> Supporter
-                  </MDBBadge>
+                  <div>
+                    <MDBBadge pill color="amber" className="mt-2">
+                      <MDBIcon icon="dollar-sign" /> Supporter
+                    </MDBBadge>
+                  </div>
                 )}
               </MDBCard>
             );
@@ -273,13 +287,16 @@ class CountryPage extends React.Component {
                       return (
                         <MDBCard className="text-left">
                           <div className="d-flex justify-content-between">
-                            <div>
+                            <div className="d-flex align-items-center">
                               {this.getPicture(
                                 user.data.skin,
                                 user.data.badges,
                                 user.id,
                                 i
                               )}
+                              <span className="pl-2">
+                                {user.data.title} {user.data.sith_name}
+                              </span>
                             </div>
                             <span className="small text-muted">
                               {user.data.title.toLowerCase().trim() ===
@@ -296,11 +313,15 @@ class CountryPage extends React.Component {
                               {user.data.title}
                             </span>
                           </div>
-                          {user.data.sith_name}
+                          <span className="d-block small text-info my-1">
+                            {user.data.department}
+                          </span>
                           {user.data.donations && (
-                            <MDBBadge pill color="amber" className="mt-2">
-                              <MDBIcon icon="dollar-sign" /> Supporter
-                            </MDBBadge>
+                            <div>
+                              <MDBBadge pill color="amber" className="mt-2">
+                                <MDBIcon icon="dollar-sign" /> Supporter
+                              </MDBBadge>
+                            </div>
                           )}
                         </MDBCard>
                       );

@@ -64,12 +64,12 @@
       margin: 0;
 
       &.card-columns {
-        column-count: 2;
+        column-count: 1;
       }
 
       &.moffs {
         .card {
-          max-width: 50%;
+          //max-width: 50%;
           margin: auto;
           margin-bottom: 1rem;
         }
@@ -83,7 +83,7 @@
 
         .badge {
           border-radius: 0.5rem;
-          width: 100%;
+          display: inline-block;
           &.badge-amber {
             background: transparentize(
               $color: #ffc107,
