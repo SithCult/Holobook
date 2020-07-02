@@ -73,11 +73,17 @@ class CountryPage extends React.Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
+    // Handle country change
     if (
       this.props.match?.params.country.toLowerCase().trim() !==
       nextProps.match.params.country.toLowerCase().trim()
     ) {
       this.init(nextProps.match.params.country);
+    }
+
+    // Handle active user change
+    if (this.props.onlineusers !== nextProps.onlineusers) {
+      this.mergeUserData(nextProps.onlineusers);
     }
   };
 
@@ -233,13 +239,106 @@ class CountryPage extends React.Component {
 
   // Returns either a red circle for offline or a green circle for online
   getStatus = (uid) => {
-    console.log(uid);
     if (this.props.onlineusers) {
       if (this.props.onlineusers.some((u) => u.uid === uid)) {
         return true;
       } else {
         return false;
       }
+    }
+  };
+
+  mergeUserData = (onlineusers) => {
+    if (this.state.users && onlineusers) {
+      let usersWithStatus = this.state.users.map((u) => {
+        let newUser;
+        let userStatusData = onlineusers.filter((o) => o.uid === u.id)[0];
+
+        if (userStatusData) {
+          newUser = {
+            ...u,
+            status: {
+              state: userStatusData.state,
+              last_changed: userStatusData.last_changed,
+            },
+          };
+        } else {
+          newUser = u;
+        }
+
+        return newUser;
+      });
+
+      console.log(usersWithStatus);
+
+      let usersonline = usersWithStatus.map((u) => {
+        let newUser;
+        let userStatusData = onlineusers.filter(
+          (o) => o.status?.state === "online"
+        )[0];
+
+        if (userStatusData) {
+          newUser = {
+            ...u,
+            status: {
+              state: userStatusData.state,
+              last_changed: userStatusData.last_changed,
+            },
+          };
+        } else {
+          newUser = u;
+        }
+
+        return newUser;
+      });
+
+      let usersoffline = usersWithStatus.map((u) => {
+        let newUser;
+        let userStatusData = onlineusers.filter(
+          (o) => o.status?.state === "offline"
+        )[0];
+
+        if (userStatusData) {
+          newUser = {
+            ...u,
+            status: {
+              state: userStatusData.state,
+              last_changed: userStatusData.last_changed,
+            },
+          };
+        } else {
+          newUser = u;
+        }
+
+        return newUser;
+      });
+
+      let userswithoutstatus = usersWithStatus.map((u) => {
+        let newUser;
+        let userStatusData = onlineusers.filter(
+          (o) => o.status?.state === null
+        )[0];
+
+        if (userStatusData) {
+          newUser = {
+            ...u,
+            status: {
+              state: userStatusData.state,
+              last_changed: userStatusData.last_changed,
+            },
+          };
+        } else {
+          newUser = u;
+        }
+
+        return newUser;
+      });
+
+      usersWithStatus = usersonline.concat(usersoffline);
+      usersWithStatus = usersWithStatus.concat(userswithoutstatus);
+
+      this.setState({ users: usersWithStatus });
+      console.log(usersWithStatus);
     }
   };
 
