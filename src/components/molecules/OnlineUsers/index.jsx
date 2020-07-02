@@ -22,6 +22,8 @@ import {
   MDBPopoverHeader,
   MDBSpinner,
   MDBIcon,
+  MDBTooltip,
+  MDBProgress,
 } from "mdbreact";
 //#endregion
 
@@ -32,14 +34,23 @@ class OnlineUsers extends Component {
   }
 
   render() {
+    const { onlineusercount } = this.props;
+
     return (
       <div id="onlineusers">
-        <div className="d-flex justify-content-between">
-          <MDBIcon icon="circle" className="text-success" size="sm" />
-          <p className="small text-muted">
-            {this.props.onlineusercount} users online
-          </p>
-        </div>
+        {!onlineusercount ? (
+          <MDBProgress material preloader className="placeholder mt-1" />
+        ) : (
+          <div className="d-flex justify-content-between">
+            <MDBTooltip placement="top" domElement>
+              <span>
+                <MDBIcon icon="circle" className="text-success" size="sm" />
+              </span>
+              <span>You are online</span>
+            </MDBTooltip>
+            <p className="small text-muted">{onlineusercount} users online</p>
+          </div>
+        )}
       </div>
     );
   }
