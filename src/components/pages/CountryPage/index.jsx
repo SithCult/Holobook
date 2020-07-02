@@ -249,7 +249,7 @@ class CountryPage extends React.Component {
   };
 
   mergeUserData = (onlineusers) => {
-    if (this.state.users && onlineusers) {
+    if (this.state.users && onlineusers.length > 0) {
       let usersWithStatus = this.state.users.map((u) => {
         let newUser;
         let userStatusData = onlineusers.filter((o) => o.uid === u.id)[0];
@@ -263,82 +263,27 @@ class CountryPage extends React.Component {
             },
           };
         } else {
-          newUser = u;
-        }
-
-        return newUser;
-      });
-
-      console.log(usersWithStatus);
-
-      let usersonline = usersWithStatus.map((u) => {
-        let newUser;
-        let userStatusData = onlineusers.filter(
-          (o) => o.status?.state === "online"
-        )[0];
-
-        if (userStatusData) {
           newUser = {
             ...u,
             status: {
-              state: userStatusData.state,
-              last_changed: userStatusData.last_changed,
+              state: "offline",
+              last_changed: 1519129000,
             },
           };
-        } else {
-          newUser = u;
         }
 
         return newUser;
       });
 
-      let usersoffline = usersWithStatus.map((u) => {
-        let newUser;
-        let userStatusData = onlineusers.filter(
-          (o) => o.status?.state === "offline"
-        )[0];
-
-        if (userStatusData) {
-          newUser = {
-            ...u,
-            status: {
-              state: userStatusData.state,
-              last_changed: userStatusData.last_changed,
-            },
-          };
-        } else {
-          newUser = u;
-        }
-
-        return newUser;
-      });
-
-      let userswithoutstatus = usersWithStatus.map((u) => {
-        let newUser;
-        let userStatusData = onlineusers.filter(
-          (o) => o.status?.state === null
-        )[0];
-
-        if (userStatusData) {
-          newUser = {
-            ...u,
-            status: {
-              state: userStatusData.state,
-              last_changed: userStatusData.last_changed,
-            },
-          };
-        } else {
-          newUser = u;
-        }
-
-        return newUser;
-      });
-
-      usersWithStatus = usersonline.concat(usersoffline);
-      usersWithStatus = usersWithStatus.concat(userswithoutstatus);
+      usersWithStatus.sort((a, b) =>
+        a.status.state > b.status.state
+          ? -1
+          : b.status.state > a.status.state
+          ? 1
+          : 0
+      );
 
       this.setState({ users: usersWithStatus });
-      console.log(usersWithStatus);
     }
   };
 

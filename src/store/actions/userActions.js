@@ -298,13 +298,14 @@ export const getOnlineUsers = () => {
     userStatusDatabaseRef
       .orderByChild("state")
       .equalTo("online")
-      .on("value", function (snapshot) {
+      .on("value", (snapshot) => {
         let onlineusers = [];
 
-        !snapshot.empty &&
+        if (!snapshot.empty) {
           snapshot.forEach((u) => {
             onlineusers = [...onlineusers, u.val()];
           });
+        }
 
         dispatch({
           type: "GETONLINEUSERS_SUCCESS",
