@@ -38,6 +38,7 @@ import {
   MDBCard,
   MDBCardBody,
   MDBAvatar,
+  MDBBadge,
 } from "mdbreact";
 
 //> Components
@@ -92,9 +93,29 @@ class CountryPage extends React.Component {
     if (filtered.length > 0) {
       // Return result
       return (
-        <div>
+        <div className="memberlist moffs">
           {filtered.map((found, f) => {
-            return this.getPicture(found.data.skin, f);
+            return (
+              <MDBCard className="text-left">
+                <div className="d-flex justify-content-between">
+                  <div>
+                    {this.getPicture(found.data.skin, found.data.badges, f)}
+                  </div>
+                  <span className="small text-muted">
+                    {found.data.title.toLowerCase().trim() === "darth" && (
+                      <MDBIcon icon="crown" className="pr-1 amber-text" />
+                    )}
+                    {found.data.title}
+                  </span>
+                </div>
+                <span>{found.data.sith_name}</span>
+                {found.data.donations && (
+                  <MDBBadge pill color="amber" className="mt-2">
+                    <MDBIcon icon="dollar-sign" /> Supporter
+                  </MDBBadge>
+                )}
+              </MDBCard>
+            );
           })}
         </div>
       );
@@ -103,35 +124,60 @@ class CountryPage extends React.Component {
     }
   };
 
-  getPicture = (skin, index) => {
+  getPicture = (skin, badges, index) => {
     switch (skin) {
       case "gold":
         return (
-          <MDBAvatar className="mx-auto white" key={index}>
+          <MDBAvatar
+            className={
+              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+            }
+            key={index}
+          >
             <img src={goldUserIMG} alt="Gold user profile picture" />
           </MDBAvatar>
         );
       case "light":
         return (
-          <MDBAvatar className="mx-auto white" key={index}>
+          <MDBAvatar
+            className={
+              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+            }
+            key={index}
+          >
             <img src={lightUserIMG} alt="Light user profile picture" />
           </MDBAvatar>
         );
       case "bronze":
         return (
-          <MDBAvatar className="mx-auto white" key={index}>
+          <MDBAvatar
+            className={
+              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+            }
+            key={index}
+          >
             <img src={bronzeUserIMG} alt="Bronze user profile picture" />
           </MDBAvatar>
         );
       case "dark":
         return (
-          <MDBAvatar className="mx-auto white" key={index}>
+          <MDBAvatar
+            className={
+              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+            }
+            key={index}
+          >
             <img src={darkUserIMG} alt="Bronze user profile picture" />
           </MDBAvatar>
         );
       default:
         return (
-          <MDBAvatar className="mx-auto white" key={index}>
+          <MDBAvatar
+            className={
+              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+            }
+            key={index}
+          >
             <img src={defaultUserIMG} alt="Default user profile picture" />
           </MDBAvatar>
         );
@@ -139,8 +185,11 @@ class CountryPage extends React.Component {
   };
 
   render() {
-    const { authErrorDetails, auth } = this.props;
+    const { auth } = this.props;
     const { users, country_code, country } = this.state;
+
+    // Redirect unauthorized users
+    if (auth.uid === undefined) return <Redirect to="/login" />;
 
     return (
       <MDBContainer id="country" className="text-white pt-5 mt-5">
@@ -173,14 +222,44 @@ class CountryPage extends React.Component {
                 <p className="mb-2 small text-muted">
                   Membercount: {users && users.length}
                 </p>
-                {users &&
-                  users.map((user, i) => {
-                    return (
-                      <span className="mx-1" key={i}>
-                        {this.getPicture(user.data.skin, i)}
-                      </span>
-                    );
-                  })}
+                <div className="card-columns memberlist">
+                  {users &&
+                    users.map((user, i) => {
+                      return (
+                        <MDBCard className="text-left">
+                          <div className="d-flex justify-content-between">
+                            <div>
+                              {this.getPicture(
+                                user.data.skin,
+                                user.data.badges,
+                                i
+                              )}
+                            </div>
+                            <span className="small text-muted">
+                              {user.data.title.toLowerCase().trim() ===
+                                "darth" && (
+                                <MDBIcon
+                                  icon="crown"
+                                  className={
+                                    user.data.badges.includes("moff")
+                                      ? "pr-1 amber-text"
+                                      : "pr-1"
+                                  }
+                                />
+                              )}
+                              {user.data.title}
+                            </span>
+                          </div>
+                          <span>{user.data.sith_name}</span>
+                          {user.data.donations && (
+                            <MDBBadge pill color="amber" className="mt-2">
+                              <MDBIcon icon="dollar-sign" /> Supporter
+                            </MDBBadge>
+                          )}
+                        </MDBCard>
+                      );
+                    })}
+                </div>
               </MDBCardBody>
             </MDBCard>
           </MDBCol>

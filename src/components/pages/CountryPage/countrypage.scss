@@ -33,6 +33,11 @@
       display: inline-block;
       img {
         width: 100%;
+        height: auto;
+      }
+
+      &.moff {
+        border: 2px #33b5e5 solid;
       }
     }
 
@@ -48,6 +53,42 @@
       &.members {
         background: transparentize($color: #f44336, $amount: 0.7) !important;
         border: 2px darken(#f44336, 15%) solid !important;
+      }
+    }
+
+    .memberlist {
+      padding: 0;
+      margin: 0;
+
+      &.card-columns {
+        column-count: 2;
+      }
+
+      &.moffs {
+        .card {
+          max-width: 50%;
+          margin: auto;
+          margin-bottom: 1rem;
+        }
+      }
+
+      .card {
+        background: transparentize($color: darken(#1e1e1e, 5%), $amount: 0.7);
+        border: 2px darken(#1e1e1e, 4%) solid;
+        padding: 0.3rem;
+        min-width: 50%;
+
+        .badge {
+          border-radius: 0.5rem;
+          width: 100%;
+          &.badge-amber {
+            background: transparentize(
+              $color: #ffc107,
+              $amount: 0.6
+            ) !important;
+            border: 2px #ffc107 solid !important;
+          }
+        }
       }
     }
   }
