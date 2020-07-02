@@ -530,7 +530,6 @@ class ProfilePage extends React.Component {
 
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
-        <OnlineUsers />
         <Helmet>
           <meta charSet="utf-8" />
           <title>{`${metaPageTitle}`}</title>
@@ -992,6 +991,11 @@ class ProfilePage extends React.Component {
                     Contribute to SithCult
                   </MDBBtn>
                 </Link>
+              </MDBCardBody>
+            </MDBCard>
+            <MDBCard className="mt-3">
+              <MDBCardBody>
+                <OnlineUsers />
               </MDBCardBody>
             </MDBCard>
             {profile.badges &&

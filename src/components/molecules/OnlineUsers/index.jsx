@@ -34,9 +34,12 @@ class OnlineUsers extends Component {
   render() {
     return (
       <div id="onlineusers">
-        <h4 className="white-text">
-          {this.props.onlineusercount} users online
-        </h4>
+        <div className="d-flex justify-content-between">
+          <MDBIcon icon="circle" className="text-success" size="sm" />
+          <p className="small text-muted">
+            {this.props.onlineusercount} users online
+          </p>
+        </div>
       </div>
     );
   }
