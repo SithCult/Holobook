@@ -668,7 +668,8 @@ class ProfilePage extends React.Component {
                 />
                 <div>
                   <div className="d-flex justify-content-between mb-3">
-                    {this.state.post.split(" ").length < 5 ? (
+                    {this.state.post.split(" ").length > 1 &&
+                    this.state.post.split(" ").length < 5 ? (
                       <div>
                         <p className="small text-muted mb-0">
                           {5 - this.state.post.split(" ").length} words
