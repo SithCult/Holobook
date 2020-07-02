@@ -19,7 +19,11 @@ import countryList from "react-select-country-list";
 // Connect
 import { connect } from "react-redux";
 // Actions
-import { getUsersPerCountry } from "../../../store/actions/userActions";
+import {
+  getUsersPerCountry,
+  getOnlineUsers,
+  initPresenceHandler,
+} from "../../../store/actions/userActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -65,6 +69,7 @@ class CountryPage extends React.Component {
 
   componentDidMount = () => {
     this.init(this.props.match?.params?.country);
+    this.props.getOnlineUsers();
   };
 
   componentWillReceiveProps = (nextProps) => {
@@ -121,7 +126,23 @@ class CountryPage extends React.Component {
                     {found.data.title}
                   </span>
                 </div>
-                <span>{found.data.sith_name}</span>
+                <span>
+                  {this.getStatus(found.id) ? (
+                    <MDBIcon
+                      className="text-success mr-1"
+                      icon="circle"
+                      size="sm"
+                    ></MDBIcon>
+                  ) : (
+                    <MDBIcon
+                      className="text-danger mr-1"
+                      far
+                      icon="circle"
+                      size="sm"
+                    ></MDBIcon>
+                  )}
+                  {found.data.sith_name}
+                </span>
                 {found.data.donations && (
                   <MDBBadge pill color="amber" className="mt-2">
                     <MDBIcon icon="dollar-sign" /> Supporter
@@ -197,6 +218,18 @@ class CountryPage extends React.Component {
     }
   };
 
+  // Returns either a red circle for offline or a green circle for online
+  getStatus = (uid) => {
+    if (this.props.onlineusers) {
+      if (this.props.onlineusers.some((u) => u.uid === uid)) {
+        console.log(uid);
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
+
   render() {
     const { auth, profile } = this.props;
     const { users, country_code, country } = this.state;
@@ -263,7 +296,23 @@ class CountryPage extends React.Component {
                               {user.data.title}
                             </span>
                           </div>
-                          <span>{user.data.sith_name}</span>
+                          <span>
+                            {this.getStatus(user.id) ? (
+                              <MDBIcon
+                                className="text-success mr-1"
+                                icon="circle"
+                                size="sm"
+                              ></MDBIcon>
+                            ) : (
+                              <MDBIcon
+                                className="text-danger mr-1"
+                                far
+                                icon="circle"
+                                size="sm"
+                              ></MDBIcon>
+                            )}
+                            {user.data.sith_name}
+                          </span>
                           {user.data.donations && (
                             <MDBBadge pill color="amber" className="mt-2">
                               <MDBIcon icon="dollar-sign" /> Supporter
@@ -326,12 +375,15 @@ const mapStateToProps = (state) => {
     authErrorDetails: state.auth.authErrorDetails,
     auth: state.firebase.auth,
     profile: state.firebase.profile,
+    onlineusers: state.user.onlineusers,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getUsersPerCountry: (cc) => dispatch(getUsersPerCountry(cc)),
+    getOnlineUsers: () => dispatch(getOnlineUsers()),
+    initPresenceHandler: () => dispatch(initPresenceHandler()),
   };
 };
 //#endregion

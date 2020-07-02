@@ -507,12 +507,6 @@ class ProfilePage extends React.Component {
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
-    if (!this.state.initialized) {
-      this.setState({ initialized: true }, () =>
-        this.props.initPresenceHandler()
-      );
-    }
-
     if (profile.badges) {
       if (!this.state.postsInitialLoad) {
         this.setState(
