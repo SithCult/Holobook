@@ -283,11 +283,11 @@ class CountryPage extends React.Component {
                   <>
                     {profile.address?.country.toLowerCase().trim() ===
                     country_code.toLowerCase().trim() ? (
-                      <p>Test</p>
+                      <p>Country functions are not available yet.</p>
                     ) : (
                       <>
                         <p className="lead">
-                          You are not part of this country.
+                          You are not part of this district.
                         </p>
                         <Link
                           to={
