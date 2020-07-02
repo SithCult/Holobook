@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// Meta tags
+import { Helmet } from "react-helmet";
 
 //> Additional
 // Enables PayPal integration
@@ -112,6 +114,11 @@ class DonatePage extends React.Component {
 
     return (
       <MDBContainer className="white-text mt-5 pt-5" id="donate">
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Contribute - SithCult</title>
+          <link rel="canonical" href="https://sithcult.com/contribute" />
+        </Helmet>
         <Confetti
           width={this.state.width}
           height={this.state.height}

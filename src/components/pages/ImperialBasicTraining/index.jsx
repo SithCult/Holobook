@@ -4,6 +4,8 @@
 import React from "react";
 // Redirect from Router
 import { Link, Redirect } from "react-router-dom";
+// Meta tags
+import { Helmet } from "react-helmet";
 
 //> Additional modules
 // Fade In Animation
@@ -191,6 +193,11 @@ class BasicTraining extends React.Component {
         id="imperialbasictraining"
         className="text-center text-white pt-5 mt-5"
       >
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Imperial Basic Trainer - SithCult</title>
+          <link rel="canonical" href="https://sithcult.com/basic" />
+        </Helmet>
         <img src={logoIMG} alt="SithCult Logo" className="mt-5 logo" />
         <h2 className="font-weight-bold mt-2">Imperial Basic Trainer</h2>
         <p>The best way to learn Imperial Basic on this planet.</p>

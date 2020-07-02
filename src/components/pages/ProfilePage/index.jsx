@@ -4,6 +4,8 @@
 import React from "react";
 // Router
 import { Link, Redirect } from "react-router-dom";
+// Meta tags
+import { Helmet } from "react-helmet";
 
 //> Additional modules
 // Fade In Animation
@@ -513,8 +515,17 @@ class ProfilePage extends React.Component {
       }
     }
 
+    const metaPageTitle = profile.sith_name
+      ? profile.sith_name + " - SithCult"
+      : "Loading - SithCult";
+
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>{`${metaPageTitle}`}</title>
+          <link rel="canonical" href="https://sithcult.com/me" />
+        </Helmet>
         <MDBRow>
           <MDBCol md="3">
             <MDBCard testimonial>
@@ -573,7 +584,13 @@ class ProfilePage extends React.Component {
                   {profile.title} {profile.sith_name}
                 </p>
                 <p className="small text-info mb-0">{profile.department}</p>
-                <p className="text-muted">{this.getCountry(profile.address)}</p>
+                <Link
+                  to={"/c/" + profile.address?.country?.toLowerCase().trim()}
+                >
+                  <p className="text-muted d-inline-block">
+                    {this.getCountry(profile.address)}
+                  </p>
+                </Link>
                 <div className="badge-row">
                   {this.getBadges(profile.badges)}
                 </div>
