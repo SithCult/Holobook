@@ -6,6 +6,7 @@ import LoginPage from "./LoginPage";
 import ImperialBasicTraining from "./ImperialBasicTraining";
 import MessagePage from "./MessagePage";
 import DonatePage from "./DonatePage";
+import CountryPage from "./CountryPage";
 
 export {
   HomePage,
@@ -14,6 +15,7 @@ export {
   ImperialBasicTraining,
   MessagePage,
   DonatePage,
+  CountryPage,
 };
 
 /**

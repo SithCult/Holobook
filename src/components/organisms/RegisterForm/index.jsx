@@ -505,13 +505,12 @@ class HomePage extends React.Component {
           </h1>
           <p>
             Do you have any questions? Please do not hesitate to
-            <a
-              className="ml-1 mr-1 underlined"
-              href="mailto:center@sithcult.com"
-            >
+            <a className="ml-1 underlined" href="mailto:center@sithcult.com">
               contact us directly
             </a>
-            - Our team will come back to you within matter of hours to help you.
+            .
+            <br />
+            Our team will come back to you within matter of hours to help you.
           </p>
           <form className="text-left" onSubmit={this.submitHandler}>
             <MDBRow>
@@ -975,10 +974,7 @@ class HomePage extends React.Component {
                             </small>
                           </MDBInput>
                         </MDBCol>
-                        <MDBCol
-                          md="8"
-                          className="align-self-center text-center"
-                        >
+                        <MDBCol md="8" className="align-self-center text-right">
                           <MDBBtn color="green" size="lg" type="submit">
                             <MDBIcon icon="angle-right" className="pr-2" />
                             Start your journey

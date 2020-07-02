@@ -4,6 +4,8 @@
 import React from "react";
 // Router
 import { Link } from "react-router-dom";
+// Meta tags
+import { Helmet } from "react-helmet";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -34,6 +36,14 @@ class MessagePage extends React.Component {
 
     return (
       <MDBContainer id="message" className="py-5 my-5 text-center text-white">
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>SithCult - The Real Sith Empire</title>
+          <link
+            rel="canonical"
+            href={"https://sithcult.com" + this.props.location.pathname}
+          />
+        </Helmet>
         {this.props.location.pathname === "/about" && (
           <>
             <h2>

@@ -1,0 +1,34 @@
+.navbar {
+  .btn {
+    background: transparentize($color: #2e2e2e, $amount: 0.8) !important;
+    border-radius: 0.5rem;
+    border: 2px #2e2e2e solid;
+    &:hover {
+      background: transparentize($color: #2e2e2e, $amount: 0.5) !important;
+    }
+    &.btn-outline-yellow {
+      background: transparentize($color: #fbc02d, $amount: 0.95) !important;
+      border-radius: 0.5rem;
+      border: 2px #fbc02d solid;
+      &:hover {
+        background: transparentize($color: #fbc02d, $amount: 0.9) !important;
+      }
+    }
+  }
+
+  .perks {
+    background: transparentize($color: #2e2e2e, $amount: 0.8);
+    border-radius: 0.5rem;
+    border: 2px #2e2e2e solid;
+    i {
+      &.fa-medal {
+        color: lighten(#9c27b0, 10%) !important;
+      }
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
+ */

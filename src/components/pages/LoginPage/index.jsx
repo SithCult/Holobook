@@ -4,6 +4,8 @@
 import React from "react";
 // Redirect from Router
 import { Redirect, withRouter } from "react-router-dom";
+// Meta tags
+import { Helmet } from "react-helmet";
 
 //> Additional modules
 // Fade In Animation
@@ -95,6 +97,11 @@ class LoginPage extends React.Component {
 
     return (
       <MDBContainer id="login" className="text-center text-white pt-5 mt-5">
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Login - SithCult</title>
+          <link rel="canonical" href="https://sithcult.com/basic" />
+        </Helmet>
         <img src={IMGlogo} alt="SithCult logo" className="img-fluid" />
         <h2 className="font-weight-bold mt-5">Login</h2>
         <form onSubmit={this.submitHandler}>

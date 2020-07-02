@@ -5,6 +5,23 @@
     padding-right: 5px;
   }
 
+  // Award section
+  .award {
+    .btn {
+      background: transparentize($color: #33b5e5, $amount: 0.5) !important;
+      border: 2px #33b5e5 solid;
+      border-radius: 0.5rem;
+      text-transform: initial;
+      &:hover {
+        background: transparentize($color: #33b5e5, $amount: 0.4) !important;
+      }
+      &.btn-black {
+        background: transparentize($color: black, $amount: 0.5) !important;
+        border: 2px black solid;
+      }
+    }
+  }
+
   // YouTube add section
   .youtube {
     input {
@@ -17,8 +34,13 @@
   .card {
     background: #1e1e1e;
     color: white;
+    box-shadow: none;
+    border-radius: 0.3rem;
     .text-muted {
       color: #848e96;
+    }
+    .basic {
+      font-size: 1.3em !important;
     }
   }
   .posts {
@@ -66,13 +88,13 @@
     }
   }
   .badge-row {
-    .col {
-      padding: 0;
-    }
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     .badge {
       box-shadow: none;
       padding: 0.5rem;
-      margin-bottom: 0.4rem;
+      margin: 0.2rem;
     }
     .badge-elegant-color {
       background: transparentize($color: #3e3e3e, $amount: 0.7) !important;
@@ -89,10 +111,25 @@
       border-radius: 0.5rem;
       border: 2px darken(#f44336, 15%) solid !important;
     }
-    .badge-gold {
-      background: transparentize($color: gold, $amount: 0.7) !important;
+    .badge-info {
+      background: transparentize($color: #33b5e5, $amount: 0.6) !important;
       border-radius: 0.5rem;
-      border: 2px darken(gold, 15%) solid !important;
+      border: 2px #33b5e5 solid !important;
+    }
+    .badge-amber {
+      background: transparentize($color: #ffc107, $amount: 0.6) !important;
+      border-radius: 0.5rem;
+      border: 2px #ffc107 solid !important;
+    }
+    .badge-secondary {
+      background: transparentize($color: #bc37d3, $amount: 0.6) !important;
+      border-radius: 0.5rem;
+      border: 2px #bc37d3 solid !important;
+    }
+    .badge-gold {
+      background: transparentize($color: gold, $amount: 0.6) !important;
+      border-radius: 0.5rem;
+      border: 2px gold solid !important;
     }
   }
 
@@ -214,12 +251,32 @@
         width: auto;
       }
     }
+    .btn {
+      background: transparentize($color: #ff3547, $amount: 0.5) !important;
+      border: 2px #ff3547 solid;
+      border-radius: 0.5rem;
+      text-transform: initial;
+      &:hover {
+        background: transparentize($color: #ff3547, $amount: 0.4) !important;
+      }
+      &.btn-black {
+        background: transparentize($color: black, $amount: 0.5) !important;
+        border: 2px black solid;
+      }
+    }
   }
 
   // Admin panel
   .admin-panel {
     background: #1e1e1e;
     color: white;
+  }
+
+  // New post card
+  .newpost {
+    textarea {
+      border-radius: 0.3rem;
+    }
   }
 }
 
