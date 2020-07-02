@@ -235,7 +235,7 @@ export const initPresenceHandler = () => {
 };
 
 // Get number of online users
-export const getOnlineUsers = () => {
+export const getOnlineUserCount = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
 
@@ -247,7 +247,34 @@ export const getOnlineUsers = () => {
       .on("value", function (snapshot) {
         dispatch({
           type: "UPDATE_USERCOUNT",
-          onlineusers: snapshot.numChildren(),
+          onlineusercount: snapshot.numChildren(),
+        });
+      });
+  };
+};
+// Get array of all online users IDs
+export const getOnlineUsers = () => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+
+    const userStatusDatabaseRef = firebase.database().ref("/status/");
+
+    userStatusDatabaseRef
+      .orderByChild("state")
+      .equalTo("online")
+      .on("value", function (snapshot) {
+        let onlineusers = [];
+
+        !snapshot.empty &&
+          snapshot.forEach((u) => {
+            onlineusers = [...onlineusers, u];
+          });
+
+        console.log(onlineusers);
+
+        dispatch({
+          type: "GETONLINEUSERS_SUCCESS",
+          onlineusers: onlineusers,
         });
       });
   };

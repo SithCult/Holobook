@@ -11,7 +11,7 @@ import firebase from "firebase";
 // Connect
 import { connect } from "react-redux";
 // Actions
-import { getOnlineUsers } from "../../../store/actions/userActions";
+import { getOnlineUserCount } from "../../../store/actions/userActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -28,12 +28,14 @@ import {
 //#region > Components
 class OnlineUsers extends Component {
   componentDidMount() {
-    this.props.getOnlineUsers();
+    this.props.getOnlineUserCount();
   }
   render() {
     return (
       <div id="onlineusers">
-        <h4 className="white-text">{this.props.onlineusers} users online</h4>
+        <h4 className="white-text">
+          {this.props.onlineusercount} users online
+        </h4>
       </div>
     );
   }
@@ -43,13 +45,13 @@ class OnlineUsers extends Component {
 //#region > Functions
 const mapStateToProps = (state) => {
   return {
-    onlineusers: state.user.onlineusers,
+    onlineusercount: state.user.onlineusercount,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getOnlineUsers: () => dispatch(getOnlineUsers()),
+    getOnlineUserCount: () => dispatch(getOnlineUserCount()),
   };
 };
 //#endregion
