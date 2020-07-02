@@ -7,10 +7,19 @@ import Footer from "./Footer";
 import ReceivedUser from "./ReceivedUser";
 import Comment from "./Comment";
 import Post from "./Post";
+import OnlineUsers from "./OnlineUsers";
 //#endregion
 
 //#region > Exports
-export { CookieModal, Navbar, Footer, ReceivedUser, Comment, Post };
+export {
+  CookieModal,
+  Navbar,
+  Footer,
+  ReceivedUser,
+  Comment,
+  Post,
+  OnlineUsers,
+};
 //#endregion
 
 /**

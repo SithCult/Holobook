@@ -32,6 +32,7 @@ import {
   loadAllPosts,
   reportPost,
 } from "../../../store/actions/postActions";
+import { initPresenceHandler } from "../../../store/actions/userActions";
 import { loadComments } from "../../../store/actions/commentActions";
 
 //> MDB
@@ -57,8 +58,9 @@ import {
   MDBProgress,
 } from "mdbreact";
 
-//> Components
+//> Additional Components
 import { Posts } from "../../organisms";
+import { OnlineUsers } from "../../molecules";
 
 //> CSS
 // Profile page
@@ -505,6 +507,12 @@ class ProfilePage extends React.Component {
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
+    if (!this.state.initialized) {
+      this.setState({ initialized: true }, () =>
+        this.props.initPresenceHandler()
+      );
+    }
+
     if (profile.badges) {
       if (!this.state.postsInitialLoad) {
         this.setState(
@@ -522,6 +530,7 @@ class ProfilePage extends React.Component {
 
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
+        <OnlineUsers />
         <Helmet>
           <meta charSet="utf-8" />
           <title>{`${metaPageTitle}`}</title>
@@ -1037,6 +1046,7 @@ const mapDispatchToProps = (dispatch) => {
     loadPosts: (amount) => dispatch(loadPosts(amount)),
     loadAllPosts: (amount) => dispatch(loadAllPosts(amount)),
     loadComments: () => dispatch(loadComments()),
+    initPresenceHandler: () => dispatch(initPresenceHandler()),
   };
 };
 //#endregion

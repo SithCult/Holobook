@@ -217,6 +217,103 @@ export const writeDonation = (amount) => {
   };
 };
 
+// Initialize Presence
+export const initPresenceHandler = () => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+    const uid = firebase.auth().currentUser.uid;
+
+    const userStatusDatabaseRef = firebase.database().ref("/status/" + uid);
+
+    // Online and offline states
+    const isOfflineForDatabase = {
+      state: "offline",
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+
+    const isOnlineForDatabase = {
+      state: "online",
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+    // Create reference
+    firebase
+      .database()
+      .ref(".info/connected")
+      .on("value", function (snapshot) {
+        // If we're not currently connected, don't do anything.
+        if (snapshot.val() == false) {
+          return;
+        }
+
+        // If we are currently connected, then use the 'onDisconnect()'
+        // method to add a set which will only trigger once this
+        // client has disconnected by closing the app,
+        // losing internet, or any other means.
+        userStatusDatabaseRef
+          .onDisconnect()
+          .set(isOfflineForDatabase)
+          .then(function () {
+            // The promise returned from .onDisconnect().set() will
+            // resolve as soon as the server acknowledges the onDisconnect()
+            // request, NOT once we've actually disconnected:
+            // https://firebase.google.com/docs/reference/js/firebase.database.OnDisconnect
+
+            // We can now safely set ourselves as 'online' knowing that the
+            // server will mark us as offline once we lose connection.
+            userStatusDatabaseRef.set(isOnlineForDatabase);
+          });
+      });
+  };
+};
+
+// Get number of online users
+export const getOnlineUserCount = () => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+
+    const userStatusDatabaseRef = firebase.database().ref("/status/");
+
+    userStatusDatabaseRef
+      .orderByChild("state")
+      .equalTo("online")
+      .on("value", function (snapshot) {
+        dispatch({
+          type: "UPDATE_USERCOUNT",
+          onlineusercount: snapshot.numChildren(),
+        });
+      });
+  };
+};
+
+// Get array of all online users IDs
+export const getOnlineUsers = () => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+
+    const userStatusDatabaseRef = firebase.database().ref("/status/");
+
+    userStatusDatabaseRef
+      .orderByChild("state")
+      .equalTo("online")
+      .on("value", function (snapshot) {
+        let onlineusers = [];
+
+        !snapshot.empty &&
+          snapshot.forEach((u) => {
+            onlineusers = [...onlineusers, u];
+          });
+
+        console.log(onlineusers);
+
+        dispatch({
+          type: "GETONLINEUSERS_SUCCESS",
+          onlineusers: onlineusers,
+        });
+      });
+  };
+};
+
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
  * Copyright © 2019-2020 Werbeagentur Christian Aichner
