@@ -524,7 +524,7 @@ class DonatePage extends React.Component {
                   .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1))
                   .map((donation, i) => {
                     return (
-                      <MDBCard className="text-dark text-left">
+                      <MDBCard className="text-dark text-left mb-4">
                         <MDBCardBody>
                           <div className="d-flex justify-content-between">
                             <div className="font-weight-bold">
