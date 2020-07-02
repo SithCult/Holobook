@@ -186,7 +186,7 @@ class BasicTraining extends React.Component {
   };
 
   render() {
-    const { authErrorDetails, auth } = this.props;
+    const { auth } = this.props;
 
     return (
       <MDBContainer

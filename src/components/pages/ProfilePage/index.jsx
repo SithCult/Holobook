@@ -502,6 +502,7 @@ class ProfilePage extends React.Component {
   render() {
     const { auth, profile, comments } = this.props;
 
+    // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
     if (profile.badges) {
