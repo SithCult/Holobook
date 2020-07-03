@@ -7,6 +7,11 @@ import { Link, Redirect, withRouter } from "react-router-dom";
 // Meta tags
 import { Helmet } from "react-helmet";
 
+//> Additional libraries
+// Calculate time ago
+import TimeAgo from "javascript-time-ago";
+// Load locale-specific relative date/time formatting rules.
+import en from "javascript-time-ago/locale/en";
 // Flags for countries
 import ReactCountryFlag from "react-country-flag";
 // Country list
@@ -85,6 +90,13 @@ class CountryPage extends React.Component {
         country: country ? countryList().getLabel(country) : null,
       });
     }
+  };
+
+  calculateTimeAgo = (timestamp) => {
+    TimeAgo.addLocale(en);
+    const timeAgo = new TimeAgo("en-US");
+
+    return timeAgo.format(timestamp);
   };
 
   // Get moff of country
@@ -230,8 +242,16 @@ class CountryPage extends React.Component {
   // Returns either a red circle for offline or a green circle for online
   getStatus = (uid) => {
     if (this.props.onlineusers) {
-      if (this.props.onlineusers.some((u) => u.uid === uid)) {
-        return true;
+      let userStatusData = this.props.onlineusers.filter(
+        (o) => o.uid === uid
+      )[0];
+
+      if (userStatusData) {
+        if (userStatusData?.state === "online") {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
@@ -249,8 +269,10 @@ class CountryPage extends React.Component {
           newUser = {
             ...u,
             status: {
-              state: userStatusData.state,
-              last_changed: userStatusData.last_changed,
+              state: userStatusData.state ? userStatusData.state : "offline",
+              last_changed: userStatusData.last_changed
+                ? userStatusData.last_changed
+                : 1577836800000,
             },
           };
         } else {
@@ -258,7 +280,7 @@ class CountryPage extends React.Component {
             ...u,
             status: {
               state: "offline",
-              last_changed: 1519129000,
+              last_changed: 1577836800000,
             },
           };
         }
@@ -323,8 +345,9 @@ class CountryPage extends React.Component {
                 <div className="card-columns memberlist">
                   {users &&
                     users.map((user, i) => {
+                      console.log(user);
                       return (
-                        <MDBCard className="text-left">
+                        <MDBCard className="text-left" key={i}>
                           <div className="d-flex justify-content-between">
                             <div className="d-flex align-items-center">
                               {this.getPicture(
@@ -335,6 +358,15 @@ class CountryPage extends React.Component {
                               )}
                               <span className="pl-2">
                                 {user.data.title} {user.data.sith_name}
+                                {user.status &&
+                                  user.status.state === "offline" && (
+                                    <span className="d-block small text-muted">
+                                      Last seen{" "}
+                                      {this.calculateTimeAgo(
+                                        user.status.last_changed
+                                      )}
+                                    </span>
+                                  )}
                               </span>
                             </div>
                             <span className="small text-muted">
