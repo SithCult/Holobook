@@ -306,6 +306,30 @@ export const initPresenceHandler = (uid) => {
   };
 };
 
+// Initialize Presence
+export const disablePresenceHandler = (uid) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const userStatusDatabaseRef = firebase.database().ref("/status/" + uid);
+
+    // Online and offline states
+    const isOfflineForDatabase = {
+      uid,
+      state: "offline",
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+
+    const isOnlineForDatabase = {
+      uid,
+      state: "online",
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+
+    // Create reference
+    firebase.database().ref(".info/connected").off();
+  };
+};
+
 // Get number of online users
 export const getOnlineUserCount = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {

@@ -12,6 +12,7 @@ import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 // Actions
 import { signIn } from "../../../store/actions/authActions";
+import { initPresenceHandler } from "../../../store/actions/userActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -46,6 +47,9 @@ class LoginPage extends React.Component {
     event.preventDefault();
 
     this.loginUser();
+    if (this.props.auth) {
+      initPresenceHandler(this.props.auth.uid);
+    }
   };
 
   changeHandler = (event) => {
@@ -171,6 +175,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     signIn: (credentials) => dispatch(signIn(credentials)),
+    initPresenceHandler: (uid) => dispatch(initPresenceHandler(uid)),
   };
 };
 //#endregion

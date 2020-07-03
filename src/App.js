@@ -36,7 +36,10 @@ class App extends React.Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    if (this.props.auth.uid !== nextProps.auth.uid) {
+    if (
+      this.props.auth.uid !== nextProps.auth.uid &&
+      nextProps.auth.uid !== undefined
+    ) {
       this.props.initPresenceHandler(nextProps.auth.uid);
     }
   };
