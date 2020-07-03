@@ -4,31 +4,22 @@
 import React from "react";
 // Router
 import { Link, Redirect } from "react-router-dom";
+// Meta tags
+import { Helmet } from "react-helmet";
 
 //> Additional modules
 // Fade In Animation
 import FadeIn from "react-fade-in";
 // Country list
 import countryList from "react-select-country-list";
-// Fetching
-import axios from "axios";
-// Firebase
-import firebase from "firebase";
-// Uploading images
-import FileUploader from "react-firebase-file-uploader";
 
 //> Redux
 // Connect
 import { connect } from "react-redux";
-// Actions
-import { signOut } from "../../../store/actions/authActions";
 import {
   createPost,
-  removePost,
-  editPost,
   loadPosts,
   loadAllPosts,
-  reportPost,
 } from "../../../store/actions/postActions";
 import { loadComments } from "../../../store/actions/commentActions";
 
@@ -52,11 +43,11 @@ import {
   MDBDropdownToggle,
   MDBDropdownMenu,
   MDBDropdownItem,
-  MDBProgress,
 } from "mdbreact";
 
-//> Components
+//> Additional Components
 import { Posts } from "../../organisms";
+import { OnlineUsers } from "../../molecules";
 
 //> CSS
 // Profile page
@@ -93,10 +84,6 @@ const feelings = [
 
 //#region > Components
 class ProfilePage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     post_charlength: 0,
     post: "",
@@ -230,39 +217,45 @@ class ProfilePage extends React.Component {
     switch (badge.toLowerCase()) {
       case "founder":
         return (
-          <MDBCol key={key}>
-            <MDBBadge pill color="elegant-color">
-              <MDBIcon icon="fire" className="pr-2" />
-              Founder
-            </MDBBadge>
-          </MDBCol>
+          <MDBBadge pill color="elegant-color" key={key}>
+            <MDBIcon icon="award" className="pr-2" />
+            Founder
+          </MDBBadge>
         );
-      case "member":
+      case "council":
         return (
-          <MDBCol key={key}>
-            <MDBBadge pill color="red">
-              <MDBIcon icon="user" className="pr-2" />
-              Member
-            </MDBBadge>
-          </MDBCol>
+          <MDBBadge pill color="red" key={key}>
+            <MDBIcon icon="fire" className="pr-2" />
+            Council
+          </MDBBadge>
         );
       case "hand":
         return (
-          <MDBCol key={key}>
-            <MDBBadge pill color="gold">
-              <MDBIcon fab icon="sith" className="pr-2" />
-              Hand of the Emperor
-            </MDBBadge>
-          </MDBCol>
+          <MDBBadge pill color="secondary" key={key}>
+            <MDBIcon fab icon="sith" className="pr-2" />
+            Hand of the Emperor
+          </MDBBadge>
         );
       case "historic":
         return (
-          <MDBCol key={key}>
-            <MDBBadge pill color="orange">
-              <MDBIcon icon="book" className="pr-2" />
-              Historic
-            </MDBBadge>
-          </MDBCol>
+          <MDBBadge pill color="orange" key={key}>
+            <MDBIcon icon="book" className="pr-2" />
+            Historic
+          </MDBBadge>
+        );
+      case "moff":
+        return (
+          <MDBBadge pill color="info" key={key}>
+            <MDBIcon icon="angle-up" className="pr-2" />
+            Moff
+          </MDBBadge>
+        );
+      case "phase1":
+        return (
+          <MDBBadge pill color="amber" key={key}>
+            <MDBIcon icon="dollar-sign" className="pr-2" />
+            Phase 1 Contributor
+          </MDBBadge>
         );
       default:
         break;
@@ -281,7 +274,7 @@ class ProfilePage extends React.Component {
     if (result === "") {
       return null;
     } else {
-      return <MDBRow className="text-center badge-row">{result}</MDBRow>;
+      return result;
     }
   };
 
@@ -494,6 +487,7 @@ class ProfilePage extends React.Component {
   render() {
     const { auth, profile, comments } = this.props;
 
+    // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
     if (profile.badges) {
@@ -507,8 +501,17 @@ class ProfilePage extends React.Component {
       }
     }
 
+    const metaPageTitle = profile.sith_name
+      ? profile.sith_name + " - SithCult"
+      : "Loading - SithCult";
+
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>{`${metaPageTitle}`}</title>
+          <link rel="canonical" href="https://sithcult.com/me" />
+        </Helmet>
         <MDBRow>
           <MDBCol md="3">
             <MDBCard testimonial>
@@ -518,46 +521,31 @@ class ProfilePage extends React.Component {
                   case "gold":
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={goldUserIMG}
-                          alt="Gold user profile picture"
-                        />
+                        <img src={goldUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                   case "light":
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={lightUserIMG}
-                          alt="Light user profile picture"
-                        />
+                        <img src={lightUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                   case "bronze":
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={bronzeUserIMG}
-                          alt="Bronze user profile picture"
-                        />
+                        <img src={bronzeUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                   case "dark":
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={darkUserIMG}
-                          alt="Bronze user profile picture"
-                        />
+                        <img src={darkUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                   default:
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={defaultUserIMG}
-                          alt="Default user profile picture"
-                        />
+                        <img src={defaultUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                 }
@@ -566,13 +554,26 @@ class ProfilePage extends React.Component {
                 <p className="lead font-weight-bold mb-0">
                   {profile.title} {profile.sith_name}
                 </p>
-                <p className="text-muted">{this.getCountry(profile.address)}</p>
-                {this.getBadges(profile.badges)}
+                <p className="small text-info mb-0">{profile.department}</p>
+                <Link
+                  to={"/c/" + profile.address?.country?.toLowerCase().trim()}
+                >
+                  <p className="text-muted d-inline-block">
+                    {this.getCountry(profile.address)}
+                  </p>
+                </Link>
+                <div className="badge-row">
+                  {this.getBadges(profile.badges)}
+                </div>
                 <p className="mt-3">
                   <small>{profile.status}</small>
                 </p>
-                <div className="mt-3 features">
-                  <p className="lead mb-2">
+              </MDBCardBody>
+            </MDBCard>
+            <MDBCard className="mt-3 text-center">
+              <MDBCardBody>
+                <div className="mt-1 features">
+                  <p className="lead mb-1">
                     <img
                       src={holocronIcon}
                       alt="Holocron icon"
@@ -585,18 +586,35 @@ class ProfilePage extends React.Component {
                       className="ml-2"
                     />
                   </p>
+                  <p className="small text-muted mb-2">
+                    Your holocrons contain valuable lessons and interactions
+                    that can strengthen your connection to the force and
+                    yourself.
+                  </p>
                   <Link to="/basic">
                     <MDBBtn color="elegant" size="md">
                       <MDBIcon icon="book" className="mr-2" />
-                      Learn Imperial Basic
+                      Imperial Basic Trainer
                     </MDBBtn>
                   </Link>
+                  <MDBBtn color="black" size="md" disabled>
+                    <MDBIcon icon="question" className="mr-2" />
+                    Hidden
+                  </MDBBtn>
+                  <MDBBtn color="black" size="md" disabled>
+                    <MDBIcon icon="question" className="mr-2" />
+                    Hidden
+                  </MDBBtn>
+                  <MDBBtn color="black" size="md" disabled>
+                    <MDBIcon icon="question" className="mr-2" />
+                    Hidden
+                  </MDBBtn>
                 </div>
               </MDBCardBody>
             </MDBCard>
           </MDBCol>
           <MDBCol md="6">
-            <MDBCard className="mb-3">
+            <MDBCard className="mb-3 newpost">
               <MDBCardBody>
                 <h3>
                   Greetings, {profile.title} {profile.sith_name}
@@ -611,6 +629,26 @@ class ProfilePage extends React.Component {
                   onChange={this.changeTextareaHandler}
                 />
                 <div>
+                  <div className="d-flex justify-content-between mb-3">
+                    {this.state.post.split(" ").length > 1 &&
+                    this.state.post.split(" ").length < 5 ? (
+                      <div>
+                        <p className="small text-muted mb-0">
+                          {5 - this.state.post.split(" ").length} words
+                          remaining before you can post.
+                        </p>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    <small
+                      className={
+                        this.state.post.length === 500 && "text-danger"
+                      }
+                    >
+                      {this.state.post.length} / 500
+                    </small>
+                  </div>
                   <div className="d-inline post-settings">
                     <MDBTooltip placement="top" domElement className="test">
                       <span
@@ -667,15 +705,6 @@ class ProfilePage extends React.Component {
                       <span>Change visibility</span>
                     </MDBTooltip>
                   </div>
-                  <small
-                    className={
-                      this.state.post.length === 500
-                        ? "text-danger float-right"
-                        : "float-right"
-                    }
-                  >
-                    {this.state.post.length} / 500
-                  </small>
                 </div>
                 <div className="clearfix" />
                 <div>
@@ -711,23 +740,7 @@ class ProfilePage extends React.Component {
                     </small>
                   )}
                 </div>
-                {this.state.postImageURL && (
-                  <div className="pt-5 pl-5 pr-5 pb-2 text-center">
-                    <img
-                      className="img-fluid w-100 h-auto mb-3"
-                      src={this.state.postImageURL}
-                    />
-                  </div>
-                )}
-                <hr />
-                {this.state.postImageisUploading && (
-                  <MDBProgress
-                    material
-                    value={this.state.postImageProgress}
-                    className="my-s"
-                  />
-                )}
-                <div className="actions">
+                <div className="actions mt-3">
                   <MDBBtn
                     color="elegant"
                     rounded
@@ -826,11 +839,12 @@ class ProfilePage extends React.Component {
                       <div className="embed-responsive embed-responsive-16by9">
                         <iframe
                           className="embed-responsive-item"
+                          title="YouTube Video"
                           src={
                             "//www.youtube.com/embed/" + this.state.youtubeId
                           }
-                          frameborder="0"
-                          allowfullscreen
+                          frameBorder="0"
+                          allowFullScreen
                         ></iframe>
                       </div>
                     )}
@@ -838,8 +852,8 @@ class ProfilePage extends React.Component {
                 )}
                 {this.state.post.length > 0 && (
                   <FadeIn>
-                    <div className="text-right">
-                      {profile.title.toLowerCase() === "darth" && (
+                    <div className="text-right send">
+                      {/*profile.title.toLowerCase() === "darth" && (
                         <MDBBtn
                           color="red"
                           rounded
@@ -849,8 +863,13 @@ class ProfilePage extends React.Component {
                           <MDBIcon fab icon="sith" className="pr-2" size="lg" />
                           Post as SithCult
                         </MDBBtn>
-                      )}
-                      <MDBBtn color="elegant" rounded onClick={this.createPost}>
+                      )*/}
+                      <MDBBtn
+                        color="elegant"
+                        rounded
+                        onClick={this.createPost}
+                        disabled={this.state.post.split(" ").length < 5}
+                      >
                         <MDBIcon
                           icon="paper-plane"
                           className="pr-2"
@@ -904,28 +923,6 @@ class ProfilePage extends React.Component {
                 </MDBRow>
               </MDBAlert>
             )}
-            {profile.badges &&
-              Array.isArray(profile.badges) &&
-              profile.badges.includes("Admin") && (
-                <div className="admin-panel p-3 mb-3">
-                  <div className="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id="customSwitches"
-                      readOnly
-                      checked={this.state.showDeletedPosts}
-                      onChange={this.handlePostVisibilityChange}
-                    />
-                    <label
-                      className="custom-control-label"
-                      htmlFor="customSwitches"
-                    >
-                      Show deleted posts
-                    </label>
-                  </div>
-                </div>
-              )}
             <div className="posts">
               <Posts
                 posts={this.props.posts}
@@ -944,7 +941,83 @@ class ProfilePage extends React.Component {
               )}
             </div>
           </MDBCol>
-          <MDBCol md="3"></MDBCol>
+          <MDBCol md="3" className="right-col">
+            <MDBCard className="award text-center">
+              <MDBCardBody>
+                <p className="lead mb-1">Get rewards</p>
+                <p className="small text-muted mb-1">
+                  Contribute to SithCult and achieve greatness.
+                </p>
+                <Link to="/contribute">
+                  <MDBBtn color="blue" size="md">
+                    <MDBIcon icon="hand-holding-usd" className="mr-2" />
+                    Contribute to SithCult
+                  </MDBBtn>
+                </Link>
+              </MDBCardBody>
+            </MDBCard>
+            <MDBCard className="text-center mt-3">
+              <MDBCardBody>
+                <p className="lead mb-1">Your district</p>
+                <p className="small text-muted mb-1">
+                  Get details about SithCult in your country.
+                </p>
+                {profile.isLoaded ? (
+                  <Link
+                    to={"/c/" + profile.address?.country?.toLowerCase().trim()}
+                  >
+                    <MDBBtn color="red" size="md">
+                      <MDBIcon far icon="flag" className="mr-2" />
+                      {profile.isLoaded ? (
+                        <>{this.getCountry(profile.address)}</>
+                      ) : (
+                        <>
+                          <span>Loading</span>
+                        </>
+                      )}
+                    </MDBBtn>
+                  </Link>
+                ) : (
+                  <MDBBtn color="red" size="md" disabled={true}>
+                    <MDBIcon far icon="flag" className="mr-2" />
+                    <span>Loading</span>
+                  </MDBBtn>
+                )}
+              </MDBCardBody>
+            </MDBCard>
+            <MDBCard className="mt-3">
+              <MDBCardBody>
+                <OnlineUsers />
+              </MDBCardBody>
+            </MDBCard>
+            {profile.badges &&
+              Array.isArray(profile.badges) &&
+              profile.badges.includes("admin") && (
+                <MDBCard className="mt-3">
+                  <MDBCardBody>
+                    <div className="admin-panel">
+                      <p className="lead">Admin Panel</p>
+                      <div className="custom-control custom-switch">
+                        <input
+                          type="checkbox"
+                          className="custom-control-input"
+                          id="customSwitches"
+                          readOnly
+                          checked={this.state.showDeletedPosts}
+                          onChange={this.handlePostVisibilityChange}
+                        />
+                        <label
+                          className="custom-control-label"
+                          htmlFor="customSwitches"
+                        >
+                          Show deleted posts
+                        </label>
+                      </div>
+                    </div>
+                  </MDBCardBody>
+                </MDBCard>
+              )}
+          </MDBCol>
         </MDBRow>
       </MDBContainer>
     );

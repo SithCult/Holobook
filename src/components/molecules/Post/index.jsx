@@ -8,27 +8,13 @@ import React from "react";
 import TimeAgo from "javascript-time-ago";
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
-// Flags for countries
-import ReactCountryFlag from "react-country-flag";
-// Country name by country code
-import { getName } from "country-list";
+
+//> Components
+import ReceivedUser from "../ReceivedUser";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import {
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBBtn,
-  MDBInput,
-  MDBIcon,
-  MDBPopover,
-  MDBPopoverBody,
-  MDBPopoverHeader,
-  MDBSpinner,
-  MDBBadge,
-} from "mdbreact";
+import { MDBRow, MDBCol, MDBCard, MDBCardBody, MDBIcon } from "mdbreact";
 
 //> Redux Firebase
 // Getting user information
@@ -39,8 +25,6 @@ import {
   getLikeAmount,
 } from "../../../store/actions/likeActions";
 import { getUser } from "../../../store/actions/userActions";
-// Getting comments
-import { loadComments } from "../../../store/actions/commentActions";
 // Connect
 import { connect } from "react-redux";
 
@@ -60,6 +44,7 @@ function replaceAll(string, search, replace) {
   return string.split(search).join(replace);
 }
 
+// eslint-disable-next-line no-extend-native
 String.prototype.escape = function () {
   // Replace those tags with HTML equivalent
   const tagsToReplace = {
@@ -117,7 +102,7 @@ class Post extends React.Component {
 
   render() {
     const { auth, post, key } = this.props;
-    const { receivedUser, comments, likeCount, liked } = this.state;
+    const { receivedUser, comments } = this.state;
 
     return (
       <MDBCard
@@ -135,6 +120,7 @@ class Post extends React.Component {
                         <img
                           src={goldUserIMG}
                           className="rounded-circle avatar-img align-self-center mr-0"
+                          alt={post.data.author.name}
                         />
                       );
                     case "light":
@@ -142,6 +128,7 @@ class Post extends React.Component {
                         <img
                           src={lightUserIMG}
                           className="rounded-circle avatar-img align-self-center mr-0"
+                          alt={post.data.author.name}
                         />
                       );
                     case "bronze":
@@ -149,6 +136,7 @@ class Post extends React.Component {
                         <img
                           src={bronzeUserIMG}
                           className="rounded-circle avatar-img align-self-center mr-0"
+                          alt={post.data.author.name}
                         />
                       );
                     case "dark":
@@ -156,6 +144,7 @@ class Post extends React.Component {
                         <img
                           src={darkUserIMG}
                           className="rounded-circle avatar-img align-self-center mr-0"
+                          alt={post.data.author.name}
                         />
                       );
                     default:
@@ -163,121 +152,17 @@ class Post extends React.Component {
                         <img
                           src={defaultUserIMG}
                           className="rounded-circle avatar-img align-self-center mr-0"
+                          alt={post.data.author.name}
                         />
                       );
                   }
                 })()}
               </div>
               <div className="p-2 author-info">
-                <MDBPopover
-                  placement="top"
-                  popover
-                  clickable
-                  domElement
-                  className="furtherInfo"
-                  onChange={this.handlePopoverChange}
-                >
-                  <div className="clickable name">{post.data.author.name}</div>
-                  <div>
-                    {receivedUser !== true && receivedUser !== undefined ? (
-                      <>
-                        {receivedUser !== false ? (
-                          <>
-                            <MDBPopoverHeader className="flex-center">
-                              <div>
-                                {receivedUser.title +
-                                  " " +
-                                  receivedUser.sith_name}
-                                <small className="text-muted d-block blue-text">
-                                  {receivedUser.department}
-                                </small>
-                              </div>
-                              <div className="ml-auto p-2 mb-auto">
-                                <small className="text-muted">
-                                  <MDBIcon
-                                    icon="medal"
-                                    className="purple-text mr-1"
-                                  />
-                                  {receivedUser.reputation}
-                                </small>
-                              </div>
-                            </MDBPopoverHeader>
-                            <MDBPopoverBody>
-                              <div>
-                                {(() => {
-                                  return receivedUser.badges.map((badge, i) => {
-                                    switch (badge) {
-                                      case "founder":
-                                        return (
-                                          <MDBBadge
-                                            pill
-                                            color="elegant-color"
-                                            key={i}
-                                          >
-                                            <MDBIcon
-                                              icon="fire"
-                                              className="pr-2"
-                                            />
-                                            Founder
-                                          </MDBBadge>
-                                        );
-                                      case "member":
-                                        return (
-                                          <MDBBadge pill color="red" key={i}>
-                                            <MDBIcon
-                                              icon="user"
-                                              className="pr-2"
-                                            />
-                                            Council
-                                          </MDBBadge>
-                                        );
-                                      case "historic":
-                                        return (
-                                          <MDBBadge pill color="orange" key={i}>
-                                            <MDBIcon
-                                              icon="book"
-                                              className="pr-2"
-                                            />
-                                            Historic
-                                          </MDBBadge>
-                                        );
-                                      default:
-                                        return null;
-                                    }
-                                  });
-                                })()}
-                                <div className="flex-center text-left my-2">
-                                  <ReactCountryFlag
-                                    svg
-                                    className="mr-1"
-                                    countryCode={receivedUser.address.country}
-                                  />
-                                  {getName(receivedUser.address.country)}
-                                </div>
-                              </div>
-                            </MDBPopoverBody>
-                          </>
-                        ) : (
-                          <>
-                            <MDBPopoverHeader>
-                              <div>User not found</div>
-                            </MDBPopoverHeader>
-                            <MDBPopoverBody>
-                              This person is no longer a member of SithCult.
-                            </MDBPopoverBody>
-                          </>
-                        )}
-                      </>
-                    ) : (
-                      <MDBPopoverBody className="text-center">
-                        <div>
-                          <MDBSpinner />
-                        </div>
-                        <div>Receiving current status</div>
-                      </MDBPopoverBody>
-                    )}
-                  </div>
-                </MDBPopover>
+                <ReceivedUser
+                  receivedUser={receivedUser}
+                  name={post.data.author.name}
+                />
                 {post.data.details.feeling && (
                   <i className="feeling">
                     <MDBIcon
@@ -356,8 +241,9 @@ class Post extends React.Component {
                 <iframe
                   className="embed-responsive-item"
                   src={"//www.youtube.com/embed/" + post.data.youtubeId}
-                  frameborder="0"
-                  allowfullscreen
+                  frameBorder="0"
+                  title="YouTube Video"
+                  allowFullScreen
                 ></iframe>
               </div>
             )}

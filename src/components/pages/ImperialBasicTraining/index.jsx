@@ -3,17 +3,13 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 // Redirect from Router
-import { Link, Redirect } from "react-router-dom";
-
-//> Additional modules
-// Fade In Animation
-import FadeIn from "react-fade-in";
+import { Link } from "react-router-dom";
+// Meta tags
+import { Helmet } from "react-helmet";
 
 //> Redux
 // Connect
 import { connect } from "react-redux";
-// Actions
-import { signIn } from "../../../store/actions/authActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -63,6 +59,7 @@ class BasicTraining extends React.Component {
 
   componentDidMount = () => {
     let randomWord = require("random-words");
+
     if (!this.state.activeBasic)
       this.setState({
         activeBasic: randomWord().toLowerCase().trim(),
@@ -77,22 +74,23 @@ class BasicTraining extends React.Component {
 
     if (this.state.userInput === this.state.activeBasic.toLowerCase().trim()) {
       // Calculate how much time it took to get the result
-      let currentTime = new Date().getTime();
-      let t1 = new Date();
-      let t2 = this.state.startTimer;
-      let dif = t1.getTime() - t2.getTime();
-      let elapsedTime = dif / 1000;
-      let item = {
+      const t1 = new Date();
+      const t2 = this.state.startTimer;
+      const dif = t1.getTime() - t2.getTime();
+      const elapsedTime = dif / 1000;
+      const item = {
         text: this.state.activeBasic.toLowerCase().trim(),
         elapsed: elapsedTime,
         hinted: this.state.showSolution,
         wasCorrect: !this.state.wrongInput,
       };
+
       previous.push(item);
 
       // Set next word
       let randomWord = "";
-      let randChoice = Math.floor(Math.random() * 100);
+      const randChoice = Math.floor(Math.random() * 100);
+
       if (randChoice < 95) {
         // Get word from library
         let randomWords = require("random-words");
@@ -102,6 +100,8 @@ class BasicTraining extends React.Component {
         let rand = Math.floor(Math.random() * items.length);
         randomWord = items[rand];
       }
+
+      // If input is wrong
       if (this.state.wrongInput) {
         this.setState(
           {
@@ -154,7 +154,7 @@ class BasicTraining extends React.Component {
     if (previous.length > 0) {
       let time = 0;
 
-      previous.map((item, i) => {
+      previous.forEach((item, i) => {
         time += parseInt(item.elapsed);
       });
 
@@ -184,13 +184,18 @@ class BasicTraining extends React.Component {
   };
 
   render() {
-    const { authErrorDetails, auth } = this.props;
+    const { auth } = this.props;
 
     return (
       <MDBContainer
         id="imperialbasictraining"
         className="text-center text-white pt-5 mt-5"
       >
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Imperial Basic Trainer - SithCult</title>
+          <link rel="canonical" href="https://sithcult.com/basic" />
+        </Helmet>
         <img src={logoIMG} alt="SithCult Logo" className="mt-5 logo" />
         <h2 className="font-weight-bold mt-2">Imperial Basic Trainer</h2>
         <p>The best way to learn Imperial Basic on this planet.</p>
@@ -261,12 +266,12 @@ class BasicTraining extends React.Component {
                   >
                     Try again.
                     {!this.state.showSolution && (
-                      <a
-                        className="ml-1 mr-1 underlined text-white"
+                      <span
+                        className="ml-1 mr-1 underlined text-white clickable"
                         onClick={() => this.setState({ showSolution: true })}
                       >
                         Show solution
-                      </a>
+                      </span>
                     )}
                   </small>
                 )}

@@ -3,38 +3,14 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 
-//> Additional libraries
-// Load locale-specific relative date/time formatting rules.
-import en from "javascript-time-ago/locale/en";
-
-// Flags for countries
-import ReactCountryFlag from "react-country-flag";
-
-// Country name by country code
-import { getName } from "country-list";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import {
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBBtn,
-  MDBInput,
-  MDBIcon,
-  MDBPopover,
-  MDBPopoverBody,
-  MDBPopoverHeader,
-  MDBSpinner,
-  MDBBadge,
-} from "mdbreact";
+import { MDBBtn, MDBInput, MDBIcon } from "mdbreact";
 
 //> Redux Firebase
 // Actions for comments
 import {
   createComment,
-  editComment,
   loadComments,
 } from "../../../store/actions/commentActions";
 
@@ -104,6 +80,7 @@ class Comments extends React.Component {
       this.setState(
         {
           comment: cid ? this.state.comment : "",
+          showComments: true,
           ["comment_" + cid]: cid ? "" : this.state["comment_" + cid],
         },
         () => {
@@ -119,98 +96,132 @@ class Comments extends React.Component {
     const { items } = this.props;
 
     return (
-      <div className="comment-container">
-        <div className="mb-3">
-          <MDBInput
-            type="textarea"
-            label="Add comment"
-            name="comment"
-            outline
-            className={this.state.comment ? "keep" : undefined}
-            value={this.state.comment}
-            onChange={(e) => this.changeTextareaHandler(e, null)}
-          />
-          {this.state.comment && (
-            <div className="text-right">
+      <>
+        <div className="comment-container">
+          <div className="mb-3">
+            <MDBInput
+              type="textarea"
+              label="Add comment"
+              name="comment"
+              outline
+              className={this.state.comment ? "keep" : undefined}
+              value={this.state.comment}
+              onChange={(e) => this.changeTextareaHandler(e, null)}
+            />
+            {this.state.comment && (
+              <div className="text-right">
+                <MDBBtn
+                  color="elegant"
+                  rounded
+                  onClick={() => this.createPost(this.props.pid, null)}
+                >
+                  <MDBIcon icon="comment-alt" className="pr-2" />
+                  Post comment
+                </MDBBtn>
+              </div>
+            )}
+          </div>
+          {items &&
+            items.length > 0 &&
+            items.filter((c) => c.data.pid === this.props.pid).length > 0 && (
               <MDBBtn
                 color="elegant"
-                rounded
-                onClick={() => this.createPost(this.props.pid, null)}
+                size="md"
+                onClick={() =>
+                  this.setState({ showComments: !this.state.showComments })
+                }
               >
-                <MDBIcon icon="comment-alt" className="pr-2" />
-                Post comment
+                {this.state.showComments
+                  ? "Hide comments"
+                  : `Show ${
+                      items.filter((c) => c.data.pid === this.props.pid).length
+                    } ${
+                      items.filter((c) => c.data.pid === this.props.pid)
+                        .length === 1
+                        ? "comment"
+                        : "comments"
+                    }`}
               </MDBBtn>
-            </div>
-          )}
-        </div>
-        {items &&
-          items.length > 0 &&
-          items
-            .filter((c) => c.data.pid === this.props.pid)
-            .map((comment, i) => {
-              console.log(comment);
-              if (comment.data.visible) {
-                return (
-                  <React.Fragment key={i}>
-                    {!comment.data.cid && (
-                      <>
-                        <Comment
-                          comment={comment}
-                          key={comment.id}
-                          refreshData={this.props.refreshData}
-                        />
-                        <div className="child-input">
-                          <MDBInput
-                            type="textarea"
-                            label={`Reply to ${comment.data.author.name}`}
-                            name="comment"
-                            outline
-                            className={
-                              this.state["comment_" + comment.id]
-                                ? "keep"
-                                : undefined
-                            }
-                            value={this.state["comment_" + comment.id]}
-                            onChange={(e) =>
-                              this.changeTextareaHandler(e, comment.id)
-                            }
-                          />
-                          {this.state["comment_" + comment.id] && (
-                            <div className="text-right">
-                              <MDBBtn
-                                color="elegant"
-                                onClick={() =>
-                                  this.createPost(comment.data.pid, comment.id)
-                                }
-                              >
-                                <MDBIcon icon="comment-alt" className="pr-2" />
-                                Reply
-                              </MDBBtn>
-                            </div>
-                          )}
-                        </div>
-                      </>
-                    )}
-                    {items.map((child, c) => {
-                      if (child.data.cid === comment.id) {
-                        if (child.data.visible) {
-                          return (
+            )}
+          <div style={{ display: this.state.showComments ? "block" : "none" }}>
+            {items &&
+              items.length > 0 &&
+              items
+                .filter((c) => c.data.pid === this.props.pid)
+                .map((comment, i) => {
+                  if (comment.data.visible) {
+                    return (
+                      <React.Fragment key={i}>
+                        {!comment.data.cid && (
+                          <>
                             <Comment
-                              comment={child}
-                              key={comment.id}
-                              cid={child.id}
+                              comment={comment}
+                              key={this.props.pid + comment.id}
                               refreshData={this.props.refreshData}
-                              child
                             />
-                          );
-                        } else return null;
-                      }
-                    })}
-                  </React.Fragment>
-                );
-              } else return null;
-            })}
-      </div>
+                            <div className="child-input">
+                              <MDBInput
+                                type="textarea"
+                                label={`Reply to ${comment.data.author.name}`}
+                                name="comment"
+                                outline
+                                className={
+                                  this.state["comment_" + comment.id]
+                                    ? "keep"
+                                    : undefined
+                                }
+                                value={this.state["comment_" + comment.id]}
+                                onChange={(e) =>
+                                  this.changeTextareaHandler(e, comment.id)
+                                }
+                              />
+                              {this.state["comment_" + comment.id] && (
+                                <div className="text-right">
+                                  <MDBBtn
+                                    color="elegant"
+                                    onClick={() =>
+                                      this.createPost(
+                                        comment.data.pid,
+                                        comment.id
+                                      )
+                                    }
+                                  >
+                                    <MDBIcon
+                                      icon="comment-alt"
+                                      className="pr-2"
+                                    />
+                                    Reply
+                                  </MDBBtn>
+                                </div>
+                              )}
+                            </div>
+                          </>
+                        )}
+                        {items.map((child) => {
+                          if (
+                            child.data.cid === comment.id &&
+                            child.data.visible
+                          ) {
+                            return (
+                              <Comment
+                                comment={child}
+                                key={
+                                  this.props.pid + comment.id + child.data.cid
+                                }
+                                cid={child.id}
+                                refreshData={this.props.refreshData}
+                                child
+                              />
+                            );
+                          } else return null;
+                        })}
+                      </React.Fragment>
+                    );
+                  } else return null;
+                })}
+          </div>
+        </div>
+      </>
     );
   }
 }

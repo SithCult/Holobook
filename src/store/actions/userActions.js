@@ -1,13 +1,16 @@
 //#region > Imports
 // SHA265 algorithm
 import sha256 from "js-sha256";
+
+// Firebase - Do not remove, required for status
+// eslint-disable-next-line no-unused-vars
+import firebase from "firebase";
 //#endregion
 
 //#region > Functions
 // Get user by uid
 export const getUser = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
     const firestore = getFirestore();
 
     return firestore
@@ -22,6 +25,75 @@ export const getUser = (uid) => {
         }
       })
       .catch((err) => {
+        return false;
+      });
+  };
+};
+
+// Get all users
+export const getAllUsers = () => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    return firestore
+      .collection("users")
+      .get()
+      .then((snapshot) => {
+        if (!snapshot.empty) {
+          let users = [];
+          snapshot.forEach((user) => {
+            users = [
+              ...users,
+              {
+                id: user.id,
+                data: {
+                  sith_name: user.data().sith_name,
+                  title: user.data().title,
+                  skin: user.data().skin,
+                  badges: user.data().badges,
+                },
+              },
+            ];
+          });
+
+          return users;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        return false;
+      });
+  };
+};
+
+// Get all users of a certain country
+export const getUsersPerCountry = (cc) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    const country_code = cc.toUpperCase().trim();
+
+    const users = firestore
+      .collection("users")
+      .where("address.country", "==", country_code);
+
+    return users
+      .get()
+      .then((querySnapshot) => {
+        let results = [];
+
+        querySnapshot.forEach(function (doc) {
+          let data = doc.data();
+
+          results.push({ id: doc.id, data });
+        });
+
+        return results;
+      })
+      .catch((err) => {
+        console.error(err);
+
         return false;
       });
   };
@@ -61,7 +133,6 @@ export const getUserByName = (sith_name) => {
 // Retrieve donations from Firestore
 export const getDonations = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
     const firestore = getFirestore();
 
     firestore
@@ -75,7 +146,7 @@ export const getDonations = (uid) => {
             let data = { ...doc.data(), id: doc.id };
 
             if (uid) {
-              if (data.uid == uid) {
+              if (data.uid === uid) {
                 results.push(data);
               }
             } else {
@@ -182,6 +253,100 @@ export const writeDonation = (amount) => {
       .then((docRef) => {
         dispatch({ type: "GET_ID", uid: docRef.id });
       });
+  };
+};
+
+// Initialize Presence
+export const initPresenceHandler = () => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const uid = firebase.auth().currentUser.uid;
+    const userStatusDatabaseRef = firebase.database().ref("/status/" + uid);
+
+    // Online and offline states
+    const isOfflineForDatabase = {
+      uid,
+      state: "offline",
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+
+    const isOnlineForDatabase = {
+      uid,
+      state: "online",
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+
+    // Create reference
+    firebase
+      .database()
+      .ref(".info/connected")
+      .on("value", function (snapshot) {
+        // If we're not currently connected, don't do anything.
+        if (snapshot.val() === false) {
+          return;
+        }
+
+        // If we are currently connected, then use the 'onDisconnect()'
+        // method to add a set which will only trigger once this
+        // client has disconnected by closing the app,
+        // losing internet, or any other means.
+        userStatusDatabaseRef
+          .onDisconnect()
+          .set(isOfflineForDatabase)
+          .then(function () {
+            // The promise returned from .onDisconnect().set() will
+            // resolve as soon as the server acknowledges the onDisconnect()
+            // request, NOT once we've actually disconnected:
+            // https://firebase.google.com/docs/reference/js/firebase.database.OnDisconnect
+
+            // We can now safely set ourselves as 'online' knowing that the
+            // server will mark us as offline once we lose connection.
+            userStatusDatabaseRef.set(isOnlineForDatabase);
+          });
+      });
+  };
+};
+
+// Get number of online users
+export const getOnlineUserCount = () => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+
+    const userStatusDatabaseRef = firebase.database().ref("/status/");
+
+    userStatusDatabaseRef
+      .orderByChild("state")
+      .equalTo("online")
+      .on("value", function (snapshot) {
+        dispatch({
+          type: "UPDATE_USERCOUNT",
+          onlineusercount: snapshot.numChildren(),
+        });
+      });
+  };
+};
+
+// Get array of all online users IDs
+export const getOnlineUsers = () => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+
+    const userStatusDatabaseRef = firebase.database().ref("/status/");
+
+    userStatusDatabaseRef.orderByChild("state").on("value", (snapshot) => {
+      let onlineusers = [];
+
+      if (!snapshot.empty) {
+        snapshot.forEach((u) => {
+          onlineusers = [...onlineusers, u.val()];
+        });
+      }
+
+      dispatch({
+        type: "GETONLINEUSERS_SUCCESS",
+        onlineusers: onlineusers,
+      });
+    });
   };
 };
 

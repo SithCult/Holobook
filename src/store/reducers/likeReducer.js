@@ -8,8 +8,6 @@ const initState = {
 const likeReducer = (state = initState, action) => {
   switch (action.type) {
     case "LIKECREATION_SUCCESS":
-      console.log("Creation success");
-
       return {
         ...state,
         postError: null,
@@ -22,8 +20,6 @@ const likeReducer = (state = initState, action) => {
         postError: action.err,
       };
     case "REMOVELIKE_SUCCESS":
-      console.log("Removal success");
-
       return {
         ...state,
         postError: null,

@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// Meta tags
+import { Helmet } from "react-helmet";
 
 //> Additional
 // Enables PayPal integration
@@ -91,7 +93,7 @@ class DonatePage extends React.Component {
   calculateCurrent = (donations) => {
     let sum = 0;
 
-    donations.map((donation) => {
+    donations.forEach((donation) => {
       sum += parseInt(donation.amount);
     });
 
@@ -112,6 +114,11 @@ class DonatePage extends React.Component {
 
     return (
       <MDBContainer className="white-text mt-5 pt-5" id="donate">
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Contribute - SithCult</title>
+          <link rel="canonical" href="https://sithcult.com/contribute" />
+        </Helmet>
         <Confetti
           width={this.state.width}
           height={this.state.height}
@@ -148,13 +155,13 @@ class DonatePage extends React.Component {
             <p className="lead">
               You have been added to the global list of supporters.
             </p>
-            <MDBBadge pill color="white" className="mr-2">
-              <MDBIcon icon="fire" className="pr-2" />
+            <MDBBadge pill color="elegant-color" className="mr-2">
+              <MDBIcon icon="award" className="pr-2" />
               Founder
             </MDBBadge>
-            <MDBBadge pill color="orange" className="mr-2">
-              <MDBIcon fab icon="sith" className="pr-2" />
-              Phase 1
+            <MDBBadge pill color="amber" className="mr-2">
+              <MDBIcon icon="dollar-sign" className="pr-2" />
+              Phase 1 Contributor
             </MDBBadge>
             <MDBRow className="my-4 d-flex justify-content-center">
               <MDBCol md="4">
@@ -162,7 +169,7 @@ class DonatePage extends React.Component {
                   <MDBCardBody>
                     <div className="d-flex justify-content-between">
                       <p className="font-weight-bold">
-                        {profile.sithname
+                        {profile.sith_name
                           ? profile.title + " " + profile.sith_name
                           : "Unknown Sith"}
                       </p>
@@ -420,6 +427,7 @@ class DonatePage extends React.Component {
                           }
                         );
                       }}
+                      onError={() => console.error("Can not make payment.")}
                       onCancel={() =>
                         this.setState({ loading: false, success: false })
                       }
@@ -481,21 +489,21 @@ class DonatePage extends React.Component {
                   passion for Sith Cult and the Sith Empire.
                 </p>
                 <div className="mb-3">
-                  <MDBBadge pill color="white" className="mr-2">
-                    <MDBIcon icon="fire" className="pr-2" />
+                  <MDBBadge pill color="elegant-color" className="mr-2">
+                    <MDBIcon icon="award" className="pr-2" />
                     Founder
                   </MDBBadge>
-                  <MDBBadge pill color="orange" className="mr-2">
-                    <MDBIcon fab icon="sith" className="pr-2" />
-                    Phase 1
+                  <MDBBadge pill color="amber" className="mr-2">
+                    <MDBIcon icon="dollar-sign" className="pr-2" />
+                    Phase 1 Contributor
                   </MDBBadge>
                   <div className="mt-3">
                     <span className="text-white d-block">
-                      <MDBIcon icon="medal" className="pr-2" />{" "}
+                      <MDBIcon icon="medal" className="pr-2 purple-text" />{" "}
                       {Math.round(this.state.selectedAmount / 2)} Reputation
                     </span>
                     <span className="text-white d-block">
-                      <MDBIcon fab icon="sith" className="pr-2" />{" "}
+                      <MDBIcon fab icon="sith" className="pr-2 orange-text" />{" "}
                       {Math.round(this.state.selectedAmount * 9)} Imperial
                       credits
                     </span>
@@ -516,121 +524,119 @@ class DonatePage extends React.Component {
                 </p>
               </MDBCol>
             </MDBRow>
-            <MDBRow className="my-4 d-flex justify-content-center">
+            <div className="card-columns mt-4">
               {donations &&
                 []
                   .concat(donations)
                   .sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1))
                   .map((donation, i) => {
                     return (
-                      <MDBCol md="4" key={i} className="mb-4">
-                        <MDBCard className="text-dark text-left">
-                          <MDBCardBody>
-                            <div className="d-flex justify-content-between">
-                              <div className="font-weight-bold">
-                                <p className="mb-0">
-                                  {donation.sith_name}{" "}
-                                  {donation.hash ? (
-                                    <MDBPopover
-                                      placement="right"
-                                      domElement
-                                      clickable
-                                      popover
-                                      tag="span"
-                                      id="popper1"
-                                    >
-                                      <span>
-                                        <MDBIcon
-                                          icon="award"
-                                          className="green-text ml-1 clickable"
-                                        />
-                                      </span>
-                                      <div>
-                                        <MDBPopoverHeader className="green-text font-weight-bold">
-                                          Verified contribution
-                                        </MDBPopoverHeader>
-                                        <MDBPopoverBody>
-                                          <div className="align-items-center m-0">
-                                            This contribution has been{" "}
-                                            <strong>verified.</strong>
-                                            <br />
-                                            <small className="word-break-all">
-                                              <code>{donation.hash}</code>
-                                            </small>
-                                          </div>
-                                        </MDBPopoverBody>
-                                      </div>
-                                    </MDBPopover>
-                                  ) : (
-                                    <MDBPopover
-                                      placement="right"
-                                      domElement
-                                      clickable
-                                      popover
-                                      tag="span"
-                                      id="popper1"
-                                    >
-                                      <span>
-                                        <MDBIcon
-                                          icon="award"
-                                          className="grey-text ml-1 clickable"
-                                        />
-                                      </span>
-                                      <div>
-                                        <MDBPopoverHeader>
-                                          Not verified
-                                        </MDBPopoverHeader>
-                                        <MDBPopoverBody>
-                                          <div>
-                                            We can not verify the contribution
-                                            based on the transaction hash.
-                                            <br />
-                                            <small className="word-break-all">
-                                              <code>NULL</code>
-                                            </small>
-                                          </div>
-                                        </MDBPopoverBody>
-                                      </div>
-                                    </MDBPopover>
-                                  )}
-                                </p>
-                              </div>
-                              <p className="text-muted">
-                                {moment
-                                  .unix(donation.timestamp / 1000)
-                                  .format("MMM Do YY")}
+                      <MDBCard className="text-dark text-left mb-4">
+                        <MDBCardBody>
+                          <div className="d-flex justify-content-between">
+                            <div className="font-weight-bold">
+                              <p className="mb-0">
+                                {donation.sith_name}{" "}
+                                {donation.hash ? (
+                                  <MDBPopover
+                                    placement="right"
+                                    domElement
+                                    clickable
+                                    popover
+                                    tag="span"
+                                    id="popper1"
+                                  >
+                                    <span>
+                                      <MDBIcon
+                                        icon="award"
+                                        className="green-text ml-1 clickable"
+                                      />
+                                    </span>
+                                    <div>
+                                      <MDBPopoverHeader className="green-text font-weight-bold">
+                                        Verified contribution
+                                      </MDBPopoverHeader>
+                                      <MDBPopoverBody>
+                                        <div className="align-items-center m-0">
+                                          This contribution has been{" "}
+                                          <strong>verified.</strong>
+                                          <br />
+                                          <small className="word-break-all">
+                                            <code>{donation.hash}</code>
+                                          </small>
+                                        </div>
+                                      </MDBPopoverBody>
+                                    </div>
+                                  </MDBPopover>
+                                ) : (
+                                  <MDBPopover
+                                    placement="right"
+                                    domElement
+                                    clickable
+                                    popover
+                                    tag="span"
+                                    id="popper1"
+                                  >
+                                    <span>
+                                      <MDBIcon
+                                        icon="award"
+                                        className="grey-text ml-1 clickable"
+                                      />
+                                    </span>
+                                    <div>
+                                      <MDBPopoverHeader>
+                                        Not verified
+                                      </MDBPopoverHeader>
+                                      <MDBPopoverBody>
+                                        <div>
+                                          We can not verify the contribution
+                                          based on the transaction hash.
+                                          <br />
+                                          <small className="word-break-all">
+                                            <code>NULL</code>
+                                          </small>
+                                        </div>
+                                      </MDBPopoverBody>
+                                    </div>
+                                  </MDBPopover>
+                                )}
                               </p>
                             </div>
-                            {donation.msg && (
-                              <MDBTypography blockquote>
-                                <MDBBox tag="p" mb={0}>
-                                  <small>{donation.msg}</small>
-                                </MDBBox>
-                                <MDBBox
-                                  tag="footer"
-                                  mb={3}
-                                  className="blockquote-footer"
-                                >
-                                  <cite title="Source Title">
-                                    <small>{donation.sith_name}</small>
-                                  </cite>
-                                </MDBBox>
-                              </MDBTypography>
-                            )}
-                            <div>
-                              <h3 className="indigo-text mb-0">
-                                <MDBIcon icon="dollar-sign" />{" "}
-                                <span className="font-weight-bold">
-                                  {formatter.format(donation.amount) + "-"}
-                                </span>
-                              </h3>
-                            </div>
-                          </MDBCardBody>
-                        </MDBCard>
-                      </MDBCol>
+                            <p className="text-muted">
+                              {moment
+                                .unix(donation.timestamp / 1000)
+                                .format("MMM Do YY")}
+                            </p>
+                          </div>
+                          {donation.msg && (
+                            <MDBTypography blockquote>
+                              <MDBBox tag="p" mb={0}>
+                                <small>{donation.msg}</small>
+                              </MDBBox>
+                              <MDBBox
+                                tag="footer"
+                                mb={3}
+                                className="blockquote-footer"
+                              >
+                                <cite title="Source Title">
+                                  <small>{donation.sith_name}</small>
+                                </cite>
+                              </MDBBox>
+                            </MDBTypography>
+                          )}
+                          <div>
+                            <h3 className="indigo-text mb-0">
+                              <MDBIcon icon="dollar-sign" />{" "}
+                              <span className="font-weight-bold">
+                                {formatter.format(donation.amount) + "-"}
+                              </span>
+                            </h3>
+                          </div>
+                        </MDBCardBody>
+                      </MDBCard>
                     );
                   })}
-            </MDBRow>
+            </div>
           </>
         )}
       </MDBContainer>

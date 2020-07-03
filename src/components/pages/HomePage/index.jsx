@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// Meta tags
+import { Helmet } from "react-helmet";
 
 //> Components
 // Organisms
@@ -13,6 +15,11 @@ class HomePage extends React.Component {
   render() {
     return (
       <>
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>SithCult - The Real Sith Empire</title>
+          <link rel="canonical" href="https://sithcult.com/" />
+        </Helmet>
         <RegisterForm />
       </>
     );

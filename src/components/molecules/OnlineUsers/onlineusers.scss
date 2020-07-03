@@ -1,0 +1,35 @@
+#onlineusers {
+  .card {
+    color: white;
+    box-shadow: none;
+    margin: 0.1rem 0;
+    padding: 0.3rem 0;
+    border-radius: 0.3rem;
+    .text-muted {
+      color: #848e96;
+    }
+    // User avatars
+    .avatar {
+      width: 30px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: inline-block;
+      img {
+        width: 100%;
+        height: auto;
+      }
+
+      &.online {
+        border: 3px #00c851 solid;
+      }
+      &.offline {
+        border: 3px grey solid;
+      }
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
+ */

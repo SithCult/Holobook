@@ -11,7 +11,6 @@ import { Post } from "../../molecules";
 import { removePost } from "../../../store/actions/postActions";
 // Connect
 import { connect } from "react-redux";
-import { loadComments } from "../../../store/actions/commentActions";
 //#endregion
 
 //#region > Components
@@ -64,7 +63,7 @@ class Posts extends React.Component {
     const { posts, auth, comments } = this.props;
 
     if (posts && auth) {
-      let result = posts.map((post, i) => {
+      let result = posts.map((post) => {
         return (
           <Post
             post={post}

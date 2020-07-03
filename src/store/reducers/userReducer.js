@@ -41,6 +41,16 @@ const userReducer = (state = initState, action) => {
         ...state,
         receivedUser: undefined,
       };
+    case "UPDATE_USERCOUNT":
+      return {
+        ...state,
+        onlineusercount: action.onlineusercount,
+      };
+    case "GETONLINEUSERS_SUCCESS":
+      return {
+        ...state,
+        onlineusers: action.onlineusers,
+      };
     default:
       return state;
   }

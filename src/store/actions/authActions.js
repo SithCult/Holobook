@@ -7,6 +7,9 @@ export const signIn = (credentials) => {
       .auth()
       .signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(() => {
+        // Go online. This writes "online" into user status
+        firebase.database().goOnline();
+
         dispatch({
           type: "LOGIN_SUCCESS",
         });
@@ -29,6 +32,9 @@ export const signOut = () => {
       .auth()
       .signOut()
       .then(() => {
+        // Go offline. This writes "offline" into user status
+        firebase.database().goOffline();
+
         dispatch({
           type: "SIGNOUT_SUCCESS",
         });
@@ -55,7 +61,10 @@ export const signUp = (newUser) => {
           result = doc.data();
 
           if (result) {
-            if (result.sith_name === newUser.sith_name) {
+            if (
+              result.sith_name.toLowerCase().trim() ===
+              newUser.sith_name.toLowerCase().trim()
+            ) {
               found = true;
             }
           }
@@ -70,7 +79,7 @@ export const signUp = (newUser) => {
       });
     } else {
       // Set default values
-      let credits, reputation, title, badges, status, department, beta, skin;
+      let credits, reputation, title, badges, status, department, skin;
 
       credits = 1000;
       reputation = 10;
@@ -78,9 +87,9 @@ export const signUp = (newUser) => {
       badges = [];
       status = null;
       department = null;
-      beta = true;
       skin = "standard";
 
+      // If there is a promo code filled in
       if (newUser.code) {
         // Easter Egg - Feel free to use the code when enlisting
         if (newUser.code === "JGJF-8GHH-F8D7") {
@@ -106,46 +115,54 @@ export const signUp = (newUser) => {
           });
         });
 
-      console.log(uid);
+      if (uid) {
+        // Set user data
+        // Create data for user we just created
+        return firestore
+          .collection("users")
+          .doc(uid)
+          .set({
+            full_name: newUser.full_name ? newUser.full_name : null,
+            sith_name: newUser.sith_name ? newUser.sith_name : null,
+            email: newUser.email ? newUser.email : null,
+            email_sith: newUser.email_sith ? newUser.email_sith : null,
+            credits: credits ? credits : 0,
+            reputation: reputation ? reputation : 0,
+            title: title ? title : "Acolyte",
+            badges: badges ? badges : [],
+            status: status ? status : null,
+            department: department ? department : null,
+            beta: true, // Undo for further versions
+            skin: skin ? skin : "standard",
+            details: newUser.details ? newUser.details : null,
+            newsletter: newUser.newsletter ? newUser.newsletter : null,
+            letter: newUser.letter ? newUser.letter : null,
+            address: newUser.address ? newUser.address : null,
+            law: newUser.law ? newUser.law : null,
+          })
+          .then(function () {
+            console.log("User successfully written!");
 
-      // Set user data
-      // Create data for user we just created
-      return firestore
-        .collection("users")
-        .doc(uid)
-        .set({
-          full_name: newUser.full_name ? newUser.full_name : null,
-          sith_name: newUser.sith_name ? newUser.sith_name : null,
-          email: newUser.email ? newUser.email : null,
-          email_sith: newUser.email_sith ? newUser.email_sith : null,
-          credits: credits ? credits : 0,
-          reputation: reputation ? reputation : 0,
-          title: title ? title : "Acolyte",
-          badges: badges ? badges : [],
-          status: status ? status : null,
-          department: department ? department : null,
-          beta: true, // Undo for further versions
-          skin: skin ? skin : "standard",
-          details: newUser.details ? newUser.details : null,
-          newsletter: newUser.newsletter ? newUser.newsletter : null,
-          letter: newUser.letter ? newUser.letter : null,
-          address: newUser.address ? newUser.address : null,
-          law: newUser.law ? newUser.law : null,
-        })
-        .then(function () {
-          console.log("User successfully written!");
-          dispatch({
-            type: "SIGNUP_SUCCESS",
+            dispatch({
+              type: "SIGNUP_SUCCESS",
+            });
+          })
+          .catch(function (err) {
+            console.error("Error creating user: ", err);
+
+            dispatch({
+              type: "SIGNUP_ERROR",
+              errCode: 2,
+              err,
+            });
           });
-        })
-        .catch(function (err) {
-          console.error("Error creating user: ", err);
-          dispatch({
-            type: "SIGNUP_ERROR",
-            errCode: 2,
-            err,
-          });
+      } else {
+        dispatch({
+          type: "SIGNUP_ERROR",
+          errCode: 1,
+          err: { message: "This email is already in use!" },
         });
+      }
     }
   };
 };

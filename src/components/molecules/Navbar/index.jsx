@@ -29,6 +29,9 @@ import { signOut } from "../../../store/actions/authActions";
 //> Images
 // Logo
 import IMGlogo from "../../../assets/images/logo_white_sm.png";
+
+//> CSS
+import "./navbar.scss";
 //#endregion
 
 //#region > Components
@@ -83,7 +86,7 @@ class Navbar extends React.Component {
                     <MDBNavItem>
                       <MDBBtn color="yellow" size="md" outline>
                         <MDBIcon icon="angle-right" className="pr-2" />
-                        Already member? Log in
+                        Log in
                       </MDBBtn>
                     </MDBNavItem>
                   </Link>
@@ -91,14 +94,16 @@ class Navbar extends React.Component {
                 {auth.uid && (
                   <>
                     <Link to="/me">
-                      <div className="elegant-color py-2 px-3 mr-2 text-white">
-                        <span>
-                          <MDBIcon far icon="user" className="pr-2" />
-                          Profile
-                        </span>
-                      </div>
+                      <MDBBtn
+                        className="mr-2 text-white"
+                        color="elegant"
+                        size="md"
+                      >
+                        <MDBIcon far icon="user" className="pr-2" />
+                        Profile
+                      </MDBBtn>
                     </Link>
-                    <div className="elegant-color py-2 px-3">
+                    <div className="perks py-2 px-3">
                       {profile.credits && (
                         <MDBTooltip
                           placement="bottom"

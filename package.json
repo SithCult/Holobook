@@ -1,6 +1,6 @@
 {
   "name": "holobook",
-  "version": "1.6.2",
+  "version": "2.0.0",
   "private": true,
   "license": "(EUPL-1.2)",
   "dependencies": {
@@ -22,6 +22,7 @@
     "react-fade-in": "^0.1.6",
     "react-firebase-file-uploader": "^2.4.3",
     "react-ga": "^2.7.0",
+    "react-helmet": "^6.1.0",
     "react-paypal-button-v2": "^2.6.2",
     "react-redux": "^7.1.1",
     "react-redux-firebase": "^2.4.1",

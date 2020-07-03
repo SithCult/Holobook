@@ -8,8 +8,6 @@ import { Redirect, withRouter } from "react-router-dom";
 //> Additional modules
 // Name generation
 import { nameByRace } from "fantasy-name-generator";
-// Fetching
-import axios from "axios";
 // Country list
 import countryList from "react-select-country-list";
 // Fade In Animation
@@ -34,8 +32,6 @@ import {
   MDBProgress,
   MDBBtn,
   MDBIcon,
-  ToastContainer,
-  toast,
 } from "mdbreact";
 
 //> Components
@@ -125,12 +121,17 @@ class HomePage extends React.Component {
       "Sith",
       "Cult",
     ];
+
     let sn = value.toLowerCase().trim();
+
     let results = forbidden.map((item) => {
       if (sn.includes(item.toLowerCase().trim())) {
         return true;
+      } else {
+        return false;
       }
     });
+
     if (results.includes(true)) {
       if (!this.state.sn_infested) {
         this.setState({
@@ -452,16 +453,7 @@ class HomePage extends React.Component {
   };
 
   render() {
-    const {
-      authError,
-      auth,
-      authErrorCode,
-      authErrorDetails,
-      profile,
-      location,
-    } = this.props;
-
-    console.log(this.props);
+    const { authError, auth, authErrorCode, profile, location } = this.props;
 
     // Scroll up to error
     authErrorCode &&
@@ -505,13 +497,12 @@ class HomePage extends React.Component {
           </h1>
           <p>
             Do you have any questions? Please do not hesitate to
-            <a
-              className="ml-1 mr-1 underlined"
-              href="mailto:center@sithcult.com"
-            >
+            <a className="ml-1 underlined" href="mailto:center@sithcult.com">
               contact us directly
             </a>
-            - Our team will come back to you within matter of hours to help you.
+            .
+            <br />
+            Our team will come back to you within matter of hours to help you.
           </p>
           <form className="text-left" onSubmit={this.submitHandler}>
             <MDBRow>
@@ -975,10 +966,7 @@ class HomePage extends React.Component {
                             </small>
                           </MDBInput>
                         </MDBCol>
-                        <MDBCol
-                          md="8"
-                          className="align-self-center text-center"
-                        >
+                        <MDBCol md="8" className="align-self-center text-right">
                           <MDBBtn color="green" size="lg" type="submit">
                             <MDBIcon icon="angle-right" className="pr-2" />
                             Start your journey
