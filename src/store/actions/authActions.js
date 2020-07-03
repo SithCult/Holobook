@@ -111,44 +111,52 @@ export const signUp = (newUser) => {
           });
         });
 
-      // Set user data
-      // Create data for user we just created
-      return firestore
-        .collection("users")
-        .doc(uid)
-        .set({
-          full_name: newUser.full_name ? newUser.full_name : null,
-          sith_name: newUser.sith_name ? newUser.sith_name : null,
-          email: newUser.email ? newUser.email : null,
-          email_sith: newUser.email_sith ? newUser.email_sith : null,
-          credits: credits ? credits : 0,
-          reputation: reputation ? reputation : 0,
-          title: title ? title : "Acolyte",
-          badges: badges ? badges : [],
-          status: status ? status : null,
-          department: department ? department : null,
-          beta: true, // Undo for further versions
-          skin: skin ? skin : "standard",
-          details: newUser.details ? newUser.details : null,
-          newsletter: newUser.newsletter ? newUser.newsletter : null,
-          letter: newUser.letter ? newUser.letter : null,
-          address: newUser.address ? newUser.address : null,
-          law: newUser.law ? newUser.law : null,
-        })
-        .then(function () {
-          console.log("User successfully written!");
-          dispatch({
-            type: "SIGNUP_SUCCESS",
+      if (uid) {
+        // Set user data
+        // Create data for user we just created
+        return firestore
+          .collection("users")
+          .doc(uid)
+          .set({
+            full_name: newUser.full_name ? newUser.full_name : null,
+            sith_name: newUser.sith_name ? newUser.sith_name : null,
+            email: newUser.email ? newUser.email : null,
+            email_sith: newUser.email_sith ? newUser.email_sith : null,
+            credits: credits ? credits : 0,
+            reputation: reputation ? reputation : 0,
+            title: title ? title : "Acolyte",
+            badges: badges ? badges : [],
+            status: status ? status : null,
+            department: department ? department : null,
+            beta: true, // Undo for further versions
+            skin: skin ? skin : "standard",
+            details: newUser.details ? newUser.details : null,
+            newsletter: newUser.newsletter ? newUser.newsletter : null,
+            letter: newUser.letter ? newUser.letter : null,
+            address: newUser.address ? newUser.address : null,
+            law: newUser.law ? newUser.law : null,
+          })
+          .then(function () {
+            console.log("User successfully written!");
+            dispatch({
+              type: "SIGNUP_SUCCESS",
+            });
+          })
+          .catch(function (err) {
+            console.error("Error creating user: ", err);
+            dispatch({
+              type: "SIGNUP_ERROR",
+              errCode: 2,
+              err,
+            });
           });
-        })
-        .catch(function (err) {
-          console.error("Error creating user: ", err);
-          dispatch({
-            type: "SIGNUP_ERROR",
-            errCode: 2,
-            err,
-          });
+      } else {
+        dispatch({
+          type: "SIGNUP_ERROR",
+          errCode: 1,
+          err: { message: "This email is already in use!" },
         });
+      }
     }
   };
 };

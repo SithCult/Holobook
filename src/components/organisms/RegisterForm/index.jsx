@@ -122,9 +122,11 @@ class HomePage extends React.Component {
       "Cult",
     ];
     let sn = value.toLowerCase().trim();
-    let results = forbidden.forEach((item) => {
+    let results = forbidden.map((item) => {
       if (sn.includes(item.toLowerCase().trim())) {
         return true;
+      } else {
+        return false;
       }
     });
     if (results.includes(true)) {
@@ -473,6 +475,8 @@ class HomePage extends React.Component {
       if (auth.uid !== undefined && profile.isLoaded && !profile.isEmpty)
         return <Redirect to="/me" />;
     }
+
+    console.log(authError, authErrorCode);
 
     return (
       <MDBContainer id="register" className="text-center text-white mt-5 pt-5">
