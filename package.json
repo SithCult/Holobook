@@ -1,6 +1,6 @@
 {
   "name": "holobook",
-  "version": "1.6.3",
+  "version": "2.0.0",
   "private": true,
   "license": "(EUPL-1.2)",
   "dependencies": {
