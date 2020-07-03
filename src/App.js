@@ -17,6 +17,14 @@ import ReactPixel from "react-facebook-pixel";
  */
 import { Footer, Navbar, CookieModal } from "./components/molecules";
 import { ScrollToTop } from "./components/atoms";
+
+//> Redux
+// Connect
+import { connect } from "react-redux";
+
+// Actions
+import { initPresenceHandler } from "./store/actions/userActions";
+
 // Routes
 import Routes from "./Routes";
 
@@ -80,6 +88,14 @@ class App extends React.Component {
   };
 
   render() {
+    const { auth } = this.props;
+
+    if (!this.state.initialized && auth.uid) {
+      this.setState({ initialized: true }, () =>
+        this.props.initPresenceHandler()
+      );
+    }
+
     return (
       <Router>
         <ScrollToTop>
@@ -97,7 +113,23 @@ class App extends React.Component {
   }
 }
 
-export default App;
+//#region > Functions
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    initPresenceHandler: () => dispatch(initPresenceHandler()),
+  };
+};
+//#endregion
+
+//#region > Exports
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)

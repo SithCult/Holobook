@@ -228,11 +228,13 @@ export const initPresenceHandler = () => {
 
     // Online and offline states
     const isOfflineForDatabase = {
+      uid,
       state: "offline",
       last_changed: firebase.database.ServerValue.TIMESTAMP,
     };
 
     const isOnlineForDatabase = {
+      uid,
       state: "online",
       last_changed: firebase.database.ServerValue.TIMESTAMP,
     };
@@ -296,15 +298,14 @@ export const getOnlineUsers = () => {
     userStatusDatabaseRef
       .orderByChild("state")
       .equalTo("online")
-      .on("value", function (snapshot) {
+      .on("value", (snapshot) => {
         let onlineusers = [];
 
-        !snapshot.empty &&
+        if (!snapshot.empty) {
           snapshot.forEach((u) => {
-            onlineusers = [...onlineusers, u];
+            onlineusers = [...onlineusers, u.val()];
           });
-
-        console.log(onlineusers);
+        }
 
         dispatch({
           type: "GETONLINEUSERS_SUCCESS",

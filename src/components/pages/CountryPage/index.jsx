@@ -19,7 +19,11 @@ import countryList from "react-select-country-list";
 // Connect
 import { connect } from "react-redux";
 // Actions
-import { getUsersPerCountry } from "../../../store/actions/userActions";
+import {
+  getUsersPerCountry,
+  getOnlineUsers,
+  initPresenceHandler,
+} from "../../../store/actions/userActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -65,14 +69,21 @@ class CountryPage extends React.Component {
 
   componentDidMount = () => {
     this.init(this.props.match?.params?.country);
+    this.props.getOnlineUsers();
   };
 
   componentWillReceiveProps = (nextProps) => {
+    // Handle country change
     if (
       this.props.match?.params.country.toLowerCase().trim() !==
       nextProps.match.params.country.toLowerCase().trim()
     ) {
       this.init(nextProps.match.params.country);
+    }
+
+    // Handle active user change
+    if (this.props.onlineusers !== nextProps.onlineusers) {
+      this.mergeUserData(nextProps.onlineusers);
     }
   };
 
@@ -111,21 +122,40 @@ class CountryPage extends React.Component {
             return (
               <MDBCard className="text-left">
                 <div className="d-flex justify-content-between">
-                  <div>
-                    {this.getPicture(found.data.skin, found.data.badges, f)}
+                  <div className="d-flex align-items-center">
+                    {this.getPicture(
+                      found.data.skin,
+                      found.data.badges,
+                      found.id,
+                      f
+                    )}
+                    <span className="pl-2">
+                      {found.data.title} {found.data.sith_name}
+                    </span>
                   </div>
                   <span className="small text-muted">
                     {found.data.title.toLowerCase().trim() === "darth" && (
-                      <MDBIcon icon="crown" className="pr-1 amber-text" />
+                      <MDBIcon
+                        icon="crown"
+                        className={
+                          found.data.badges.includes("moff")
+                            ? "pr-1 amber-text"
+                            : "pr-1"
+                        }
+                      />
                     )}
                     {found.data.title}
                   </span>
                 </div>
-                <span>{found.data.sith_name}</span>
+                <span className="d-block small text-info my-1">
+                  {found.data.department}
+                </span>
                 {found.data.donations && (
-                  <MDBBadge pill color="amber" className="mt-2">
-                    <MDBIcon icon="dollar-sign" /> Supporter
-                  </MDBBadge>
+                  <div>
+                    <MDBBadge pill color="amber" className="mt-2">
+                      <MDBIcon icon="dollar-sign" /> Supporter
+                    </MDBBadge>
+                  </div>
                 )}
               </MDBCard>
             );
@@ -137,13 +167,15 @@ class CountryPage extends React.Component {
     }
   };
 
-  getPicture = (skin, badges, index) => {
+  getPicture = (skin, badges, uid, index) => {
     switch (skin) {
       case "gold":
         return (
           <MDBAvatar
             className={
-              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+              this.getStatus(uid)
+                ? "mx-auto white online"
+                : "mx-auto white offline"
             }
             key={index}
           >
@@ -154,7 +186,9 @@ class CountryPage extends React.Component {
         return (
           <MDBAvatar
             className={
-              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+              this.getStatus(uid)
+                ? "mx-auto white online"
+                : "mx-auto white offline"
             }
             key={index}
           >
@@ -165,7 +199,9 @@ class CountryPage extends React.Component {
         return (
           <MDBAvatar
             className={
-              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+              this.getStatus(uid)
+                ? "mx-auto white online"
+                : "mx-auto white offline"
             }
             key={index}
           >
@@ -176,7 +212,9 @@ class CountryPage extends React.Component {
         return (
           <MDBAvatar
             className={
-              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+              this.getStatus(uid)
+                ? "mx-auto white online"
+                : "mx-auto white offline"
             }
             key={index}
           >
@@ -187,13 +225,65 @@ class CountryPage extends React.Component {
         return (
           <MDBAvatar
             className={
-              badges.includes("moff") ? "mx-auto white moff" : "mx-auto white"
+              this.getStatus(uid)
+                ? "mx-auto white online"
+                : "mx-auto white offline"
             }
             key={index}
           >
             <img src={defaultUserIMG} alt="Default user profile picture" />
           </MDBAvatar>
         );
+    }
+  };
+
+  // Returns either a red circle for offline or a green circle for online
+  getStatus = (uid) => {
+    if (this.props.onlineusers) {
+      if (this.props.onlineusers.some((u) => u.uid === uid)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
+
+  mergeUserData = (onlineusers) => {
+    if (this.state.users && onlineusers.length > 0) {
+      let usersWithStatus = this.state.users.map((u) => {
+        let newUser;
+        let userStatusData = onlineusers.filter((o) => o.uid === u.id)[0];
+
+        if (userStatusData) {
+          newUser = {
+            ...u,
+            status: {
+              state: userStatusData.state,
+              last_changed: userStatusData.last_changed,
+            },
+          };
+        } else {
+          newUser = {
+            ...u,
+            status: {
+              state: "offline",
+              last_changed: 1519129000,
+            },
+          };
+        }
+
+        return newUser;
+      });
+
+      usersWithStatus.sort((a, b) =>
+        a.status.state > b.status.state
+          ? -1
+          : b.status.state > a.status.state
+          ? 1
+          : 0
+      );
+
+      this.setState({ users: usersWithStatus });
     }
   };
 
@@ -241,12 +331,16 @@ class CountryPage extends React.Component {
                       return (
                         <MDBCard className="text-left">
                           <div className="d-flex justify-content-between">
-                            <div>
+                            <div className="d-flex align-items-center">
                               {this.getPicture(
                                 user.data.skin,
                                 user.data.badges,
+                                user.id,
                                 i
                               )}
+                              <span className="pl-2">
+                                {user.data.title} {user.data.sith_name}
+                              </span>
                             </div>
                             <span className="small text-muted">
                               {user.data.title.toLowerCase().trim() ===
@@ -263,11 +357,15 @@ class CountryPage extends React.Component {
                               {user.data.title}
                             </span>
                           </div>
-                          <span>{user.data.sith_name}</span>
+                          <span className="d-block small text-info my-1">
+                            {user.data.department}
+                          </span>
                           {user.data.donations && (
-                            <MDBBadge pill color="amber" className="mt-2">
-                              <MDBIcon icon="dollar-sign" /> Supporter
-                            </MDBBadge>
+                            <div>
+                              <MDBBadge pill color="amber" className="mt-2">
+                                <MDBIcon icon="dollar-sign" /> Supporter
+                              </MDBBadge>
+                            </div>
                           )}
                         </MDBCard>
                       );
@@ -326,12 +424,15 @@ const mapStateToProps = (state) => {
     authErrorDetails: state.auth.authErrorDetails,
     auth: state.firebase.auth,
     profile: state.firebase.profile,
+    onlineusers: state.user.onlineusers,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getUsersPerCountry: (cc) => dispatch(getUsersPerCountry(cc)),
+    getOnlineUsers: () => dispatch(getOnlineUsers()),
+    initPresenceHandler: () => dispatch(initPresenceHandler()),
   };
 };
 //#endregion
