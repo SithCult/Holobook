@@ -348,76 +348,80 @@ class CountryPage extends React.Component {
                 )}
                 <p className="lead font-weight-bold mb-0">{country}</p>
                 <p className="text-muted basic small">{country}</p>
-                <p className="mb-2 title moff">
-                  <MDBIcon icon="angle-up" /> Moff
-                </p>
-                {users && this.getMoff(users)}
-                <p className="mt-2 mb-2 title members">
-                  <MDBIcon icon="users" /> Members
-                </p>
-                <p className="mb-2 small text-muted">
-                  Membercount: {users && users.length}
-                </p>
-                <div className="card-columns memberlist">
-                  {users &&
-                    users.map((user, i) => {
-                      console.log(user);
-                      return (
-                        <MDBCard className="text-left" key={i}>
-                          <div className="d-flex justify-content-between">
-                            <div className="d-flex align-items-center">
-                              {this.getPicture(
-                                user.data.skin,
-                                user.id,
-                                i,
-                                user.data.sith_name
-                              )}
-                              <span className="pl-2">
-                                {user.data.title} {user.data.sith_name}
-                                {user.status &&
-                                user.status.state === "offline" ? (
-                                  <span className="d-block small text-muted">
-                                    Last seen{" "}
-                                    {this.calculateTimeAgo(
-                                      user.status.last_changed
+                {users && (
+                  <>
+                    <p className="mb-2 title moff">
+                      <MDBIcon icon="angle-up" /> Moff
+                    </p>
+                    {users && this.getMoff(users)}
+                    <p className="mt-2 mb-2 title members">
+                      <MDBIcon icon="users" /> Members
+                    </p>
+                    <p className="mb-2 small text-muted">
+                      Membercount: {users && users.length}
+                    </p>
+                    <div className="card-columns memberlist">
+                      {users &&
+                        users.map((user, i) => {
+                          console.log(user);
+                          return (
+                            <MDBCard className="text-left" key={i}>
+                              <div className="d-flex justify-content-between">
+                                <div className="d-flex align-items-center">
+                                  {this.getPicture(
+                                    user.data.skin,
+                                    user.id,
+                                    i,
+                                    user.data.sith_name
+                                  )}
+                                  <span className="pl-2">
+                                    {user.data.title} {user.data.sith_name}
+                                    {user.status &&
+                                    user.status.state === "offline" ? (
+                                      <span className="d-block small text-muted">
+                                        Last seen{" "}
+                                        {this.calculateTimeAgo(
+                                          user.status.last_changed
+                                        )}
+                                      </span>
+                                    ) : (
+                                      <span className="d-block small text-success">
+                                        Currently online
+                                      </span>
                                     )}
                                   </span>
-                                ) : (
-                                  <span className="d-block small text-success">
-                                    Currently online
-                                  </span>
-                                )}
+                                </div>
+                                <span className="small text-muted">
+                                  {user.data.title.toLowerCase().trim() ===
+                                    "darth" && (
+                                    <MDBIcon
+                                      icon="angle-double-up"
+                                      className={
+                                        user.data.badges.includes("moff")
+                                          ? "pr-1 amber-text"
+                                          : "pr-1"
+                                      }
+                                    />
+                                  )}
+                                  {user.data.title}
+                                </span>
+                              </div>
+                              <span className="d-block small text-info my-1">
+                                {user.data.department}
                               </span>
-                            </div>
-                            <span className="small text-muted">
-                              {user.data.title.toLowerCase().trim() ===
-                                "darth" && (
-                                <MDBIcon
-                                  icon="angle-double-up"
-                                  className={
-                                    user.data.badges.includes("moff")
-                                      ? "pr-1 amber-text"
-                                      : "pr-1"
-                                  }
-                                />
+                              {user.data.donations && (
+                                <div>
+                                  <MDBBadge pill color="amber" className="mt-2">
+                                    <MDBIcon icon="dollar-sign" /> Supporter
+                                  </MDBBadge>
+                                </div>
                               )}
-                              {user.data.title}
-                            </span>
-                          </div>
-                          <span className="d-block small text-info my-1">
-                            {user.data.department}
-                          </span>
-                          {user.data.donations && (
-                            <div>
-                              <MDBBadge pill color="amber" className="mt-2">
-                                <MDBIcon icon="dollar-sign" /> Supporter
-                              </MDBBadge>
-                            </div>
-                          )}
-                        </MDBCard>
-                      );
-                    })}
-                </div>
+                            </MDBCard>
+                          );
+                        })}
+                    </div>
+                  </>
+                )}
               </MDBCardBody>
             </MDBCard>
           </MDBCol>
