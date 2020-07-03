@@ -530,7 +530,6 @@ class ProfilePage extends React.Component {
 
     return (
       <MDBContainer id="profile" className="pt-5 mt-5">
-        <OnlineUsers />
         <Helmet>
           <meta charSet="utf-8" />
           <title>{`${metaPageTitle}`}</title>
@@ -668,6 +667,26 @@ class ProfilePage extends React.Component {
                   onChange={this.changeTextareaHandler}
                 />
                 <div>
+                  <div className="d-flex justify-content-between mb-3">
+                    {this.state.post.split(" ").length > 1 &&
+                    this.state.post.split(" ").length < 5 ? (
+                      <div>
+                        <p className="small text-muted mb-0">
+                          {5 - this.state.post.split(" ").length} words
+                          remaining before you can post.
+                        </p>
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    <small
+                      className={
+                        this.state.post.length === 500 && "text-danger"
+                      }
+                    >
+                      {this.state.post.length} / 500
+                    </small>
+                  </div>
                   <div className="d-inline post-settings">
                     <MDBTooltip placement="top" domElement className="test">
                       <span
@@ -724,15 +743,6 @@ class ProfilePage extends React.Component {
                       <span>Change visibility</span>
                     </MDBTooltip>
                   </div>
-                  <small
-                    className={
-                      this.state.post.length === 500
-                        ? "text-danger float-right"
-                        : "float-right"
-                    }
-                  >
-                    {this.state.post.length} / 500
-                  </small>
                 </div>
                 <div className="clearfix" />
                 <div>
@@ -768,23 +778,7 @@ class ProfilePage extends React.Component {
                     </small>
                   )}
                 </div>
-                {this.state.postImageURL && (
-                  <div className="pt-5 pl-5 pr-5 pb-2 text-center">
-                    <img
-                      className="img-fluid w-100 h-auto mb-3"
-                      src={this.state.postImageURL}
-                    />
-                  </div>
-                )}
-                <hr />
-                {this.state.postImageisUploading && (
-                  <MDBProgress
-                    material
-                    value={this.state.postImageProgress}
-                    className="my-s"
-                  />
-                )}
-                <div className="actions">
+                <div className="actions mt-3">
                   <MDBBtn
                     color="elegant"
                     rounded
@@ -907,7 +901,12 @@ class ProfilePage extends React.Component {
                           Post as SithCult
                         </MDBBtn>
                       )*/}
-                      <MDBBtn color="elegant" rounded onClick={this.createPost}>
+                      <MDBBtn
+                        color="elegant"
+                        rounded
+                        onClick={this.createPost}
+                        disabled={this.state.post.split(" ").length < 5}
+                      >
                         <MDBIcon
                           icon="paper-plane"
                           className="pr-2"
@@ -992,6 +991,11 @@ class ProfilePage extends React.Component {
                     Contribute to SithCult
                   </MDBBtn>
                 </Link>
+              </MDBCardBody>
+            </MDBCard>
+            <MDBCard className="mt-3">
+              <MDBCardBody>
+                <OnlineUsers />
               </MDBCardBody>
             </MDBCard>
             {profile.badges &&
