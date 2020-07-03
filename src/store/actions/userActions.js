@@ -311,7 +311,6 @@ export const initPresenceHandler = () => {
 export const getOnlineUserCount = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
-
     const userStatusDatabaseRef = firebase.database().ref("/status/");
 
     userStatusDatabaseRef
@@ -330,7 +329,6 @@ export const getOnlineUserCount = () => {
 export const getOnlineUsers = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
-
     const userStatusDatabaseRef = firebase.database().ref("/status/");
 
     userStatusDatabaseRef.orderByChild("state").on("value", (snapshot) => {

@@ -274,6 +274,7 @@ class CountryPage extends React.Component {
     if (this.state.users && onlineusers.length > 0) {
       let usersWithStatus = this.state.users.map((u) => {
         let newUser;
+
         // Get the status of the user
         let userStatusData = onlineusers.filter((o) => o.uid === u.id)[0];
 
