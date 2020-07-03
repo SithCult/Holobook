@@ -121,7 +121,9 @@ class HomePage extends React.Component {
       "Sith",
       "Cult",
     ];
+
     let sn = value.toLowerCase().trim();
+
     let results = forbidden.map((item) => {
       if (sn.includes(item.toLowerCase().trim())) {
         return true;
@@ -129,6 +131,7 @@ class HomePage extends React.Component {
         return false;
       }
     });
+
     if (results.includes(true)) {
       if (!this.state.sn_infested) {
         this.setState({
