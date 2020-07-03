@@ -72,7 +72,10 @@ class BasicTraining extends React.Component {
     // Get list of previous tries
     let previous = this.state.previous;
 
-    if (this.state.userInput === this.state.activeBasic.toLowerCase().trim()) {
+    if (
+      this.state.userInput.trim() ===
+      this.state.activeBasic.toLowerCase().trim()
+    ) {
       // Calculate how much time it took to get the result
       const t1 = new Date();
       const t2 = this.state.startTimer;
@@ -144,7 +147,7 @@ class BasicTraining extends React.Component {
 
   changeHandler = (event) => {
     this.setState({
-      [event.target.name]: event.target.value.toLowerCase().trim(),
+      [event.target.name]: event.target.value.toLowerCase(),
     });
   };
 
