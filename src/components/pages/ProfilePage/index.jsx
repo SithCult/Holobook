@@ -941,7 +941,7 @@ class ProfilePage extends React.Component {
               )}
             </div>
           </MDBCol>
-          <MDBCol md="3">
+          <MDBCol md="3" className="right-col">
             <MDBCard className="award text-center">
               <MDBCardBody>
                 <p className="lead mb-1">Get rewards</p>
@@ -949,9 +949,25 @@ class ProfilePage extends React.Component {
                   Contribute to SithCult and achieve greatness.
                 </p>
                 <Link to="/contribute">
-                  <MDBBtn color="green" size="md">
+                  <MDBBtn color="blue" size="md">
                     <MDBIcon icon="hand-holding-usd" className="mr-2" />
                     Contribute to SithCult
+                  </MDBBtn>
+                </Link>
+              </MDBCardBody>
+            </MDBCard>
+            <MDBCard className="text-center mt-3">
+              <MDBCardBody>
+                <p className="lead mb-1">Your district</p>
+                <p className="small text-muted mb-1">
+                  Get details about SithCult in your country.
+                </p>
+                <Link
+                  to={"/c/" + profile.address?.country?.toLowerCase().trim()}
+                >
+                  <MDBBtn color="red" size="md">
+                    <MDBIcon far icon="flag" className="mr-2" />
+                    {this.getCountry(profile.address)}
                   </MDBBtn>
                 </Link>
               </MDBCardBody>
