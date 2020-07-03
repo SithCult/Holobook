@@ -7,7 +7,6 @@ import sha256 from "js-sha256";
 // Get user by uid
 export const getUser = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
     const firestore = getFirestore();
 
     return firestore
@@ -52,6 +51,7 @@ export const getAllUsers = () => {
               },
             ];
           });
+
           return users;
         } else {
           return false;
@@ -129,7 +129,6 @@ export const getUserByName = (sith_name) => {
 // Retrieve donations from Firestore
 export const getDonations = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
     const firestore = getFirestore();
 
     firestore
@@ -143,7 +142,7 @@ export const getDonations = (uid) => {
             let data = { ...doc.data(), id: doc.id };
 
             if (uid) {
-              if (data.uid == uid) {
+              if (data.uid === uid) {
                 results.push(data);
               }
             } else {
@@ -257,9 +256,7 @@ export const writeDonation = (amount) => {
 export const initPresenceHandler = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
-    const firestore = getFirestore();
     const uid = firebase.auth().currentUser.uid;
-
     const userStatusDatabaseRef = firebase.database().ref("/status/" + uid);
 
     // Online and offline states
@@ -274,13 +271,14 @@ export const initPresenceHandler = () => {
       state: "online",
       last_changed: firebase.database.ServerValue.TIMESTAMP,
     };
+
     // Create reference
     firebase
       .database()
       .ref(".info/connected")
       .on("value", function (snapshot) {
         // If we're not currently connected, don't do anything.
-        if (snapshot.val() == false) {
+        if (snapshot.val() === false) {
           return;
         }
 

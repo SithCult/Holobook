@@ -54,7 +54,8 @@ class OnlineUsers extends Component {
     }
   };
 
-  getPicture = (skin, badges, uid, index) => {
+  // Get user picture‚
+  getPicture = (skin, index) => {
     switch (skin) {
       case "gold":
         return (
@@ -89,7 +90,9 @@ class OnlineUsers extends Component {
     }
   };
 
+  // Merge user data with respective online / offline status
   mergeUserData = (onlineusers) => {
+    // If state has users and the onlineuser array is defined, merge data
     if (this.state.users && onlineusers.length > 0) {
       let usersWithStatus = this.state.users.map((u) => {
         let newUser;
@@ -117,7 +120,7 @@ class OnlineUsers extends Component {
       });
 
       usersWithStatus = usersWithStatus.filter(function (el) {
-        return el != undefined;
+        return el !== undefined;
       });
 
       this.setState({ users: usersWithStatus });
@@ -125,9 +128,10 @@ class OnlineUsers extends Component {
   };
 
   render() {
-    const { onlineusercount, onlineusers } = this.props;
+    const { onlineusercount } = this.props;
     const { users } = this.state;
 
+    // Merge user data
     if (users && this.props.onlineusers && !users[0].status) {
       this.mergeUserData(this.props.onlineusers);
     }
@@ -156,12 +160,7 @@ class OnlineUsers extends Component {
                       <MDBCard className="text-left">
                         <div className="d-flex justify-content-between">
                           <div className="d-flex align-items-center">
-                            {this.getPicture(
-                              user.data.skin,
-                              user.data.badges,
-                              user.id,
-                              i
-                            )}
+                            {this.getPicture(user.data.skin, i)}
                             <span className="pl-2">{user.data.sith_name}</span>
                           </div>
                           <span className="small text-muted">
@@ -181,6 +180,8 @@ class OnlineUsers extends Component {
                         </div>
                       </MDBCard>
                     );
+                  } else {
+                    return null;
                   }
                 })}
             </div>

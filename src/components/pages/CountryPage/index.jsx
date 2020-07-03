@@ -78,8 +78,6 @@ class CountryPage extends React.Component {
   };
 
   init = async (country) => {
-    const { match } = this.props;
-
     if (country) {
       this.setState({
         users: await this.props.getUsersPerCountry(country),
@@ -89,6 +87,7 @@ class CountryPage extends React.Component {
     }
   };
 
+  // Get moff of country
   getMoff = (users) => {
     const found = users.map((user, i) => {
       if (user.data.badges.includes("moff")) {
@@ -113,12 +112,7 @@ class CountryPage extends React.Component {
               <MDBCard className="text-left">
                 <div className="d-flex justify-content-between">
                   <div className="d-flex align-items-center">
-                    {this.getPicture(
-                      found.data.skin,
-                      found.data.badges,
-                      found.id,
-                      f
-                    )}
+                    {this.getPicture(found.data.skin, found.id, f)}
                     <span className="pl-2">
                       {found.data.title} {found.data.sith_name}
                     </span>
@@ -157,7 +151,8 @@ class CountryPage extends React.Component {
     }
   };
 
-  getPicture = (skin, badges, uid, index) => {
+  // Get user profile picture
+  getPicture = (skin, uid, index) => {
     switch (skin) {
       case "gold":
         return (
@@ -238,6 +233,7 @@ class CountryPage extends React.Component {
     }
   };
 
+  // Merge user data with their online status
   mergeUserData = (onlineusers) => {
     if (this.state.users && onlineusers.length > 0) {
       let usersWithStatus = this.state.users.map((u) => {
@@ -326,12 +322,7 @@ class CountryPage extends React.Component {
                         <MDBCard className="text-left">
                           <div className="d-flex justify-content-between">
                             <div className="d-flex align-items-center">
-                              {this.getPicture(
-                                user.data.skin,
-                                user.data.badges,
-                                user.id,
-                                i
-                              )}
+                              {this.getPicture(user.data.skin, user.id, i)}
                               <span className="pl-2">
                                 {user.data.title} {user.data.sith_name}
                               </span>

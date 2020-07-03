@@ -93,7 +93,7 @@ class DonatePage extends React.Component {
   calculateCurrent = (donations) => {
     let sum = 0;
 
-    donations.map((donation) => {
+    donations.forEach((donation) => {
       sum += parseInt(donation.amount);
     });
 
