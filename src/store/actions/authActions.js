@@ -7,6 +7,9 @@ export const signIn = (credentials) => {
       .auth()
       .signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(() => {
+        // Go online --> Writes "online" into user status
+        firebase.database().goOnline();
+
         dispatch({
           type: "LOGIN_SUCCESS",
         });
