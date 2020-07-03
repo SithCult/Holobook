@@ -29,6 +29,9 @@ export const signOut = () => {
       .auth()
       .signOut()
       .then(() => {
+        // Go offline --> Writes "offline" into user status
+        firebase.database().goOffline();
+
         dispatch({
           type: "SIGNOUT_SUCCESS",
         });
