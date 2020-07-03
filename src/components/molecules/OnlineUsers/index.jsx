@@ -15,7 +15,7 @@ import {
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import { MDBIcon, MDBTooltip, MDBProgress, MDBCard, MDBAvatar } from "mdbreact";
+import { MDBIcon, MDBProgress, MDBCard, MDBAvatar } from "mdbreact";
 
 //> Images
 import defaultUserIMG from "../../../assets/images/default.gif";
@@ -144,16 +144,20 @@ class OnlineUsers extends Component {
           <MDBProgress material preloader className="placeholder mt-1" />
         ) : (
           <>
-            <div className="d-flex justify-content-between">
-              <MDBTooltip placement="top" domElement>
-                <span>
-                  <MDBIcon icon="circle" className="text-success" size="sm" />
-                </span>
-                <span>You are online</span>
-              </MDBTooltip>
-              <p className="small text-muted">{onlineusercount} users online</p>
+            <div className="d-flex justify-content-between align-items-center">
+              <span className="d-flex align-items-center">
+                <MDBIcon
+                  icon="circle"
+                  className="text-success mr-1"
+                  style={{ fontSize: "0.5rem" }}
+                />
+                Online Sith
+              </span>
+              <p className="small text-muted mb-0">
+                {onlineusercount} users online
+              </p>
             </div>
-            <hr className="mt-0 mb-2" />
+            <hr className="my-2" />
             <div>
               {users &&
                 users.map((user, i) => {
