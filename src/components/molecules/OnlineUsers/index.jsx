@@ -3,10 +3,6 @@
 // Contains all the functionality necessary to define React components
 import React, { Component } from "react";
 
-//> Additional
-// Firebase
-import firebase from "firebase";
-
 //> Redux
 // Connect
 import { connect } from "react-redux";
@@ -55,36 +51,36 @@ class OnlineUsers extends Component {
   };
 
   // Get user picture‚
-  getPicture = (skin, index) => {
+  getPicture = (skin, index, name) => {
     switch (skin) {
       case "gold":
         return (
           <MDBAvatar className="mx-auto white online" key={index}>
-            <img src={goldUserIMG} alt="Gold user profile picture" />
+            <img src={goldUserIMG} alt={name} />
           </MDBAvatar>
         );
       case "light":
         return (
           <MDBAvatar className="mx-auto white online" key={index}>
-            <img src={lightUserIMG} alt="Light user profile picture" />
+            <img src={lightUserIMG} alt={name} />
           </MDBAvatar>
         );
       case "bronze":
         return (
           <MDBAvatar className="mx-auto white online" key={index}>
-            <img src={bronzeUserIMG} alt="Bronze user profile picture" />
+            <img src={bronzeUserIMG} alt={name} />
           </MDBAvatar>
         );
       case "dark":
         return (
           <MDBAvatar className="mx-auto white online" key={index}>
-            <img src={darkUserIMG} alt="Bronze user profile picture" />
+            <img src={darkUserIMG} alt={name} />
           </MDBAvatar>
         );
       default:
         return (
           <MDBAvatar className="mx-auto white online" key={index}>
-            <img src={defaultUserIMG} alt="Default user profile picture" />
+            <img src={defaultUserIMG} alt={name} />
           </MDBAvatar>
         );
     }
@@ -160,7 +156,11 @@ class OnlineUsers extends Component {
                       <MDBCard className="text-left">
                         <div className="d-flex justify-content-between">
                           <div className="d-flex align-items-center">
-                            {this.getPicture(user.data.skin, i)}
+                            {this.getPicture(
+                              user.data.skin,
+                              i,
+                              user.data.sith_name
+                            )}
                             <span className="pl-2">{user.data.sith_name}</span>
                           </div>
                           <span className="small text-muted">

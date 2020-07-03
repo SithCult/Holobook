@@ -1,7 +1,6 @@
 // Create a new post
 export const createPost = (newPost) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
     const firestore = getFirestore();
 
     // Get userId
@@ -64,7 +63,6 @@ export const removePost = (pid, uid) => {
 // Load <amount> amount of posts
 export const loadPosts = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
     const firestore = getFirestore();
 
     let posts = firestore.collection("posts").where("visible", "==", true);
@@ -95,7 +93,6 @@ export const loadPosts = (amount) => {
 // Load all posts
 export const loadAllPosts = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
     const firestore = getFirestore();
 
     dispatch({ type: "LOADPOSTS_LOADING" });

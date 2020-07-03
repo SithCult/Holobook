@@ -112,7 +112,12 @@ class CountryPage extends React.Component {
               <MDBCard className="text-left">
                 <div className="d-flex justify-content-between">
                   <div className="d-flex align-items-center">
-                    {this.getPicture(found.data.skin, found.id, f)}
+                    {this.getPicture(
+                      found.data.skin,
+                      found.id,
+                      f,
+                      found.data.sith_name
+                    )}
                     <span className="pl-2">
                       {found.data.title} {found.data.sith_name}
                     </span>
@@ -152,7 +157,7 @@ class CountryPage extends React.Component {
   };
 
   // Get user profile picture
-  getPicture = (skin, uid, index) => {
+  getPicture = (skin, uid, index, name) => {
     switch (skin) {
       case "gold":
         return (
@@ -164,7 +169,7 @@ class CountryPage extends React.Component {
             }
             key={index}
           >
-            <img src={goldUserIMG} alt="Gold user profile picture" />
+            <img src={goldUserIMG} alt={name} />
           </MDBAvatar>
         );
       case "light":
@@ -177,7 +182,7 @@ class CountryPage extends React.Component {
             }
             key={index}
           >
-            <img src={lightUserIMG} alt="Light user profile picture" />
+            <img src={lightUserIMG} alt={name} />
           </MDBAvatar>
         );
       case "bronze":
@@ -190,7 +195,7 @@ class CountryPage extends React.Component {
             }
             key={index}
           >
-            <img src={bronzeUserIMG} alt="Bronze user profile picture" />
+            <img src={bronzeUserIMG} alt={name} />
           </MDBAvatar>
         );
       case "dark":
@@ -203,7 +208,7 @@ class CountryPage extends React.Component {
             }
             key={index}
           >
-            <img src={darkUserIMG} alt="Bronze user profile picture" />
+            <img src={darkUserIMG} alt={name} />
           </MDBAvatar>
         );
       default:
@@ -216,7 +221,7 @@ class CountryPage extends React.Component {
             }
             key={index}
           >
-            <img src={defaultUserIMG} alt="Default user profile picture" />
+            <img src={defaultUserIMG} alt={name} />
           </MDBAvatar>
         );
     }
@@ -322,7 +327,12 @@ class CountryPage extends React.Component {
                         <MDBCard className="text-left">
                           <div className="d-flex justify-content-between">
                             <div className="d-flex align-items-center">
-                              {this.getPicture(user.data.skin, user.id, i)}
+                              {this.getPicture(
+                                user.data.skin,
+                                user.id,
+                                i,
+                                user.data.sith_name
+                              )}
                               <span className="pl-2">
                                 {user.data.title} {user.data.sith_name}
                               </span>

@@ -7,10 +7,6 @@ import { Link } from "react-router-dom";
 // Meta tags
 import { Helmet } from "react-helmet";
 
-//> Additional modules
-// Fade In Animation
-import FadeIn from "react-fade-in";
-
 //> Redux
 // Connect
 import { connect } from "react-redux";
@@ -63,6 +59,7 @@ class BasicTraining extends React.Component {
 
   componentDidMount = () => {
     let randomWord = require("random-words");
+
     if (!this.state.activeBasic)
       this.setState({
         activeBasic: randomWord().toLowerCase().trim(),
@@ -77,7 +74,6 @@ class BasicTraining extends React.Component {
 
     if (this.state.userInput === this.state.activeBasic.toLowerCase().trim()) {
       // Calculate how much time it took to get the result
-      let currentTime = new Date().getTime();
       let t1 = new Date();
       let t2 = this.state.startTimer;
       let dif = t1.getTime() - t2.getTime();
@@ -154,7 +150,7 @@ class BasicTraining extends React.Component {
     if (previous.length > 0) {
       let time = 0;
 
-      previous.map((item, i) => {
+      previous.forEach((item, i) => {
         time += parseInt(item.elapsed);
       });
 
@@ -266,12 +262,12 @@ class BasicTraining extends React.Component {
                   >
                     Try again.
                     {!this.state.showSolution && (
-                      <a
-                        className="ml-1 mr-1 underlined text-white"
+                      <span
+                        className="ml-1 mr-1 underlined text-white clickable"
                         onClick={() => this.setState({ showSolution: true })}
                       >
                         Show solution
-                      </a>
+                      </span>
                     )}
                   </small>
                 )}

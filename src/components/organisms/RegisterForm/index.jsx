@@ -122,7 +122,7 @@ class HomePage extends React.Component {
       "Cult",
     ];
     let sn = value.toLowerCase().trim();
-    let results = forbidden.map((item) => {
+    let results = forbidden.forEach((item) => {
       if (sn.includes(item.toLowerCase().trim())) {
         return true;
       }

@@ -76,7 +76,7 @@ export const signUp = (newUser) => {
       });
     } else {
       // Set default values
-      let credits, reputation, title, badges, status, department, beta, skin;
+      let credits, reputation, title, badges, status, department, skin;
 
       credits = 1000;
       reputation = 10;
@@ -84,7 +84,6 @@ export const signUp = (newUser) => {
       badges = [];
       status = null;
       department = null;
-      beta = true;
       skin = "standard";
 
       if (newUser.code) {

@@ -1,6 +1,10 @@
 //#region > Imports
 // SHA265 algorithm
 import sha256 from "js-sha256";
+
+// Firebase - Do not remove, required for status
+// eslint-disable-next-line no-unused-vars
+import firebase from "firebase";
 //#endregion
 
 //#region > Functions

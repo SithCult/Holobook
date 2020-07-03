@@ -51,6 +51,7 @@ function replaceAll(string, search, replace) {
   return string.split(search).join(replace);
 }
 
+// eslint-disable-next-line no-extend-native
 String.prototype.escape = function () {
   // Replace those tags with HTML equivalent
   const tagsToReplace = {
@@ -189,6 +190,7 @@ class Comment extends React.Component {
               <img
                 src={loadingUserIMG}
                 className="rounded-circle avatar-img align-self-center mr-0"
+                alt={"Loading user image for comment " + cid}
               />
             </div>
             <div className="content">
@@ -229,6 +231,7 @@ class Comment extends React.Component {
                       <img
                         src={goldUserIMG}
                         className="rounded-circle avatar-img align-self-center mr-0"
+                        alt={receivedUser.sith_name}
                       />
                     );
                   case "light":
@@ -236,6 +239,7 @@ class Comment extends React.Component {
                       <img
                         src={lightUserIMG}
                         className="rounded-circle avatar-img align-self-center mr-0"
+                        alt={receivedUser.sith_name}
                       />
                     );
                   case "bronze":
@@ -243,6 +247,7 @@ class Comment extends React.Component {
                       <img
                         src={bronzeUserIMG}
                         className="rounded-circle avatar-img align-self-center mr-0"
+                        alt={receivedUser.sith_name}
                       />
                     );
                   case "dark":
@@ -250,6 +255,7 @@ class Comment extends React.Component {
                       <img
                         src={darkUserIMG}
                         className="rounded-circle avatar-img align-self-center mr-0"
+                        alt={receivedUser.sith_namee}
                       />
                     );
                   default:
@@ -257,6 +263,7 @@ class Comment extends React.Component {
                       <img
                         src={defaultUserIMG}
                         className="rounded-circle avatar-img align-self-center mr-0"
+                        alt={receivedUser.sith_name}
                       />
                     );
                 }

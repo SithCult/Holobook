@@ -84,10 +84,6 @@ const feelings = [
 
 //#region > Components
 class ProfilePage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     post_charlength: 0,
     post: "",
@@ -525,46 +521,31 @@ class ProfilePage extends React.Component {
                   case "gold":
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={goldUserIMG}
-                          alt="Gold user profile picture"
-                        />
+                        <img src={goldUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                   case "light":
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={lightUserIMG}
-                          alt="Light user profile picture"
-                        />
+                        <img src={lightUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                   case "bronze":
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={bronzeUserIMG}
-                          alt="Bronze user profile picture"
-                        />
+                        <img src={bronzeUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                   case "dark":
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={darkUserIMG}
-                          alt="Bronze user profile picture"
-                        />
+                        <img src={darkUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                   default:
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={defaultUserIMG}
-                          alt="Default user profile picture"
-                        />
+                        <img src={defaultUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                 }
@@ -858,6 +839,7 @@ class ProfilePage extends React.Component {
                       <div className="embed-responsive embed-responsive-16by9">
                         <iframe
                           className="embed-responsive-item"
+                          title="YouTube Video"
                           src={
                             "//www.youtube.com/embed/" + this.state.youtubeId
                           }

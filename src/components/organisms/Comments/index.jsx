@@ -197,22 +197,23 @@ class Comments extends React.Component {
                             </div>
                           </>
                         )}
-                        {items.map((child, c) => {
-                          if (child.data.cid === comment.id) {
-                            if (child.data.visible) {
-                              return (
-                                <Comment
-                                  comment={child}
-                                  key={
-                                    this.props.pid + comment.id + child.data.cid
-                                  }
-                                  cid={child.id}
-                                  refreshData={this.props.refreshData}
-                                  child
-                                />
-                              );
-                            } else return null;
-                          }
+                        {items.map((child) => {
+                          if (
+                            child.data.cid === comment.id &&
+                            child.data.visible
+                          ) {
+                            return (
+                              <Comment
+                                comment={child}
+                                key={
+                                  this.props.pid + comment.id + child.data.cid
+                                }
+                                cid={child.id}
+                                refreshData={this.props.refreshData}
+                                child
+                              />
+                            );
+                          } else return null;
                         })}
                       </React.Fragment>
                     );
