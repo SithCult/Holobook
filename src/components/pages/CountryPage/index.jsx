@@ -125,7 +125,7 @@ class CountryPage extends React.Component {
                   <span className="small text-muted">
                     {found.data.title.toLowerCase().trim() === "darth" && (
                       <MDBIcon
-                        icon="crown"
+                        icon="angle-double-up"
                         className={
                           found.data.badges.includes("moff")
                             ? "pr-1 amber-text"
@@ -341,7 +341,7 @@ class CountryPage extends React.Component {
                               {user.data.title.toLowerCase().trim() ===
                                 "darth" && (
                                 <MDBIcon
-                                  icon="crown"
+                                  icon="angle-double-up"
                                   className={
                                     user.data.badges.includes("moff")
                                       ? "pr-1 amber-text"
