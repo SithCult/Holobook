@@ -12,25 +12,14 @@ import { Helmet } from "react-helmet";
 import FadeIn from "react-fade-in";
 // Country list
 import countryList from "react-select-country-list";
-// Fetching
-import axios from "axios";
-// Firebase
-import firebase from "firebase";
-// Uploading images
-import FileUploader from "react-firebase-file-uploader";
 
 //> Redux
 // Connect
 import { connect } from "react-redux";
-// Actions
-import { signOut } from "../../../store/actions/authActions";
 import {
   createPost,
-  removePost,
-  editPost,
   loadPosts,
   loadAllPosts,
-  reportPost,
 } from "../../../store/actions/postActions";
 import { loadComments } from "../../../store/actions/commentActions";
 
@@ -54,7 +43,6 @@ import {
   MDBDropdownToggle,
   MDBDropdownMenu,
   MDBDropdownItem,
-  MDBProgress,
 } from "mdbreact";
 
 //> Additional Components

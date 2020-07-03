@@ -8,24 +8,10 @@ import React from "react";
 import TimeAgo from "javascript-time-ago";
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
-// Flags for countries
-import ReactCountryFlag from "react-country-flag";
-// Country name by country code
-import { getName } from "country-list";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import {
-  MDBBtn,
-  MDBInput,
-  MDBIcon,
-  MDBPopover,
-  MDBPopoverBody,
-  MDBPopoverHeader,
-  MDBSpinner,
-  MDBBadge,
-  MDBProgress,
-} from "mdbreact";
+import { MDBBtn, MDBInput, MDBIcon, MDBProgress } from "mdbreact";
 
 //> Redux Firebase
 // Actions for comments
@@ -42,8 +28,6 @@ import {
 } from "../../../store/actions/likeActions";
 // Getting user information
 import { getUser, getUserByName } from "../../../store/actions/userActions";
-// Auth
-import { auth } from "firebase";
 // Connect
 import { connect } from "react-redux";
 

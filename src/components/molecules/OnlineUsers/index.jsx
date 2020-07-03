@@ -19,19 +19,7 @@ import {
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import {
-  MDBBadge,
-  MDBPopover,
-  MDBPopoverBody,
-  MDBPopoverHeader,
-  MDBSpinner,
-  MDBIcon,
-  MDBTooltip,
-  MDBProgress,
-  MDBCard,
-  MDBCardBody,
-  MDBAvatar,
-} from "mdbreact";
+import { MDBIcon, MDBTooltip, MDBProgress, MDBCard, MDBAvatar } from "mdbreact";
 
 //> Images
 import defaultUserIMG from "../../../assets/images/default.gif";

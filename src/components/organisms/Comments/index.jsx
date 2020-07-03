@@ -3,38 +3,14 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 
-//> Additional libraries
-// Load locale-specific relative date/time formatting rules.
-import en from "javascript-time-ago/locale/en";
-
-// Flags for countries
-import ReactCountryFlag from "react-country-flag";
-
-// Country name by country code
-import { getName } from "country-list";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import {
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBBtn,
-  MDBInput,
-  MDBIcon,
-  MDBPopover,
-  MDBPopoverBody,
-  MDBPopoverHeader,
-  MDBSpinner,
-  MDBBadge,
-} from "mdbreact";
+import { MDBBtn, MDBInput, MDBIcon } from "mdbreact";
 
 //> Redux Firebase
 // Actions for comments
 import {
   createComment,
-  editComment,
   loadComments,
 } from "../../../store/actions/commentActions";
 

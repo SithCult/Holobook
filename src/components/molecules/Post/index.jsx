@@ -14,20 +14,7 @@ import ReceivedUser from "../ReceivedUser";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import {
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBBtn,
-  MDBInput,
-  MDBIcon,
-  MDBPopover,
-  MDBPopoverBody,
-  MDBPopoverHeader,
-  MDBSpinner,
-  MDBBadge,
-} from "mdbreact";
+import { MDBRow, MDBCol, MDBCard, MDBCardBody, MDBIcon } from "mdbreact";
 
 //> Redux Firebase
 // Getting user information
@@ -38,8 +25,6 @@ import {
   getLikeAmount,
 } from "../../../store/actions/likeActions";
 import { getUser } from "../../../store/actions/userActions";
-// Getting comments
-import { loadComments } from "../../../store/actions/commentActions";
 // Connect
 import { connect } from "react-redux";
 

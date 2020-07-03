@@ -3,7 +3,7 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 // Redirect from Router
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 // Meta tags
 import { Helmet } from "react-helmet";
 
@@ -14,8 +14,6 @@ import FadeIn from "react-fade-in";
 //> Redux
 // Connect
 import { connect } from "react-redux";
-// Actions
-import { signIn } from "../../../store/actions/authActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework

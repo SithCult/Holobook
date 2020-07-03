@@ -7,9 +7,6 @@ import { Link, Redirect, withRouter } from "react-router-dom";
 // Meta tags
 import { Helmet } from "react-helmet";
 
-//> Additional modules
-// Fade In Animation
-import FadeIn from "react-fade-in";
 // Flags for countries
 import ReactCountryFlag from "react-country-flag";
 // Country list
@@ -31,14 +28,8 @@ import {
   MDBContainer,
   MDBRow,
   MDBCol,
-  MDBAlert,
-  MDBInput,
   MDBBtn,
   MDBIcon,
-  MDBSimpleChart,
-  MDBDataTable,
-  MDBView,
-  MDBMask,
   MDBCard,
   MDBCardBody,
   MDBAvatar,
@@ -53,7 +44,6 @@ import {
 import "./countrypage.scss";
 
 //> Images
-import logoIMG from "../../../assets/images/logo_white_sm.png";
 import defaultUserIMG from "../../../assets/images/default.gif";
 import goldUserIMG from "../../../assets/images/gold.gif";
 import lightUserIMG from "../../../assets/images/light.gif";

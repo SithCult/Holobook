@@ -8,8 +8,6 @@ import { Redirect, withRouter } from "react-router-dom";
 //> Additional modules
 // Name generation
 import { nameByRace } from "fantasy-name-generator";
-// Fetching
-import axios from "axios";
 // Country list
 import countryList from "react-select-country-list";
 // Fade In Animation
@@ -34,8 +32,6 @@ import {
   MDBProgress,
   MDBBtn,
   MDBIcon,
-  ToastContainer,
-  toast,
 } from "mdbreact";
 
 //> Components
