@@ -55,7 +55,10 @@ export const signUp = (newUser) => {
           result = doc.data();
 
           if (result) {
-            if (result.sith_name === newUser.sith_name) {
+            if (
+              result.sith_name.toLowerCase().trim() ===
+              newUser.sith_name.toLowerCase().trim()
+            ) {
               found = true;
             }
           }
