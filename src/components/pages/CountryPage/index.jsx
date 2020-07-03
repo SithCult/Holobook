@@ -132,6 +132,16 @@ class CountryPage extends React.Component {
                     )}
                     <span className="pl-2">
                       {found.data.title} {found.data.sith_name}
+                      {found.status && found.status.state === "offline" ? (
+                        <span className="d-block small text-muted">
+                          Last seen{" "}
+                          {this.calculateTimeAgo(found.status.last_changed)}
+                        </span>
+                      ) : (
+                        <span className="d-block small text-success">
+                          Currently online
+                        </span>
+                      )}
                     </span>
                   </div>
                   <span className="small text-muted">
@@ -359,14 +369,18 @@ class CountryPage extends React.Component {
                               <span className="pl-2">
                                 {user.data.title} {user.data.sith_name}
                                 {user.status &&
-                                  user.status.state === "offline" && (
-                                    <span className="d-block small text-muted">
-                                      Last seen{" "}
-                                      {this.calculateTimeAgo(
-                                        user.status.last_changed
-                                      )}
-                                    </span>
-                                  )}
+                                user.status.state === "offline" ? (
+                                  <span className="d-block small text-muted">
+                                    Last seen{" "}
+                                    {this.calculateTimeAgo(
+                                      user.status.last_changed
+                                    )}
+                                  </span>
+                                ) : (
+                                  <span className="d-block small text-success">
+                                    Currently online
+                                  </span>
+                                )}
                               </span>
                             </div>
                             <span className="small text-muted">
