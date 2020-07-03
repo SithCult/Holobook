@@ -257,10 +257,9 @@ export const writeDonation = (amount) => {
 };
 
 // Initialize Presence
-export const initPresenceHandler = () => {
+export const initPresenceHandler = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
-    const uid = firebase.auth().currentUser.uid;
     const userStatusDatabaseRef = firebase.database().ref("/status/" + uid);
 
     // Online and offline states

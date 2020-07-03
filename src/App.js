@@ -35,6 +35,12 @@ class App extends React.Component {
     this.checkCookies();
   };
 
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.auth.uid !== nextProps.auth.uid) {
+      this.props.initPresenceHandler(nextProps.auth.uid);
+    }
+  };
+
   checkCookies = () => {
     // Create custom user id for tracking
     let userId = localStorage.getItem("userId");
@@ -92,7 +98,7 @@ class App extends React.Component {
 
     if (!this.state.initialized && auth.uid) {
       this.setState({ initialized: true }, () =>
-        this.props.initPresenceHandler()
+        this.props.initPresenceHandler(auth.uid)
       );
     }
 
@@ -122,7 +128,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initPresenceHandler: () => dispatch(initPresenceHandler()),
+    initPresenceHandler: (uid) => dispatch(initPresenceHandler(uid)),
   };
 };
 //#endregion
