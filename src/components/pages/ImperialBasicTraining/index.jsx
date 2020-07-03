@@ -74,21 +74,23 @@ class BasicTraining extends React.Component {
 
     if (this.state.userInput === this.state.activeBasic.toLowerCase().trim()) {
       // Calculate how much time it took to get the result
-      let t1 = new Date();
-      let t2 = this.state.startTimer;
-      let dif = t1.getTime() - t2.getTime();
-      let elapsedTime = dif / 1000;
-      let item = {
+      const t1 = new Date();
+      const t2 = this.state.startTimer;
+      const dif = t1.getTime() - t2.getTime();
+      const elapsedTime = dif / 1000;
+      const item = {
         text: this.state.activeBasic.toLowerCase().trim(),
         elapsed: elapsedTime,
         hinted: this.state.showSolution,
         wasCorrect: !this.state.wrongInput,
       };
+
       previous.push(item);
 
       // Set next word
       let randomWord = "";
-      let randChoice = Math.floor(Math.random() * 100);
+      const randChoice = Math.floor(Math.random() * 100);
+
       if (randChoice < 95) {
         // Get word from library
         let randomWords = require("random-words");
@@ -98,6 +100,8 @@ class BasicTraining extends React.Component {
         let rand = Math.floor(Math.random() * items.length);
         randomWord = items[rand];
       }
+
+      // If input is wrong
       if (this.state.wrongInput) {
         this.setState(
           {

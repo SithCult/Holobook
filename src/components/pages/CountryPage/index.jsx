@@ -270,12 +270,16 @@ class CountryPage extends React.Component {
 
   // Merge user data with their online status
   mergeUserData = (onlineusers) => {
+    // If users and status data is defined
     if (this.state.users && onlineusers.length > 0) {
       let usersWithStatus = this.state.users.map((u) => {
         let newUser;
+        // Get the status of the user
         let userStatusData = onlineusers.filter((o) => o.uid === u.id)[0];
 
+        // If the status is defined
         if (userStatusData) {
+          // Write status into user object
           newUser = {
             ...u,
             status: {
@@ -286,6 +290,7 @@ class CountryPage extends React.Component {
             },
           };
         } else {
+          // Write default value and make user offline
           newUser = {
             ...u,
             status: {
@@ -298,6 +303,7 @@ class CountryPage extends React.Component {
         return newUser;
       });
 
+      // Sort by online status
       usersWithStatus.sort((a, b) =>
         a.status.state > b.status.state
           ? -1

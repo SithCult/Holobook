@@ -479,8 +479,6 @@ class HomePage extends React.Component {
         return <Redirect to="/me" />;
     }
 
-    console.log(authError, authErrorCode);
-
     return (
       <MDBContainer id="register" className="text-center text-white mt-5 pt-5">
         <div className="mb-4">

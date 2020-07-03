@@ -97,7 +97,9 @@ class OnlineUsers extends Component {
         //Get the status of the user by uid
         let userStatusData = onlineusers.filter((o) => o.uid === u.id)[0];
 
+        // If user has a status
         if (userStatusData) {
+          // Write status into user object
           newUser = {
             ...u,
             status: {
@@ -106,6 +108,7 @@ class OnlineUsers extends Component {
             },
           };
         } else {
+          // Write default status into user object
           newUser = {
             ...u,
             status: {

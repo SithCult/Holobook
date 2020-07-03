@@ -7,7 +7,7 @@ export const signIn = (credentials) => {
       .auth()
       .signInWithEmailAndPassword(credentials.email, credentials.password)
       .then(() => {
-        // Go online --> Writes "online" into user status
+        // Go online. This writes "online" into user status
         firebase.database().goOnline();
 
         dispatch({
@@ -32,7 +32,7 @@ export const signOut = () => {
       .auth()
       .signOut()
       .then(() => {
-        // Go offline --> Writes "offline" into user status
+        // Go offline. This writes "offline" into user status
         firebase.database().goOffline();
 
         dispatch({
@@ -142,12 +142,14 @@ export const signUp = (newUser) => {
           })
           .then(function () {
             console.log("User successfully written!");
+
             dispatch({
               type: "SIGNUP_SUCCESS",
             });
           })
           .catch(function (err) {
             console.error("Error creating user: ", err);
+
             dispatch({
               type: "SIGNUP_ERROR",
               errCode: 2,
