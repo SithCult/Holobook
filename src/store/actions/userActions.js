@@ -333,23 +333,20 @@ export const getOnlineUsers = () => {
 
     const userStatusDatabaseRef = firebase.database().ref("/status/");
 
-    userStatusDatabaseRef
-      .orderByChild("state")
-      .equalTo("online")
-      .on("value", (snapshot) => {
-        let onlineusers = [];
+    userStatusDatabaseRef.orderByChild("state").on("value", (snapshot) => {
+      let onlineusers = [];
 
-        if (!snapshot.empty) {
-          snapshot.forEach((u) => {
-            onlineusers = [...onlineusers, u.val()];
-          });
-        }
-
-        dispatch({
-          type: "GETONLINEUSERS_SUCCESS",
-          onlineusers: onlineusers,
+      if (!snapshot.empty) {
+        snapshot.forEach((u) => {
+          onlineusers = [...onlineusers, u.val()];
         });
+      }
+
+      dispatch({
+        type: "GETONLINEUSERS_SUCCESS",
+        onlineusers: onlineusers,
       });
+    });
   };
 };
 

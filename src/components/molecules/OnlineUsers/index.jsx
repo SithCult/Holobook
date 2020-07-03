@@ -90,8 +90,11 @@ class OnlineUsers extends Component {
   mergeUserData = (onlineusers) => {
     // If state has users and the onlineuser array is defined, merge data
     if (this.state.users && onlineusers.length > 0) {
+      // Go through all user data
       let usersWithStatus = this.state.users.map((u) => {
         let newUser;
+
+        //Get the status of the user by uid
         let userStatusData = onlineusers.filter((o) => o.uid === u.id)[0];
 
         if (userStatusData) {

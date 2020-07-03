@@ -89,6 +89,7 @@ export const signUp = (newUser) => {
       department = null;
       skin = "standard";
 
+      // If there is a promo code filled in
       if (newUser.code) {
         // Easter Egg - Feel free to use the code when enlisting
         if (newUser.code === "JGJF-8GHH-F8D7") {
