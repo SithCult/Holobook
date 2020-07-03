@@ -300,7 +300,11 @@ export const initPresenceHandler = (uid) => {
 
             // We can now safely set ourselves as 'online' knowing that the
             // server will mark us as offline once we lose connection.
-            userStatusDatabaseRef.set(isOnlineForDatabase);
+            userStatusDatabaseRef.on("value", (snapshot) => {
+              if (snapshot.val().state === "offline") {
+                userStatusDatabaseRef.set(isOnlineForDatabase);
+              }
+            });
           });
       });
   };
