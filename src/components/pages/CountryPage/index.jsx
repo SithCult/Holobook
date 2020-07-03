@@ -294,6 +294,10 @@ class CountryPage extends React.Component {
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
+    if (users && this.props.onlineusers && !users[0].status) {
+      this.mergeUserData(this.props.onlineusers);
+    }
+
     return (
       <MDBContainer id="country" className="text-white pt-5 mt-5">
         <Helmet>

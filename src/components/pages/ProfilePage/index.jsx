@@ -32,7 +32,6 @@ import {
   loadAllPosts,
   reportPost,
 } from "../../../store/actions/postActions";
-import { initPresenceHandler } from "../../../store/actions/userActions";
 import { loadComments } from "../../../store/actions/commentActions";
 
 //> MDB
@@ -1044,7 +1043,6 @@ const mapDispatchToProps = (dispatch) => {
     loadPosts: (amount) => dispatch(loadPosts(amount)),
     loadAllPosts: (amount) => dispatch(loadAllPosts(amount)),
     loadComments: () => dispatch(loadComments()),
-    initPresenceHandler: () => dispatch(initPresenceHandler()),
   };
 };
 //#endregion

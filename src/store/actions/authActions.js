@@ -106,8 +106,6 @@ export const signUp = (newUser) => {
           });
         });
 
-      console.log(uid);
-
       // Set user data
       // Create data for user we just created
       return firestore

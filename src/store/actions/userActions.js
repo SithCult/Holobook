@@ -27,6 +27,42 @@ export const getUser = (uid) => {
   };
 };
 
+// Get all users
+export const getAllUsers = () => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    return firestore
+      .collection("users")
+      .get()
+      .then((snapshot) => {
+        if (!snapshot.empty) {
+          let users = [];
+          snapshot.forEach((user) => {
+            users = [
+              ...users,
+              {
+                id: user.id,
+                data: {
+                  sith_name: user.data().sith_name,
+                  title: user.data().title,
+                  skin: user.data().skin,
+                  badges: user.data().badges,
+                },
+              },
+            ];
+          });
+          return users;
+        } else {
+          return false;
+        }
+      })
+      .catch((err) => {
+        return false;
+      });
+  };
+};
+
 // Get all users of a certain country
 export const getUsersPerCountry = (cc) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {

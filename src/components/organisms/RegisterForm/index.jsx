@@ -452,16 +452,7 @@ class HomePage extends React.Component {
   };
 
   render() {
-    const {
-      authError,
-      auth,
-      authErrorCode,
-      authErrorDetails,
-      profile,
-      location,
-    } = this.props;
-
-    console.log(this.props);
+    const { authError, auth, authErrorCode, profile, location } = this.props;
 
     // Scroll up to error
     authErrorCode &&
