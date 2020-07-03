@@ -24,7 +24,6 @@ import { connect } from "react-redux";
 import {
   getUsersPerCountry,
   getOnlineUsers,
-  initPresenceHandler,
 } from "../../../store/actions/userActions";
 
 //> MDB
@@ -274,6 +273,7 @@ class CountryPage extends React.Component {
     if (this.state.users && onlineusers.length > 0) {
       let usersWithStatus = this.state.users.map((u) => {
         let newUser;
+
         // Get the status of the user
         let userStatusData = onlineusers.filter((o) => o.uid === u.id)[0];
 
@@ -304,15 +304,37 @@ class CountryPage extends React.Component {
       });
 
       // Sort by online status
-      usersWithStatus.sort((a, b) =>
+      /*usersWithStatus.sort((a, b) =>
         a.status.state > b.status.state
           ? -1
           : b.status.state > a.status.state
           ? 1
           : 0
-      );
+      );*/
 
-      this.setState({ users: usersWithStatus });
+      let online = [];
+      let offline = [];
+
+      usersWithStatus.forEach((user, i) => {
+        if (user.status.state === "online") {
+          online = [...online, user];
+        } else {
+          offline = [...offline, user];
+        }
+      });
+
+      offline.length > 0 &&
+        offline.sort((a, b) =>
+          a.status.last_changed > b.status.last_changed
+            ? -1
+            : b.status.last_changed > a.status.last_changed
+            ? 1
+            : 0
+        );
+
+      const result = online.concat(offline);
+
+      this.setState({ users: result });
     }
   };
 
@@ -483,7 +505,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getUsersPerCountry: (cc) => dispatch(getUsersPerCountry(cc)),
     getOnlineUsers: () => dispatch(getOnlineUsers()),
-    initPresenceHandler: () => dispatch(initPresenceHandler()),
   };
 };
 //#endregion

@@ -257,10 +257,9 @@ export const writeDonation = (amount) => {
 };
 
 // Initialize Presence
-export const initPresenceHandler = () => {
+export const initPresenceHandler = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
-    const uid = firebase.auth().currentUser.uid;
     const userStatusDatabaseRef = firebase.database().ref("/status/" + uid);
 
     // Online and offline states
@@ -307,11 +306,34 @@ export const initPresenceHandler = () => {
   };
 };
 
+// Initialize Presence
+export const disablePresenceHandler = (uid) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const userStatusDatabaseRef = firebase.database().ref("/status/" + uid);
+
+    // Online and offline states
+    const isOfflineForDatabase = {
+      uid,
+      state: "offline",
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+
+    const isOnlineForDatabase = {
+      uid,
+      state: "online",
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+
+    // Create reference
+    firebase.database().ref(".info/connected").off();
+  };
+};
+
 // Get number of online users
 export const getOnlineUserCount = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
-
     const userStatusDatabaseRef = firebase.database().ref("/status/");
 
     userStatusDatabaseRef
@@ -330,7 +352,6 @@ export const getOnlineUserCount = () => {
 export const getOnlineUsers = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
-
     const userStatusDatabaseRef = firebase.database().ref("/status/");
 
     userStatusDatabaseRef.orderByChild("state").on("value", (snapshot) => {

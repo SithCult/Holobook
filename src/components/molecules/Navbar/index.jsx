@@ -25,6 +25,7 @@ import {
 import { connect } from "react-redux";
 // Actions
 import { signOut } from "../../../store/actions/authActions";
+import { disablePresenceHandler } from "../../../store/actions/userActions";
 
 //> Images
 // Logo
@@ -48,6 +49,13 @@ class Navbar extends React.Component {
   closeCollapse = (collapseID) => () => {
     window.scrollTo(0, 0);
     this.state.collapseID === collapseID && this.setState({ collapseID: "" });
+  };
+
+  signOut = () => {
+    const uid = this.props.auth.uid;
+
+    this.props.signOut();
+    this.props.disablePresenceHandler(uid);
   };
 
   render() {
@@ -144,11 +152,7 @@ class Navbar extends React.Component {
                     </div>
                     <div className="mx-3" />
                     <Link to="/">
-                      <MDBBtn
-                        size="md"
-                        color="elegant"
-                        onClick={this.props.signOut}
-                      >
+                      <MDBBtn size="md" color="elegant" onClick={this.signOut}>
                         Logout
                         <MDBIcon icon="angle-right" className="ml-1" />
                       </MDBBtn>
@@ -177,6 +181,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     signOut: () => dispatch(signOut()),
+    disablePresenceHandler: (uid) => dispatch(disablePresenceHandler(uid)),
   };
 };
 //#endregion
