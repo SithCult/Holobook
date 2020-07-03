@@ -962,14 +962,27 @@ class ProfilePage extends React.Component {
                 <p className="small text-muted mb-1">
                   Get details about SithCult in your country.
                 </p>
-                <Link
-                  to={"/c/" + profile.address?.country?.toLowerCase().trim()}
-                >
-                  <MDBBtn color="red" size="md">
+                {profile.isLoaded ? (
+                  <Link
+                    to={"/c/" + profile.address?.country?.toLowerCase().trim()}
+                  >
+                    <MDBBtn color="red" size="md">
+                      <MDBIcon far icon="flag" className="mr-2" />
+                      {profile.isLoaded ? (
+                        <>{this.getCountry(profile.address)}</>
+                      ) : (
+                        <>
+                          <span>Loading</span>
+                        </>
+                      )}
+                    </MDBBtn>
+                  </Link>
+                ) : (
+                  <MDBBtn color="red" size="md" disabled={true}>
                     <MDBIcon far icon="flag" className="mr-2" />
-                    {this.getCountry(profile.address)}
+                    <span>Loading</span>
                   </MDBBtn>
-                </Link>
+                )}
               </MDBCardBody>
             </MDBCard>
             <MDBCard className="mt-3">
