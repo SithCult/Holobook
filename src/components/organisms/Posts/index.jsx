@@ -11,7 +11,6 @@ import { Post } from "../../molecules";
 import { removePost } from "../../../store/actions/postActions";
 // Connect
 import { connect } from "react-redux";
-import { loadComments } from "../../../store/actions/commentActions";
 //#endregion
 
 //#region > Components

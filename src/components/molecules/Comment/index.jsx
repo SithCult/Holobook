@@ -8,24 +8,10 @@ import React from "react";
 import TimeAgo from "javascript-time-ago";
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
-// Flags for countries
-import ReactCountryFlag from "react-country-flag";
-// Country name by country code
-import { getName } from "country-list";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import {
-  MDBBtn,
-  MDBInput,
-  MDBIcon,
-  MDBPopover,
-  MDBPopoverBody,
-  MDBPopoverHeader,
-  MDBSpinner,
-  MDBBadge,
-  MDBProgress,
-} from "mdbreact";
+import { MDBBtn, MDBInput, MDBIcon, MDBProgress } from "mdbreact";
 
 //> Redux Firebase
 // Actions for comments
@@ -42,8 +28,6 @@ import {
 } from "../../../store/actions/likeActions";
 // Getting user information
 import { getUser, getUserByName } from "../../../store/actions/userActions";
-// Auth
-import { auth } from "firebase";
 // Connect
 import { connect } from "react-redux";
 
@@ -67,6 +51,7 @@ function replaceAll(string, search, replace) {
   return string.split(search).join(replace);
 }
 
+// eslint-disable-next-line no-extend-native
 String.prototype.escape = function () {
   // Replace those tags with HTML equivalent
   const tagsToReplace = {
@@ -205,6 +190,7 @@ class Comment extends React.Component {
               <img
                 src={loadingUserIMG}
                 className="rounded-circle avatar-img align-self-center mr-0"
+                alt={"Loading user image for comment " + cid}
               />
             </div>
             <div className="content">
@@ -245,6 +231,7 @@ class Comment extends React.Component {
                       <img
                         src={goldUserIMG}
                         className="rounded-circle avatar-img align-self-center mr-0"
+                        alt={receivedUser.sith_name}
                       />
                     );
                   case "light":
@@ -252,6 +239,7 @@ class Comment extends React.Component {
                       <img
                         src={lightUserIMG}
                         className="rounded-circle avatar-img align-self-center mr-0"
+                        alt={receivedUser.sith_name}
                       />
                     );
                   case "bronze":
@@ -259,6 +247,7 @@ class Comment extends React.Component {
                       <img
                         src={bronzeUserIMG}
                         className="rounded-circle avatar-img align-self-center mr-0"
+                        alt={receivedUser.sith_name}
                       />
                     );
                   case "dark":
@@ -266,6 +255,7 @@ class Comment extends React.Component {
                       <img
                         src={darkUserIMG}
                         className="rounded-circle avatar-img align-self-center mr-0"
+                        alt={receivedUser.sith_namee}
                       />
                     );
                   default:
@@ -273,6 +263,7 @@ class Comment extends React.Component {
                       <img
                         src={defaultUserIMG}
                         className="rounded-circle avatar-img align-self-center mr-0"
+                        alt={receivedUser.sith_name}
                       />
                     );
                 }

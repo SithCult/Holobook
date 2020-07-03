@@ -7,10 +7,6 @@ import { Redirect, withRouter } from "react-router-dom";
 // Meta tags
 import { Helmet } from "react-helmet";
 
-//> Additional modules
-// Fade In Animation
-import FadeIn from "react-fade-in";
-
 //> Redux
 // Connect
 import { connect } from "react-redux";

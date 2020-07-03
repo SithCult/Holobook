@@ -9,14 +9,7 @@ import { Helmet } from "react-helmet";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import {
-  MDBContainer,
-  MDBBtn,
-  MDBAlert,
-  MDBIcon,
-  MDBRow,
-  MDBCol,
-} from "mdbreact";
+import { MDBContainer, MDBBtn, MDBIcon, MDBRow, MDBCol } from "mdbreact";
 
 //> Redux
 // Connect

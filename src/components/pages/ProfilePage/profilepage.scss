@@ -5,19 +5,24 @@
     padding-right: 5px;
   }
 
-  // Award section
-  .award {
+  .right-col {
+    // Award section
     .btn {
-      background: transparentize($color: #33b5e5, $amount: 0.5) !important;
-      border: 2px #33b5e5 solid;
       border-radius: 0.5rem;
       text-transform: initial;
-      &:hover {
-        background: transparentize($color: #33b5e5, $amount: 0.4) !important;
+      &.btn-blue {
+        background: transparentize($color: #33b5e5, $amount: 0.5) !important;
+        border: 2px #33b5e5 solid;
+        &:hover {
+          background: transparentize($color: #33b5e5, $amount: 0.4) !important;
+        }
       }
-      &.btn-black {
-        background: transparentize($color: black, $amount: 0.5) !important;
-        border: 2px black solid;
+      &.btn-red {
+        background: transparentize($color: #f44336, $amount: 0.5) !important;
+        border: 2px #f44336 solid;
+        &:hover {
+          background: transparentize($color: #f44336, $amount: 0.4) !important;
+        }
       }
     }
   }

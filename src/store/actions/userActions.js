@@ -1,13 +1,16 @@
 //#region > Imports
 // SHA265 algorithm
 import sha256 from "js-sha256";
+
+// Firebase - Do not remove, required for status
+// eslint-disable-next-line no-unused-vars
+import firebase from "firebase";
 //#endregion
 
 //#region > Functions
 // Get user by uid
 export const getUser = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
     const firestore = getFirestore();
 
     return firestore
@@ -19,6 +22,43 @@ export const getUser = (uid) => {
           return false;
         } else {
           return { ...doc.data(), uid: doc.id };
+        }
+      })
+      .catch((err) => {
+        return false;
+      });
+  };
+};
+
+// Get all users
+export const getAllUsers = () => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    return firestore
+      .collection("users")
+      .get()
+      .then((snapshot) => {
+        if (!snapshot.empty) {
+          let users = [];
+          snapshot.forEach((user) => {
+            users = [
+              ...users,
+              {
+                id: user.id,
+                data: {
+                  sith_name: user.data().sith_name,
+                  title: user.data().title,
+                  skin: user.data().skin,
+                  badges: user.data().badges,
+                },
+              },
+            ];
+          });
+
+          return users;
+        } else {
+          return false;
         }
       })
       .catch((err) => {
@@ -93,7 +133,6 @@ export const getUserByName = (sith_name) => {
 // Retrieve donations from Firestore
 export const getDonations = (uid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
     const firestore = getFirestore();
 
     firestore
@@ -107,7 +146,7 @@ export const getDonations = (uid) => {
             let data = { ...doc.data(), id: doc.id };
 
             if (uid) {
-              if (data.uid == uid) {
+              if (data.uid === uid) {
                 results.push(data);
               }
             } else {
@@ -221,9 +260,7 @@ export const writeDonation = (amount) => {
 export const initPresenceHandler = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
-    const firestore = getFirestore();
     const uid = firebase.auth().currentUser.uid;
-
     const userStatusDatabaseRef = firebase.database().ref("/status/" + uid);
 
     // Online and offline states
@@ -238,13 +275,14 @@ export const initPresenceHandler = () => {
       state: "online",
       last_changed: firebase.database.ServerValue.TIMESTAMP,
     };
+
     // Create reference
     firebase
       .database()
       .ref(".info/connected")
       .on("value", function (snapshot) {
         // If we're not currently connected, don't do anything.
-        if (snapshot.val() == false) {
+        if (snapshot.val() === false) {
           return;
         }
 
@@ -295,23 +333,20 @@ export const getOnlineUsers = () => {
 
     const userStatusDatabaseRef = firebase.database().ref("/status/");
 
-    userStatusDatabaseRef
-      .orderByChild("state")
-      .equalTo("online")
-      .on("value", (snapshot) => {
-        let onlineusers = [];
+    userStatusDatabaseRef.orderByChild("state").on("value", (snapshot) => {
+      let onlineusers = [];
 
-        if (!snapshot.empty) {
-          snapshot.forEach((u) => {
-            onlineusers = [...onlineusers, u.val()];
-          });
-        }
-
-        dispatch({
-          type: "GETONLINEUSERS_SUCCESS",
-          onlineusers: onlineusers,
+      if (!snapshot.empty) {
+        snapshot.forEach((u) => {
+          onlineusers = [...onlineusers, u.val()];
         });
+      }
+
+      dispatch({
+        type: "GETONLINEUSERS_SUCCESS",
+        onlineusers: onlineusers,
       });
+    });
   };
 };
 

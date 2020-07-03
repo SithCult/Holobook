@@ -7,9 +7,11 @@ import { Link, Redirect, withRouter } from "react-router-dom";
 // Meta tags
 import { Helmet } from "react-helmet";
 
-//> Additional modules
-// Fade In Animation
-import FadeIn from "react-fade-in";
+//> Additional libraries
+// Calculate time ago
+import TimeAgo from "javascript-time-ago";
+// Load locale-specific relative date/time formatting rules.
+import en from "javascript-time-ago/locale/en";
 // Flags for countries
 import ReactCountryFlag from "react-country-flag";
 // Country list
@@ -31,14 +33,8 @@ import {
   MDBContainer,
   MDBRow,
   MDBCol,
-  MDBAlert,
-  MDBInput,
   MDBBtn,
   MDBIcon,
-  MDBSimpleChart,
-  MDBDataTable,
-  MDBView,
-  MDBMask,
   MDBCard,
   MDBCardBody,
   MDBAvatar,
@@ -53,7 +49,6 @@ import {
 import "./countrypage.scss";
 
 //> Images
-import logoIMG from "../../../assets/images/logo_white_sm.png";
 import defaultUserIMG from "../../../assets/images/default.gif";
 import goldUserIMG from "../../../assets/images/gold.gif";
 import lightUserIMG from "../../../assets/images/light.gif";
@@ -88,8 +83,6 @@ class CountryPage extends React.Component {
   };
 
   init = async (country) => {
-    const { match } = this.props;
-
     if (country) {
       this.setState({
         users: await this.props.getUsersPerCountry(country),
@@ -99,6 +92,14 @@ class CountryPage extends React.Component {
     }
   };
 
+  calculateTimeAgo = (timestamp) => {
+    TimeAgo.addLocale(en);
+    const timeAgo = new TimeAgo("en-US");
+
+    return timeAgo.format(timestamp);
+  };
+
+  // Get moff of country
   getMoff = (users) => {
     const found = users.map((user, i) => {
       if (user.data.badges.includes("moff")) {
@@ -125,18 +126,28 @@ class CountryPage extends React.Component {
                   <div className="d-flex align-items-center">
                     {this.getPicture(
                       found.data.skin,
-                      found.data.badges,
                       found.id,
-                      f
+                      f,
+                      found.data.sith_name
                     )}
                     <span className="pl-2">
                       {found.data.title} {found.data.sith_name}
+                      {found.status && found.status.state === "offline" ? (
+                        <span className="d-block small text-muted">
+                          Last seen{" "}
+                          {this.calculateTimeAgo(found.status.last_changed)}
+                        </span>
+                      ) : (
+                        <span className="d-block small text-success">
+                          Currently online
+                        </span>
+                      )}
                     </span>
                   </div>
                   <span className="small text-muted">
                     {found.data.title.toLowerCase().trim() === "darth" && (
                       <MDBIcon
-                        icon="crown"
+                        icon="angle-double-up"
                         className={
                           found.data.badges.includes("moff")
                             ? "pr-1 amber-text"
@@ -167,7 +178,8 @@ class CountryPage extends React.Component {
     }
   };
 
-  getPicture = (skin, badges, uid, index) => {
+  // Get user profile picture
+  getPicture = (skin, uid, index, name) => {
     switch (skin) {
       case "gold":
         return (
@@ -179,7 +191,7 @@ class CountryPage extends React.Component {
             }
             key={index}
           >
-            <img src={goldUserIMG} alt="Gold user profile picture" />
+            <img src={goldUserIMG} alt={name} />
           </MDBAvatar>
         );
       case "light":
@@ -192,7 +204,7 @@ class CountryPage extends React.Component {
             }
             key={index}
           >
-            <img src={lightUserIMG} alt="Light user profile picture" />
+            <img src={lightUserIMG} alt={name} />
           </MDBAvatar>
         );
       case "bronze":
@@ -205,7 +217,7 @@ class CountryPage extends React.Component {
             }
             key={index}
           >
-            <img src={bronzeUserIMG} alt="Bronze user profile picture" />
+            <img src={bronzeUserIMG} alt={name} />
           </MDBAvatar>
         );
       case "dark":
@@ -218,7 +230,7 @@ class CountryPage extends React.Component {
             }
             key={index}
           >
-            <img src={darkUserIMG} alt="Bronze user profile picture" />
+            <img src={darkUserIMG} alt={name} />
           </MDBAvatar>
         );
       default:
@@ -231,7 +243,7 @@ class CountryPage extends React.Component {
             }
             key={index}
           >
-            <img src={defaultUserIMG} alt="Default user profile picture" />
+            <img src={defaultUserIMG} alt={name} />
           </MDBAvatar>
         );
     }
@@ -240,34 +252,50 @@ class CountryPage extends React.Component {
   // Returns either a red circle for offline or a green circle for online
   getStatus = (uid) => {
     if (this.props.onlineusers) {
-      if (this.props.onlineusers.some((u) => u.uid === uid)) {
-        return true;
+      let userStatusData = this.props.onlineusers.filter(
+        (o) => o.uid === uid
+      )[0];
+
+      if (userStatusData) {
+        if (userStatusData?.state === "online") {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
     }
   };
 
+  // Merge user data with their online status
   mergeUserData = (onlineusers) => {
+    // If users and status data is defined
     if (this.state.users && onlineusers.length > 0) {
       let usersWithStatus = this.state.users.map((u) => {
         let newUser;
+        // Get the status of the user
         let userStatusData = onlineusers.filter((o) => o.uid === u.id)[0];
 
+        // If the status is defined
         if (userStatusData) {
+          // Write status into user object
           newUser = {
             ...u,
             status: {
-              state: userStatusData.state,
-              last_changed: userStatusData.last_changed,
+              state: userStatusData.state ? userStatusData.state : "offline",
+              last_changed: userStatusData.last_changed
+                ? userStatusData.last_changed
+                : 1577836800000,
             },
           };
         } else {
+          // Write default value and make user offline
           newUser = {
             ...u,
             status: {
               state: "offline",
-              last_changed: 1519129000,
+              last_changed: 1577836800000,
             },
           };
         }
@@ -275,6 +303,7 @@ class CountryPage extends React.Component {
         return newUser;
       });
 
+      // Sort by online status
       usersWithStatus.sort((a, b) =>
         a.status.state > b.status.state
           ? -1
@@ -293,6 +322,10 @@ class CountryPage extends React.Component {
 
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
+
+    if (users && this.props.onlineusers && !users[0].status) {
+      this.mergeUserData(this.props.onlineusers);
+    }
 
     return (
       <MDBContainer id="country" className="text-white pt-5 mt-5">
@@ -315,62 +348,80 @@ class CountryPage extends React.Component {
                 )}
                 <p className="lead font-weight-bold mb-0">{country}</p>
                 <p className="text-muted basic small">{country}</p>
-                <p className="mb-2 title moff">
-                  <MDBIcon icon="angle-up" /> Moff
-                </p>
-                {users && this.getMoff(users)}
-                <p className="mt-2 mb-2 title members">
-                  <MDBIcon icon="users" /> Members
-                </p>
-                <p className="mb-2 small text-muted">
-                  Membercount: {users && users.length}
-                </p>
-                <div className="card-columns memberlist">
-                  {users &&
-                    users.map((user, i) => {
-                      return (
-                        <MDBCard className="text-left">
-                          <div className="d-flex justify-content-between">
-                            <div className="d-flex align-items-center">
-                              {this.getPicture(
-                                user.data.skin,
-                                user.data.badges,
-                                user.id,
-                                i
-                              )}
-                              <span className="pl-2">
-                                {user.data.title} {user.data.sith_name}
+                {users && (
+                  <>
+                    <p className="mb-2 title moff">
+                      <MDBIcon icon="angle-up" /> Moff
+                    </p>
+                    {users && this.getMoff(users)}
+                    <p className="mt-2 mb-2 title members">
+                      <MDBIcon icon="users" /> Members
+                    </p>
+                    <p className="mb-2 small text-muted">
+                      Membercount: {users && users.length}
+                    </p>
+                    <div className="card-columns memberlist">
+                      {users &&
+                        users.map((user, i) => {
+                          console.log(user);
+                          return (
+                            <MDBCard className="text-left" key={i}>
+                              <div className="d-flex justify-content-between">
+                                <div className="d-flex align-items-center">
+                                  {this.getPicture(
+                                    user.data.skin,
+                                    user.id,
+                                    i,
+                                    user.data.sith_name
+                                  )}
+                                  <span className="pl-2">
+                                    {user.data.title} {user.data.sith_name}
+                                    {user.status &&
+                                    user.status.state === "offline" ? (
+                                      <span className="d-block small text-muted">
+                                        Last seen{" "}
+                                        {this.calculateTimeAgo(
+                                          user.status.last_changed
+                                        )}
+                                      </span>
+                                    ) : (
+                                      <span className="d-block small text-success">
+                                        Currently online
+                                      </span>
+                                    )}
+                                  </span>
+                                </div>
+                                <span className="small text-muted">
+                                  {user.data.title.toLowerCase().trim() ===
+                                    "darth" && (
+                                    <MDBIcon
+                                      icon="angle-double-up"
+                                      className={
+                                        user.data.badges.includes("moff")
+                                          ? "pr-1 amber-text"
+                                          : "pr-1"
+                                      }
+                                    />
+                                  )}
+                                  {user.data.title}
+                                </span>
+                              </div>
+                              <span className="d-block small text-info my-1">
+                                {user.data.department}
                               </span>
-                            </div>
-                            <span className="small text-muted">
-                              {user.data.title.toLowerCase().trim() ===
-                                "darth" && (
-                                <MDBIcon
-                                  icon="crown"
-                                  className={
-                                    user.data.badges.includes("moff")
-                                      ? "pr-1 amber-text"
-                                      : "pr-1"
-                                  }
-                                />
+                              {user.data.donations && (
+                                <div>
+                                  <MDBBadge pill color="amber" className="mt-2">
+                                    <MDBIcon icon="dollar-sign" /> Supporter
+                                  </MDBBadge>
+                                </div>
                               )}
-                              {user.data.title}
-                            </span>
-                          </div>
-                          <span className="d-block small text-info my-1">
-                            {user.data.department}
-                          </span>
-                          {user.data.donations && (
-                            <div>
-                              <MDBBadge pill color="amber" className="mt-2">
-                                <MDBIcon icon="dollar-sign" /> Supporter
-                              </MDBBadge>
-                            </div>
-                          )}
-                        </MDBCard>
-                      );
-                    })}
-                </div>
+                            </MDBCard>
+                          );
+                        })}
+                    </div>
+                  </>
+                )}
               </MDBCardBody>
             </MDBCard>
           </MDBCol>

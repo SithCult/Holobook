@@ -93,7 +93,7 @@ class DonatePage extends React.Component {
   calculateCurrent = (donations) => {
     let sum = 0;
 
-    donations.map((donation) => {
+    donations.forEach((donation) => {
       sum += parseInt(donation.amount);
     });
 
@@ -155,13 +155,13 @@ class DonatePage extends React.Component {
             <p className="lead">
               You have been added to the global list of supporters.
             </p>
-            <MDBBadge pill color="white" className="mr-2">
-              <MDBIcon icon="fire" className="pr-2" />
+            <MDBBadge pill color="elegant-color" className="mr-2">
+              <MDBIcon icon="award" className="pr-2" />
               Founder
             </MDBBadge>
-            <MDBBadge pill color="orange" className="mr-2">
-              <MDBIcon fab icon="sith" className="pr-2" />
-              Phase 1
+            <MDBBadge pill color="amber" className="mr-2">
+              <MDBIcon icon="dollar-sign" className="pr-2" />
+              Phase 1 Contributor
             </MDBBadge>
             <MDBRow className="my-4 d-flex justify-content-center">
               <MDBCol md="4">

@@ -1,10 +1,7 @@
 export const createComment = (newComment) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
     const firestore = getFirestore();
 
-    // Get userId
-    let uid = newComment.author.uid;
     // Generate timestamp
     let timestamp = newComment.timestamp;
 

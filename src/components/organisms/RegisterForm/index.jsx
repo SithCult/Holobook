@@ -8,8 +8,6 @@ import { Redirect, withRouter } from "react-router-dom";
 //> Additional modules
 // Name generation
 import { nameByRace } from "fantasy-name-generator";
-// Fetching
-import axios from "axios";
 // Country list
 import countryList from "react-select-country-list";
 // Fade In Animation
@@ -34,8 +32,6 @@ import {
   MDBProgress,
   MDBBtn,
   MDBIcon,
-  ToastContainer,
-  toast,
 } from "mdbreact";
 
 //> Components
@@ -125,12 +121,17 @@ class HomePage extends React.Component {
       "Sith",
       "Cult",
     ];
+
     let sn = value.toLowerCase().trim();
+
     let results = forbidden.map((item) => {
       if (sn.includes(item.toLowerCase().trim())) {
         return true;
+      } else {
+        return false;
       }
     });
+
     if (results.includes(true)) {
       if (!this.state.sn_infested) {
         this.setState({
@@ -452,16 +453,7 @@ class HomePage extends React.Component {
   };
 
   render() {
-    const {
-      authError,
-      auth,
-      authErrorCode,
-      authErrorDetails,
-      profile,
-      location,
-    } = this.props;
-
-    console.log(this.props);
+    const { authError, auth, authErrorCode, profile, location } = this.props;
 
     // Scroll up to error
     authErrorCode &&

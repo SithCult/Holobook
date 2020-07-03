@@ -14,20 +14,7 @@ import ReceivedUser from "../ReceivedUser";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import {
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBBtn,
-  MDBInput,
-  MDBIcon,
-  MDBPopover,
-  MDBPopoverBody,
-  MDBPopoverHeader,
-  MDBSpinner,
-  MDBBadge,
-} from "mdbreact";
+import { MDBRow, MDBCol, MDBCard, MDBCardBody, MDBIcon } from "mdbreact";
 
 //> Redux Firebase
 // Getting user information
@@ -38,8 +25,6 @@ import {
   getLikeAmount,
 } from "../../../store/actions/likeActions";
 import { getUser } from "../../../store/actions/userActions";
-// Getting comments
-import { loadComments } from "../../../store/actions/commentActions";
 // Connect
 import { connect } from "react-redux";
 
@@ -59,6 +44,7 @@ function replaceAll(string, search, replace) {
   return string.split(search).join(replace);
 }
 
+// eslint-disable-next-line no-extend-native
 String.prototype.escape = function () {
   // Replace those tags with HTML equivalent
   const tagsToReplace = {
@@ -116,7 +102,7 @@ class Post extends React.Component {
 
   render() {
     const { auth, post, key } = this.props;
-    const { receivedUser, comments, likeCount, liked } = this.state;
+    const { receivedUser, comments } = this.state;
 
     return (
       <MDBCard
@@ -134,6 +120,7 @@ class Post extends React.Component {
                         <img
                           src={goldUserIMG}
                           className="rounded-circle avatar-img align-self-center mr-0"
+                          alt={post.data.author.name}
                         />
                       );
                     case "light":
@@ -141,6 +128,7 @@ class Post extends React.Component {
                         <img
                           src={lightUserIMG}
                           className="rounded-circle avatar-img align-self-center mr-0"
+                          alt={post.data.author.name}
                         />
                       );
                     case "bronze":
@@ -148,6 +136,7 @@ class Post extends React.Component {
                         <img
                           src={bronzeUserIMG}
                           className="rounded-circle avatar-img align-self-center mr-0"
+                          alt={post.data.author.name}
                         />
                       );
                     case "dark":
@@ -155,6 +144,7 @@ class Post extends React.Component {
                         <img
                           src={darkUserIMG}
                           className="rounded-circle avatar-img align-self-center mr-0"
+                          alt={post.data.author.name}
                         />
                       );
                     default:
@@ -162,6 +152,7 @@ class Post extends React.Component {
                         <img
                           src={defaultUserIMG}
                           className="rounded-circle avatar-img align-self-center mr-0"
+                          alt={post.data.author.name}
                         />
                       );
                   }
@@ -251,6 +242,7 @@ class Post extends React.Component {
                   className="embed-responsive-item"
                   src={"//www.youtube.com/embed/" + post.data.youtubeId}
                   frameBorder="0"
+                  title="YouTube Video"
                   allowFullScreen
                 ></iframe>
               </div>

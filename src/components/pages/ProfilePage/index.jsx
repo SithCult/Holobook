@@ -12,27 +12,15 @@ import { Helmet } from "react-helmet";
 import FadeIn from "react-fade-in";
 // Country list
 import countryList from "react-select-country-list";
-// Fetching
-import axios from "axios";
-// Firebase
-import firebase from "firebase";
-// Uploading images
-import FileUploader from "react-firebase-file-uploader";
 
 //> Redux
 // Connect
 import { connect } from "react-redux";
-// Actions
-import { signOut } from "../../../store/actions/authActions";
 import {
   createPost,
-  removePost,
-  editPost,
   loadPosts,
   loadAllPosts,
-  reportPost,
 } from "../../../store/actions/postActions";
-import { initPresenceHandler } from "../../../store/actions/userActions";
 import { loadComments } from "../../../store/actions/commentActions";
 
 //> MDB
@@ -55,7 +43,6 @@ import {
   MDBDropdownToggle,
   MDBDropdownMenu,
   MDBDropdownItem,
-  MDBProgress,
 } from "mdbreact";
 
 //> Additional Components
@@ -97,10 +84,6 @@ const feelings = [
 
 //#region > Components
 class ProfilePage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     post_charlength: 0,
     post: "",
@@ -538,46 +521,31 @@ class ProfilePage extends React.Component {
                   case "gold":
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={goldUserIMG}
-                          alt="Gold user profile picture"
-                        />
+                        <img src={goldUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                   case "light":
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={lightUserIMG}
-                          alt="Light user profile picture"
-                        />
+                        <img src={lightUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                   case "bronze":
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={bronzeUserIMG}
-                          alt="Bronze user profile picture"
-                        />
+                        <img src={bronzeUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                   case "dark":
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={darkUserIMG}
-                          alt="Bronze user profile picture"
-                        />
+                        <img src={darkUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                   default:
                     return (
                       <MDBAvatar className="mx-auto white">
-                        <img
-                          src={defaultUserIMG}
-                          alt="Default user profile picture"
-                        />
+                        <img src={defaultUserIMG} alt={profile.sith_name} />
                       </MDBAvatar>
                     );
                 }
@@ -871,6 +839,7 @@ class ProfilePage extends React.Component {
                       <div className="embed-responsive embed-responsive-16by9">
                         <iframe
                           className="embed-responsive-item"
+                          title="YouTube Video"
                           src={
                             "//www.youtube.com/embed/" + this.state.youtubeId
                           }
@@ -972,7 +941,7 @@ class ProfilePage extends React.Component {
               )}
             </div>
           </MDBCol>
-          <MDBCol md="3">
+          <MDBCol md="3" className="right-col">
             <MDBCard className="award text-center">
               <MDBCardBody>
                 <p className="lead mb-1">Get rewards</p>
@@ -980,11 +949,40 @@ class ProfilePage extends React.Component {
                   Contribute to SithCult and achieve greatness.
                 </p>
                 <Link to="/contribute">
-                  <MDBBtn color="green" size="md">
+                  <MDBBtn color="blue" size="md">
                     <MDBIcon icon="hand-holding-usd" className="mr-2" />
                     Contribute to SithCult
                   </MDBBtn>
                 </Link>
+              </MDBCardBody>
+            </MDBCard>
+            <MDBCard className="text-center mt-3">
+              <MDBCardBody>
+                <p className="lead mb-1">Your district</p>
+                <p className="small text-muted mb-1">
+                  Get details about SithCult in your country.
+                </p>
+                {profile.isLoaded ? (
+                  <Link
+                    to={"/c/" + profile.address?.country?.toLowerCase().trim()}
+                  >
+                    <MDBBtn color="red" size="md">
+                      <MDBIcon far icon="flag" className="mr-2" />
+                      {profile.isLoaded ? (
+                        <>{this.getCountry(profile.address)}</>
+                      ) : (
+                        <>
+                          <span>Loading</span>
+                        </>
+                      )}
+                    </MDBBtn>
+                  </Link>
+                ) : (
+                  <MDBBtn color="red" size="md" disabled={true}>
+                    <MDBIcon far icon="flag" className="mr-2" />
+                    <span>Loading</span>
+                  </MDBBtn>
+                )}
               </MDBCardBody>
             </MDBCard>
             <MDBCard className="mt-3">
@@ -1044,7 +1042,6 @@ const mapDispatchToProps = (dispatch) => {
     loadPosts: (amount) => dispatch(loadPosts(amount)),
     loadAllPosts: (amount) => dispatch(loadAllPosts(amount)),
     loadComments: () => dispatch(loadComments()),
-    initPresenceHandler: () => dispatch(initPresenceHandler()),
   };
 };
 //#endregion
