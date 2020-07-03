@@ -80,6 +80,7 @@ class Comments extends React.Component {
       this.setState(
         {
           comment: cid ? this.state.comment : "",
+          showComments: true,
           ["comment_" + cid]: cid ? "" : this.state["comment_" + cid],
         },
         () => {
