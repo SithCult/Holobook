@@ -75,19 +75,21 @@ class Chat extends React.Component {
   };
 
   render() {
-    const { chatDetails, currentUser, hasJoined } = this.props;
+    const { chatDetails, currentUser, hasJoined, chatMessages } = this.props;
+
+    console.log("msg", chatMessages);
 
     return (
       <div className="chat" key={chatDetails.id}>
         <div className="chat-container" ref={this.messagesEndRef}>
-          {this.props.chatMessages &&
-            this.props.chatMessages.map((item, i) => {
+          {chatMessages &&
+            chatMessages.map((item, i) => {
               if (item.data.visible) {
                 return (
                   <MessageItem
                     msg={item.data.msg}
                     key={i}
-                    mid={item.id}
+                    mid={item.mid}
                     read={item.data.read}
                     timestamp={item.data.sentTimestamp}
                     reverse={

@@ -1,5 +1,5 @@
 // Add user to chat
-export const joinChat = (uid, chid) => {
+export const joinChat = (uid, chid, curUsers) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
@@ -9,7 +9,7 @@ export const joinChat = (uid, chid) => {
     firestore
       .collection("chats")
       .doc(chid)
-      .set({ users: [uid] }, { merge: true })
+      .set({ users: [...curUsers, uid] }, { merge: true })
       .then(dispatch({ type: "JOINCHAT_SUCCESS" }));
   };
 };
@@ -121,9 +121,11 @@ export const getMessages = (chid) => {
         });
       }
 
+      console.log(chatMessages);
+
       dispatch({
         type: "GETMESSAGES_SUCCESS",
-        chatMessages: chatMessages,
+        chatMessages,
       });
     });
   };

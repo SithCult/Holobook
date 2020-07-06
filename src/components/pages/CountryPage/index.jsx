@@ -128,6 +128,7 @@ class CountryPage extends React.Component {
 
   calculateTimeAgo = (timestamp) => {
     TimeAgo.addLocale(en);
+
     const timeAgo = new TimeAgo("en-US");
 
     return timeAgo.format(timestamp);
@@ -506,10 +507,12 @@ class CountryPage extends React.Component {
                           !this.state.countryChat.users.includes(auth.uid) && (
                             <MDBBtn
                               color="red"
+                              disabled
                               onClick={() => {
                                 this.props.joinChat(
                                   auth.uid,
-                                  this.state.countryChat.id
+                                  this.state.countryChat.id,
+                                  this.state.countryChat.users
                                 );
                                 this.init(this.props.match?.params?.country);
                               }}
@@ -570,7 +573,7 @@ const mapDispatchToProps = (dispatch) => {
     getOnlineUsers: () => dispatch(getOnlineUsers()),
     getCountryChat: (countryid) => dispatch(getCountryChat(countryid)),
     createChat: (name, users) => dispatch(createChat(name, users)),
-    joinChat: (uid, chid) => dispatch(joinChat(uid, chid)),
+    joinChat: (uid, chid, curUsers) => dispatch(joinChat(uid, chid, curUsers)),
   };
 };
 //#endregion

@@ -81,7 +81,7 @@ class MessageItem extends React.Component {
 
   render() {
     const { msg, mid, read, author, reverse, timestamp } = this.props;
-    console.log(author);
+    console.log(this.props);
 
     return (
       <div className="chat-item" key={mid}>
