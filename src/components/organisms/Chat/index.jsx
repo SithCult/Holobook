@@ -94,11 +94,12 @@ class Chat extends React.Component {
                       item.data.author?.uid === currentUser ? true : false
                     }
                     spacing={
-                      i > 0 &&
-                      item.data.sentTimestamp - 600000 >
-                        chatMessages[i - 1].data.sentTimestamp
-                        ? true
-                        : false
+                      i > 0
+                        ? item.data.sentTimestamp - 600000 >
+                          chatMessages[i - 1].data.sentTimestamp
+                          ? true
+                          : false
+                        : true
                     }
                     author={
                       this.props.users.filter(
