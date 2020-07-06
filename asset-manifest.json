@@ -1,22 +1,23 @@
 {
   "files": {
-    "main.css": "/static/css/main.9dedc722.chunk.css",
-    "main.js": "/static/js/main.fb57c329.chunk.js",
-    "main.js.map": "/static/js/main.fb57c329.chunk.js.map",
+    "main.css": "/static/css/main.b4e188ee.chunk.css",
+    "main.js": "/static/js/main.08572381.chunk.js",
+    "main.js.map": "/static/js/main.08572381.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.90afaf9f.js",
     "runtime-main.js.map": "/static/js/runtime-main.90afaf9f.js.map",
     "static/css/2.114c5174.chunk.css": "/static/css/2.114c5174.chunk.css",
-    "static/js/2.b2a21caa.chunk.js": "/static/js/2.b2a21caa.chunk.js",
-    "static/js/2.b2a21caa.chunk.js.map": "/static/js/2.b2a21caa.chunk.js.map",
+    "static/js/2.e0be9d69.chunk.js": "/static/js/2.e0be9d69.chunk.js",
+    "static/js/2.e0be9d69.chunk.js.map": "/static/js/2.e0be9d69.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.60d417e7c8aedebf1a2af1381345c134.js": "/precache-manifest.60d417e7c8aedebf1a2af1381345c134.js",
+    "precache-manifest.4ddfe366af880cbe349bcc0377fddad1.js": "/precache-manifest.4ddfe366af880cbe349bcc0377fddad1.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.114c5174.chunk.css.map": "/static/css/2.114c5174.chunk.css.map",
-    "static/css/main.9dedc722.chunk.css.map": "/static/css/main.9dedc722.chunk.css.map",
-    "static/js/2.b2a21caa.chunk.js.LICENSE.txt": "/static/js/2.b2a21caa.chunk.js.LICENSE.txt",
+    "static/css/main.b4e188ee.chunk.css.map": "/static/css/main.b4e188ee.chunk.css.map",
+    "static/js/2.e0be9d69.chunk.js.LICENSE.txt": "/static/js/2.e0be9d69.chunk.js.LICENSE.txt",
     "static/media/mdb.css": "/static/media/default-skin.b257fa9c.svg",
     "static/media/all.min.css": "/static/media/fa-solid-900.ec763292.svg",
     "static/media/group.png": "/static/media/group.d1b57998.png",
+    "static/media/holocron.png": "/static/media/holocron.3b2d1a15.png",
     "static/media/logo_sm.png": "/static/media/logo_sm.97bdbc16.png",
     "static/media/logo_white.png": "/static/media/logo_white.49361551.png",
     "static/media/logo_white_sm.png": "/static/media/logo_white_sm.b6832315.png"
@@ -24,8 +25,8 @@
   "entrypoints": [
     "static/js/runtime-main.90afaf9f.js",
     "static/css/2.114c5174.chunk.css",
-    "static/js/2.b2a21caa.chunk.js",
-    "static/css/main.9dedc722.chunk.css",
-    "static/js/main.fb57c329.chunk.js"
+    "static/js/2.e0be9d69.chunk.js",
+    "static/css/main.b4e188ee.chunk.css",
+    "static/js/main.08572381.chunk.js"
   ]
 }
