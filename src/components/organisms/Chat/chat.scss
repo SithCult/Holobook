@@ -15,6 +15,13 @@
 
     // Enable scrolling
     overflow-y: scroll;
+
+    // First item
+    .chat-item {
+      &:first-child {
+        margin-top: 1rem;
+      }
+    }
   }
 
   .send {
