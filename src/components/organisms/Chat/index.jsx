@@ -24,11 +24,38 @@ import "./chat.scss";
 
 //#region > Components
 class Chat extends React.Component {
-  componentDidMount() {
-    this.props.getMessages(this.props.chatDetails.id);
+  constructor(props) {
+    super(props);
+
+    // DOM References
+    this.messagesEndRef = React.createRef();
+
+    // State
+    this.state = {
+      message: "",
+    };
   }
 
-  // Handle text change
+  componentDidMount() {
+    this.props.getMessages(this.props.chatDetails.id);
+
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom = () => {
+    const scroll =
+      this.messagesEndRef.current.scrollHeight -
+      this.messagesEndRef.current.clientHeight;
+
+    console.log(scroll);
+
+    this.messagesEndRef.current.scrollTo(0, scroll);
+  };
+
   changeHandler = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
@@ -37,18 +64,22 @@ class Chat extends React.Component {
 
   // Create a new message
   createMessage = () => {
-    let newMsg = { chid: this.props.chatDetails.id, msg: this.state.message };
-    console.log(newMsg);
-    this.props.writeMessage(newMsg);
-    this.setState({ message: "" });
+    const newMsg = { chid: this.props.chatDetails.id, msg: this.state.message };
+
+    // Check if message is empty
+    if (newMsg.msg) {
+      this.props.writeMessage(newMsg);
+
+      this.setState({ message: "" });
+    }
   };
 
   render() {
-    const { chatDetails, currentUser } = this.props;
+    const { chatDetails, currentUser, hasJoined } = this.props;
 
     return (
       <div className="chat" key={chatDetails.id}>
-        <div className="chat-container">
+        <div className="chat-container" ref={this.messagesEndRef}>
           {this.props.chatMessages &&
             this.props.chatMessages.map((item, i) => {
               if (item.data.visible) {
@@ -87,6 +118,7 @@ class Chat extends React.Component {
               color="blue"
               className="d-inline-flex"
               onClick={this.createMessage}
+              disabled={!hasJoined}
             >
               Send
             </MDBBtn>
@@ -102,6 +134,7 @@ class Chat extends React.Component {
 Chat.propTypes = {
   chatDetails: PropTypes.object.isRequired,
   currentUser: PropTypes.string.isRequired,
+  hasJoined: PropTypes.bool.isRequired,
 };
 //#endregion
 

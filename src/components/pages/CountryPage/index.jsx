@@ -25,7 +25,11 @@ import {
   getUsersPerCountry,
   getOnlineUsers,
 } from "../../../store/actions/userActions";
-import { getCountryChat, createChat } from "../../../store/actions/chatActions";
+import {
+  getCountryChat,
+  createChat,
+  joinChat,
+} from "../../../store/actions/chatActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -56,57 +60,6 @@ import bronzeUserIMG from "../../../assets/images/bronze.gif";
 import darkUserIMG from "../../../assets/images/dark.gif";
 //#endregion
 
-//#region > Dummy Data
-const dummyChat = {
-  chid: "12345678",
-  users: ["JjfKl4m5YfYLrafhoDmzYjD55Vg2", "rPhUeYFZBucTQYKx5g3YHNhrXy22"],
-  messages: [
-    {
-      mid: "84738473848",
-      msg: "Test message",
-      author: { uid: "rPhUeYFZBucTQYKx5g3YHNhrXy22" },
-      visible: true,
-    },
-    {
-      mid: "84738473848",
-      msg: "Test message",
-      author: { uid: "rPhUeYFZBucTQYKx5g3YHNhrXy22" },
-      visible: true,
-    },
-    {
-      mid: "84738473848",
-      msg: "Test message",
-      author: { uid: "JjfKl4m5YfYLrafhoDmzYjD55Vg2" },
-      visible: true,
-    },
-    {
-      mid: "84738473848",
-      msg: "Test message",
-      author: { uid: "rPhUeYFZBucTQYKx5g3YHNhrXy22" },
-      visible: true,
-    },
-    {
-      mid: "84738473848",
-      msg: "Test message",
-      author: { uid: "rPhUeYFZBucTQYKx5g3YHNhrXy22" },
-      visible: true,
-    },
-    {
-      mid: "84738473848",
-      msg: "Test message",
-      author: { uid: "rPhUeYFZBucTQYKx5g3YHNhrXy22" },
-      visible: true,
-    },
-    {
-      mid: "84738473848",
-      msg: "Test message",
-      author: { uid: "rPhUeYFZBucTQYKx5g3YHNhrXy22" },
-      visible: true,
-    },
-  ],
-};
-//#endregion
-
 //#region > Components
 class CountryPage extends React.Component {
   state = {
@@ -115,6 +68,7 @@ class CountryPage extends React.Component {
 
   componentDidMount = () => {
     this.init(this.props.match?.params?.country);
+
     this.props.getOnlineUsers();
   };
 
@@ -148,7 +102,7 @@ class CountryPage extends React.Component {
 
           console.log(countryChat);
 
-          if (countryChat === null) {
+          if (!countryChat) {
             console.log("Country chat does not exist, creating a new one");
 
             let userIDs = [];
@@ -158,6 +112,7 @@ class CountryPage extends React.Component {
             });
 
             this.props.createChat(this.state.country_code + " Chat", userIDs);
+
             this.setState({
               countryChat: await this.props.getCountryChat(
                 this.state.country_code
@@ -532,15 +487,36 @@ class CountryPage extends React.Component {
                 {profile && country_code && profile.isLoaded ? (
                   <>
                     {profile.address?.country.toLowerCase().trim() ===
-                    country_code.toLowerCase().trim() ? (
+                      country_code.toLowerCase().trim() ||
+                    profile.title.toLowerCase().trim() === "darth" ? (
                       <>
                         {this.state.countryChat && (
                           <Chat
                             chatDetails={this.state.countryChat}
                             currentUser={auth.uid}
                             users={this.state.users}
+                            hasJoined={
+                              this.state.countryChat.users.includes(auth.uid)
+                                ? true
+                                : false
+                            }
                           />
                         )}
+                        {this.state.countryChat &&
+                          !this.state.countryChat.users.includes(auth.uid) && (
+                            <MDBBtn
+                              color="red"
+                              onClick={() => {
+                                this.props.joinChat(
+                                  auth.uid,
+                                  this.state.countryChat.id
+                                );
+                                this.init(this.props.match?.params?.country);
+                              }}
+                            >
+                              Join chat
+                            </MDBBtn>
+                          )}
                       </>
                     ) : (
                       <>
@@ -594,6 +570,7 @@ const mapDispatchToProps = (dispatch) => {
     getOnlineUsers: () => dispatch(getOnlineUsers()),
     getCountryChat: (countryid) => dispatch(getCountryChat(countryid)),
     createChat: (name, users) => dispatch(createChat(name, users)),
+    joinChat: (uid, chid) => dispatch(joinChat(uid, chid)),
   };
 };
 //#endregion
