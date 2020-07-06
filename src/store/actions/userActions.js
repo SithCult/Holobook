@@ -300,11 +300,7 @@ export const initPresenceHandler = (uid) => {
 
             // We can now safely set ourselves as 'online' knowing that the
             // server will mark us as offline once we lose connection.
-            userStatusDatabaseRef.on("value", (snapshot) => {
-              if (snapshot.val().state === "offline") {
-                userStatusDatabaseRef.set(isOnlineForDatabase);
-              }
-            });
+            userStatusDatabaseRef.set(isOnlineForDatabase);
           });
       });
   };
@@ -316,21 +312,9 @@ export const disablePresenceHandler = (uid) => {
     const firebase = getFirebase();
     const userStatusDatabaseRef = firebase.database().ref("/status/" + uid);
 
-    // Online and offline states
-    const isOfflineForDatabase = {
-      uid,
-      state: "offline",
-      last_changed: firebase.database.ServerValue.TIMESTAMP,
-    };
-
-    const isOnlineForDatabase = {
-      uid,
-      state: "online",
-      last_changed: firebase.database.ServerValue.TIMESTAMP,
-    };
-
-    // Create reference
+    // Disable reference
     firebase.database().ref(".info/connected").off();
+    userStatusDatabaseRef.off();
   };
 };
 
