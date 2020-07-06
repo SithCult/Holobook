@@ -573,20 +573,11 @@ class ProfilePage extends React.Component {
             <MDBCard className="mt-3 text-center">
               <MDBCardBody>
                 <div className="mt-1 features">
-                  <p className="lead mb-1">
-                    <img
-                      src={holocronIcon}
-                      alt="Holocron icon"
-                      className="mr-2"
-                    />
-                    My Holocrons
-                    <img
-                      src={holocronIcon}
-                      alt="Holocron icon"
-                      className="ml-2"
-                    />
+                  <p className="lead mb-3">
+                    <img src={holocronIcon} alt="Holocron icon" />
+                    <p className="mt-2 mb-0">My Holocrons</p>
                   </p>
-                  <p className="small text-muted mb-2">
+                  <p className="small text-muted mb-3">
                     Your holocrons contain valuable lessons and interactions
                     that can strengthen your connection to the force and
                     yourself.
