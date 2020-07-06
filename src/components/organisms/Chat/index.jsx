@@ -2,55 +2,74 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// React Prop Types
+import PropTypes from "prop-types";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBBtn, MDBInput, MDBIcon } from "mdbreact";
 
-//> Redux Firebase
-// Actions for comments
-import { lel } from "../../../store/actions/chatActions";
-
-// Connect
-import { connect } from "react-redux";
-
 //> Components
+import { MessageItem } from "../../molecules";
 
 //> CSS
-import "./comments.scss";
+import "./chat.scss";
 //#endregion
 
 //#region > Components
-class Comments extends React.Component {
-  state = {
-    comment: "",
-  };
-
+class Chat extends React.Component {
   render() {
-    return <div className="chatbox"></div>;
+    const { chid, name, users, messages, currentUser } = this.props;
+
+    console.log(chid, name, users, messages);
+
+    return (
+      <div className="chat" key={chid}>
+        <div className="chat-container">
+          {messages &&
+            messages.map((item, i) => {
+              console.log(item.author.uid, currentUser);
+              if (item.visible) {
+                return (
+                  <MessageItem
+                    msg={item.msg}
+                    mid={item.mid}
+                    author={item.author}
+                    read={item.read}
+                    reverse={item.author?.uid === currentUser ? true : false}
+                  />
+                );
+              } else {
+                return null;
+              }
+            })}
+        </div>
+        <div className="send">
+          <div className="d-flex align-items-center">
+            <textarea type="text" className="form-control" />
+            <MDBBtn color="blue" className="d-inline-flex">
+              Send
+            </MDBBtn>
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 //#endregion
 
-//#region > Functions
-const mapStateToProps = (state) => {
-  return {
-    auth: state.firebase.auth,
-    profile: state.firebase.profile,
-    comments: state.comment.comments,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loadComments: () => dispatch(loadComments()),
-    createComment: (comment) => dispatch(createComment(comment)),
-  };
+//#region > PropTypes
+Chat.propTypes = {
+  chid: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  users: PropTypes.string.isRequired,
+  messages: PropTypes.array.isRequired,
+  currentUser: PropTypes.string.isRequired,
 };
 //#endregion
 
 //#region > Exports
-export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+export default Chat;
 //#endregion
 
 /**
