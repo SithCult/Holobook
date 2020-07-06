@@ -28,12 +28,14 @@ class Chat extends React.Component {
     this.props.getMessages(this.props.chatDetails.id);
   }
 
+  // Handle text change
   changeHandler = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     });
   };
 
+  // Create a new message
   createMessage = () => {
     let newMsg = { chid: this.props.chatDetails.id, msg: this.state.message };
     console.log(newMsg);

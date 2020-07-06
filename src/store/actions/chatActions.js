@@ -3,6 +3,7 @@ export const joinChat = (uid, chid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
+    // Add user to the chat users
     firestore
       .collection("chats")
       .document(chid)
@@ -16,6 +17,7 @@ export const createChat = (name, users) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
+    // Add new chat to collection.
     return firestore
       .collection("chats")
       .add({ name: name, users: users })
@@ -40,6 +42,8 @@ export const getChats = (uid) => {
           querySnapshot.forEach((doc) => {
             let data = { ...doc.data(), id: doc.id };
 
+            // If a UID is given, return chat if User is a member
+            // Otherwise, push data into array anyways
             if (uid) {
               if (data.users.includes(uid)) {
                 results.push(data);
@@ -48,27 +52,32 @@ export const getChats = (uid) => {
               results.push(data);
             }
           });
+
         dispatch({ type: "GETCHATS_SUCCESS", chats: results });
       });
   };
 };
 
+// Get chat data of a chat by ID
 export const getChatDetails = (chid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
+    // Get chat from collection
     return firestore
       .collection("chats")
       .document(chid)
       .get()
       .then((result) => {
-        !result.empty && console.log(result.data());
-
-        dispatch({ type: "GETCHATDETAILS_SUCCESS", chatDetails: result });
+        dispatch({
+          type: "GETCHATDETAILS_SUCCESS",
+          chatDetails: { id: result.id, data: result.data },
+        });
       });
   };
 };
 
+// Get the chat data of a country
 export const getCountryChat = (country_id) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
@@ -87,20 +96,23 @@ export const getCountryChat = (country_id) => {
           }
         });
 
+        // Return chat object
         return countryChat;
       });
   };
 };
 
 // Get array of all chat messages ordered by timestamp
-export const getMessages = (chid, amount) => {
+export const getMessages = (chid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const chatMessageRef = firebase.database().ref("/chats/" + chid + "/");
 
+    // Create reference
     chatMessageRef.orderByChild("sentTimestamp").on("value", (snapshot) => {
       let chatMessages = [];
 
+      // If messages exist, push them into the array
       if (!snapshot.empty) {
         snapshot.forEach((m) => {
           chatMessages = [...chatMessages, { data: m.val(), mid: m.key }];
@@ -123,6 +135,7 @@ export const writeMessage = (message) => {
       .database()
       .ref("/chats/" + message.chid + "/");
 
+    // Create message object
     message = {
       ...message,
       sentTimestamp: Date.now(),
@@ -131,12 +144,14 @@ export const writeMessage = (message) => {
       read: [firebase.auth().currentUser.uid],
     };
 
+    // Push message into DB
     chatMessageRef
       .push(message)
       .then(() => dispatch({ type: "WRITEMESSAGE_SUCCESS" }));
   };
 };
 
+// Make messages invisible
 export const removeMessage = (chid, mid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -144,6 +159,7 @@ export const removeMessage = (chid, mid) => {
       .database()
       .ref("/chats/" + chid + "/" + mid);
 
+    // Update state to false
     chatMessageRef
       .update({ visible: false })
       .then(() => dispatch({ type: "REMOVEMESSAGE_SUCCESS" }));

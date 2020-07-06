@@ -71,6 +71,7 @@ class MessageItem extends React.Component {
     }
   };
 
+  // Calculate time ago
   calculateTimeAgo = (timestamp) => {
     TimeAgo.addLocale(en);
     const timeAgo = new TimeAgo("en-US");
