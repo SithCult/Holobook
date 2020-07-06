@@ -77,8 +77,6 @@ class Chat extends React.Component {
   render() {
     const { chatDetails, currentUser, hasJoined, chatMessages } = this.props;
 
-    console.log("msg", chatMessages);
-
     return (
       <div className="chat" key={chatDetails.id}>
         <div className="chat-container" ref={this.messagesEndRef}>
@@ -94,6 +92,13 @@ class Chat extends React.Component {
                     timestamp={item.data.sentTimestamp}
                     reverse={
                       item.data.author?.uid === currentUser ? true : false
+                    }
+                    spacing={
+                      i > 0 &&
+                      item.data.sentTimestamp - 600000 >
+                        chatMessages[i - 1].data.sentTimestamp
+                        ? true
+                        : false
                     }
                     author={
                       this.props.users.filter(

@@ -80,30 +80,42 @@ class MessageItem extends React.Component {
   };
 
   render() {
-    const { msg, mid, read, author, reverse, timestamp } = this.props;
+    const { msg, mid, read, author, reverse, timestamp, spacing } = this.props;
     console.log(this.props);
 
     return (
-      <div className="chat-item" key={mid}>
-        <div className={reverse ? "d-flex reverse" : "d-flex"}>
-          <div>{this.getPicture(author.data.skin, mid, author.sith_name)}</div>
-          <div className="body-container">
-            <div className="body">
-              <div className="d-flex justify-content-between">
-                <span className="font-weight-bold">
-                  {author.data.title} {author.data.sith_name}
-                </span>
-                <span className="small text-muted">
-                  {this.calculateTimeAgo(timestamp)}
-                </span>
-              </div>
-              <div>
-                <span>{msg}</span>
+      <>
+        {spacing && (
+          <div className="text-center mb-3">
+            <hr className="mb-1" />
+            <span className="small text-muted">
+              {this.calculateTimeAgo(timestamp)}
+            </span>
+          </div>
+        )}
+        <div className="chat-item" key={mid}>
+          <div className={reverse ? "d-flex reverse" : "d-flex"}>
+            <div>
+              {this.getPicture(author.data.skin, mid, author.sith_name)}
+            </div>
+            <div className="body-container">
+              <div className="body">
+                <div className="d-flex justify-content-between">
+                  <span className="font-weight-bold">
+                    {author.data.title} {author.data.sith_name}
+                  </span>
+                  <span className="small text-muted">
+                    {this.calculateTimeAgo(timestamp)}
+                  </span>
+                </div>
+                <div>
+                  <span>{msg}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }
