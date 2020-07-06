@@ -42,7 +42,7 @@ import {
 } from "mdbreact";
 
 //> Components
-// To be added
+import { Chat } from "../../organisms";
 
 //> CSS
 import "./countrypage.scss";
@@ -53,6 +53,57 @@ import goldUserIMG from "../../../assets/images/gold.gif";
 import lightUserIMG from "../../../assets/images/light.gif";
 import bronzeUserIMG from "../../../assets/images/bronze.gif";
 import darkUserIMG from "../../../assets/images/dark.gif";
+//#endregion
+
+//#region > Dummy Data
+const dummyChat = {
+  chid: "12345678",
+  users: ["JjfKl4m5YfYLrafhoDmzYjD55Vg2", "rPhUeYFZBucTQYKx5g3YHNhrXy22"],
+  messages: [
+    {
+      mid: "84738473848",
+      msg: "Test message",
+      author: { uid: "rPhUeYFZBucTQYKx5g3YHNhrXy22" },
+      visible: true,
+    },
+    {
+      mid: "84738473848",
+      msg: "Test message",
+      author: { uid: "rPhUeYFZBucTQYKx5g3YHNhrXy22" },
+      visible: true,
+    },
+    {
+      mid: "84738473848",
+      msg: "Test message",
+      author: { uid: "JjfKl4m5YfYLrafhoDmzYjD55Vg2" },
+      visible: true,
+    },
+    {
+      mid: "84738473848",
+      msg: "Test message",
+      author: { uid: "rPhUeYFZBucTQYKx5g3YHNhrXy22" },
+      visible: true,
+    },
+    {
+      mid: "84738473848",
+      msg: "Test message",
+      author: { uid: "rPhUeYFZBucTQYKx5g3YHNhrXy22" },
+      visible: true,
+    },
+    {
+      mid: "84738473848",
+      msg: "Test message",
+      author: { uid: "rPhUeYFZBucTQYKx5g3YHNhrXy22" },
+      visible: true,
+    },
+    {
+      mid: "84738473848",
+      msg: "Test message",
+      author: { uid: "rPhUeYFZBucTQYKx5g3YHNhrXy22" },
+      visible: true,
+    },
+  ],
+};
 //#endregion
 
 //#region > Components
@@ -454,7 +505,15 @@ class CountryPage extends React.Component {
                   <>
                     {profile.address?.country.toLowerCase().trim() ===
                     country_code.toLowerCase().trim() ? (
-                      <p>Country functions are not available yet.</p>
+                      <>
+                        <Chat
+                          chid={dummyChat.chid}
+                          name={country_code + " Chat"}
+                          users={dummyChat.users}
+                          messages={dummyChat.messages}
+                          currentUser={auth.uid}
+                        />
+                      </>
                     ) : (
                       <>
                         <p className="lead">

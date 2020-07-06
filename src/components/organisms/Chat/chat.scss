@@ -1,0 +1,53 @@
+.chat {
+  border: 1px darken(grey, 20%) solid;
+  border-radius: 0.5rem;
+  position: relative;
+
+  .chat-container {
+    min-height: 350px;
+    max-height: 450px;
+    background: darken(grey, 35%);
+    padding: 0 2rem;
+
+    // Border radius of container (top)
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+
+    // Enable scrolling
+    overflow-y: scroll;
+  }
+
+  .send {
+    padding: 0.4rem;
+    width: 100%;
+    bottom: 0;
+    background: darken(grey, 25%);
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    border-top: 1px darken(grey, 20%) solid;
+
+    input {
+      border-top-left-radius: 0.5rem;
+      border-bottom-left-radius: 0.5rem;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    // Blue button
+    .btn-blue {
+      background: transparentize($color: #33b5e5, $amount: 0.5) !important;
+      border: 2px #33b5e5 solid;
+      border-radius: 0.5rem;
+      margin-right: 0;
+      padding: 0.5rem 2rem;
+      &:hover {
+        background: transparentize($color: #33b5e5, $amount: 0.4) !important;
+      }
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
+ */
