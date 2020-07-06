@@ -53,6 +53,45 @@ export const getChats = (uid) => {
   };
 };
 
+export const getChatDetails = (chid) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    return firestore
+      .collection("chats")
+      .document(chid)
+      .get()
+      .then((result) => {
+        !result.empty && console.log(result.data());
+
+        dispatch({ type: "GETCHATDETAILS_SUCCESS", chatDetails: result });
+      });
+  };
+};
+
+export const getCountryChat = (country_id) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    return firestore
+      .collection("chats")
+      .get()
+      .then((querySnapshot) => {
+        let countryChat;
+
+        querySnapshot.forEach((doc) => {
+          let data = { ...doc.data(), id: doc.id };
+
+          if (data.name === country_id + " Chat") {
+            countryChat = data;
+          }
+        });
+
+        return countryChat;
+      });
+  };
+};
+
 // Get array of all chat messages ordered by timestamp
 export const getMessages = (chid, amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -64,13 +103,13 @@ export const getMessages = (chid, amount) => {
 
       if (!snapshot.empty) {
         snapshot.forEach((m) => {
-          chatMessages = [...chatMessages, m.val()];
+          chatMessages = [...chatMessages, { data: m.val(), mid: m.key }];
         });
       }
 
       dispatch({
         type: "GETMESSAGES_SUCCESS",
-        chatMessages: chatMessages.reverse(),
+        chatMessages: chatMessages,
       });
     });
   };

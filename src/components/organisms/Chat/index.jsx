@@ -9,6 +9,12 @@ import PropTypes from "prop-types";
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBBtn, MDBInput, MDBIcon } from "mdbreact";
 
+//> Redux
+// Connect
+import { connect } from "react-redux";
+// Actions
+import { getMessages, writeMessage } from "../../../store/actions/chatActions";
+
 //> Components
 import { MessageItem } from "../../molecules";
 
@@ -18,25 +24,47 @@ import "./chat.scss";
 
 //#region > Components
 class Chat extends React.Component {
-  render() {
-    const { chid, name, users, messages, currentUser } = this.props;
+  componentDidMount() {
+    this.props.getMessages(this.props.chatDetails.id);
+  }
 
-    console.log(chid, name, users, messages);
+  changeHandler = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  createMessage = () => {
+    let newMsg = { chid: this.props.chatDetails.id, msg: this.state.message };
+    console.log(newMsg);
+    this.props.writeMessage(newMsg);
+    this.setState({ message: "" });
+  };
+
+  render() {
+    const { chatDetails, currentUser } = this.props;
 
     return (
-      <div className="chat" key={chid}>
+      <div className="chat" key={chatDetails.id}>
         <div className="chat-container">
-          {messages &&
-            messages.map((item, i) => {
-              console.log(item.author.uid, currentUser);
-              if (item.visible) {
+          {this.props.chatMessages &&
+            this.props.chatMessages.map((item, i) => {
+              if (item.data.visible) {
                 return (
                   <MessageItem
-                    msg={item.msg}
-                    mid={item.mid}
-                    author={item.author}
-                    read={item.read}
-                    reverse={item.author?.uid === currentUser ? true : false}
+                    msg={item.data.msg}
+                    key={i}
+                    mid={item.id}
+                    read={item.data.read}
+                    timestamp={item.data.sentTimestamp}
+                    reverse={
+                      item.data.author?.uid === currentUser ? true : false
+                    }
+                    author={
+                      this.props.users.filter(
+                        (u) => u.id === item.data.author.uid
+                      )[0]
+                    }
                   />
                 );
               } else {
@@ -46,8 +74,18 @@ class Chat extends React.Component {
         </div>
         <div className="send">
           <div className="d-flex align-items-center">
-            <textarea type="text" className="form-control" />
-            <MDBBtn color="blue" className="d-inline-flex">
+            <textarea
+              type="text"
+              className="form-control"
+              name="message"
+              value={this.state?.message}
+              onChange={this.changeHandler}
+            />
+            <MDBBtn
+              color="blue"
+              className="d-inline-flex"
+              onClick={this.createMessage}
+            >
               Send
             </MDBBtn>
           </div>
@@ -60,16 +98,28 @@ class Chat extends React.Component {
 
 //#region > PropTypes
 Chat.propTypes = {
-  chid: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  users: PropTypes.string.isRequired,
-  messages: PropTypes.array.isRequired,
+  chatDetails: PropTypes.object.isRequired,
   currentUser: PropTypes.string.isRequired,
 };
 //#endregion
 
+//#region > Functions
+const mapStateToProps = (state) => {
+  return {
+    chatMessages: state.chat.chatMessages,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getMessages: (chid) => dispatch(getMessages(chid)),
+    writeMessage: (msg) => dispatch(writeMessage(msg)),
+  };
+};
+//#endregion
+
 //#region > Exports
-export default Chat;
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);
 //#endregion
 
 /**

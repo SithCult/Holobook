@@ -5,6 +5,12 @@ import React from "react";
 // React Prop Types
 import PropTypes from "prop-types";
 
+//> Additional libraries
+// Calculate time ago
+import TimeAgo from "javascript-time-ago";
+// Load locale-specific relative date/time formatting rules.
+import en from "javascript-time-ago/locale/en";
+
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -30,7 +36,7 @@ import darkUserIMG from "../../../assets/images/dark.gif";
 //#region > Components
 class MessageItem extends React.Component {
   // Get user profile picture
-  getPicture = (skin, uid, index, name) => {
+  getPicture = (skin, index, name) => {
     switch (skin) {
       case "gold":
         return (
@@ -65,18 +71,30 @@ class MessageItem extends React.Component {
     }
   };
 
+  calculateTimeAgo = (timestamp) => {
+    TimeAgo.addLocale(en);
+    const timeAgo = new TimeAgo("en-US");
+
+    return timeAgo.format(timestamp);
+  };
+
   render() {
-    const { mid, msg, author, read, reverse } = this.props;
+    const { msg, mid, read, author, reverse, timestamp } = this.props;
+    console.log(author);
 
     return (
       <div className="chat-item" key={mid}>
         <div className={reverse ? "d-flex reverse" : "d-flex"}>
-          <div>{this.getPicture("default", null, mid, "Testuser")}</div>
+          <div>{this.getPicture(author.data.skin, mid, author.sith_name)}</div>
           <div className="body-container">
             <div className="body">
               <div className="d-flex justify-content-between">
-                <span className="font-weight-bold">Acolyte Testuser</span>
-                <span className="small text-muted">8:00 pm</span>
+                <span className="font-weight-bold">
+                  {author.data.title} {author.data.sith_name}
+                </span>
+                <span className="small text-muted">
+                  {this.calculateTimeAgo(timestamp)}
+                </span>
               </div>
               <div>
                 <span>{msg}</span>

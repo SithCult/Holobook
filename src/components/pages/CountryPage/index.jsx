@@ -25,6 +25,7 @@ import {
   getUsersPerCountry,
   getOnlineUsers,
 } from "../../../store/actions/userActions";
+import { getCountryChat, createChat } from "../../../store/actions/chatActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -134,11 +135,39 @@ class CountryPage extends React.Component {
 
   init = async (country) => {
     if (country) {
-      this.setState({
-        users: await this.props.getUsersPerCountry(country),
-        country_code: country ? country.toLowerCase().trim() : null,
-        country: country ? countryList().getLabel(country) : null,
-      });
+      this.setState(
+        {
+          users: await this.props.getUsersPerCountry(country),
+          country_code: country ? country.toLowerCase().trim() : null,
+          country: country ? countryList().getLabel(country) : null,
+        },
+        async () => {
+          let countryChat = await this.props.getCountryChat(
+            this.state.country_code
+          );
+
+          console.log(countryChat);
+
+          if (countryChat === null) {
+            console.log("Country chat does not exist, creating a new one");
+
+            let userIDs = [];
+
+            this.state.users.map((u) => {
+              userIDs = [...userIDs, u.id];
+            });
+
+            this.props.createChat(this.state.country_code + " Chat", userIDs);
+            this.setState({
+              countryChat: await this.props.getCountryChat(
+                this.state.country_code
+              ),
+            });
+          } else {
+            this.setState({ countryChat });
+          }
+        }
+      );
     }
   };
 
@@ -171,7 +200,7 @@ class CountryPage extends React.Component {
         <div className="memberlist moffs">
           {filtered.map((found, f) => {
             return (
-              <MDBCard className="text-left">
+              <MDBCard className="text-left" key="f">
                 <div className="d-flex justify-content-between">
                   <div className="d-flex align-items-center">
                     {this.getPicture(
@@ -436,7 +465,6 @@ class CountryPage extends React.Component {
                     <div className="card-columns memberlist">
                       {users &&
                         users.map((user, i) => {
-                          console.log(user);
                           return (
                             <MDBCard className="text-left" key={i}>
                               <div className="d-flex justify-content-between">
@@ -506,13 +534,13 @@ class CountryPage extends React.Component {
                     {profile.address?.country.toLowerCase().trim() ===
                     country_code.toLowerCase().trim() ? (
                       <>
-                        <Chat
-                          chid={dummyChat.chid}
-                          name={country_code + " Chat"}
-                          users={dummyChat.users}
-                          messages={dummyChat.messages}
-                          currentUser={auth.uid}
-                        />
+                        {this.state.countryChat && (
+                          <Chat
+                            chatDetails={this.state.countryChat}
+                            currentUser={auth.uid}
+                            users={this.state.users}
+                          />
+                        )}
                       </>
                     ) : (
                       <>
@@ -564,6 +592,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getUsersPerCountry: (cc) => dispatch(getUsersPerCountry(cc)),
     getOnlineUsers: () => dispatch(getOnlineUsers()),
+    getCountryChat: (countryid) => dispatch(getCountryChat(countryid)),
+    createChat: (name, users) => dispatch(createChat(name, users)),
   };
 };
 //#endregion

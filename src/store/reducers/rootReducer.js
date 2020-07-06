@@ -7,6 +7,7 @@ import userReducer from "./userReducer";
 import likeReducer from "./likeReducer";
 import donMsgReducer from "./donMsgReducer";
 import commentReducer from "./commentReducer";
+import chatReducer from "./chatReducer";
 
 //> Redux
 import { combineReducers } from "redux";
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   like: likeReducer, // Like of posts or comments
   donMsg: donMsgReducer, // Donation messages
   comment: commentReducer, // Comments
+  chat: chatReducer,
   firestore: firestoreReducer, // Database
   firebase: firebaseReducer, // Authentication
 });
