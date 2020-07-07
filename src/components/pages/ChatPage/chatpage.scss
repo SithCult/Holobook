@@ -19,6 +19,9 @@
 
     &.active {
       background: lighten(#2e2e2e, 5%);
+      &:hover {
+        background: lighten(#2e2e2e, 5%);
+      }
     }
     &:hover {
       background: lighten(#2e2e2e, 2%);
@@ -41,3 +44,92 @@
     }
   }
 }
+
+// Modal
+#add-chat {
+  &.modal {
+    .modal-content {
+      border-radius: 0.3rem;
+      .btn {
+        border-radius: 0.5rem;
+        text-transform: initial;
+        &.btn-black {
+          background: transparentize($color: black, $amount: 0.8) !important;
+          border: 2px black solid;
+          &:hover {
+            background: transparentize($color: black, $amount: 0.4) !important;
+          }
+        }
+        &.btn-blue {
+          background: transparentize($color: #33b5e5, $amount: 0.5) !important;
+          border: 2px #33b5e5 solid;
+          &:hover {
+            background: transparentize(
+              $color: #33b5e5,
+              $amount: 0.4
+            ) !important;
+          }
+        }
+      }
+      .modal-body {
+        color: white;
+        background: #2e2e2e;
+
+        // Badges
+        .badge {
+          box-shadow: none;
+          padding: 0.5rem;
+          margin: 0.2rem;
+          &.badge-elegant {
+            background: transparentize($color: black, $amount: 0.7) !important;
+            border-radius: 0.5rem;
+            border: 2px black solid !important;
+            i {
+              &:hover {
+                color: lighten(#ff3547, 10%) !important;
+              }
+            }
+          }
+        }
+
+        // Results
+        .card-columns {
+          column-count: 2;
+          .card {
+            user-select: none;
+            transition: all 0.2s ease;
+            background: darken(#2e2e2e, 5%);
+            color: white;
+            box-shadow: none;
+            border-radius: 0.5rem;
+            padding: 0.4rem;
+            // User avatars
+            .avatar {
+              width: 30px;
+              border-radius: 50%;
+              overflow: hidden;
+              display: inline-block;
+              img {
+                width: 100%;
+                height: auto;
+              }
+            }
+
+            &:hover {
+              background: darken(#2e2e2e, 10%);
+            }
+          }
+        }
+      }
+      .modal-footer {
+        color: white;
+        background: darken(#2e2e2e, 5%);
+      }
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
+ */

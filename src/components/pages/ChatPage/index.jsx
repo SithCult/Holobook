@@ -24,6 +24,7 @@ import { connect } from "react-redux";
 import {
   getUsersPerCountry,
   getOnlineUsers,
+  getAllUsers,
 } from "../../../store/actions/userActions";
 import {
   getCountryChat,
@@ -42,9 +43,12 @@ import {
   MDBIcon,
   MDBCard,
   MDBCardBody,
-  MDBAvatar,
-  MDBBadge,
+  MDBModal,
+  MDBModalBody,
+  MDBModalFooter,
   MDBProgress,
+  MDBBadge,
+  MDBAvatar,
 } from "mdbreact";
 
 //> Components
@@ -66,14 +70,120 @@ import darkUserIMG from "../../../assets/images/dark.gif";
 class ChatPage extends React.Component {
   state = {
     selectedChat: null,
+    selectedUsers: [],
+    modal: false,
+    showAllSearchMemberResults: false,
   };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     const { auth } = this.props;
 
     if (auth.uid) {
-      this.props.getChats(this.props.auth.uid);
+      this.setState(
+        {
+          users: await this.props.getAllUsers(),
+        },
+        () => this.props.getChats(this.props.auth.uid)
+      );
     }
+  };
+
+  // Get user profile picture
+  getPicture = (skin, uid, index, name) => {
+    switch (skin) {
+      case "gold":
+        return (
+          <MDBAvatar className="mx-auto white" key={index}>
+            <img src={goldUserIMG} alt={name} />
+          </MDBAvatar>
+        );
+      case "light":
+        return (
+          <MDBAvatar className="mx-auto white" key={index}>
+            <img src={lightUserIMG} alt={name} />
+          </MDBAvatar>
+        );
+      case "bronze":
+        return (
+          <MDBAvatar className="mx-auto white" key={index}>
+            <img src={bronzeUserIMG} alt={name} />
+          </MDBAvatar>
+        );
+      case "dark":
+        return (
+          <MDBAvatar className="mx-auto white" key={index}>
+            <img src={darkUserIMG} alt={name} />
+          </MDBAvatar>
+        );
+      default:
+        return (
+          <MDBAvatar className="mx-auto white" key={index}>
+            <img src={defaultUserIMG} alt={name} />
+          </MDBAvatar>
+        );
+    }
+  };
+
+  toggle = () => {
+    this.setState({
+      modal: !this.state.modal,
+    });
+  };
+
+  searchMember = (input) => {
+    const allUsers = this.state.users;
+
+    let results = [];
+
+    if (input) {
+      allUsers.forEach((user) => {
+        // Check if input matches any user and exclude own user
+        if (
+          user.data.sith_name.toLowerCase().includes(input.toLowerCase()) &&
+          user.id !== this.props.auth.uid
+        ) {
+          // Check if user is not already selected
+          const selectedUsers = this.state.selectedUsers;
+          let found = false;
+
+          selectedUsers.forEach((selected) => {
+            if (selected.id === user.id) {
+              found = true;
+            }
+          });
+
+          if (!found) {
+            results = [...results, user];
+          }
+        }
+      });
+    }
+
+    this.setState({
+      searchMemberResults: results,
+      searchMemberInput: input,
+      showAllSearchMemberResults: false,
+    });
+  };
+
+  selectMember = (user) => {
+    this.setState({
+      searchMemberInput: "",
+      searchMemberResults: [],
+      selectedUsers: [...this.state.selectedUsers, user],
+    });
+  };
+
+  removeMember = (id) => {
+    let selectedUsers = this.state.selectedUsers;
+
+    selectedUsers = selectedUsers.filter(function (obj) {
+      return obj.id !== id;
+    });
+
+    this.setState({
+      selectedUsers,
+    });
   };
 
   render() {
@@ -89,75 +199,225 @@ class ChatPage extends React.Component {
       });
     }
 
-    console.log(chats);
+    console.log(this.state);
 
     return (
-      <MDBContainer id="chats" className="text-white pt-5 mt-5">
-        <Helmet>
-          <meta charSet="utf-8" />
-          <title>{`Chat - SithCult`}</title>
-          <link rel="canonical" href="https://sithcult.com/chat" />
-        </Helmet>
-        <MDBRow>
-          <MDBCol lg="4">
-            <div className="text-right mb-2">
-              <MDBBtn color="blue" size="md">
-                <MDBIcon icon="plus" className="mr-2" />
-                Create chat
-              </MDBBtn>
-            </div>
-            {chats &&
-              chats.map((chat, i) => {
-                return (
-                  <MDBCard
-                    key={i}
-                    className={
-                      chat.id === this.state.selectedChat?.id
-                        ? "clickable active"
-                        : "clickable"
-                    }
-                    onClick={() => this.setState({ selectedChat: chat })}
-                  >
-                    <MDBCardBody>
-                      <div className="d-flex justify-content-between">
-                        {chat.name.length === 2 ? (
-                          <div>
-                            <div className="text-center flag">
-                              <ReactCountryFlag svg countryCode={chat.name} />
+      <>
+        <MDBContainer id="chats" className="text-white pt-5 mt-5">
+          <Helmet>
+            <meta charSet="utf-8" />
+            <title>{`Chat - SithCult`}</title>
+            <link rel="canonical" href="https://sithcult.com/chat" />
+          </Helmet>
+          <MDBRow>
+            <MDBCol lg="4">
+              <div className="text-right mb-2">
+                <MDBBtn color="blue" size="md" onClick={this.toggle}>
+                  <MDBIcon icon="plus" className="mr-2" />
+                  Create chat
+                </MDBBtn>
+              </div>
+              {chats &&
+                chats.map((chat, i) => {
+                  return (
+                    <MDBCard
+                      key={i}
+                      className={
+                        chat.id === this.state.selectedChat?.id
+                          ? "clickable active"
+                          : "clickable"
+                      }
+                      onClick={() => this.setState({ selectedChat: chat })}
+                    >
+                      <MDBCardBody>
+                        <div className="d-flex justify-content-between">
+                          {chat.name.length === 2 ? (
+                            <div>
+                              <div className="text-center flag">
+                                <ReactCountryFlag svg countryCode={chat.name} />
+                              </div>
+                              {countryList().getLabel(chat.name)}
                             </div>
-                            {countryList().getLabel(chat.name)}
-                          </div>
-                        ) : (
-                          chat.name
-                        )}
-                        {(chat.users.length > 2 || chat.name.length === 2) && (
-                          <span className="text-muted small">Group Chat</span>
-                        )}
-                      </div>
-                    </MDBCardBody>
-                  </MDBCard>
-                );
-              })}
-          </MDBCol>
-          <MDBCol lg="8">
-            {this.state.selectedChat && (
-              <Chat
-                key={this.state.selectedChat.id}
-                chatDetails={{
-                  id: this.state.selectedChat.id,
-                  data: this.state.selectedChat,
-                }}
-                currentUser={auth.uid}
-                hasJoined={
-                  this.state.selectedChat.users.includes(auth.uid)
-                    ? true
-                    : false
-                }
+                          ) : (
+                            chat.name
+                          )}
+                          {(chat.users.length > 2 ||
+                            chat.name.length === 2) && (
+                            <span className="text-muted small">Group Chat</span>
+                          )}
+                        </div>
+                        <div>
+                          <span className="text-muted small">
+                            {chat.users.length}{" "}
+                            {chat.users.length === 1
+                              ? "participant"
+                              : "participants"}
+                          </span>
+                        </div>
+                      </MDBCardBody>
+                    </MDBCard>
+                  );
+                })}
+            </MDBCol>
+            <MDBCol lg="8">
+              {this.state.selectedChat && (
+                <Chat
+                  key={this.state.selectedChat.id}
+                  chatDetails={{
+                    id: this.state.selectedChat.id,
+                    data: this.state.selectedChat,
+                  }}
+                  allUsers={this.state.users ? this.state.users : null}
+                  currentUser={auth.uid}
+                  hasJoined={
+                    this.state.selectedChat.users.includes(auth.uid)
+                      ? true
+                      : false
+                  }
+                />
+              )}
+            </MDBCol>
+          </MDBRow>
+        </MDBContainer>
+        {this.state.modal && (
+          <MDBModal
+            id="add-chat"
+            size="md"
+            isOpen={this.state.modal}
+            toggle={this.toggle}
+          >
+            <MDBModalBody className="mb-0">
+              <p className="font-weight-bold">Create new chat</p>
+              {this.state.selectedUsers.length > 1 && (
+                <input
+                  type="text"
+                  className="form-control mb-3"
+                  placeholder="Group Chat name"
+                />
+              )}
+              <p className="mb-0">Participants</p>
+              <div className="my-2">
+                {this.state.selectedUsers &&
+                  this.state.selectedUsers.map((user, i) => {
+                    return (
+                      <MDBBadge pill color="elegant" key={i}>
+                        {user.data.sith_name}
+                        <MDBIcon
+                          icon="minus"
+                          className="ml-2 text-danger clickable"
+                          onClick={() => this.removeMember(user.id)}
+                        />
+                      </MDBBadge>
+                    );
+                  })}
+              </div>
+
+              <input
+                type="text"
+                className="form-control mb-3"
+                value={this.state.searchMemberInput}
+                onChange={(e) => this.searchMember(e.target.value)}
+                placeholder="Search member"
               />
-            )}
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
+              <div className="card-columns">
+                {this.state.searchMemberResults &&
+                  this.state.searchMemberResults.splice(0, 6).map((user, i) => {
+                    console.log(user);
+                    return (
+                      <MDBCard
+                        className="text-left clickable"
+                        key={i}
+                        onClick={() => this.selectMember(user)}
+                      >
+                        <div className="d-flex justify-content-between">
+                          <div className="d-flex align-items-center">
+                            {this.getPicture(
+                              user.data.skin,
+                              user.id,
+                              i,
+                              user.data.sith_name
+                            )}
+                            <span className="pl-2">
+                              {user.data.sith_name}
+                              <span className="d-block small blue-text">
+                                {countryList().getLabel(user.data.country)}
+                              </span>
+                            </span>
+                          </div>
+                          <span className="small text-muted">
+                            <span className="ml-1">{user.data.title}</span>
+                          </span>
+                        </div>
+                        <span className="d-block small text-info my-1">
+                          {user.data.department}
+                        </span>
+                        {user.data.donations && (
+                          <div>
+                            <MDBBadge pill color="amber" className="mt-2">
+                              <MDBIcon icon="dollar-sign" /> Supporter
+                            </MDBBadge>
+                          </div>
+                        )}
+                      </MDBCard>
+                    );
+                  })}
+              </div>
+              {this.state.searchMemberResults &&
+                this.state.searchMemberResults.length > 6 && (
+                  <p className="text-muted small">
+                    and {this.state.searchMemberResults.length - 6} more
+                  </p>
+                )}
+              {this.state.selectedUsers.length === 1 && (
+                <>
+                  <MDBBtn color="blue" size="md" className="m-0">
+                    Start Chat with {this.state.selectedUsers[0].data.sith_name}
+                  </MDBBtn>
+                  <span className="d-block small text-muted mt-2">
+                    Or add at least one more to create a new{" "}
+                    <strong>group chat</strong>.
+                  </span>
+                </>
+              )}
+              {this.state.selectedUsers.length > 1 && (
+                <>
+                  <MDBBtn
+                    color="blue"
+                    size="md"
+                    className="m-0"
+                    disabled={this.state.selectedUsers.length >= 10}
+                  >
+                    Start group chat
+                  </MDBBtn>
+                  {this.state.selectedUsers.length >= 10 ? (
+                    <span className="d-block small text-muted mt-2">
+                      You have reached the max. number of participant for your
+                      group chat.
+                    </span>
+                  ) : (
+                    <span className="d-block small text-muted mt-2">
+                      You can add up to {10 - this.state.selectedUsers.length}{" "}
+                      more people in your group chat.
+                    </span>
+                  )}
+                </>
+              )}
+            </MDBModalBody>
+            <MDBModalFooter className="justify-content-center text-dark">
+              <MDBBtn
+                color="black"
+                rounded
+                size="md"
+                className="ml-4"
+                onClick={this.toggle}
+              >
+                <MDBIcon icon="times" className="pr-2" />
+                Cancel
+              </MDBBtn>
+            </MDBModalFooter>
+          </MDBModal>
+        )}
+      </>
     );
   }
 }
@@ -180,6 +440,7 @@ const mapDispatchToProps = (dispatch) => {
     getChats: (uid) => dispatch(getChats(uid)),
     createChat: (name, users) => dispatch(createChat(name, users)),
     joinChat: (uid, chid, curUsers) => dispatch(joinChat(uid, chid, curUsers)),
+    getAllUsers: () => dispatch(getAllUsers()),
   };
 };
 //#endregion

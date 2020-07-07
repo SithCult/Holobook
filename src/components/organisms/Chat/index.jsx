@@ -38,13 +38,20 @@ class Chat extends React.Component {
   }
 
   componentDidMount = async () => {
-    this.setState({ allUsers: await this.props.getAllUsers() }, () => {
-      // Get messages of chat
-      this.props.getMessages(this.props.chatDetails.id);
+    this.setState(
+      {
+        allUsers: this.props.allUsers
+          ? this.props.allUsers
+          : await this.props.getAllUsers(),
+      },
+      () => {
+        // Get messages of chat
+        this.props.getMessages(this.props.chatDetails.id);
 
-      // Scroll to bottom of chat
-      this.scrollToBottom();
-    });
+        // Scroll to bottom of chat
+        this.scrollToBottom();
+      }
+    );
   };
 
   componentDidUpdate() {
