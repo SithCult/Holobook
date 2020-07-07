@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import { MDBBtn, MDBInput, MDBIcon } from "mdbreact";
+import { MDBBtn } from "mdbreact";
 
 //> Redux
 // Connect

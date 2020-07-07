@@ -6,12 +6,10 @@ import React from "react";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
-  MDBBadge,
   MDBPopover,
   MDBPopoverBody,
   MDBPopoverHeader,
   MDBIcon,
-  MDBTooltip,
 } from "mdbreact";
 
 //> CSS

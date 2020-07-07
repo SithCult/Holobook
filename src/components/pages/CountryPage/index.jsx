@@ -108,7 +108,7 @@ class CountryPage extends React.Component {
 
             let userIDs = [];
 
-            this.state.users.map((u) => {
+            this.state.users.forEach((u) => {
               userIDs = [...userIDs, u.id];
             });
 

@@ -15,7 +15,7 @@ import moment from "moment";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import { MDBAvatar, MDBTooltip, MDBIcon } from "mdbreact";
+import { MDBAvatar } from "mdbreact";
 
 //> CSS
 import "./messageitem.scss";
@@ -78,8 +78,7 @@ class MessageItem extends React.Component {
   };
 
   render() {
-    const { msg, mid, read, author, reverse, timestamp, spacing } = this.props;
-    console.log(this.props);
+    const { msg, mid, author, reverse, timestamp, spacing } = this.props;
 
     return (
       <>
