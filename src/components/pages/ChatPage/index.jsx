@@ -186,6 +186,24 @@ class ChatPage extends React.Component {
     });
   };
 
+  getUsers = () => {
+    const selectedUsers = this.state.selectedUsers;
+
+    if (selectedUsers) {
+      let result = [];
+
+      selectedUsers.forEach((user) => {
+        result = [...result, user.id];
+      });
+
+      result = [...result, this.props.auth.uid];
+
+      return result;
+    } else {
+      return false;
+    }
+  };
+
   render() {
     const { auth, profile, chats } = this.props;
 
@@ -239,21 +257,29 @@ class ChatPage extends React.Component {
                               {countryList().getLabel(chat.name)}
                             </div>
                           ) : (
-                            chat.name
+                            <p className="mb-0">
+                              {chat.name.split(" ").length === 3
+                                ? chat.name.split(" ")[2]
+                                : chat.name}
+                            </p>
                           )}
                           {(chat.users.length > 2 ||
                             chat.name.length === 2) && (
                             <span className="text-muted small">Group Chat</span>
                           )}
                         </div>
-                        <div>
-                          <span className="text-muted small">
-                            {chat.users.length}{" "}
-                            {chat.users.length === 1
-                              ? "participant"
-                              : "participants"}
-                          </span>
-                        </div>
+                        {chat.users.length !== 2 ? (
+                          <div>
+                            <span className="text-muted small">
+                              {chat.users.length}{" "}
+                              {chat.users.length === 1
+                                ? "participant"
+                                : "participants"}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="blue-text small">Private chat</span>
+                        )}
                       </MDBCardBody>
                     </MDBCard>
                   );
@@ -293,6 +319,10 @@ class ChatPage extends React.Component {
                   type="text"
                   className="form-control mb-3"
                   placeholder="Group Chat name"
+                  value={this.state.newGroupName}
+                  onChange={(e) =>
+                    this.setState({ newGroupName: e.target.value })
+                  }
                 />
               )}
               <p className="mb-0">Participants</p>
@@ -311,7 +341,6 @@ class ChatPage extends React.Component {
                     );
                   })}
               </div>
-
               <input
                 type="text"
                 className="form-control mb-3"
@@ -370,7 +399,19 @@ class ChatPage extends React.Component {
                 )}
               {this.state.selectedUsers.length === 1 && (
                 <>
-                  <MDBBtn color="blue" size="md" className="m-0">
+                  <MDBBtn
+                    color="blue"
+                    size="md"
+                    className="m-0"
+                    onClick={() =>
+                      this.props.createChat(
+                        this.props.profile.sith_name +
+                          " and " +
+                          this.state.selectedUsers[0].data.sith_name,
+                        this.getUsers()
+                      )
+                    }
+                  >
                     Start Chat with {this.state.selectedUsers[0].data.sith_name}
                   </MDBBtn>
                   <span className="d-block small text-muted mt-2">
@@ -386,6 +427,12 @@ class ChatPage extends React.Component {
                     size="md"
                     className="m-0"
                     disabled={this.state.selectedUsers.length >= 10}
+                    onClick={() =>
+                      this.props.createChat(
+                        this.state.newGroupName,
+                        this.getUsers()
+                      )
+                    }
                   >
                     Start group chat
                   </MDBBtn>

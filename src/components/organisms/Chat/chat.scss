@@ -9,6 +9,18 @@
     background: darken(grey, 35%);
     padding: 0 2rem;
 
+    // Badges
+    .badge {
+      box-shadow: none;
+      padding: 0.5rem;
+      font-size: 1.1rem;
+      &.badge-success {
+        background: transparentize($color: #00c851, $amount: 0.7) !important;
+        border-radius: 0.5rem;
+        border: 2px darken(#00c851, 15%) solid !important;
+      }
+    }
+
     // Border radius of container (top)
     border-top-left-radius: 0.5rem;
     border-top-right-radius: 0.5rem;
