@@ -5,12 +5,18 @@
       display: none;
     }
     .popover-header {
-      background: #3e3e3e;
+      background: lightgrey;
       color: white;
       border-bottom: 2px solid #f44336;
+      .basic {
+        font-size: 1.3rem !important;
+      }
     }
     .popover-body {
-      background: #1e1e1e;
+      .basic {
+        font-size: 0.5rem !important;
+        color: lightgrey;
+      }
     }
   }
 }
