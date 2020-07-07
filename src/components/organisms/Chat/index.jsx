@@ -14,6 +14,7 @@ import { MDBBtn, MDBInput, MDBIcon } from "mdbreact";
 import { connect } from "react-redux";
 // Actions
 import { getMessages, writeMessage } from "../../../store/actions/chatActions";
+import { getAllUsers } from "../../../store/actions/userActions";
 
 //> Components
 import { MessageItem } from "../../molecules";
@@ -36,11 +37,15 @@ class Chat extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.props.getMessages(this.props.chatDetails.id);
+  componentDidMount = async () => {
+    this.setState({ allUsers: await this.props.getAllUsers() }, () => {
+      // Get messages of chat
+      this.props.getMessages(this.props.chatDetails.id);
 
-    this.scrollToBottom();
-  }
+      // Scroll to bottom of chat
+      this.scrollToBottom();
+    });
+  };
 
   componentDidUpdate() {
     this.scrollToBottom();
@@ -81,6 +86,7 @@ class Chat extends React.Component {
       <div className="chat" key={chatDetails.id}>
         <div className="chat-container" ref={this.messagesEndRef}>
           {chatMessages &&
+            this.state.allUsers &&
             chatMessages.map((item, i) => {
               if (item.data.visible) {
                 return (
@@ -102,7 +108,7 @@ class Chat extends React.Component {
                         : true
                     }
                     author={
-                      this.props.users.filter(
+                      this.state.allUsers.filter(
                         (u) => u.id === item.data.author.uid
                       )[0]
                     }
@@ -119,14 +125,14 @@ class Chat extends React.Component {
               type="text"
               className="form-control"
               name="message"
-              value={this.state?.message}
+              value={this.state.message}
               onChange={this.changeHandler}
             />
             <MDBBtn
               color="blue"
               className="d-inline-flex"
               onClick={this.createMessage}
-              disabled={!hasJoined}
+              disabled={!hasJoined || this.state.message === ""}
             >
               Send
             </MDBBtn>
@@ -157,6 +163,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getMessages: (chid) => dispatch(getMessages(chid)),
     writeMessage: (msg) => dispatch(writeMessage(msg)),
+    getAllUsers: () => dispatch(getAllUsers()),
   };
 };
 //#endregion
