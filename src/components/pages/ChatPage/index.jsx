@@ -3,15 +3,11 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 // Redirect from Router
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 // Meta tags
 import { Helmet } from "react-helmet";
 
 //> Additional libraries
-// Calculate time ago
-import TimeAgo from "javascript-time-ago";
-// Load locale-specific relative date/time formatting rules.
-import en from "javascript-time-ago/locale/en";
 // Flags for countries
 import ReactCountryFlag from "react-country-flag";
 // Country list
@@ -21,13 +17,8 @@ import countryList from "react-select-country-list";
 // Connect
 import { connect } from "react-redux";
 // Actions
+import { getAllUsers } from "../../../store/actions/userActions";
 import {
-  getUsersPerCountry,
-  getOnlineUsers,
-  getAllUsers,
-} from "../../../store/actions/userActions";
-import {
-  getCountryChat,
   createChat,
   joinChat,
   getChats,
@@ -46,14 +37,12 @@ import {
   MDBModal,
   MDBModalBody,
   MDBModalFooter,
-  MDBProgress,
   MDBBadge,
   MDBAvatar,
 } from "mdbreact";
 
 //> Components
 import { Chat } from "../../organisms";
-import { RankItem } from "../../atoms";
 
 //> CSS
 import "./chatpage.scss";
@@ -205,7 +194,7 @@ class ChatPage extends React.Component {
   };
 
   render() {
-    const { auth, profile, chats } = this.props;
+    const { auth, chats } = this.props;
 
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
@@ -263,22 +252,24 @@ class ChatPage extends React.Component {
                                 : chat.name}
                             </p>
                           )}
+                          {chat.users.length === 2 &&
+                            chat.name.length !== 2 && (
+                              <span className="blue-text small">
+                                Private chat
+                              </span>
+                            )}
                           {(chat.users.length > 2 ||
                             chat.name.length === 2) && (
                             <span className="text-muted small">Group Chat</span>
                           )}
                         </div>
-                        {chat.users.length !== 2 ? (
-                          <div>
-                            <span className="text-muted small">
-                              {chat.users.length}{" "}
-                              {chat.users.length === 1
-                                ? "participant"
-                                : "participants"}
-                            </span>
-                          </div>
-                        ) : (
-                          <span className="blue-text small">Private chat</span>
+                        {chat.users.length !== 2 && (
+                          <span className="text-muted small">
+                            {chat.users.length}{" "}
+                            {chat.users.length === 1
+                              ? "participant"
+                              : "participants"}
+                          </span>
                         )}
                       </MDBCardBody>
                     </MDBCard>
