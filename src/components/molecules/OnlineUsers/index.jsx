@@ -157,7 +157,8 @@ class OnlineUsers extends Component {
                 Online Sith
               </span>
               <p className="small text-muted mb-0">
-                {onlineusercount} users online
+                {onlineusercount} {onlineusercount === 1 ? "user" : "users"}{" "}
+                online
               </p>
             </div>
             <hr className="my-2" />
