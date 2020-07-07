@@ -504,16 +504,17 @@ class CountryPage extends React.Component {
                           />
                         )}
                         {this.state.countryChat &&
+                          profile.badges.includes("grandmoff") &&
                           !this.state.countryChat.users.includes(auth.uid) && (
                             <MDBBtn
                               color="red"
-                              disabled
                               onClick={() => {
                                 this.props.joinChat(
                                   auth.uid,
                                   this.state.countryChat.id,
                                   this.state.countryChat.users
                                 );
+
                                 this.init(this.props.match?.params?.country);
                               }}
                             >

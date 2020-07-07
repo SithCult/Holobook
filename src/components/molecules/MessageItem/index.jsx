@@ -10,17 +10,12 @@ import PropTypes from "prop-types";
 import TimeAgo from "javascript-time-ago";
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
+// Date/Time formatting
+import moment from "moment";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import {
-  MDBBtn,
-  MDBInput,
-  MDBIcon,
-  MDBAvatar,
-  MDBCard,
-  MDBCardBody,
-} from "mdbreact";
+import { MDBAvatar, MDBTooltip, MDBIcon } from "mdbreact";
 
 //> CSS
 import "./messageitem.scss";
@@ -89,7 +84,7 @@ class MessageItem extends React.Component {
           <div className="text-center mb-3">
             <hr className="mb-1" />
             <span className="small text-muted">
-              {this.calculateTimeAgo(timestamp)}
+              {moment(timestamp).format("MMMM Do YYYY h:mm a")}
             </span>
           </div>
         )}
@@ -103,6 +98,45 @@ class MessageItem extends React.Component {
                 <div className="d-flex justify-content-between">
                   <span className="font-weight-bold">
                     {author.data.title} {author.data.sith_name}
+                    {author.data.badges.includes("grandmoff") && (
+                      <MDBTooltip
+                        placement="bottom"
+                        domElement
+                        className="test"
+                      >
+                        <span className="ml-1">
+                          <MDBIcon
+                            icon="angle-double-up"
+                            className="blue-text"
+                          />
+                        </span>
+                        <span>Grandmoff</span>
+                      </MDBTooltip>
+                    )}
+                    {author.data.badges.includes("hand") && (
+                      <MDBTooltip
+                        placement="bottom"
+                        domElement
+                        className="test"
+                      >
+                        <span className="ml-1">
+                          <MDBIcon fab icon="sith" className="purple-text" />
+                        </span>
+                        <span>Hand of the Emperor</span>
+                      </MDBTooltip>
+                    )}
+                    {author.data.badges.includes("moff") && (
+                      <MDBTooltip
+                        placement="bottom"
+                        domElement
+                        className="test"
+                      >
+                        <span className="ml-1">
+                          <MDBIcon icon="angle-up" className="blue-text" />
+                        </span>
+                        <span>Moff</span>
+                      </MDBTooltip>
+                    )}
                   </span>
                   <span className="small text-muted">
                     {this.calculateTimeAgo(timestamp)}
