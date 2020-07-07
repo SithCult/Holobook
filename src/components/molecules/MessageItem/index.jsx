@@ -20,6 +20,9 @@ import { MDBAvatar, MDBTooltip, MDBIcon } from "mdbreact";
 //> CSS
 import "./messageitem.scss";
 
+//> Components
+import { RankItem } from "../../atoms";
+
 //> Images
 import defaultUserIMG from "../../../assets/images/default.gif";
 import goldUserIMG from "../../../assets/images/gold.gif";
@@ -99,43 +102,13 @@ class MessageItem extends React.Component {
                   <span className="font-weight-bold">
                     {author.data.title} {author.data.sith_name}
                     {author.data.badges.includes("grandmoff") && (
-                      <MDBTooltip
-                        placement="bottom"
-                        domElement
-                        className="test"
-                      >
-                        <span className="ml-1">
-                          <MDBIcon
-                            icon="angle-double-up"
-                            className="blue-text"
-                          />
-                        </span>
-                        <span>Grandmoff</span>
-                      </MDBTooltip>
+                      <RankItem rank="grandmoff" />
                     )}
                     {author.data.badges.includes("hand") && (
-                      <MDBTooltip
-                        placement="bottom"
-                        domElement
-                        className="test"
-                      >
-                        <span className="ml-1">
-                          <MDBIcon fab icon="sith" className="purple-text" />
-                        </span>
-                        <span>Hand of the Emperor</span>
-                      </MDBTooltip>
+                      <RankItem rank="hand" />
                     )}
                     {author.data.badges.includes("moff") && (
-                      <MDBTooltip
-                        placement="bottom"
-                        domElement
-                        className="test"
-                      >
-                        <span className="ml-1">
-                          <MDBIcon icon="angle-up" className="blue-text" />
-                        </span>
-                        <span>Moff</span>
-                      </MDBTooltip>
+                      <RankItem rank="moff" />
                     )}
                   </span>
                   <span className="small text-muted">
