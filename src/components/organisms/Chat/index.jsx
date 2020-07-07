@@ -82,6 +82,8 @@ class Chat extends React.Component {
   render() {
     const { chatDetails, currentUser, hasJoined, chatMessages } = this.props;
 
+    console.log(this.props);
+
     return (
       <div className="chat" key={chatDetails.id}>
         <div className="chat-container" ref={this.messagesEndRef}>

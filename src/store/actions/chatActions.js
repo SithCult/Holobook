@@ -3,8 +3,6 @@ export const joinChat = (uid, chid, curUsers) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
-    console.log(uid, chid);
-
     // Add user to the chat users
     firestore
       .collection("chats")
@@ -93,7 +91,7 @@ export const getCountryChat = (country_id) => {
         querySnapshot.forEach((doc) => {
           let data = { ...doc.data(), id: doc.id };
 
-          if (data.name === country_id + " Chat") {
+          if (data.name === country_id) {
             countryChat = data;
           }
         });
@@ -120,8 +118,6 @@ export const getMessages = (chid) => {
           chatMessages = [...chatMessages, { data: m.val(), mid: m.key }];
         });
       }
-
-      console.log(chatMessages);
 
       dispatch({
         type: "GETMESSAGES_SUCCESS",

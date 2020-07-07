@@ -15,9 +15,21 @@
 
     // Enable scrolling
     overflow-y: scroll;
+    overflow-x: hidden;
 
     // First item
     .chat-item {
+      // User avatars
+      .avatar {
+        width: 30px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: inline-block;
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
       &:first-child {
         margin-top: 1rem;
       }

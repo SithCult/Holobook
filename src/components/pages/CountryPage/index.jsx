@@ -112,7 +112,7 @@ class CountryPage extends React.Component {
               userIDs = [...userIDs, u.id];
             });
 
-            this.props.createChat(this.state.country_code + " Chat", userIDs);
+            this.props.createChat(this.state.country_code, userIDs);
 
             this.setState({
               countryChat: await this.props.getCountryChat(
