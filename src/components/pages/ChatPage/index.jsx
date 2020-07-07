@@ -64,7 +64,11 @@ class ChatPage extends React.Component {
     showAllSearchMemberResults: false,
   };
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
+    this.init();
+  };
+
+  init = async () => {
     const { auth } = this.props;
 
     if (auth.uid) {
@@ -250,8 +254,8 @@ class ChatPage extends React.Component {
                             </div>
                           ) : (
                             <p className="mb-0">
-                              {chat.name.split(" ").length === 3 ? (
-                                chat.name.split(" ")[2]
+                              {chat.name.split("and").length === 2 ? (
+                                chat.name.split("and")[1]
                               ) : (
                                 <span>
                                   {chat.name}
@@ -406,14 +410,16 @@ class ChatPage extends React.Component {
                     color="blue"
                     size="md"
                     className="m-0"
-                    onClick={() =>
+                    onClick={() => {
                       this.props.createChat(
                         this.props.profile.sith_name +
                           " and " +
                           this.state.selectedUsers[0].data.sith_name,
                         this.getUsers()
-                      )
-                    }
+                      );
+                      this.init();
+                      this.toggle();
+                    }}
                   >
                     Start Chat with {this.state.selectedUsers[0].data.sith_name}
                   </MDBBtn>
@@ -430,12 +436,14 @@ class ChatPage extends React.Component {
                     size="md"
                     className="m-0"
                     disabled={this.state.selectedUsers.length >= 10}
-                    onClick={() =>
+                    onClick={() => {
                       this.props.createChat(
                         this.state.newGroupName,
                         this.getUsers()
-                      )
-                    }
+                      );
+                      this.init();
+                      this.toggle();
+                    }}
                   >
                     Start group chat
                   </MDBBtn>
