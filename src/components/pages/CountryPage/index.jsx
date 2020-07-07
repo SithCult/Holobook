@@ -48,6 +48,7 @@ import {
 
 //> Components
 import { Chat } from "../../organisms";
+import { RankItem } from "../../atoms";
 
 //> CSS
 import "./countrypage.scss";
@@ -458,18 +459,18 @@ class CountryPage extends React.Component {
                                     </span>
                                   </div>
                                   <span className="small text-muted">
-                                    {user.data.title.toLowerCase().trim() ===
-                                      "darth" && (
-                                      <MDBIcon
-                                        icon="angle-double-up"
-                                        className={
-                                          user.data.badges.includes("moff")
-                                            ? "pr-1 amber-text"
-                                            : "pr-1"
-                                        }
-                                      />
+                                    {user.data.badges.includes("moff") && (
+                                      <RankItem rank="moff" />
                                     )}
-                                    {user.data.title}
+                                    {user.data.badges.includes("grandmoff") && (
+                                      <RankItem rank="grandmoff" />
+                                    )}
+                                    {user.data.badges.includes("hand") && (
+                                      <RankItem rank="hand" />
+                                    )}
+                                    <span className="ml-1">
+                                      {user.data.title}
+                                    </span>
                                   </span>
                                 </div>
                                 <span className="d-block small text-info my-1">
