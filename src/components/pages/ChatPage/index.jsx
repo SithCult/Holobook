@@ -206,8 +206,6 @@ class ChatPage extends React.Component {
       });
     }
 
-    console.log(this.state);
-
     return (
       <>
         <MDBContainer id="chats" className="text-white pt-5 mt-5">
@@ -244,12 +242,26 @@ class ChatPage extends React.Component {
                                 <ReactCountryFlag svg countryCode={chat.name} />
                               </div>
                               {countryList().getLabel(chat.name)}
+                              <MDBIcon
+                                icon="users"
+                                className="ml-2 text-muted"
+                                size="sm"
+                              />
                             </div>
                           ) : (
                             <p className="mb-0">
-                              {chat.name.split(" ").length === 3
-                                ? chat.name.split(" ")[2]
-                                : chat.name}
+                              {chat.name.split(" ").length === 3 ? (
+                                chat.name.split(" ")[2]
+                              ) : (
+                                <span>
+                                  {chat.name}
+                                  <MDBIcon
+                                    icon="users"
+                                    className="ml-2 text-muted"
+                                    size="sm"
+                                  />
+                                </span>
+                              )}
                             </p>
                           )}
                           {chat.users.length === 2 &&
