@@ -9,7 +9,9 @@
       color: #848e96;
     }
     .basic {
-      font-size: 0.5em !important;
+      &.small {
+        font-size: 0.5em !important;
+      }
     }
 
     // Country flag
