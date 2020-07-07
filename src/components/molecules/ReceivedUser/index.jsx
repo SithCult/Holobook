@@ -2,12 +2,14 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// Router
+import { Link } from "react-router-dom";
 
 //> Additional
 // Flags for countries
 import ReactCountryFlag from "react-country-flag";
-// Country name by country code
-import { getName } from "country-list";
+// Country list
+import countryList from "react-select-country-list";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -17,6 +19,7 @@ import {
   MDBPopoverBody,
   MDBPopoverHeader,
   MDBSpinner,
+  MDBBtn,
   MDBIcon,
 } from "mdbreact";
 
@@ -114,12 +117,23 @@ class ReceivedUser extends React.Component {
                       })()}
                       <hr className="my-2" />
                       <div className="flex-center text-left my-2 text-white">
-                        <ReactCountryFlag
-                          svg
-                          className="mr-2"
-                          countryCode={receivedUser.address.country}
-                        />
-                        {getName(receivedUser.address.country)}
+                        <Link
+                          to={
+                            "/c/" +
+                            receivedUser.address?.country?.toLowerCase().trim()
+                          }
+                        >
+                          <MDBBtn color="black" size="sm">
+                            <ReactCountryFlag
+                              svg
+                              className="mr-2"
+                              countryCode={receivedUser.address.country}
+                            />
+                            {countryList().getLabel(
+                              receivedUser.address.country
+                            )}
+                          </MDBBtn>
+                        </Link>
                       </div>
                     </div>
                   </MDBPopoverBody>
