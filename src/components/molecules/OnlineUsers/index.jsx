@@ -17,6 +17,9 @@ import {
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBIcon, MDBProgress, MDBCard, MDBAvatar } from "mdbreact";
 
+//> Components
+import { RankItem } from "../../atoms";
+
 //> Images
 import defaultUserIMG from "../../../assets/images/default.gif";
 import goldUserIMG from "../../../assets/images/gold.gif";
@@ -174,18 +177,16 @@ class OnlineUsers extends Component {
                             <span className="pl-2">{user.data.sith_name}</span>
                           </div>
                           <span className="small text-muted">
-                            {user.data.title.toLowerCase().trim() ===
-                              "darth" && (
-                              <MDBIcon
-                                icon="angle-double-up"
-                                className={
-                                  user.data.badges.includes("moff")
-                                    ? "pr-1 amber-text"
-                                    : "pr-1"
-                                }
-                              />
+                            {user.data.badges.includes("moff") && (
+                              <RankItem rank="moff" />
                             )}
-                            {user.data.title}
+                            {user.data.badges.includes("grandmoff") && (
+                              <RankItem rank="grandmoff" />
+                            )}
+                            {user.data.badges.includes("hand") && (
+                              <RankItem rank="hand" />
+                            )}
+                            <span className="ml-1">{user.data.title}</span>
                           </span>
                         </div>
                       </MDBCard>
