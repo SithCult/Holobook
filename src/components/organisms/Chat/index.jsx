@@ -63,8 +63,6 @@ class Chat extends React.Component {
       this.messagesEndRef.current.scrollHeight -
       this.messagesEndRef.current.clientHeight;
 
-    console.log(scroll);
-
     this.messagesEndRef.current.scrollTo(0, scroll);
   };
 
@@ -88,8 +86,6 @@ class Chat extends React.Component {
 
   render() {
     const { chatDetails, currentUser, hasJoined, chatMessages } = this.props;
-
-    console.log(this.props);
 
     return (
       <div className="chat" key={chatDetails.id}>

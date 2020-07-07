@@ -97,11 +97,9 @@ class CountryPage extends React.Component {
           country: country ? countryList().getLabel(country) : null,
         },
         async () => {
-          let countryChat = await this.props.getCountryChat(
+          const countryChat = await this.props.getCountryChat(
             this.state.country_code
           );
-
-          console.log(countryChat);
 
           if (!countryChat) {
             console.log("Country chat does not exist, creating a new one");
