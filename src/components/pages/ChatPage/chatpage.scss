@@ -17,6 +17,14 @@
     box-shadow: none;
     border-radius: 0;
 
+    .unread {
+      font-weight: bold;
+      .latest-message {
+        font-weight: bold;
+      }
+      border-left: 3px #33b5e5 solid;
+    }
+
     &.active {
       background: lighten(#2e2e2e, 5%);
       &:hover {

@@ -257,6 +257,19 @@ class ChatPage extends React.Component {
     }
   };
 
+  getUserByUid = (uid) => {
+    const users = this.state.users;
+    let result = null;
+
+    users.forEach((user) => {
+      if (user.id === uid) {
+        result = user;
+      }
+    });
+
+    return result;
+  };
+
   createChat = async (name, users) => {
     // Check users are present
     if (name && users.length > 1) {
@@ -291,7 +304,12 @@ class ChatPage extends React.Component {
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
     // Preset first selected chat
-    if (chats && chats.length > 0 && !this.state.selectedChat && this.state.order) {
+    if (
+      chats &&
+      chats.length > 0 &&
+      !this.state.selectedChat &&
+      this.state.order
+    ) {
       this.setState({
         selectedChat: this.state.order[0].chat,
       });
@@ -316,6 +334,7 @@ class ChatPage extends React.Component {
               {chats &&
                 this.state.order &&
                 this.state.order.map((item, i) => {
+                  console.log(item);
                   return (
                     <MDBCard
                       key={i}
@@ -326,7 +345,15 @@ class ChatPage extends React.Component {
                       }
                       onClick={() => this.setState({ selectedChat: item.chat })}
                     >
-                      <MDBCardBody>
+                      <MDBCardBody
+                        className={
+                          item.data &&
+                          item.data.read &&
+                          !item.data.read.includes(auth.uid)
+                            ? "unread"
+                            : undefined
+                        }
+                      >
                         <div className="d-flex justify-content-between">
                           {item.chat.name.length === 2 ? (
                             <div>
@@ -345,15 +372,15 @@ class ChatPage extends React.Component {
                             </div>
                           ) : (
                             <p className="mb-0">
-                              {chat.name.split("and").length === 2 ? (
+                              {item.chat.name.split("and").length === 2 ? (
                                 <>
-                                  {chat.name
+                                  {item.chat.name
                                     .split("and")[1]
                                     ?.trim()
                                     .toLowerCase() ===
                                   profile.sith_name?.toLowerCase()
-                                    ? chat.name.split("and")[0]
-                                    : chat.name.split("and")[1]}
+                                    ? item.chat.name.split("and")[0]
+                                    : item.chat.name.split("and")[1]}
                                 </>
                               ) : (
                                 <span>
@@ -377,6 +404,25 @@ class ChatPage extends React.Component {
                             item.chat.name.length === 2) && (
                             <span className="text-muted small">Group Chat</span>
                           )}
+                        </div>
+                        <div className="text-muted small latest-message">
+                          <MDBIcon icon="angle-right" className="mr-1 ml-2" />
+                          {item.data.author && (
+                            <>
+                              {item.data.author.uid === auth.uid ? (
+                                <span className="blue-text">You: </span>
+                              ) : (
+                                <span className="blue-text">
+                                  {
+                                    this.getUserByUid(item.data.author.uid)
+                                      ?.data.sith_name
+                                  }
+                                  :{" "}
+                                </span>
+                              )}
+                            </>
+                          )}
+                          {item.data?.msg ? item.data.msg : null}
                         </div>
                         {item.chat.users.length !== 2 && (
                           <span className="text-muted small">
