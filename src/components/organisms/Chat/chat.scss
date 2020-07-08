@@ -19,6 +19,11 @@
         border-radius: 0.5rem;
         border: 2px darken(#00c851, 15%) solid !important;
       }
+      &.badge-danger {
+        background: transparentize($color: #ff3547, $amount: 0.7) !important;
+        border-radius: 0.5rem;
+        border: 2px darken(#ff3547, 15%) solid !important;
+      }
     }
 
     // Border radius of container (top)
