@@ -18,7 +18,10 @@ const chatReducer = (state = initState, action) => {
     case "GETMESSAGES_SUCCESS":
       return {
         ...state,
-        chatMessages: action.chatMessages,
+        chatMessages: {
+          ...state.chatMessages,
+          [action.chid]: action.chatMessages,
+        },
       };
     case "WRITEMESSAGES_SUCCESS":
       return {

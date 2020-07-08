@@ -120,10 +120,11 @@ class Chat extends React.Component {
           {hasJoined ? (
             <>
               {chatMessages &&
+              chatMessages[chatDetails.id] &&
               this.state.allUsers &&
-              chatMessages.length > 0 ? (
+              chatMessages[chatDetails.id].length > 0 ? (
                 <>
-                  {chatMessages.map((item, i) => {
+                  {chatMessages[chatDetails.id].map((item, i) => {
                     if (item.data.visible) {
                       return (
                         <MessageItem
@@ -141,7 +142,8 @@ class Chat extends React.Component {
                           spacing={
                             i > 0
                               ? item.data.sentTimestamp - 300000 >
-                                chatMessages[i - 1].data.sentTimestamp
+                                chatMessages[chatDetails.id][i - 1].data
+                                  .sentTimestamp
                                 ? true
                                 : false
                               : true
@@ -160,7 +162,9 @@ class Chat extends React.Component {
                 </>
               ) : (
                 <>
-                  {chatMessages && this.state.allUsers ? (
+                  {chatMessages &&
+                  chatMessages[chatDetails.id] &&
+                  this.state.allUsers ? (
                     <div className="text-center mt-5">
                       <MDBBadge pill className="mb-1" color="success">
                         Welcome to your new chat.
@@ -185,6 +189,7 @@ class Chat extends React.Component {
               <p>All messages are hidden from you.</p>
             </div>
           )}
+          <></>
         </div>
         <div className="send">
           <div className="d-flex align-items-center">
