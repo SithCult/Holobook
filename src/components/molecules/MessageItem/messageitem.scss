@@ -1,4 +1,8 @@
 .chat-item {
+  margin-bottom: 1rem;
+  .small {
+    font-size: 0.7rem;
+  }
   .reverse {
     flex-direction: row-reverse;
     .body-container {

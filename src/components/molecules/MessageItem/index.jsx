@@ -149,7 +149,7 @@ class MessageItem extends React.Component {
             </span>
           </div>
         )}
-        <div className="chat-item mb-3" key={mid}>
+        <div className="chat-item" key={mid}>
           <div className={reverse ? "d-flex reverse" : "d-flex"}>
             <div>
               {this.getPicture(author.data.skin, mid, author.sith_name)}
