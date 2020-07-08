@@ -93,9 +93,19 @@ class MessageItem extends React.Component {
 
   getReadStatus = () => {
     if (this.areArraysEqualSets(this.props.chatUsers, this.props.read)) {
-      return <MDBIcon icon="check" className="blue-text" />;
+      return (
+        <span className="text-muted">
+          <MDBIcon icon="check-circle" className="mr-2 blue-text" />
+          Read
+        </span>
+      );
     } else {
-      return <MDBIcon icon="check" className="grey-text" />;
+      return (
+        <span className="text-muted">
+          <MDBIcon far icon="check-circle" className="mr-2" />
+          Delivered
+        </span>
+      );
     }
   };
 
@@ -128,7 +138,7 @@ class MessageItem extends React.Component {
             </span>
           </div>
         )}
-        <div className="chat-item" key={mid}>
+        <div className="chat-item mb-3" key={mid}>
           <div className={reverse ? "d-flex reverse" : "d-flex"}>
             <div>
               {this.getPicture(author.data.skin, mid, author.sith_name)}
@@ -151,9 +161,6 @@ class MessageItem extends React.Component {
                   <span className="small text-muted">
                     {this.calculateTimeAgo(timestamp)}
                   </span>
-                  {this.props.reverse && (
-                    <span className="read">{this.getReadStatus()}</span>
-                  )}
                 </div>
                 <div>
                   <span>{msg}</span>
@@ -161,6 +168,11 @@ class MessageItem extends React.Component {
               </div>
             </div>
           </div>
+          {this.props.reverse && (
+            <div className="text-right">
+              <span className="read small mr-5">{this.getReadStatus()}</span>
+            </div>
+          )}
         </div>
       </>
     );
