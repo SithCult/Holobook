@@ -73,8 +73,10 @@ class ChatPage extends React.Component {
   };
 
   componentWillReceiveProps = (nextprops) => {
-    // If the chats don't exist right now but will exist in the next props,
-    // Start message handler for the chats
+    /*
+     * If the chats don't exist right now but will exist in the next props,
+     * start message handler for the chats
+     */
     if (!this.props.chats && nextprops.chats) {
       nextprops.chats.map((c) => {
         this.props.getMessages(c.id);
@@ -123,7 +125,7 @@ class ChatPage extends React.Component {
       }
     });
 
-    //Put sorted array of messages into state
+    // Put sorted array of messages into state
     this.setState({
       order: order.sort((a, b) =>
         a.data.sentTimestamp < b.data.sentTimestamp ? 1 : -1
