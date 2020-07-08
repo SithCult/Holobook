@@ -62,6 +62,7 @@ class ChatPage extends React.Component {
     selectedUsers: [],
     modal: false,
     showAllSearchMemberResults: false,
+    newGroupName: "",
   };
 
   componentDidMount = () => {
@@ -194,6 +195,18 @@ class ChatPage extends React.Component {
       return result;
     } else {
       return false;
+    }
+  };
+
+  createChat = (name, users) => {
+    // Check users are present
+    if (name && users.length > 1) {
+      // Check if the group name has more than 2 characters
+      if (name.length > 2) {
+        this.props.createChat(name, users);
+        this.init();
+        this.toggle();
+      }
     }
   };
 
@@ -415,16 +428,14 @@ class ChatPage extends React.Component {
                     color="blue"
                     size="md"
                     className="m-0"
-                    onClick={() => {
-                      this.props.createChat(
+                    onClick={() =>
+                      this.createChat(
                         this.props.profile.sith_name +
                           " and " +
                           this.state.selectedUsers[0].data.sith_name,
                         this.getUsers()
-                      );
-                      this.init();
-                      this.toggle();
-                    }}
+                      )
+                    }
                   >
                     Start Chat with {this.state.selectedUsers[0].data.sith_name}
                   </MDBBtn>
@@ -440,15 +451,13 @@ class ChatPage extends React.Component {
                     color="blue"
                     size="md"
                     className="m-0"
-                    disabled={this.state.selectedUsers.length >= 10}
-                    onClick={() => {
-                      this.props.createChat(
-                        this.state.newGroupName,
-                        this.getUsers()
-                      );
-                      this.init();
-                      this.toggle();
-                    }}
+                    disabled={
+                      this.state.selectedUsers.length >= 10 ||
+                      this.state.newGroupName?.length <= 2
+                    }
+                    onClick={() =>
+                      this.createChat(this.state.newGroupName, this.getUsers())
+                    }
                   >
                     Start group chat
                   </MDBBtn>
