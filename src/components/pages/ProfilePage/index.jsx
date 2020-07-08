@@ -575,7 +575,7 @@ class ProfilePage extends React.Component {
                 <div className="mt-1 features">
                   <p className="lead mb-3">
                     <img src={holocronIcon} alt="Holocron icon" />
-                    <p className="mt-2 mb-0">My Holocrons</p>
+                    <span className="mt-2 mb-0 d-block">My Holocrons</span>
                   </p>
                   <p className="small text-muted mb-3">
                     Your holocrons contain valuable lessons and interactions
@@ -634,7 +634,9 @@ class ProfilePage extends React.Component {
                     )}
                     <small
                       className={
-                        this.state.post.length === 500 && "text-danger"
+                        this.state.post.length === 500
+                          ? "text-danger"
+                          : undefined
                       }
                     >
                       {this.state.post.length} / 500

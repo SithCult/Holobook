@@ -115,7 +115,6 @@ export const getMessages = (chid) => {
       // If messages exist, push them into the array
       if (!snapshot.empty) {
         snapshot.forEach((m) => {
-          let readArray = m.val().read;
           chatMessages = [...chatMessages, { data: m.val(), mid: m.key }];
         });
       }
