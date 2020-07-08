@@ -108,7 +108,6 @@ export const signUp = (newUser) => {
           return response.user.uid;
         })
         .catch((err) => {
-          console.log(err.code);
           switch (err.code) {
             case "auth/weak-password":
               dispatch({

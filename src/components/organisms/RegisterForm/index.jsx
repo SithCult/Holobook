@@ -462,8 +462,6 @@ class HomePage extends React.Component {
       this.firstRow.current &&
       this.firstRow.current.scrollIntoView();
 
-    console.log(authError, authErrorCode);
-
     let params = location.search.substr(1)
       ? location.search.substr(1).split("=")
       : null;
@@ -548,7 +546,7 @@ class HomePage extends React.Component {
                       </small>
                     )}
                   <small id="emailHelp" className="form-text text-muted">
-                    Like your real name, your private E-Mail will not be shared.
+                    Like your real name, your private e-mail will not be shared.
                   </small>
                 </MDBInput>
               </MDBCol>

@@ -75,11 +75,6 @@ class Chat extends React.Component {
     this.scrollToBottom();
   }
 
-  componentWillUnmount = () => {
-    // Stop getting messages for certain chat (close listener)
-    //this.props.stopGettingMessages(this.props.chatDetails.id);
-  };
-
   scrollToBottom = () => {
     const scroll =
       this.messagesEndRef.current.scrollHeight -

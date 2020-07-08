@@ -264,6 +264,7 @@ class ChatPage extends React.Component {
 
   getUserByUid = (uid) => {
     const users = this.state.users;
+
     let result = null;
 
     users.forEach((user) => {
