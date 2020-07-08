@@ -198,7 +198,7 @@ class ChatPage extends React.Component {
   };
 
   render() {
-    const { auth, chats } = this.props;
+    const { auth, chats, profile } = this.props;
 
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
@@ -255,7 +255,15 @@ class ChatPage extends React.Component {
                           ) : (
                             <p className="mb-0">
                               {chat.name.split("and").length === 2 ? (
-                                chat.name.split("and")[1]
+                                <>
+                                  {chat.name
+                                    .split("and")[1]
+                                    ?.trim()
+                                    .toLowerCase() ===
+                                  profile.sith_name?.toLowerCase()
+                                    ? chat.name.split("and")[0]
+                                    : chat.name.split("and")[1]}
+                                </>
                               ) : (
                                 <span>
                                   {chat.name}
