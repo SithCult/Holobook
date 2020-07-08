@@ -47,6 +47,7 @@ class MessageItem extends React.Component {
       this.props.read
     );
   }
+
   // Get user profile picture
   getPicture = (skin, index, name) => {
     switch (skin) {
@@ -115,8 +116,8 @@ class MessageItem extends React.Component {
    * @param  {} a2 is an array
    */
   areArraysEqualSets(a1, a2) {
-    let arr1 = a1.concat().sort();
-    let arr2 = a2.concat().sort();
+    const arr1 = a1.concat().sort();
+    const arr2 = a2.concat().sort();
 
     for (var i = 0; i < arr1.length; i++) {
       if (arr1[i] !== arr2[i]) return false;
