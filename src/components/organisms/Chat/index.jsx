@@ -99,64 +99,79 @@ class Chat extends React.Component {
     return (
       <div className="chat" key={chatDetails.id}>
         <div className="chat-container" ref={this.messagesEndRef}>
-          {chatMessages &&
-          chatMessages[chatDetails.id] &&
-          this.state.allUsers &&
-          chatMessages[chatDetails.id].length > 0 ? (
-            <>
-              {chatMessages[chatDetails.id].map((item, i) => {
-                if (item.data.visible) {
-                  return (
-                    <MessageItem
-                      msg={item.data.msg}
-                      key={i}
-                      mid={item.mid}
-                      chid={chatDetails.id}
-                      uid={currentUser}
-                      read={item.data.read}
-                      chatUsers={chatDetails.users}
-                      timestamp={item.data.sentTimestamp}
-                      reverse={
-                        item.data.author?.uid === currentUser ? true : false
-                      }
-                      spacing={
-                        i > 0
-                          ? item.data.sentTimestamp - 600000 >
-                            chatMessages[chatDetails.id][i - 1].data
-                              .sentTimestamp
-                            ? true
-                            : false
-                          : true
-                      }
-                      author={
-                        this.state.allUsers.filter(
-                          (u) => u.id === item.data.author.uid
-                        )[0]
-                      }
-                    />
-                  );
-                } else {
-                  return null;
-                }
-              })}
-            </>
-          ) : (
+          {hasJoined ? (
             <>
               {chatMessages &&
               chatMessages[chatDetails.id] &&
-              this.state.allUsers ? (
-                <div className="text-center mt-5">
-                  <MDBBadge pill className="mb-1" color="success">
-                    Welcome to your new chat.
-                  </MDBBadge>
-                  <p className="text-muted small">
-                    This service is provided for and by SithCult.
-                  </p>
-                  <p>There are no messages to show yet.</p>
-                </div>
-              ) : null}
+              this.state.allUsers &&
+              chatMessages[chatDetails.id].length > 0 ? (
+                <>
+                  {chatMessages[chatDetails.id].map((item, i) => {
+                    if (item.data.visible) {
+                      return (
+                        <MessageItem
+                          msg={item.data.msg}
+                          key={i}
+                          mid={item.mid}
+                          chid={chatDetails.id}
+                          uid={currentUser}
+                          read={item.data.read}
+                          chatUsers={chatDetails.users}
+                          timestamp={item.data.sentTimestamp}
+                          reverse={
+                            item.data.author?.uid === currentUser ? true : false
+                          }
+                          spacing={
+                            i > 0
+                              ? item.data.sentTimestamp - 600000 >
+                                chatMessages[chatDetails.id][i - 1].data
+                                  .sentTimestamp
+                                ? true
+                                : false
+                              : true
+                          }
+                          author={
+                            this.state.allUsers.filter(
+                              (u) => u.id === item.data.author.uid
+                            )[0]
+                          }
+                        />
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+                </>
+              ) : (
+                <>
+                  {chatMessages &&
+                  chatMessages[chatDetails.id] &&
+                  this.state.allUsers ? (
+                    <div className="text-center mt-5">
+                      <MDBBadge pill className="mb-1" color="success">
+                        Welcome to your new chat.
+                      </MDBBadge>
+                      <p className="text-muted small">
+                        This service is provided for and by SithCult.
+                      </p>
+                      <p>There are no messages to show yet.</p>
+                    </div>
+                  ) : null}
+                </>
+              )}
             </>
+          ) : (
+            <div className="text-center mt-5">
+              <MDBBadge pill className="mb-1" color="danger">
+                You are not part of this chat.
+              </MDBBadge>
+              <p className="text-muted small">
+                This service is provided for and by SithCult.
+              </p>
+              <p>All messages are hidden from you.</p>
+            </div>
           )}
+          <></>
         </div>
         <div className="send">
           <div className="d-flex align-items-center">
