@@ -128,6 +128,17 @@ export const getMessages = (chid) => {
   };
 };
 
+// Get array of all chat messages ordered by timestamp
+export const stopGettingMessages = (chid) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const chatMessageRef = firebase.database().ref("/chats/" + chid + "/");
+
+    // Create reference
+    chatMessageRef.off("sentTimestamp");
+  };
+};
+
 // Write a new chat message into the chat message list
 export const writeMessage = (message) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
