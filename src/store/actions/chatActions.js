@@ -121,13 +121,14 @@ export const getMessages = (chid) => {
 
       dispatch({
         type: "GETMESSAGES_SUCCESS",
-        chatMessages,
+        chatMessages: chatMessages,
+        chid,
       });
     });
   };
 };
 
-// Get array of all chat messages ordered by timestamp
+// Stop getting messages
 export const stopGettingMessages = (chid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -177,7 +178,7 @@ export const removeMessage = (chid, mid) => {
   };
 };
 
-// Make messages invisible
+// Adds user to read list of a message
 export const readMessage = (uid, chid, mid, read) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -187,11 +188,13 @@ export const readMessage = (uid, chid, mid, read) => {
 
     let readhandled;
 
+    // If the read array does not exist, make it
     if (!read) {
       readhandled = [];
     } else {
       readhandled = read;
     }
+
     if (!readhandled.includes(uid)) {
       const readWithUser = [...readhandled, uid];
 

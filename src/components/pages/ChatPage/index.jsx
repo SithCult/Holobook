@@ -22,6 +22,8 @@ import {
   createChat,
   joinChat,
   getChats,
+  getMessages,
+  stopGettingMessages,
 } from "../../../store/actions/chatActions";
 
 //> MDB
@@ -64,10 +66,34 @@ class ChatPage extends React.Component {
     showAllSearchMemberResults: false,
   };
 
+  // Init on mount
   componentDidMount = () => {
     this.init();
   };
 
+  componentWillReceiveProps = (nextprops) => {
+    // If the chats don't exist right now but will exist in the next props,
+    // Start message handler for the chats
+    if (!this.props.chats && nextprops.chats) {
+      nextprops.chats.map((c) => {
+        this.props.getMessages(c.id);
+      });
+    }
+
+    // Sort the chats
+    if (nextprops.chats && nextprops.chatMessages) {
+      this.sortChats(nextprops.chats, nextprops.chatMessages);
+    }
+  };
+
+  // If component unmounts, kill the listeners
+  componentWillUnmount() {
+    this.props.chats.map((c) => {
+      stopGettingMessages(c.id);
+    });
+  }
+
+  // Init chat page
   init = async () => {
     const { auth } = this.props;
 
@@ -79,6 +105,29 @@ class ChatPage extends React.Component {
         () => this.props.getChats(this.props.auth.uid)
       );
     }
+  };
+
+  // Sort the chats by their latest message
+  sortChats = (chats, messages) => {
+    let order = [];
+
+    // Get newest messages form chats
+    chats.map((c) => {
+      let co = messages[c.id];
+
+      if (co) {
+        order = [...order, { ...co[co.length - 1], chat: c }];
+      } else {
+        order = [...order, { mid: c.id, data: { sentTimestamp: 0 }, chat: c }];
+      }
+    });
+
+    //Put sorted array of messages into state
+    this.setState({
+      order: order.sort((a, b) =>
+        a.data.sentTimestamp < b.data.sentTimestamp ? 1 : -1
+      ),
+    });
   };
 
   // Get user profile picture
@@ -117,12 +166,14 @@ class ChatPage extends React.Component {
     }
   };
 
+  // Toggle modal
   toggle = () => {
     this.setState({
       modal: !this.state.modal,
     });
   };
 
+  // Search user by name and show results
   searchMember = (input) => {
     const allUsers = this.state.users;
 
@@ -159,6 +210,7 @@ class ChatPage extends React.Component {
     });
   };
 
+  // Adds member from searchMember to selected users for a chat
   selectMember = (user) => {
     this.setState({
       searchMemberInput: "",
@@ -167,6 +219,7 @@ class ChatPage extends React.Component {
     });
   };
 
+  // Removes member from the selected users
   removeMember = (id) => {
     let selectedUsers = this.state.selectedUsers;
 
@@ -179,6 +232,7 @@ class ChatPage extends React.Component {
     });
   };
 
+  // Retrieves UID from selectedUsers users
   getUsers = () => {
     const selectedUsers = this.state.selectedUsers;
 
@@ -198,15 +252,15 @@ class ChatPage extends React.Component {
   };
 
   render() {
-    const { auth, chats } = this.props;
+    const { auth, chats, chatMessages } = this.props;
 
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
     // Preset first selected chat
-    if (chats && !this.state.selectedChat) {
+    if (chats && !this.state.selectedChat && this.state.order) {
       this.setState({
-        selectedChat: chats[0],
+        selectedChat: this.state.order[0].chat,
       });
     }
 
@@ -227,25 +281,29 @@ class ChatPage extends React.Component {
                 </MDBBtn>
               </div>
               {chats &&
-                chats.map((chat, i) => {
+                this.state.order &&
+                this.state.order.map((item, i) => {
                   return (
                     <MDBCard
                       key={i}
                       className={
-                        chat.id === this.state.selectedChat?.id
+                        item.chat.id === this.state.selectedChat?.id
                           ? "clickable active"
                           : "clickable"
                       }
-                      onClick={() => this.setState({ selectedChat: chat })}
+                      onClick={() => this.setState({ selectedChat: item.chat })}
                     >
                       <MDBCardBody>
                         <div className="d-flex justify-content-between">
-                          {chat.name.length === 2 ? (
+                          {item.chat.name.length === 2 ? (
                             <div>
                               <div className="text-center flag">
-                                <ReactCountryFlag svg countryCode={chat.name} />
+                                <ReactCountryFlag
+                                  svg
+                                  countryCode={item.chat.name}
+                                />
                               </div>
-                              {countryList().getLabel(chat.name)}
+                              {countryList().getLabel(item.chat.name)}
                               <MDBIcon
                                 icon="users"
                                 className="ml-2 text-muted"
@@ -254,11 +312,11 @@ class ChatPage extends React.Component {
                             </div>
                           ) : (
                             <p className="mb-0">
-                              {chat.name.split("and").length === 2 ? (
-                                chat.name.split("and")[1]
+                              {item.chat.name.split("and").length === 2 ? (
+                                item.chat.name.split("and")[1]
                               ) : (
                                 <span>
-                                  {chat.name}
+                                  {item.chat.name}
                                   <MDBIcon
                                     icon="users"
                                     className="ml-2 text-muted"
@@ -268,21 +326,21 @@ class ChatPage extends React.Component {
                               )}
                             </p>
                           )}
-                          {chat.users.length === 2 &&
-                            chat.name.length !== 2 && (
+                          {item.chat.users.length === 2 &&
+                            item.chat.name.length !== 2 && (
                               <span className="blue-text small">
                                 Private chat
                               </span>
                             )}
-                          {(chat.users.length > 2 ||
-                            chat.name.length === 2) && (
+                          {(item.chat.users.length > 2 ||
+                            item.chat.name.length === 2) && (
                             <span className="text-muted small">Group Chat</span>
                           )}
                         </div>
-                        {chat.users.length !== 2 && (
+                        {item.chat.users.length !== 2 && (
                           <span className="text-muted small">
-                            {chat.users.length}{" "}
-                            {chat.users.length === 1
+                            {item.chat.users.length}{" "}
+                            {item.chat.users.length === 1
                               ? "participant"
                               : "participants"}
                           </span>
@@ -293,10 +351,13 @@ class ChatPage extends React.Component {
                 })}
             </MDBCol>
             <MDBCol lg="8">
-              {this.state.selectedChat && (
+              {this.state.selectedChat && this.props.chatMessages && (
                 <Chat
                   key={this.state.selectedChat.id}
                   chatDetails={this.state.selectedChat}
+                  chatMessages={
+                    this.props.chatMessages[this.state.selectedChat.id]
+                  }
                   allUsers={this.state.users ? this.state.users : null}
                   currentUser={auth.uid}
                   hasJoined={
@@ -355,7 +416,6 @@ class ChatPage extends React.Component {
               <div className="card-columns">
                 {this.state.searchMemberResults &&
                   this.state.searchMemberResults.splice(0, 6).map((user, i) => {
-                    console.log(user);
                     return (
                       <MDBCard
                         className="text-left clickable"
@@ -487,6 +547,7 @@ const mapStateToProps = (state) => {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
     chats: state.chat.chats,
+    chatMessages: state.chat.chatMessages,
   };
 };
 
@@ -494,6 +555,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getChats: (uid) => dispatch(getChats(uid)),
     createChat: (name, users) => dispatch(createChat(name, users)),
+    getMessages: (chid) => dispatch(getMessages(chid)),
+    stopGettingMessages: (chid) => dispatch(stopGettingMessages(chid)),
     joinChat: (uid, chid, curUsers) => dispatch(joinChat(uid, chid, curUsers)),
     getAllUsers: () => dispatch(getAllUsers()),
   };

@@ -102,8 +102,6 @@ class CountryPage extends React.Component {
           );
 
           if (!countryChat) {
-            console.log("Country chat does not exist, creating a new one");
-
             let userIDs = [];
 
             this.state.users.forEach((u) => {

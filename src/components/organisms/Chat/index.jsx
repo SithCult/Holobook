@@ -99,9 +99,12 @@ class Chat extends React.Component {
     return (
       <div className="chat" key={chatDetails.id}>
         <div className="chat-container" ref={this.messagesEndRef}>
-          {chatMessages && this.state.allUsers && chatMessages.length > 0 ? (
+          {chatMessages &&
+          chatMessages[chatDetails.id] &&
+          this.state.allUsers &&
+          chatMessages[chatDetails.id].length > 0 ? (
             <>
-              {chatMessages.map((item, i) => {
+              {chatMessages[chatDetails.id].map((item, i) => {
                 if (item.data.visible) {
                   return (
                     <MessageItem
@@ -119,7 +122,8 @@ class Chat extends React.Component {
                       spacing={
                         i > 0
                           ? item.data.sentTimestamp - 600000 >
-                            chatMessages[i - 1].data.sentTimestamp
+                            chatMessages[chatDetails.id][i - 1].data
+                              .sentTimestamp
                             ? true
                             : false
                           : true
@@ -138,7 +142,9 @@ class Chat extends React.Component {
             </>
           ) : (
             <>
-              {chatMessages && this.state.allUsers ? (
+              {chatMessages &&
+              chatMessages[chatDetails.id] &&
+              this.state.allUsers ? (
                 <div className="text-center mt-5">
                   <MDBBadge pill className="mb-1" color="success">
                     Welcome to your new chat.
