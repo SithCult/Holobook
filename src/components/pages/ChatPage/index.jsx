@@ -128,7 +128,11 @@ class ChatPage extends React.Component {
     // Put sorted array of messages into state
     this.setState({
       order: order.sort((a, b) =>
-        a.data.sentTimestamp < b.data.sentTimestamp ? 1 : -1
+        a.data && b.data
+          ? a.data.sentTimestamp < b.data.sentTimestamp
+            ? 1
+            : -1
+          : -1
       ),
     });
   };
@@ -407,7 +411,7 @@ class ChatPage extends React.Component {
                         </div>
                         <div className="text-muted small latest-message">
                           <MDBIcon icon="angle-right" className="mr-1 ml-2" />
-                          {item.data.author && (
+                          {item.data && item.data.author && (
                             <>
                               {item.data.author.uid === auth.uid ? (
                                 <span className="blue-text">You: </span>
