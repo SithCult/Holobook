@@ -197,8 +197,9 @@ class HomePage extends React.Component {
         } else {
           this.setState({
             passwordValid: {
-              score: score,
-              msg: "Password too short",
+              score,
+              msg:
+                "Password too short. Password should be at least 6 characters.",
               percent: 5,
               color: "danger",
               className: "form-text text-danger",
@@ -461,6 +462,8 @@ class HomePage extends React.Component {
       this.firstRow.current &&
       this.firstRow.current.scrollIntoView();
 
+    console.log(authError, authErrorCode);
+
     let params = location.search.substr(1)
       ? location.search.substr(1).split("=")
       : null;
@@ -535,14 +538,15 @@ class HomePage extends React.Component {
                   label="Your email"
                   required
                 >
-                  {authErrorCode && authErrorCode === 1 && (
-                    <small
-                      id="emailHelpError"
-                      className="form-text text-danger font-weight-bold"
-                    >
-                      {authError && authError}
-                    </small>
-                  )}
+                  {authErrorCode &&
+                    (authErrorCode === 1 || authErrorCode === 10) && (
+                      <small
+                        id="emailHelpError"
+                        className="form-text text-danger font-weight-bold"
+                      >
+                        {authError && authError}
+                      </small>
+                    )}
                   <small id="emailHelp" className="form-text text-muted">
                     Like your real name, your private E-Mail will not be shared.
                   </small>
@@ -629,6 +633,14 @@ class HomePage extends React.Component {
                         label="Password"
                         required
                       >
+                        {authErrorCode && authErrorCode === 5 && (
+                          <small
+                            id="emailHelpError"
+                            className="form-text text-danger font-weight-bold"
+                          >
+                            {authError && authError}
+                          </small>
+                        )}
                         {this.state.password_input.length > 0 && (
                           <>
                             <MDBProgress
