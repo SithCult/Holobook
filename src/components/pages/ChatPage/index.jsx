@@ -157,6 +157,7 @@ class ChatPage extends React.Component {
       searchMemberResults: results,
       searchMemberInput: input,
       showAllSearchMemberResults: false,
+      newChatCreateError: undefined,
     });
   };
 
@@ -165,6 +166,7 @@ class ChatPage extends React.Component {
       searchMemberInput: "",
       searchMemberResults: [],
       selectedUsers: [...this.state.selectedUsers, user],
+      newChatCreateError: undefined,
     });
   };
 
@@ -177,6 +179,7 @@ class ChatPage extends React.Component {
 
     this.setState({
       selectedUsers,
+      newChatCreateError: undefined,
     });
   };
 
@@ -198,14 +201,29 @@ class ChatPage extends React.Component {
     }
   };
 
-  createChat = (name, users) => {
+  createChat = async (name, users) => {
     // Check users are present
     if (name && users.length > 1) {
       // Check if the group name has more than 2 characters
       if (name.length > 2) {
-        this.props.createChat(name, users);
-        this.init();
-        this.toggle();
+        if (await this.props.createChat(name, users)) {
+          this.setState(
+            {
+              newChatCreateError: undefined,
+              selectedUsers: [],
+              modal: false,
+              showAllSearchMemberResults: false,
+              newGroupName: "",
+            },
+            () => {
+              this.init();
+            }
+          );
+        } else {
+          this.setState({
+            newChatCreateError: 1,
+          });
+        }
       }
     }
   };
@@ -217,7 +235,7 @@ class ChatPage extends React.Component {
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
     // Preset first selected chat
-    if (chats && !this.state.selectedChat) {
+    if (chats && chats.length > 0 && !this.state.selectedChat) {
       this.setState({
         selectedChat: chats[0],
       });
@@ -422,6 +440,15 @@ class ChatPage extends React.Component {
                     and {this.state.searchMemberResults.length - 6} more
                   </p>
                 )}
+              {this.state.newChatCreateError && (
+                <>
+                  {this.state.newChatCreateError === 1 && (
+                    <p className="text-danger font-weight-bold d-block">
+                      Chat already exists.
+                    </p>
+                  )}
+                </>
+              )}
               {this.state.selectedUsers.length === 1 && (
                 <>
                   <MDBBtn

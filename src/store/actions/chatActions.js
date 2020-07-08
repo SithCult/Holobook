@@ -4,20 +4,25 @@ export const joinChat = (uid, chid, curUsers) => {
     const firestore = getFirestore();
 
     // Add user to the chat users
-    firestore
+    return firestore
       .collection("chats")
       .doc(chid)
       .set({ users: [...curUsers, uid] }, { merge: true })
-      .then(dispatch({ type: "JOINCHAT_SUCCESS" }));
+      .then(() => {
+        return true;
+      })
+      .catch(() => {
+        return false;
+      });
   };
 };
 
 // Create chat
 export const createChat = (name, users) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
+  return async (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
-    const existingChat = firestore
+    const existingChat = await firestore
       .collection("chats")
       .get()
       .then((querySnapshot) => {
@@ -27,16 +32,23 @@ export const createChat = (name, users) => {
           querySnapshot.forEach((doc) => {
             if (
               name.split("and").length === 2 &&
-              areArraysEqualSets(doc.data().name, name)
+              areArraysEqualSets(
+                doc.data().name.split("and"),
+                name.split("and")
+              )
             ) {
               isDupe = true;
-            } else if (name === doc.data().name) {
+            } else if (
+              name.toLowerCase().trim() === doc.data().name.toLowerCase().trim()
+            ) {
               isDupe = true;
             }
           });
 
         return isDupe;
       });
+
+    console.log("DUPE IS", existingChat);
 
     if (!existingChat) {
       // Add new chat to collection.
@@ -237,7 +249,8 @@ function areArraysEqualSets(a1, a2) {
   const arr1 = a1.concat().sort();
   const arr2 = a2.concat().sort();
 
-  for (var i = 0; i < arr1.length; i++) {
+  if (arr1.length !== arr2.length) return false;
+  for (let i = arr1.length; i--; ) {
     if (arr1[i] !== arr2[i]) return false;
   }
 
