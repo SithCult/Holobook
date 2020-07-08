@@ -17,13 +17,38 @@ export const createChat = (name, users) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
-    // Add new chat to collection.
-    return firestore
+    const existingChat = firestore
       .collection("chats")
-      .add({ name: name, users: users })
-      .then((response) => {
-        return response.id;
+      .get()
+      .then((querySnapshot) => {
+        let isDupe = false;
+
+        !querySnapshot.empty &&
+          querySnapshot.forEach((doc) => {
+            if (
+              name.split("and").length === 2 &&
+              areArraysEqualSets(doc.data().name, name)
+            ) {
+              isDupe = true;
+            } else if (name === doc.data().name) {
+              isDupe = true;
+            }
+          });
+
+        return isDupe;
       });
+
+    if (!existingChat) {
+      // Add new chat to collection.
+      return firestore
+        .collection("chats")
+        .add({ name: name, users: users })
+        .then((response) => {
+          return response.id;
+        });
+    } else {
+      return false;
+    }
   };
 };
 
@@ -202,6 +227,22 @@ export const readMessage = (uid, chid, mid, read) => {
     }
   };
 };
+
+/** assumes array elements are primitive types
+ * check whether 2 arrays are equal sets.
+ * @param  {} a1 is an array
+ * @param  {} a2 is an array
+ */
+function areArraysEqualSets(a1, a2) {
+  const arr1 = a1.concat().sort();
+  const arr2 = a2.concat().sort();
+
+  for (var i = 0; i < arr1.length; i++) {
+    if (arr1[i] !== arr2[i]) return false;
+  }
+
+  return true;
+}
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
