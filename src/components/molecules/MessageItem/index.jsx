@@ -15,7 +15,13 @@ import moment from "moment";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import { MDBAvatar } from "mdbreact";
+import { MDBAvatar, MDBIcon } from "mdbreact";
+
+//> Redux
+// Connect
+import { connect } from "react-redux";
+// Actions
+import { readMessage } from "../../../store/actions/chatActions";
 
 //> CSS
 import "./messageitem.scss";
@@ -33,6 +39,14 @@ import darkUserIMG from "../../../assets/images/dark.gif";
 
 //#region > Components
 class MessageItem extends React.Component {
+  componentDidMount() {
+    this.props.readMessage(
+      this.props.uid,
+      this.props.chid,
+      this.props.mid,
+      this.props.read
+    );
+  }
   // Get user profile picture
   getPicture = (skin, index, name) => {
     switch (skin) {
@@ -77,6 +91,30 @@ class MessageItem extends React.Component {
     return timeAgo.format(timestamp);
   };
 
+  getReadStatus = () => {
+    if (this.areArraysEqualSets(this.props.chatUsers, this.props.read)) {
+      return <MDBIcon icon="check" className="blue-text" />;
+    } else {
+      return <MDBIcon icon="check" className="grey-text" />;
+    }
+  };
+
+  /** assumes array elements are primitive types
+   * check whether 2 arrays are equal sets.
+   * @param  {} a1 is an array
+   * @param  {} a2 is an array
+   */
+  areArraysEqualSets(a1, a2) {
+    let arr1 = a1.concat().sort();
+    let arr2 = a2.concat().sort();
+
+    for (var i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) return false;
+    }
+
+    return true;
+  }
+
   render() {
     const { msg, mid, author, reverse, timestamp, spacing } = this.props;
 
@@ -113,6 +151,9 @@ class MessageItem extends React.Component {
                   <span className="small text-muted">
                     {this.calculateTimeAgo(timestamp)}
                   </span>
+                  {this.props.reverse && (
+                    <span className="read">{this.getReadStatus()}</span>
+                  )}
                 </div>
                 <div>
                   <span>{msg}</span>
@@ -137,8 +178,21 @@ MessageItem.propTypes = {
 };
 //#endregion
 
+//#region > Functions
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    readMessage: (uid, chid, mid, read) =>
+      dispatch(readMessage(uid, chid, mid, read)),
+  };
+};
+//#endregion
+
 //#region > Exports
-export default MessageItem;
+export default connect(mapStateToProps, mapDispatchToProps)(MessageItem);
 //#endregion
 
 /**

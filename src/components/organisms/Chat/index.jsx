@@ -99,7 +99,10 @@ class Chat extends React.Component {
                       msg={item.data.msg}
                       key={i}
                       mid={item.mid}
+                      chid={chatDetails.id}
+                      uid={currentUser}
                       read={item.data.read}
+                      chatUsers={chatDetails.users}
                       timestamp={item.data.sentTimestamp}
                       reverse={
                         item.data.author?.uid === currentUser ? true : false

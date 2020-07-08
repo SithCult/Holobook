@@ -115,6 +115,7 @@ export const getMessages = (chid) => {
       // If messages exist, push them into the array
       if (!snapshot.empty) {
         snapshot.forEach((m) => {
+          let readArray = m.val().read;
           chatMessages = [...chatMessages, { data: m.val(), mid: m.key }];
         });
       }
@@ -163,6 +164,32 @@ export const removeMessage = (chid, mid) => {
     chatMessageRef
       .update({ visible: false })
       .then(() => dispatch({ type: "REMOVEMESSAGE_SUCCESS" }));
+  };
+};
+
+// Make messages invisible
+export const readMessage = (uid, chid, mid, read) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const chatMessageReadRef = firebase
+      .database()
+      .ref("/chats/" + chid + "/" + mid + "/");
+
+    let readhandled;
+
+    if (!read) {
+      readhandled = [];
+    } else {
+      readhandled = read;
+    }
+    if (!readhandled.includes(uid)) {
+      const readWithUser = [...readhandled, uid];
+
+      // Update state to false
+      chatMessageReadRef
+        .update({ read: readWithUser })
+        .then(() => dispatch({ type: "USERREAD_SUCCESS" }));
+    }
   };
 };
 
