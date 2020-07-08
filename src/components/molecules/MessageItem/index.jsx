@@ -93,7 +93,7 @@ class MessageItem extends React.Component {
   };
 
   getReadStatus = () => {
-    if (this.areArraysEqualSets(this.props.chatUsers, this.props.read)) {
+    if (this.props.chatUsers.length === this.props.read.length) {
       return (
         <span className="text-muted">
           <MDBIcon icon="check-circle" className="mr-2 blue-text" />
@@ -101,12 +101,22 @@ class MessageItem extends React.Component {
         </span>
       );
     } else {
-      return (
-        <span className="text-muted">
-          <MDBIcon far icon="check-circle" className="mr-2" />
-          Delivered
-        </span>
-      );
+      if (this.props.chatUsers.length > 2) {
+        return (
+          <span className="text-muted">
+            <MDBIcon far icon="check-circle" className="mr-2" />
+            Read by {this.props.read.length - 1} /{" "}
+            {this.props.chatUsers.length - 1}
+          </span>
+        );
+      } else {
+        return (
+          <span className="text-muted">
+            <MDBIcon far icon="check-circle" className="mr-2" />
+            Delivered
+          </span>
+        );
+      }
     }
   };
 
@@ -139,7 +149,7 @@ class MessageItem extends React.Component {
             </span>
           </div>
         )}
-        <div className="chat-item mb-3" key={mid}>
+        <div className="chat-item" key={mid}>
           <div className={reverse ? "d-flex reverse" : "d-flex"}>
             <div>
               {this.getPicture(author.data.skin, mid, author.sith_name)}

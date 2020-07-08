@@ -62,6 +62,7 @@ class ChatPage extends React.Component {
     selectedUsers: [],
     modal: false,
     showAllSearchMemberResults: false,
+    newGroupName: "",
   };
 
   componentDidMount = () => {
@@ -156,6 +157,7 @@ class ChatPage extends React.Component {
       searchMemberResults: results,
       searchMemberInput: input,
       showAllSearchMemberResults: false,
+      newChatCreateError: undefined,
     });
   };
 
@@ -164,6 +166,7 @@ class ChatPage extends React.Component {
       searchMemberInput: "",
       searchMemberResults: [],
       selectedUsers: [...this.state.selectedUsers, user],
+      newChatCreateError: undefined,
     });
   };
 
@@ -176,6 +179,7 @@ class ChatPage extends React.Component {
 
     this.setState({
       selectedUsers,
+      newChatCreateError: undefined,
     });
   };
 
@@ -197,14 +201,41 @@ class ChatPage extends React.Component {
     }
   };
 
+  createChat = async (name, users) => {
+    // Check users are present
+    if (name && users.length > 1) {
+      // Check if the group name has more than 2 characters
+      if (name.length > 2) {
+        if (await this.props.createChat(name, users)) {
+          this.setState(
+            {
+              newChatCreateError: undefined,
+              selectedUsers: [],
+              modal: false,
+              showAllSearchMemberResults: false,
+              newGroupName: "",
+            },
+            () => {
+              this.init();
+            }
+          );
+        } else {
+          this.setState({
+            newChatCreateError: 1,
+          });
+        }
+      }
+    }
+  };
+
   render() {
-    const { auth, chats } = this.props;
+    const { auth, chats, profile } = this.props;
 
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
     // Preset first selected chat
-    if (chats && !this.state.selectedChat) {
+    if (chats && chats.length > 0 && !this.state.selectedChat) {
       this.setState({
         selectedChat: chats[0],
       });
@@ -255,7 +286,15 @@ class ChatPage extends React.Component {
                           ) : (
                             <p className="mb-0">
                               {chat.name.split("and").length === 2 ? (
-                                chat.name.split("and")[1]
+                                <>
+                                  {chat.name
+                                    .split("and")[1]
+                                    ?.trim()
+                                    .toLowerCase() ===
+                                  profile.sith_name?.toLowerCase()
+                                    ? chat.name.split("and")[0]
+                                    : chat.name.split("and")[1]}
+                                </>
                               ) : (
                                 <span>
                                   {chat.name}
@@ -401,22 +440,29 @@ class ChatPage extends React.Component {
                     and {this.state.searchMemberResults.length - 6} more
                   </p>
                 )}
+              {this.state.newChatCreateError && (
+                <>
+                  {this.state.newChatCreateError === 1 && (
+                    <p className="text-danger font-weight-bold d-block">
+                      Chat already exists.
+                    </p>
+                  )}
+                </>
+              )}
               {this.state.selectedUsers.length === 1 && (
                 <>
                   <MDBBtn
                     color="blue"
                     size="md"
                     className="m-0"
-                    onClick={() => {
-                      this.props.createChat(
+                    onClick={() =>
+                      this.createChat(
                         this.props.profile.sith_name +
                           " and " +
                           this.state.selectedUsers[0].data.sith_name,
                         this.getUsers()
-                      );
-                      this.init();
-                      this.toggle();
-                    }}
+                      )
+                    }
                   >
                     Start Chat with {this.state.selectedUsers[0].data.sith_name}
                   </MDBBtn>
@@ -432,15 +478,13 @@ class ChatPage extends React.Component {
                     color="blue"
                     size="md"
                     className="m-0"
-                    disabled={this.state.selectedUsers.length >= 10}
-                    onClick={() => {
-                      this.props.createChat(
-                        this.state.newGroupName,
-                        this.getUsers()
-                      );
-                      this.init();
-                      this.toggle();
-                    }}
+                    disabled={
+                      this.state.selectedUsers.length >= 10 ||
+                      this.state.newGroupName?.length <= 2
+                    }
+                    onClick={() =>
+                      this.createChat(this.state.newGroupName, this.getUsers())
+                    }
                   >
                     Start group chat
                   </MDBBtn>
