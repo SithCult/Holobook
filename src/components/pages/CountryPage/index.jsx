@@ -108,13 +108,13 @@ class CountryPage extends React.Component {
               userIDs = [...userIDs, u.id];
             });
 
-            this.props.createChat(this.state.country_code, userIDs);
-
-            this.setState({
-              countryChat: await this.props.getCountryChat(
-                this.state.country_code
-              ),
-            });
+            if (await this.props.createChat(this.state.country_code, userIDs)) {
+              this.setState({
+                countryChat: await this.props.getCountryChat(
+                  this.state.country_code
+                ),
+              });
+            }
           } else {
             this.setState({ countryChat });
           }
@@ -336,15 +336,6 @@ class CountryPage extends React.Component {
         return newUser;
       });
 
-      // Sort by online status
-      /*usersWithStatus.sort((a, b) =>
-        a.status.state > b.status.state
-          ? -1
-          : b.status.state > a.status.state
-          ? 1
-          : 0
-      );*/
-
       let online = [];
       let offline = [];
 
@@ -531,14 +522,16 @@ class CountryPage extends React.Component {
                           !this.state.countryChat.users.includes(auth.uid) && (
                             <MDBBtn
                               color="red"
-                              onClick={() => {
-                                this.props.joinChat(
-                                  auth.uid,
-                                  this.state.countryChat.id,
-                                  this.state.countryChat.users
-                                );
-
-                                this.init(this.props.match?.params?.country);
+                              onClick={async () => {
+                                if (
+                                  await this.props.joinChat(
+                                    auth.uid,
+                                    this.state.countryChat.id,
+                                    this.state.countryChat.users
+                                  )
+                                ) {
+                                  this.init(this.props.match?.params?.country);
+                                }
                               }}
                             >
                               Join chat

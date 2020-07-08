@@ -19,6 +19,11 @@
         border-radius: 0.5rem;
         border: 2px darken(#00c851, 15%) solid !important;
       }
+      &.badge-danger {
+        background: transparentize($color: #ff3547, $amount: 0.7) !important;
+        border-radius: 0.5rem;
+        border: 2px darken(#ff3547, 15%) solid !important;
+      }
     }
 
     // Border radius of container (top)
@@ -57,11 +62,22 @@
     border-bottom-right-radius: 0.5rem;
     border-top: 1px darken(grey, 20%) solid;
 
-    input {
-      border-top-left-radius: 0.5rem;
-      border-bottom-left-radius: 0.5rem;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+    textarea {
+      border-radius: 0.5rem;
+      min-height: 36px;
+      height: 36px;
+      max-height: 300px;
+      overflow: hidden;
+      resize: none;
+
+      background: #1e1e1e;
+      color: white;
+      box-shadow: none;
+      outline: none;
+
+      &:focus {
+        border: 1px solid #ced4da;
+      }
     }
 
     // Blue button

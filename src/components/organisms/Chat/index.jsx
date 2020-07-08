@@ -34,6 +34,7 @@ class Chat extends React.Component {
 
     // DOM References
     this.messagesEndRef = React.createRef();
+    this.inputRef = React.createRef();
 
     // State
     this.state = {
@@ -49,11 +50,14 @@ class Chat extends React.Component {
           : await this.props.getAllUsers(),
       },
       () => {
-        // Get messages of chat
-        this.props.getMessages(this.props.chatDetails.id);
+        // Check if user is part of chat
+        if (this.props.hasJoined) {
+          // Get messages of chat
+          this.props.getMessages(this.props.chatDetails.id);
 
-        // Scroll to bottom of chat
-        this.scrollToBottom();
+          // Scroll to bottom of chat
+          this.scrollToBottom();
+        }
       }
     );
   };
@@ -75,10 +79,24 @@ class Chat extends React.Component {
     this.messagesEndRef.current.scrollTo(0, scroll);
   };
 
-  changeHandler = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
+  changeHandler = (e) => {
+    e.target.style.overflow = "hidden";
+    e.target.style.height = 0;
+    e.target.style.height = e.target.scrollHeight + "px";
+
+    if (e.target.value.length <= 500) {
+      this.setState({
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+
+  keyPressHandler = (e) => {
+    if (e.keyCode === 13 && !e.shiftKey) {
+      e.preventDefault();
+
+      this.createMessage();
+    }
   };
 
   // Create a new message
@@ -86,10 +104,10 @@ class Chat extends React.Component {
     const newMsg = { chid: this.props.chatDetails.id, msg: this.state.message };
 
     // Check if message is empty
-    if (newMsg.msg) {
+    if (newMsg.msg?.trim()) {
       this.props.writeMessage(newMsg);
 
-      this.setState({ message: "" });
+      this.setState({ message: "" }, () => this.inputRef.current.focus());
     }
   };
 
@@ -123,7 +141,7 @@ class Chat extends React.Component {
                           }
                           spacing={
                             i > 0
-                              ? item.data.sentTimestamp - 600000 >
+                              ? item.data.sentTimestamp - 300000 >
                                 chatMessages[chatDetails.id][i - 1].data
                                   .sentTimestamp
                                 ? true
@@ -181,6 +199,9 @@ class Chat extends React.Component {
               name="message"
               value={this.state.message}
               onChange={this.changeHandler}
+              onKeyDown={this.keyPressHandler}
+              onKeyUp={this.keyPressHandler}
+              ref={this.inputRef}
             />
             <MDBBtn
               color="blue"
