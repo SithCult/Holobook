@@ -79,6 +79,7 @@ class ChatPage extends React.Component {
      * start message handler for the chats
      */
     if (!this.props.chats && nextprops.chats) {
+      // eslint-disable-next-line array-callback-return
       nextprops.chats.map((c) => {
         this.props.getMessages(c.id);
       });
@@ -92,6 +93,7 @@ class ChatPage extends React.Component {
 
   // If component unmounts, kill the listeners
   componentWillUnmount() {
+    // eslint-disable-next-line array-callback-return
     this.props.chats.map((c) => {
       stopGettingMessages(c.id);
     });
@@ -116,6 +118,7 @@ class ChatPage extends React.Component {
     let order = [];
 
     // Get newest messages form chats
+    // eslint-disable-next-line array-callback-return
     chats.map((c) => {
       let co = messages[c.id];
 

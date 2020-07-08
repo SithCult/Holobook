@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+// React Prop Types
+import PropTypes from "prop-types";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -101,6 +103,12 @@ class RankItem extends React.Component {
     );
   }
 }
+//#endregion
+
+//#region > PropTypes
+RankItem.propTypes = {
+  rank: PropTypes.string.isRequired,
+};
 //#endregion
 
 //#region > Exports
