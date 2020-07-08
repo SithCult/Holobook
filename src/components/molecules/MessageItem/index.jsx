@@ -92,6 +92,7 @@ class MessageItem extends React.Component {
     return timeAgo.format(timestamp);
   };
 
+  // Check if the message has been read and render result accordingly
   getReadStatus = () => {
     if (this.props.chatUsers.length === this.props.read.length) {
       return (
@@ -129,7 +130,7 @@ class MessageItem extends React.Component {
     const arr1 = a1.concat().sort();
     const arr2 = a2.concat().sort();
 
-    for (var i = 0; i < arr1.length; i++) {
+    for (let i = 0; i < arr1.length; i++) {
       if (arr1[i] !== arr2[i]) return false;
     }
 

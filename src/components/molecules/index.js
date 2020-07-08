@@ -8,7 +8,6 @@ import ReceivedUser from "./ReceivedUser";
 import Comment from "./Comment";
 import Post from "./Post";
 import OnlineUsers from "./OnlineUsers";
-// Chat
 import MessageItem from "./MessageItem";
 //#endregion
 

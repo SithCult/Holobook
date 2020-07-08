@@ -120,7 +120,7 @@ class ChatPage extends React.Component {
     // Get newest messages form chats
     // eslint-disable-next-line array-callback-return
     chats.map((c) => {
-      let co = messages[c.id];
+      const co = messages[c.id];
 
       if (co) {
         order = [...order, { ...co[co.length - 1], chat: c }];
