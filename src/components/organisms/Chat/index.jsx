@@ -13,7 +13,11 @@ import { MDBBtn, MDBBadge } from "mdbreact";
 // Connect
 import { connect } from "react-redux";
 // Actions
-import { getMessages, writeMessage } from "../../../store/actions/chatActions";
+import {
+  getMessages,
+  writeMessage,
+  stopGettingMessages,
+} from "../../../store/actions/chatActions";
 import { getAllUsers } from "../../../store/actions/userActions";
 
 //> Components
@@ -58,6 +62,11 @@ class Chat extends React.Component {
     this.scrollToBottom();
   }
 
+  componentWillUnmount = () => {
+    // Stop getting messages for certain chat (close listener)
+    this.props.stopGettingMessages(this.props.chatDetails.id);
+  };
+
   scrollToBottom = () => {
     const scroll =
       this.messagesEndRef.current.scrollHeight -
@@ -99,7 +108,10 @@ class Chat extends React.Component {
                       msg={item.data.msg}
                       key={i}
                       mid={item.mid}
+                      chid={chatDetails.id}
+                      uid={currentUser}
                       read={item.data.read}
+                      chatUsers={chatDetails.users}
                       timestamp={item.data.sentTimestamp}
                       reverse={
                         item.data.author?.uid === currentUser ? true : false
@@ -185,6 +197,7 @@ const mapDispatchToProps = (dispatch) => {
     getMessages: (chid) => dispatch(getMessages(chid)),
     writeMessage: (msg) => dispatch(writeMessage(msg)),
     getAllUsers: () => dispatch(getAllUsers()),
+    stopGettingMessages: (chid) => dispatch(stopGettingMessages(chid)),
   };
 };
 //#endregion

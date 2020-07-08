@@ -15,7 +15,13 @@ import moment from "moment";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import { MDBAvatar } from "mdbreact";
+import { MDBAvatar, MDBIcon } from "mdbreact";
+
+//> Redux
+// Connect
+import { connect } from "react-redux";
+// Actions
+import { readMessage } from "../../../store/actions/chatActions";
 
 //> CSS
 import "./messageitem.scss";
@@ -33,6 +39,15 @@ import darkUserIMG from "../../../assets/images/dark.gif";
 
 //#region > Components
 class MessageItem extends React.Component {
+  componentDidMount() {
+    this.props.readMessage(
+      this.props.uid,
+      this.props.chid,
+      this.props.mid,
+      this.props.read
+    );
+  }
+
   // Get user profile picture
   getPicture = (skin, index, name) => {
     switch (skin) {
@@ -77,6 +92,40 @@ class MessageItem extends React.Component {
     return timeAgo.format(timestamp);
   };
 
+  getReadStatus = () => {
+    if (this.areArraysEqualSets(this.props.chatUsers, this.props.read)) {
+      return (
+        <span className="text-muted">
+          <MDBIcon icon="check-circle" className="mr-2 blue-text" />
+          Read
+        </span>
+      );
+    } else {
+      return (
+        <span className="text-muted">
+          <MDBIcon far icon="check-circle" className="mr-2" />
+          Delivered
+        </span>
+      );
+    }
+  };
+
+  /** assumes array elements are primitive types
+   * check whether 2 arrays are equal sets.
+   * @param  {} a1 is an array
+   * @param  {} a2 is an array
+   */
+  areArraysEqualSets(a1, a2) {
+    const arr1 = a1.concat().sort();
+    const arr2 = a2.concat().sort();
+
+    for (var i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) return false;
+    }
+
+    return true;
+  }
+
   render() {
     const { msg, mid, author, reverse, timestamp, spacing } = this.props;
 
@@ -90,7 +139,7 @@ class MessageItem extends React.Component {
             </span>
           </div>
         )}
-        <div className="chat-item" key={mid}>
+        <div className="chat-item mb-3" key={mid}>
           <div className={reverse ? "d-flex reverse" : "d-flex"}>
             <div>
               {this.getPicture(author.data.skin, mid, author.sith_name)}
@@ -120,6 +169,11 @@ class MessageItem extends React.Component {
               </div>
             </div>
           </div>
+          {this.props.reverse && (
+            <div className="text-right">
+              <span className="read small mr-5">{this.getReadStatus()}</span>
+            </div>
+          )}
         </div>
       </>
     );
@@ -137,8 +191,21 @@ MessageItem.propTypes = {
 };
 //#endregion
 
+//#region > Functions
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    readMessage: (uid, chid, mid, read) =>
+      dispatch(readMessage(uid, chid, mid, read)),
+  };
+};
+//#endregion
+
 //#region > Exports
-export default MessageItem;
+export default connect(mapStateToProps, mapDispatchToProps)(MessageItem);
 //#endregion
 
 /**

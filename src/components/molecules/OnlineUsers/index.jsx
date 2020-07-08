@@ -167,7 +167,7 @@ class OnlineUsers extends Component {
                 users.map((user, i) => {
                   if (user?.status?.state === "online") {
                     return (
-                      <MDBCard className="text-left">
+                      <MDBCard className="text-left" key={i}>
                         <div className="d-flex justify-content-between">
                           <div className="d-flex align-items-center">
                             {this.getPicture(

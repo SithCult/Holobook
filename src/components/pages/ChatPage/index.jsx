@@ -296,10 +296,7 @@ class ChatPage extends React.Component {
               {this.state.selectedChat && (
                 <Chat
                   key={this.state.selectedChat.id}
-                  chatDetails={{
-                    id: this.state.selectedChat.id,
-                    data: this.state.selectedChat,
-                  }}
+                  chatDetails={this.state.selectedChat}
                   allUsers={this.state.users ? this.state.users : null}
                   currentUser={auth.uid}
                   hasJoined={
