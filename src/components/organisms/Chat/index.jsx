@@ -62,14 +62,18 @@ class Chat extends React.Component {
     );
   };
 
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.hasJoined === false && nextProps.hasJoined === true) {
+      this.props.getMessages(this.props.chatDetails.id);
+
+      // Scroll to bottom of chat
+      this.scrollToBottom();
+    }
+  };
+
   componentDidUpdate() {
     this.scrollToBottom();
   }
-
-  componentWillUnmount = () => {
-    // Stop getting messages for certain chat (close listener)
-    this.props.stopGettingMessages(this.props.chatDetails.id);
-  };
 
   scrollToBottom = () => {
     const scroll =

@@ -41,6 +41,7 @@ import {
   MDBModalFooter,
   MDBBadge,
   MDBAvatar,
+  MDBSpinner,
 } from "mdbreact";
 
 //> Components
@@ -128,7 +129,11 @@ class ChatPage extends React.Component {
     // Put sorted array of messages into state
     this.setState({
       order: order.sort((a, b) =>
-        a.data.sentTimestamp < b.data.sentTimestamp ? 1 : -1
+        a.data && b.data
+          ? a.data.sentTimestamp < b.data.sentTimestamp
+            ? 1
+            : -1
+          : -1
       ),
     });
   };
@@ -257,6 +262,20 @@ class ChatPage extends React.Component {
     }
   };
 
+  getUserByUid = (uid) => {
+    const users = this.state.users;
+
+    let result = null;
+
+    users.forEach((user) => {
+      if (user.id === uid) {
+        result = user;
+      }
+    });
+
+    return result;
+  };
+
   createChat = async (name, users) => {
     // Check users are present
     if (name && users.length > 1) {
@@ -291,7 +310,12 @@ class ChatPage extends React.Component {
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
     // Preset first selected chat
-    if (chats && chats.length > 0 && !this.state.selectedChat && this.state.order) {
+    if (
+      chats &&
+      chats.length > 0 &&
+      !this.state.selectedChat &&
+      this.state.order
+    ) {
       this.setState({
         selectedChat: this.state.order[0].chat,
       });
@@ -305,111 +329,162 @@ class ChatPage extends React.Component {
             <title>{`Chat - SithCult`}</title>
             <link rel="canonical" href="https://sithcult.com/chat" />
           </Helmet>
-          <MDBRow>
-            <MDBCol lg="4">
-              <div className="text-right mb-2">
-                <MDBBtn color="blue" size="md" onClick={this.toggle}>
-                  <MDBIcon icon="plus" className="mr-2" />
-                  Create chat
-                </MDBBtn>
-              </div>
-              {chats &&
-                this.state.order &&
-                this.state.order.map((item, i) => {
-                  return (
-                    <MDBCard
-                      key={i}
-                      className={
-                        item.chat.id === this.state.selectedChat?.id
-                          ? "clickable active"
-                          : "clickable"
-                      }
-                      onClick={() => this.setState({ selectedChat: item.chat })}
-                    >
-                      <MDBCardBody>
-                        <div className="d-flex justify-content-between">
-                          {item.chat.name.length === 2 ? (
-                            <div>
-                              <div className="text-center flag">
-                                <ReactCountryFlag
-                                  svg
-                                  countryCode={item.chat.name}
+          {!this.state.order ? (
+            <div className="d-flex justify-content-center align-items center">
+              <MDBSpinner red />
+            </div>
+          ) : (
+            <MDBRow>
+              <MDBCol lg="4">
+                <div className="text-right mb-2">
+                  <MDBBtn color="blue" size="md" onClick={this.toggle}>
+                    <MDBIcon icon="plus" className="mr-2" />
+                    Create chat
+                  </MDBBtn>
+                </div>
+                {chats &&
+                  this.state.order &&
+                  this.state.order.map((item, i) => {
+                    return (
+                      <MDBCard
+                        key={i}
+                        className={
+                          item.chat.id === this.state.selectedChat?.id
+                            ? "clickable active"
+                            : "clickable"
+                        }
+                        onClick={() =>
+                          this.setState({ selectedChat: item.chat })
+                        }
+                      >
+                        <MDBCardBody
+                          className={
+                            item.data &&
+                            item.data.read &&
+                            !item.data.read.includes(auth.uid)
+                              ? "unread"
+                              : undefined
+                          }
+                        >
+                          <div className="d-flex justify-content-between">
+                            {item.chat.name.length === 2 ? (
+                              <div>
+                                <div className="text-center flag">
+                                  <ReactCountryFlag
+                                    svg
+                                    countryCode={item.chat.name}
+                                  />
+                                </div>
+                                {countryList().getLabel(item.chat.name)}
+                                <MDBIcon
+                                  icon="users"
+                                  className="ml-2 text-muted"
+                                  size="sm"
                                 />
                               </div>
-                              {countryList().getLabel(item.chat.name)}
-                              <MDBIcon
-                                icon="users"
-                                className="ml-2 text-muted"
-                                size="sm"
-                              />
-                            </div>
-                          ) : (
-                            <p className="mb-0">
-                              {chat.name.split("and").length === 2 ? (
-                                <>
-                                  {chat.name
-                                    .split("and")[1]
-                                    ?.trim()
-                                    .toLowerCase() ===
-                                  profile.sith_name?.toLowerCase()
-                                    ? chat.name.split("and")[0]
-                                    : chat.name.split("and")[1]}
-                                </>
-                              ) : (
-                                <span>
-                                  {item.chat.name}
-                                  <MDBIcon
-                                    icon="users"
-                                    className="ml-2 text-muted"
-                                    size="sm"
-                                  />
+                            ) : (
+                              <p className="mb-0">
+                                {item.chat.name.split("and").length === 2 ? (
+                                  <>
+                                    {item.chat.name
+                                      .split("and")[1]
+                                      ?.trim()
+                                      .toLowerCase() ===
+                                    profile.sith_name?.toLowerCase()
+                                      ? item.chat.name.split("and")[0]
+                                      : item.chat.name.split("and")[1]}
+                                  </>
+                                ) : (
+                                  <span>
+                                    {item.chat.name}
+                                    <MDBIcon
+                                      icon="users"
+                                      className="ml-2 text-muted"
+                                      size="sm"
+                                    />
+                                  </span>
+                                )}
+                              </p>
+                            )}
+                            {item.chat.users.length === 2 &&
+                              item.chat.name.length !== 2 && (
+                                <span className="blue-text small">
+                                  Private chat
                                 </span>
                               )}
-                            </p>
-                          )}
-                          {item.chat.users.length === 2 &&
-                            item.chat.name.length !== 2 && (
-                              <span className="blue-text small">
-                                Private chat
+                            {(item.chat.users.length > 2 ||
+                              item.chat.name.length === 2) && (
+                              <span className="text-muted small">
+                                Group Chat
                               </span>
                             )}
-                          {(item.chat.users.length > 2 ||
-                            item.chat.name.length === 2) && (
-                            <span className="text-muted small">Group Chat</span>
+                          </div>
+                          <div className="text-muted small latest-message">
+                            {item.data?.msg ? (
+                              <>
+                                <MDBIcon
+                                  icon="angle-right"
+                                  className="mr-1 ml-2"
+                                />
+                                {item.data && item.data.author && (
+                                  <>
+                                    {item.data.author.uid === auth.uid ? (
+                                      <span className="blue-text">You: </span>
+                                    ) : (
+                                      <span className="blue-text">
+                                        {
+                                          this.getUserByUid(
+                                            item.data.author.uid
+                                          )?.data.sith_name
+                                        }
+                                        :{" "}
+                                      </span>
+                                    )}
+                                  </>
+                                )}
+                                {item.data?.msg
+                                  ? item.data.msg.length > 30
+                                    ? item.data.msg.slice(0, 30) + "..."
+                                    : item.data.msg
+                                  : null}
+                              </>
+                            ) : (
+                              <span>No messages yet</span>
+                            )}
+                          </div>
+                          {item.chat.users.length !== 2 && (
+                            <span className="text-muted small">
+                              {item.chat.users.length}{" "}
+                              {item.chat.users.length === 1
+                                ? "participant"
+                                : "participants"}
+                            </span>
                           )}
-                        </div>
-                        {item.chat.users.length !== 2 && (
-                          <span className="text-muted small">
-                            {item.chat.users.length}{" "}
-                            {item.chat.users.length === 1
-                              ? "participant"
-                              : "participants"}
-                          </span>
-                        )}
-                      </MDBCardBody>
-                    </MDBCard>
-                  );
-                })}
-            </MDBCol>
-            <MDBCol lg="8">
-              {this.state.selectedChat && this.props.chatMessages && (
-                <Chat
-                  key={this.state.selectedChat.id}
-                  chatDetails={this.state.selectedChat}
-                  chatMessages={
-                    this.props.chatMessages[this.state.selectedChat.id]
-                  }
-                  allUsers={this.state.users ? this.state.users : null}
-                  currentUser={auth.uid}
-                  hasJoined={
-                    this.state.selectedChat.users.includes(auth.uid)
-                      ? true
-                      : false
-                  }
-                />
-              )}
-            </MDBCol>
-          </MDBRow>
+                        </MDBCardBody>
+                      </MDBCard>
+                    );
+                  })}
+              </MDBCol>
+              <MDBCol lg="8">
+                {this.state.selectedChat && this.props.chatMessages && (
+                  <Chat
+                    key={this.state.selectedChat.id}
+                    chatDetails={this.state.selectedChat}
+                    chatMessages={
+                      this.props.chatMessages[this.state.selectedChat.id]
+                    }
+                    allUsers={this.state.users ? this.state.users : null}
+                    currentUser={auth.uid}
+                    hasJoined={
+                      this.state.selectedChat.users.includes(auth.uid)
+                        ? true
+                        : false
+                    }
+                  />
+                )}
+              </MDBCol>
+            </MDBRow>
+          )}
         </MDBContainer>
         {this.state.modal && (
           <MDBModal

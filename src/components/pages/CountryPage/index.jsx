@@ -518,7 +518,9 @@ class CountryPage extends React.Component {
                           />
                         )}
                         {this.state.countryChat &&
-                          profile.badges.includes("grandmoff") &&
+                          (profile.badges.includes("grandmoff") ||
+                            profile.address?.country.toLowerCase().trim() ===
+                              country_code.toLowerCase().trim()) &&
                           !this.state.countryChat.users.includes(auth.uid) && (
                             <MDBBtn
                               color="red"

@@ -108,11 +108,28 @@ export const signUp = (newUser) => {
           return response.user.uid;
         })
         .catch((err) => {
-          dispatch({
-            type: "SIGNUP_ERROR",
-            errCode: 1,
-            err,
-          });
+          switch (err.code) {
+            case "auth/weak-password":
+              dispatch({
+                type: "SIGNUP_ERROR",
+                errCode: 5,
+                err,
+              });
+              break;
+            case "auth/email-already-in-use":
+              dispatch({
+                type: "SIGNUP_ERROR",
+                errCode: 1,
+                err,
+              });
+              break;
+            default:
+              dispatch({
+                type: "SIGNUP_ERROR",
+                errCode: 10,
+                err,
+              });
+          }
         });
 
       if (uid) {
@@ -152,16 +169,10 @@ export const signUp = (newUser) => {
 
             dispatch({
               type: "SIGNUP_ERROR",
-              errCode: 2,
+              errCode: 20,
               err,
             });
           });
-      } else {
-        dispatch({
-          type: "SIGNUP_ERROR",
-          errCode: 1,
-          err: { message: "This email is already in use!" },
-        });
       }
     }
   };
