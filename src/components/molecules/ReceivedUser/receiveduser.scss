@@ -14,6 +14,19 @@
     }
     .popover-body {
       background: #1e1e1e;
+      .btn {
+        border-radius: 0.5rem;
+        img {
+          border-radius: 0.2rem;
+        }
+        &.btn-black {
+          background: transparentize($color: black, $amount: 0.8) !important;
+          border: 2px black solid;
+          &:hover {
+            background: transparentize($color: black, $amount: 0.4) !important;
+          }
+        }
+      }
       .badge {
         i {
           margin-right: 0 !important;

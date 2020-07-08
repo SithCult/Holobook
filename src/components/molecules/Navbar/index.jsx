@@ -101,6 +101,16 @@ class Navbar extends React.Component {
                 )}
                 {auth.uid && (
                   <>
+                    <Link to="/chat">
+                      <MDBBtn
+                        className="mr-2 text-white"
+                        color="elegant"
+                        size="md"
+                      >
+                        <MDBIcon far icon="comments" className="pr-2" />
+                        Chats
+                      </MDBBtn>
+                    </Link>
                     <Link to="/me">
                       <MDBBtn
                         className="mr-2 text-white"

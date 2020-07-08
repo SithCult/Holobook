@@ -4,10 +4,11 @@
 import RegisterForm from "./RegisterForm";
 import Posts from "./Posts";
 import Comments from "./Comments";
+import Chat from "./Chat";
 //#endregion
 
 //#region > Exports
-export { RegisterForm, Posts, Comments };
+export { RegisterForm, Posts, Comments, Chat };
 //#endregion
 
 /**
