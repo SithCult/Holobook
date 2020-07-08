@@ -87,6 +87,7 @@ class MessageItem extends React.Component {
   // Calculate time ago
   calculateTimeAgo = (timestamp) => {
     TimeAgo.addLocale(en);
+
     const timeAgo = new TimeAgo("en-US");
 
     return timeAgo.format(timestamp);
@@ -120,22 +121,6 @@ class MessageItem extends React.Component {
       }
     }
   };
-
-  /** assumes array elements are primitive types
-   * check whether 2 arrays are equal sets.
-   * @param  {} a1 is an array
-   * @param  {} a2 is an array
-   */
-  areArraysEqualSets(a1, a2) {
-    const arr1 = a1.concat().sort();
-    const arr2 = a2.concat().sort();
-
-    for (let i = 0; i < arr1.length; i++) {
-      if (arr1[i] !== arr2[i]) return false;
-    }
-
-    return true;
-  }
 
   render() {
     const { msg, mid, author, reverse, timestamp, spacing } = this.props;

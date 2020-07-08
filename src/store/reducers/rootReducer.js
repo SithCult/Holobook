@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
   like: likeReducer, // Like of posts or comments
   donMsg: donMsgReducer, // Donation messages
   comment: commentReducer, // Comments
-  chat: chatReducer,
+  chat: chatReducer, // Chat
   firestore: firestoreReducer, // Database
   firebase: firebaseReducer, // Authentication
 });

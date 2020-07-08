@@ -69,7 +69,6 @@ class CountryPage extends React.Component {
 
   componentDidMount = () => {
     this.init(this.props.match?.params?.country);
-
     this.props.getOnlineUsers();
   };
 
@@ -153,7 +152,7 @@ class CountryPage extends React.Component {
         <div className="memberlist moffs">
           {filtered.map((found, f) => {
             return (
-              <MDBCard className="text-left" key="f">
+              <MDBCard className="text-left" key={f}>
                 <div className="d-flex justify-content-between">
                   <div className="d-flex align-items-center">
                     {this.getPicture(

@@ -73,7 +73,7 @@ class RankItem extends React.Component {
                         <p className="lead font-weight-bold mb-0">Moff</p>
                         <p className="mb-2 basic">Moff</p>
                         <p className="text-muted mb-1">
-                          A moff is the representative of a cluster (country)
+                          A Moff is the representative of a cluster (country)
                           and has the sole power over all members in this area.
                           He directly reports to the Grandmoffs in his area.
                         </p>

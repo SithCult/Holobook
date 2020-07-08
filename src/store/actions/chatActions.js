@@ -77,8 +77,10 @@ export const getChats = (uid) => {
           querySnapshot.forEach((doc) => {
             let data = { ...doc.data(), id: doc.id };
 
-            // If a UID is given, return chat if User is a member
-            // Otherwise, push data into array anyways
+            /**
+             * If a UID is given, return chat if User is a member,
+             * otherwise push data into array anyways
+             */
             if (uid) {
               if (data.users.includes(uid)) {
                 results.push(data);
@@ -241,16 +243,19 @@ export const readMessage = (uid, chid, mid, read) => {
   };
 };
 
-/** assumes array elements are primitive types
+/**
+ * @function
+ * Assumes array elements are primitive types
  * check whether 2 arrays are equal sets.
- * @param  {} a1 is an array
- * @param  {} a2 is an array
+ * @param  {Array} a1 All chat names parts
+ * @param  {Array} a2 Current chat name parts
  */
 function areArraysEqualSets(a1, a2) {
   const arr1 = a1.concat().sort();
   const arr2 = a2.concat().sort();
 
   if (arr1.length !== arr2.length) return false;
+
   for (let i = arr1.length; i--; ) {
     if (arr1[i] !== arr2[i]) return false;
   }

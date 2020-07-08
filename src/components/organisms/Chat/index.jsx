@@ -52,11 +52,7 @@ class Chat extends React.Component {
       () => {
         // Check if user is part of chat
         if (this.props.hasJoined) {
-          // Get messages of chat
-          this.props.getMessages(this.props.chatDetails.id);
-
-          // Scroll to bottom of chat
-          this.scrollToBottom();
+          this.getMsg();
         }
       }
     );
@@ -64,16 +60,20 @@ class Chat extends React.Component {
 
   componentWillReceiveProps = (nextProps) => {
     if (this.props.hasJoined === false && nextProps.hasJoined === true) {
-      this.props.getMessages(this.props.chatDetails.id);
-
-      // Scroll to bottom of chat
-      this.scrollToBottom();
+      this.getMsg();
     }
   };
 
   componentDidUpdate() {
     this.scrollToBottom();
   }
+
+  getMsg = () => {
+    // Get messages of chat
+    this.props.getMessages(this.props.chatDetails.id);
+    // Scroll to bottom of chat
+    this.scrollToBottom();
+  };
 
   scrollToBottom = () => {
     const scroll =
@@ -110,7 +110,6 @@ class Chat extends React.Component {
     // Check if message is empty
     if (newMsg.msg?.trim()) {
       this.props.writeMessage(newMsg);
-
       this.setState({ message: "" }, () => this.inputRef.current.focus());
     }
   };
