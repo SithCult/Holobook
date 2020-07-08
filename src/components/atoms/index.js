@@ -4,10 +4,11 @@
 import DocsLink from "./DocsLink";
 import MenuLink from "./MenuLink";
 import ScrollToTop from "./ScrollToTop";
+import RankItem from "./RankItem";
 //#endregion
 
 //#region > Exports
-export { DocsLink, MenuLink, ScrollToTop };
+export { DocsLink, MenuLink, ScrollToTop, RankItem };
 //#endregion
 
 /**

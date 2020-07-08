@@ -51,6 +51,7 @@ export const getAllUsers = () => {
                   title: user.data().title,
                   skin: user.data().skin,
                   badges: user.data().badges,
+                  country: user.data().address?.country,
                 },
               },
             ];

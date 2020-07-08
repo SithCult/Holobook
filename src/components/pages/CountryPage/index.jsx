@@ -25,6 +25,11 @@ import {
   getUsersPerCountry,
   getOnlineUsers,
 } from "../../../store/actions/userActions";
+import {
+  getCountryChat,
+  createChat,
+  joinChat,
+} from "../../../store/actions/chatActions";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -42,7 +47,8 @@ import {
 } from "mdbreact";
 
 //> Components
-// To be added
+import { Chat } from "../../organisms";
+import { RankItem } from "../../atoms";
 
 //> CSS
 import "./countrypage.scss";
@@ -83,16 +89,42 @@ class CountryPage extends React.Component {
 
   init = async (country) => {
     if (country) {
-      this.setState({
-        users: await this.props.getUsersPerCountry(country),
-        country_code: country ? country.toLowerCase().trim() : null,
-        country: country ? countryList().getLabel(country) : null,
-      });
+      this.setState(
+        {
+          users: await this.props.getUsersPerCountry(country),
+          country_code: country ? country.toLowerCase().trim() : null,
+          country: country ? countryList().getLabel(country) : null,
+        },
+        async () => {
+          const countryChat = await this.props.getCountryChat(
+            this.state.country_code
+          );
+
+          if (!countryChat) {
+            let userIDs = [];
+
+            this.state.users.forEach((u) => {
+              userIDs = [...userIDs, u.id];
+            });
+
+            if (await this.props.createChat(this.state.country_code, userIDs)) {
+              this.setState({
+                countryChat: await this.props.getCountryChat(
+                  this.state.country_code
+                ),
+              });
+            }
+          } else {
+            this.setState({ countryChat });
+          }
+        }
+      );
     }
   };
 
   calculateTimeAgo = (timestamp) => {
     TimeAgo.addLocale(en);
+
     const timeAgo = new TimeAgo("en-US");
 
     return timeAgo.format(timestamp);
@@ -120,7 +152,7 @@ class CountryPage extends React.Component {
         <div className="memberlist moffs">
           {filtered.map((found, f) => {
             return (
-              <MDBCard className="text-left">
+              <MDBCard className="text-left" key={f}>
                 <div className="d-flex justify-content-between">
                   <div className="d-flex align-items-center">
                     {this.getPicture(
@@ -303,15 +335,6 @@ class CountryPage extends React.Component {
         return newUser;
       });
 
-      // Sort by online status
-      /*usersWithStatus.sort((a, b) =>
-        a.status.state > b.status.state
-          ? -1
-          : b.status.state > a.status.state
-          ? 1
-          : 0
-      );*/
-
       let online = [];
       let offline = [];
 
@@ -384,63 +407,88 @@ class CountryPage extends React.Component {
                     </p>
                     <div className="card-columns memberlist">
                       {users &&
-                        users.map((user, i) => {
-                          console.log(user);
-                          return (
-                            <MDBCard className="text-left" key={i}>
-                              <div className="d-flex justify-content-between">
-                                <div className="d-flex align-items-center">
-                                  {this.getPicture(
-                                    user.data.skin,
-                                    user.id,
-                                    i,
-                                    user.data.sith_name
-                                  )}
-                                  <span className="pl-2">
-                                    {user.data.title} {user.data.sith_name}
-                                    {user.status &&
-                                    user.status.state === "offline" ? (
-                                      <span className="d-block small text-muted">
-                                        Last seen{" "}
-                                        {this.calculateTimeAgo(
-                                          user.status.last_changed
-                                        )}
-                                      </span>
-                                    ) : (
-                                      <span className="d-block small text-success">
-                                        Currently online
-                                      </span>
+                        users
+                          .slice(
+                            0,
+                            this.state.showAll
+                              ? users.length - 1
+                              : users.length > 5
+                              ? 5
+                              : users.length
+                          )
+                          .map((user, i) => {
+                            return (
+                              <MDBCard className="text-left" key={i}>
+                                <div className="d-flex justify-content-between">
+                                  <div className="d-flex align-items-center">
+                                    {this.getPicture(
+                                      user.data.skin,
+                                      user.id,
+                                      i,
+                                      user.data.sith_name
                                     )}
+                                    <span className="pl-2">
+                                      {user.data.title} {user.data.sith_name}
+                                      {user.status &&
+                                      user.status.state === "offline" ? (
+                                        <span className="d-block small text-muted">
+                                          Last seen{" "}
+                                          {this.calculateTimeAgo(
+                                            user.status.last_changed
+                                          )}
+                                        </span>
+                                      ) : (
+                                        <span className="d-block small text-success">
+                                          Currently online
+                                        </span>
+                                      )}
+                                    </span>
+                                  </div>
+                                  <span className="small text-muted">
+                                    {user.data.badges.includes("moff") && (
+                                      <RankItem rank="moff" />
+                                    )}
+                                    {user.data.badges.includes("grandmoff") && (
+                                      <RankItem rank="grandmoff" />
+                                    )}
+                                    {user.data.badges.includes("hand") && (
+                                      <RankItem rank="hand" />
+                                    )}
+                                    <span className="ml-1">
+                                      {user.data.title}
+                                    </span>
                                   </span>
                                 </div>
-                                <span className="small text-muted">
-                                  {user.data.title.toLowerCase().trim() ===
-                                    "darth" && (
-                                    <MDBIcon
-                                      icon="angle-double-up"
-                                      className={
-                                        user.data.badges.includes("moff")
-                                          ? "pr-1 amber-text"
-                                          : "pr-1"
-                                      }
-                                    />
-                                  )}
-                                  {user.data.title}
+                                <span className="d-block small text-info my-1">
+                                  {user.data.department}
                                 </span>
-                              </div>
-                              <span className="d-block small text-info my-1">
-                                {user.data.department}
-                              </span>
-                              {user.data.donations && (
-                                <div>
-                                  <MDBBadge pill color="amber" className="mt-2">
-                                    <MDBIcon icon="dollar-sign" /> Supporter
-                                  </MDBBadge>
-                                </div>
-                              )}
-                            </MDBCard>
-                          );
-                        })}
+                                {user.data.donations && (
+                                  <div>
+                                    <MDBBadge
+                                      pill
+                                      color="amber"
+                                      className="mt-2"
+                                    >
+                                      <MDBIcon icon="dollar-sign" /> Supporter
+                                    </MDBBadge>
+                                  </div>
+                                )}
+                              </MDBCard>
+                            );
+                          })}
+                      {!this.state.showAll && users && users.length > 5 && (
+                        <MDBBtn
+                          color="red"
+                          onClick={() => this.setState({ showAll: true })}
+                        >
+                          <MDBIcon
+                            icon="angle-down"
+                            className="pr-2"
+                            size="md"
+                          />
+                          Show all
+                        </MDBBtn>
+                      )}
                     </div>
                   </>
                 )}
@@ -453,8 +501,44 @@ class CountryPage extends React.Component {
                 {profile && country_code && profile.isLoaded ? (
                   <>
                     {profile.address?.country.toLowerCase().trim() ===
-                    country_code.toLowerCase().trim() ? (
-                      <p>Country functions are not available yet.</p>
+                      country_code.toLowerCase().trim() ||
+                    profile.title.toLowerCase().trim() === "darth" ? (
+                      <>
+                        {this.state.countryChat && (
+                          <Chat
+                            chatDetails={this.state.countryChat}
+                            currentUser={auth.uid}
+                            users={this.state.users}
+                            hasJoined={
+                              this.state.countryChat.users.includes(auth.uid)
+                                ? true
+                                : false
+                            }
+                          />
+                        )}
+                        {this.state.countryChat &&
+                          (profile.badges.includes("grandmoff") ||
+                            profile.address?.country.toLowerCase().trim() ===
+                              country_code.toLowerCase().trim()) &&
+                          !this.state.countryChat.users.includes(auth.uid) && (
+                            <MDBBtn
+                              color="red"
+                              onClick={async () => {
+                                if (
+                                  await this.props.joinChat(
+                                    auth.uid,
+                                    this.state.countryChat.id,
+                                    this.state.countryChat.users
+                                  )
+                                ) {
+                                  this.init(this.props.match?.params?.country);
+                                }
+                              }}
+                            >
+                              Join chat
+                            </MDBBtn>
+                          )}
+                      </>
                     ) : (
                       <>
                         <p className="lead">
@@ -505,6 +589,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getUsersPerCountry: (cc) => dispatch(getUsersPerCountry(cc)),
     getOnlineUsers: () => dispatch(getOnlineUsers()),
+    getCountryChat: (countryid) => dispatch(getCountryChat(countryid)),
+    createChat: (name, users) => dispatch(createChat(name, users)),
+    joinChat: (uid, chid, curUsers) => dispatch(joinChat(uid, chid, curUsers)),
   };
 };
 //#endregion

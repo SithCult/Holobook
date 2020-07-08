@@ -1,0 +1,33 @@
+.rankInfo {
+  &.popover {
+    border-radius: 0.4rem;
+    .popover_arrow {
+      display: none;
+    }
+    .popover-header {
+      background: lightgrey;
+      color: white;
+      border-bottom: 2px solid #f44336;
+      .basic {
+        font-size: 1.3rem !important;
+      }
+    }
+    .popover-body {
+      .basic {
+        font-size: 0.5rem !important;
+        color: lightgrey;
+      }
+    }
+  }
+}
+
+.chat-item {
+  .purple-text {
+    color: #bc37d3 !important;
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
+ */

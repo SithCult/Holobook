@@ -8,6 +8,7 @@ import ReceivedUser from "./ReceivedUser";
 import Comment from "./Comment";
 import Post from "./Post";
 import OnlineUsers from "./OnlineUsers";
+import MessageItem from "./MessageItem";
 //#endregion
 
 //#region > Exports
@@ -19,6 +20,7 @@ export {
   Comment,
   Post,
   OnlineUsers,
+  MessageItem,
 };
 //#endregion
 

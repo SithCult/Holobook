@@ -27,8 +27,6 @@ const postReducer = (state = initState, action) => {
         postError: action.err,
       };
     case "LOADPOSTS_SUCCESS":
-      console.log("Loading success");
-
       return {
         ...state,
         authError: null,

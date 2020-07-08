@@ -92,6 +92,28 @@ class Comments extends React.Component {
     }
   };
 
+  getChildren = (items, parentId) => {
+    let childComments = [];
+
+    // For each comment check if it belongs to the post and is a child comment
+    items.forEach((comment, i) => {
+      if (comment.data.cid && comment.data.cid === parentId) {
+        // Push child comment to array
+        childComments.push(
+          <Comment
+            comment={comment}
+            key={comment.id}
+            cid={comment.id}
+            refreshData={this.props.refreshData}
+            child
+          />
+        );
+      }
+    });
+
+    return childComments;
+  };
+
   render() {
     const { items } = this.props;
 
@@ -197,24 +219,10 @@ class Comments extends React.Component {
                             </div>
                           </>
                         )}
-                        {items.map((child) => {
-                          if (
-                            child.data.cid === comment.id &&
-                            child.data.visible
-                          ) {
-                            return (
-                              <Comment
-                                comment={child}
-                                key={
-                                  this.props.pid + comment.id + child.data.cid
-                                }
-                                cid={child.id}
-                                refreshData={this.props.refreshData}
-                                child
-                              />
-                            );
-                          } else return null;
-                        })}
+                        {this.getChildren(
+                          items.filter((c) => c.data.pid === this.props.pid),
+                          comment.id
+                        )}
                       </React.Fragment>
                     );
                   } else return null;
