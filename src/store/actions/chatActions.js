@@ -135,7 +135,7 @@ export const stopGettingMessages = (chid) => {
     const chatMessageRef = firebase.database().ref("/chats/" + chid + "/");
 
     // Create reference
-    chatMessageRef.off("sentTimestamp");
+    chatMessageRef.off("value");
   };
 };
 

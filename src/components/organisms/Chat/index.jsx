@@ -13,7 +13,11 @@ import { MDBBtn, MDBBadge } from "mdbreact";
 // Connect
 import { connect } from "react-redux";
 // Actions
-import { getMessages, writeMessage } from "../../../store/actions/chatActions";
+import {
+  getMessages,
+  writeMessage,
+  stopGettingMessages,
+} from "../../../store/actions/chatActions";
 import { getAllUsers } from "../../../store/actions/userActions";
 
 //> Components
@@ -57,6 +61,11 @@ class Chat extends React.Component {
   componentDidUpdate() {
     this.scrollToBottom();
   }
+
+  componentWillUnmount = () => {
+    // Stop getting messages for certain chat (close listener)
+    this.props.stopGettingMessages(this.props.chatDetails.id);
+  };
 
   scrollToBottom = () => {
     const scroll =
@@ -188,6 +197,7 @@ const mapDispatchToProps = (dispatch) => {
     getMessages: (chid) => dispatch(getMessages(chid)),
     writeMessage: (msg) => dispatch(writeMessage(msg)),
     getAllUsers: () => dispatch(getAllUsers()),
+    stopGettingMessages: (chid) => dispatch(stopGettingMessages(chid)),
   };
 };
 //#endregion
