@@ -48,8 +48,6 @@ export const createChat = (name, users) => {
         return isDupe;
       });
 
-    console.log("DUPE IS", existingChat);
-
     if (!existingChat) {
       // Add new chat to collection.
       return firestore

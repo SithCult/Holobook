@@ -52,7 +52,7 @@ class Chat extends React.Component {
       () => {
         // Check if user is part of chat
         if (this.props.hasJoined) {
-          // Get messages of chat{
+          // Get messages of chat
           this.props.getMessages(this.props.chatDetails.id);
 
           // Scroll to bottom of chat
@@ -94,6 +94,7 @@ class Chat extends React.Component {
   keyPressHandler = (e) => {
     if (e.keyCode === 13 && !e.shiftKey) {
       e.preventDefault();
+
       this.createMessage();
     }
   };
