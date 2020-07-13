@@ -15,6 +15,7 @@ import ReactPixel from "react-facebook-pixel";
  * Footer: Global Footer
  * Navbar: Global navigation bar
  */
+import { NotifBox } from "./components/organisms";
 import { Footer, Navbar, CookieModal } from "./components/molecules";
 import { ScrollToTop } from "./components/atoms";
 
@@ -112,6 +113,7 @@ class App extends React.Component {
             <Navbar />
             <main>
               <Routes />
+              {auth.uid && <NotifBox />}
               <CookieModal saveCookie={this.saveCookie} />
             </main>
             <Footer />

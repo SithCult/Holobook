@@ -9,6 +9,7 @@ import Comment from "./Comment";
 import Post from "./Post";
 import OnlineUsers from "./OnlineUsers";
 import MessageItem from "./MessageItem";
+import NotificationItem from "./NotificationItem";
 //#endregion
 
 //#region > Exports
@@ -21,6 +22,7 @@ export {
   Post,
   OnlineUsers,
   MessageItem,
+  NotificationItem,
 };
 //#endregion
 

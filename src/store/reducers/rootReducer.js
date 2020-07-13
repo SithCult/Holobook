@@ -8,6 +8,7 @@ import likeReducer from "./likeReducer";
 import donMsgReducer from "./donMsgReducer";
 import commentReducer from "./commentReducer";
 import chatReducer from "./chatReducer";
+import notificationReducer from "./notificationReducer";
 
 //> Redux
 import { combineReducers } from "redux";
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   donMsg: donMsgReducer, // Donation messages
   comment: commentReducer, // Comments
   chat: chatReducer, // Chat
+  notifications: notificationReducer,
   firestore: firestoreReducer, // Database
   firebase: firebaseReducer, // Authentication
 });

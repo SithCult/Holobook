@@ -19,6 +19,10 @@ import {
   stopGettingMessages,
 } from "../../../store/actions/chatActions";
 import { getAllUsers } from "../../../store/actions/userActions";
+import {
+  createNotification,
+  removeNotifications,
+} from "../../../store/actions/notificationActions";
 
 //> Components
 import { MessageItem } from "../../molecules";
@@ -43,6 +47,7 @@ class Chat extends React.Component {
   }
 
   componentDidMount = async () => {
+    this.props.removeNotifications(this.props.chatDetails.id);
     this.setState(
       {
         allUsers: this.props.allUsers
@@ -110,6 +115,11 @@ class Chat extends React.Component {
     // Check if message is empty
     if (newMsg.msg?.trim()) {
       this.props.writeMessage(newMsg);
+      this.props.createNotification(
+        newMsg,
+        this.props.chatDetails.users,
+        this.props.chatDetails.name
+      );
       this.setState({ message: "" }, () => this.inputRef.current.focus());
     }
   };
@@ -243,6 +253,9 @@ const mapDispatchToProps = (dispatch) => {
     writeMessage: (msg) => dispatch(writeMessage(msg)),
     getAllUsers: () => dispatch(getAllUsers()),
     stopGettingMessages: (chid) => dispatch(stopGettingMessages(chid)),
+    createNotification: (details, recipients, chatName) =>
+      dispatch(createNotification(details, recipients, chatName)),
+    removeNotifications: (chid) => dispatch(removeNotifications(chid)),
   };
 };
 //#endregion
