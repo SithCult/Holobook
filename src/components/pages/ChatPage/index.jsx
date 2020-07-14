@@ -154,11 +154,17 @@ class ChatPage extends React.Component {
       () => {
         // Preset first selected chat
         const notifyChat = this.props.location?.chatProps?.chid;
-        if (notifyChat && chats && chats.length > 0) {
+        if (
+          !this.state.notifyChatCalled &&
+          notifyChat &&
+          chats &&
+          chats.length > 0
+        ) {
           const notifyChatObject = chats.filter((c) => c.id === notifyChat)[0];
 
           this.setState({
             selectedChat: notifyChatObject,
+            notifyChatCalled: true,
             userSelected: true,
           });
         } else {
@@ -347,6 +353,8 @@ class ChatPage extends React.Component {
 
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
+
+    console.log(this.state);
 
     return (
       <>
