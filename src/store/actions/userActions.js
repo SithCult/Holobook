@@ -313,9 +313,17 @@ export const disablePresenceHandler = (uid) => {
     const firebase = getFirebase();
     const userStatusDatabaseRef = firebase.database().ref("/status/" + uid);
 
+    const isOfflineForDatabase = {
+      uid,
+      state: "offline",
+      last_changed: firebase.database.ServerValue.TIMESTAMP,
+    };
+
     // Disable reference
     firebase.database().ref(".info/connected").off();
-    userStatusDatabaseRef.off();
+    userStatusDatabaseRef
+      .set(isOfflineForDatabase)
+      .then(() => userStatusDatabaseRef.off());
   };
 };
 

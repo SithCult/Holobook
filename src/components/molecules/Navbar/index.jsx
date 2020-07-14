@@ -54,8 +54,8 @@ class Navbar extends React.Component {
   signOut = () => {
     const uid = this.props.auth.uid;
 
-    this.props.signOut();
     this.props.disablePresenceHandler(uid);
+    this.props.signOut();
   };
 
   render() {
