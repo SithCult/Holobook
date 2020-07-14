@@ -256,14 +256,14 @@ class MessageItem extends React.Component {
                     dangerouslySetInnerHTML={{ __html: this.processMsg(msg) }}
                   ></span>
                 </div>
-                {url && (
+                {url && !this.state?.hideUrlPreview && (
                   <ReactTinyLink
                     cardSize="small"
                     showGraphic={true}
                     maxLine={2}
                     minLine={1}
                     url={url}
-                    onError={(err) => console.warn(err)}
+                    onError={() => this.setState({ hideUrlPreview: true })}
                   />
                 )}
               </div>
