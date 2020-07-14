@@ -1,4 +1,4 @@
-// Get array of all chat messages ordered by timestamp
+// Get array of all notifications for the user
 export const getNotifs = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -35,7 +35,7 @@ export const getNotifs = () => {
   };
 };
 
-// Stop getting messages
+// Stop getting Notifications
 export const stopGettingNotifications = () => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -46,7 +46,7 @@ export const stopGettingNotifications = () => {
   };
 };
 
-// Write a new chat message into the chat message list
+// Create a new notification for each recipient
 export const createNotification = (details, recipients, chatName) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
@@ -76,17 +76,17 @@ export const createNotification = (details, recipients, chatName) => {
   };
 };
 
-// Make messages invisible
+// Throw notification out of the DB by notification id
 export const removeNotification = (nid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const notifRef = firebase.database().ref("/notifications/" + nid);
 
-    // Update state to false
     notifRef.remove().then(() => dispatch({ type: "DELETENOTIF_SUCCESS" }));
   };
 };
 
+// Throw notification out of the DB by chat id
 export const removeNotifications = (chid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
