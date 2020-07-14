@@ -19,6 +19,14 @@ export const getNotifs = () => {
         });
       }
 
+      notifs.sort((a, b) =>
+        a.data && b.data
+          ? a.data.sentTimestamp < b.data.sentTimestamp
+            ? 1
+            : -1
+          : -1
+      );
+
       dispatch({
         type: "GETNOTIFS_SUCCESS",
         notifications: notifs,

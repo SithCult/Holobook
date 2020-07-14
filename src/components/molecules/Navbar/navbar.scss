@@ -16,6 +16,30 @@
     }
   }
 
+  .notify-bell {
+    position: relative;
+    .counter {
+      position: absolute;
+      top: -13px;
+      right: -17px;
+      background: rgba(244, 67, 54, 0.5) !important;
+      border: 2px #f44336 solid;
+      border-radius: 0.4rem;
+      padding: 0 0.5rem;
+    }
+  }
+  .dropdown-menu {
+    padding: 0;
+    .popover-enter-done {
+      border: none;
+      outline: none;
+      .notify {
+        border: none;
+        outline: none;
+      }
+    }
+  }
+
   .perks {
     background: transparentize($color: #2e2e2e, $amount: 0.8);
     border-radius: 0.5rem;

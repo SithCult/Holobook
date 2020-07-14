@@ -1,0 +1,23 @@
+.notify-item {
+  border-bottom: 1px lightgrey solid;
+  padding: 0.6rem 0.5rem;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    background: lighten(lightgrey, 10%);
+    border-radius: 0.25rem;
+  }
+
+  .flag {
+    display: inline-block;
+    margin-right: 0.2rem;
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
+ */

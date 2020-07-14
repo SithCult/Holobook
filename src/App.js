@@ -15,7 +15,6 @@ import ReactPixel from "react-facebook-pixel";
  * Footer: Global Footer
  * Navbar: Global navigation bar
  */
-import { NotifBox } from "./components/organisms";
 import { Footer, Navbar, CookieModal } from "./components/molecules";
 import { ScrollToTop } from "./components/atoms";
 
@@ -25,6 +24,7 @@ import { connect } from "react-redux";
 
 // Actions
 import { initPresenceHandler } from "./store/actions/userActions";
+import { getNotifs } from "./store/actions/notificationActions";
 
 // Routes
 import Routes from "./Routes";
@@ -101,19 +101,23 @@ class App extends React.Component {
     const { auth } = this.props;
 
     if (!this.state.initialized && auth.uid) {
-      this.setState({ initialized: true }, () =>
-        this.props.initPresenceHandler(auth.uid)
-      );
+      this.setState({ initialized: true }, () => {
+        this.props.initPresenceHandler(auth.uid);
+        this.props.getNotifs(auth.uid);
+      });
     }
 
     return (
       <Router>
         <ScrollToTop>
           <div className="flyout">
-            <Navbar />
+            <Navbar
+              notifications={
+                this.props.notifications ? this.props.notifications : []
+              }
+            />
             <main>
               <Routes />
-              {auth.uid && <NotifBox />}
               <CookieModal saveCookie={this.saveCookie} />
             </main>
             <Footer />
@@ -128,12 +132,14 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
+    notifications: state.notifications.notifications,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     initPresenceHandler: (uid) => dispatch(initPresenceHandler(uid)),
+    getNotifs: (uid) => dispatch(getNotifs(uid)),
   };
 };
 //#endregion

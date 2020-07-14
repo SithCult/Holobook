@@ -9,12 +9,6 @@ import PropTypes from "prop-types";
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBBtn, MDBBadge } from "mdbreact";
 
-//> Redux
-// Connect
-import { connect } from "react-redux";
-// Actions
-import { getNotifs } from "../../../store/actions/notificationActions";
-
 //> Components
 import { NotificationItem } from "../../molecules";
 //#endregion
@@ -23,46 +17,32 @@ import { NotificationItem } from "../../molecules";
 class NotifBox extends React.Component {
   state = {};
 
-  componentDidMount = async () => {
-    this.getNotifs();
-  };
-
-  getNotifs = () => {
-    // Get notifications
-    this.props.getNotifs();
-  };
-
   render() {
     const { notifications } = this.props;
+
     return (
-      <div className="notificationbox text-white">
-        Notifications
-        {notifications &&
+      <div className="notify">
+        {notifications.length > 0 ? (
           notifications.map((n, i) => (
             <NotificationItem details={n} key={i}></NotificationItem>
-          ))}
+          ))
+        ) : (
+          <p className="text-muted small p-2">No new notifications</p>
+        )}
       </div>
     );
   }
 }
 //#endregion
 
-//#region > Functions
-const mapStateToProps = (state) => {
-  return {
-    notifications: state.notifications.notifications,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getNotifs: (uid) => dispatch(getNotifs(uid)),
-  };
+//#region > PropTypes
+NotifBox.propTypes = {
+  notifications: PropTypes.array.isRequired,
 };
 //#endregion
 
 //#region > Exports
-export default connect(mapStateToProps, mapDispatchToProps)(NotifBox);
+export default NotifBox;
 //#endregion
 
 /**

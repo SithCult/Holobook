@@ -13,6 +13,9 @@
         background: darken(grey, 40%);
         border-top-right-radius: 0.2rem;
         border-top-left-radius: 1rem;
+        span {
+          word-break: break-word;
+        }
       }
     }
   }
@@ -26,6 +29,9 @@
       border-radius: 1rem;
       border-top-left-radius: 0.2rem;
       padding: 0.5rem 1rem;
+      span {
+        word-break: break-word;
+      }
     }
   }
 }

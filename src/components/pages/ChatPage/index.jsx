@@ -153,15 +153,24 @@ class ChatPage extends React.Component {
       },
       () => {
         // Preset first selected chat
-        if (
-          chats &&
-          chats.length > 0 &&
-          !this.state.userSelected &&
-          this.state.order
-        ) {
+        const notifyChat = this.props.location?.chatProps?.chid;
+        if (notifyChat && chats && chats.length > 0) {
+          const notifyChatObject = chats.filter((c) => c.id === notifyChat)[0];
+
           this.setState({
-            selectedChat: this.state.order[0].chat,
+            selectedChat: notifyChatObject,
           });
+        } else {
+          if (
+            chats &&
+            chats.length > 0 &&
+            !this.state.userSelected &&
+            this.state.order
+          ) {
+            this.setState({
+              selectedChat: this.state.order[0].chat,
+            });
+          }
         }
       }
     );

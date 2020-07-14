@@ -14,6 +14,10 @@ import {
   MDBNavbarToggler,
   MDBCollapse,
   MDBNavItem,
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem,
   MDBContainer,
   MDBTooltip,
   MDBBtn,
@@ -30,6 +34,9 @@ import { disablePresenceHandler } from "../../../store/actions/userActions";
 //> Images
 // Logo
 import IMGlogo from "../../../assets/images/logo_white_sm.png";
+
+//> Organisms
+import { NotifBox } from "../../organisms";
 
 //> CSS
 import "./navbar.scss";
@@ -160,7 +167,26 @@ class Navbar extends React.Component {
                         </MDBTooltip>
                       )}
                     </div>
-                    <div className="mx-3" />
+                    <div className="mx-2" />
+                    <MDBNavItem>
+                      <MDBDropdown>
+                        <MDBDropdownToggle nav>
+                          <div className="d-none d-md-inline notify-bell">
+                            <MDBIcon icon="bell" />
+                            {this.props.notifications &&
+                              this.props.notifications.length > 0 && (
+                                <span className="counter">
+                                  {this.props.notifications.length}
+                                </span>
+                              )}
+                          </div>
+                        </MDBDropdownToggle>
+                        <MDBDropdownMenu className="dropdown-default">
+                          <NotifBox notifications={this.props.notifications} />
+                        </MDBDropdownMenu>
+                      </MDBDropdown>
+                    </MDBNavItem>
+                    <div className="mx-2" />
                     <Link to="/">
                       <MDBBtn size="md" color="elegant" onClick={this.signOut}>
                         Logout
