@@ -354,8 +354,6 @@ class ChatPage extends React.Component {
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
-    console.log(this.state);
-
     return (
       <>
         <MDBContainer id="chats" className="text-white pt-5 mt-5">
@@ -389,7 +387,6 @@ class ChatPage extends React.Component {
                             : "clickable"
                         }
                         onClick={() => {
-                          console.log(item.chat);
                           this.setState({
                             selectedChat: item.chat,
                             userSelected: true,
