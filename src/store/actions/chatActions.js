@@ -52,7 +52,7 @@ export const createChat = (name, users) => {
       // Add new chat to collection.
       return firestore
         .collection("chats")
-        .add({ name: name, users: users })
+        .add({ name: name, users: users, createTimestamp: Date.now() })
         .then((response) => {
           return response.id;
         });
