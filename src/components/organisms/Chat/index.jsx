@@ -47,7 +47,6 @@ class Chat extends React.Component {
   }
 
   componentDidMount = async () => {
-    this.props.removeNotifications(this.props.chatDetails.id);
     this.setState(
       {
         allUsers: this.props.allUsers
@@ -64,6 +63,9 @@ class Chat extends React.Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
+    this.props.chatDetails &&
+      this.props.removeNotifications(this.props.chatDetails.id);
+
     if (this.props.hasJoined === false && nextProps.hasJoined === true) {
       this.getMsg();
     }

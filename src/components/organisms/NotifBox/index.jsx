@@ -36,7 +36,7 @@ class NotifBox extends React.Component {
     const { notifications } = this.props;
     return (
       <div className="notificationbox text-white">
-        blyat
+        Notifications
         {notifications &&
           notifications.map((n, i) => (
             <NotificationItem details={n} key={i}></NotificationItem>
