@@ -1,8 +1,15 @@
 .chat-item {
   margin-bottom: 1rem;
+
   .small {
     font-size: 0.7rem;
   }
+
+  .react_tinylink_card {
+    margin: 0.6rem 0;
+    border: none;
+  }
+
   .reverse {
     flex-direction: row-reverse;
     .body-container {
@@ -13,9 +20,19 @@
         background: darken(grey, 40%);
         border-top-right-radius: 0.2rem;
         border-top-left-radius: 1rem;
+        span {
+          word-break: break-word;
+          a {
+            color: #33b5e5;
+            &:hover {
+              color: lighten(#33b5e5, 10%);
+            }
+          }
+        }
       }
     }
   }
+
   .body-container {
     max-width: 70%;
     min-width: 50%;
@@ -26,6 +43,9 @@
       border-radius: 1rem;
       border-top-left-radius: 0.2rem;
       padding: 0.5rem 1rem;
+      span {
+        word-break: break-word;
+      }
     }
   }
 }

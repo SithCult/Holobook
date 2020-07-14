@@ -5,10 +5,11 @@ import RegisterForm from "./RegisterForm";
 import Posts from "./Posts";
 import Comments from "./Comments";
 import Chat from "./Chat";
+import NotifBox from "./NotifBox";
 //#endregion
 
 //#region > Exports
-export { RegisterForm, Posts, Comments, Chat };
+export { RegisterForm, Posts, Comments, Chat, NotifBox };
 //#endregion
 
 /**

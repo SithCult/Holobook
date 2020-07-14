@@ -19,6 +19,10 @@ import {
   stopGettingMessages,
 } from "../../../store/actions/chatActions";
 import { getAllUsers } from "../../../store/actions/userActions";
+import {
+  createNotification,
+  removeNotifications,
+} from "../../../store/actions/notificationActions";
 
 //> Components
 import { MessageItem } from "../../molecules";
@@ -48,6 +52,9 @@ class Chat extends React.Component {
         allUsers: this.props.allUsers
           ? this.props.allUsers
           : await this.props.getAllUsers(),
+        message: JSON.parse(localStorage.getItem(this.props.chatDetails.id))
+          ? JSON.parse(localStorage.getItem(this.props.chatDetails.id))
+          : "",
       },
       () => {
         // Check if user is part of chat
@@ -59,6 +66,9 @@ class Chat extends React.Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
+    this.props.chatDetails &&
+      this.props.removeNotifications(this.props.chatDetails.id);
+
     if (this.props.hasJoined === false && nextProps.hasJoined === true) {
       this.getMsg();
     }
@@ -66,6 +76,13 @@ class Chat extends React.Component {
 
   componentDidUpdate() {
     this.scrollToBottom();
+  }
+
+  componentWillUnmount() {
+    localStorage.setItem(
+      this.props.chatDetails.id,
+      JSON.stringify(this.state.message)
+    );
   }
 
   getMsg = () => {
@@ -110,6 +127,11 @@ class Chat extends React.Component {
     // Check if message is empty
     if (newMsg.msg?.trim()) {
       this.props.writeMessage(newMsg);
+      this.props.createNotification(
+        newMsg,
+        this.props.chatDetails.users,
+        this.props.chatDetails.name
+      );
       this.setState({ message: "" }, () => this.inputRef.current.focus());
     }
   };
@@ -243,6 +265,9 @@ const mapDispatchToProps = (dispatch) => {
     writeMessage: (msg) => dispatch(writeMessage(msg)),
     getAllUsers: () => dispatch(getAllUsers()),
     stopGettingMessages: (chid) => dispatch(stopGettingMessages(chid)),
+    createNotification: (details, recipients, chatName) =>
+      dispatch(createNotification(details, recipients, chatName)),
+    removeNotifications: (chid) => dispatch(removeNotifications(chid)),
   };
 };
 //#endregion

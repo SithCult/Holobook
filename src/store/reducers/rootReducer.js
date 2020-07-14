@@ -8,6 +8,7 @@ import likeReducer from "./likeReducer";
 import donMsgReducer from "./donMsgReducer";
 import commentReducer from "./commentReducer";
 import chatReducer from "./chatReducer";
+import notificationReducer from "./notificationReducer";
 
 //> Redux
 import { combineReducers } from "redux";
@@ -21,15 +22,26 @@ import { firebaseReducer } from "react-redux-firebase";
 
 //#region > Config
 const rootReducer = combineReducers({
-  auth: authReducer, // User authentication
-  post: postReducer, // Post management
-  user: userReducer, // User related functionality
-  like: likeReducer, // Like of posts or comments
-  donMsg: donMsgReducer, // Donation messages
-  comment: commentReducer, // Comments
-  chat: chatReducer, // Chat
-  firestore: firestoreReducer, // Database
-  firebase: firebaseReducer, // Authentication
+  /* User authentication */
+  auth: authReducer,
+  /* Post management */
+  post: postReducer,
+  /* User related functionality */
+  user: userReducer,
+  /* Like of posts or comments */
+  like: likeReducer,
+  /* Donation messages */
+  donMsg: donMsgReducer,
+  /* Comments */
+  comment: commentReducer,
+  /* Chat */
+  chat: chatReducer,
+  /* Notifications */
+  notifications: notificationReducer,
+  /* Database */
+  firestore: firestoreReducer,
+  /* Authentication */
+  firebase: firebaseReducer,
 });
 //#endregion
 

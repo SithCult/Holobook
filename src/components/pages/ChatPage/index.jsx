@@ -66,6 +66,7 @@ class ChatPage extends React.Component {
     modal: false,
     showAllSearchMemberResults: false,
     newGroupName: "",
+    userSelected: false,
   };
 
   // Init on mount
@@ -95,7 +96,7 @@ class ChatPage extends React.Component {
   componentWillUnmount() {
     // eslint-disable-next-line array-callback-return
     this.props.chats &&
-      this.props.chats.map((c) => {
+      this.props.chats.forEach((c) => {
         stopGettingMessages(c.id);
       });
   }
@@ -123,23 +124,66 @@ class ChatPage extends React.Component {
     chats.map((c) => {
       const co = messages[c.id];
 
-      if (co) {
+      if (co && co.length > 0) {
         order = [...order, { ...co[co.length - 1], chat: c }];
       } else {
-        order = [...order, { mid: c.id, data: { sentTimestamp: 0 }, chat: c }];
+        order = [
+          ...order,
+          {
+            mid: c.id,
+            data: {
+              sentTimestamp: c.createTimestamp ? c.createTimestamp : Date.now(),
+            },
+            chat: c,
+          },
+        ];
       }
     });
 
     // Put sorted array of messages into state
-    this.setState({
-      order: order.sort((a, b) =>
-        a.data && b.data
-          ? a.data.sentTimestamp < b.data.sentTimestamp
-            ? 1
+    this.setState(
+      {
+        order: order.sort((a, b) =>
+          a.data && b.data
+            ? a.data.sentTimestamp < b.data.sentTimestamp
+              ? 1
+              : -1
             : -1
-          : -1
-      ),
-    });
+        ),
+      },
+      () => {
+        // Preset first selected chat
+        const notifyChat = this.props.location?.chatProps?.chid;
+
+        // If notifyChat is set, make it the selected chat.
+        if (
+          !this.state.notifyChatCalled &&
+          notifyChat &&
+          chats &&
+          chats.length > 0
+        ) {
+          const notifyChatObject = chats.filter((c) => c.id === notifyChat)[0];
+
+          this.setState({
+            selectedChat: notifyChatObject,
+            notifyChatCalled: true,
+            userSelected: true,
+          });
+        } else {
+          // If data exists and User did not select a chat yet, use latest chat as default
+          if (
+            chats &&
+            chats.length > 0 &&
+            !this.state.userSelected &&
+            this.state.order
+          ) {
+            this.setState({
+              selectedChat: this.state.order[0].chat,
+            });
+          }
+        }
+      }
+    );
   };
 
   // Get user profile picture
@@ -313,18 +357,6 @@ class ChatPage extends React.Component {
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
-    // Preset first selected chat
-    if (
-      chats &&
-      chats.length > 0 &&
-      !this.state.selectedChat &&
-      this.state.order
-    ) {
-      this.setState({
-        selectedChat: this.state.order[0].chat,
-      });
-    }
-
     return (
       <>
         <MDBContainer id="chats" className="text-white pt-5 mt-5">
@@ -357,9 +389,12 @@ class ChatPage extends React.Component {
                             ? "clickable active"
                             : "clickable"
                         }
-                        onClick={() =>
-                          this.setState({ selectedChat: item.chat })
-                        }
+                        onClick={() => {
+                          this.setState({
+                            selectedChat: item.chat,
+                            userSelected: true,
+                          });
+                        }}
                       >
                         <MDBCardBody
                           className={

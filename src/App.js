@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -24,10 +25,13 @@ import { connect } from "react-redux";
 
 // Actions
 import { initPresenceHandler } from "./store/actions/userActions";
+import { getNotifs } from "./store/actions/notificationActions";
 
 // Routes
 import Routes from "./Routes";
+//#endregion
 
+//#region > Components
 class App extends React.Component {
   state = {};
 
@@ -100,16 +104,21 @@ class App extends React.Component {
     const { auth } = this.props;
 
     if (!this.state.initialized && auth.uid) {
-      this.setState({ initialized: true }, () =>
-        this.props.initPresenceHandler(auth.uid)
-      );
+      this.setState({ initialized: true }, () => {
+        this.props.initPresenceHandler(auth.uid);
+        this.props.getNotifs(auth.uid);
+      });
     }
 
     return (
       <Router>
         <ScrollToTop>
           <div className="flyout">
-            <Navbar />
+            <Navbar
+              notifications={
+                this.props.notifications ? this.props.notifications : []
+              }
+            />
             <main>
               <Routes />
               <CookieModal saveCookie={this.saveCookie} />
@@ -121,17 +130,20 @@ class App extends React.Component {
     );
   }
 }
+//#endregion
 
 //#region > Functions
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
+    notifications: state.notifications.notifications,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     initPresenceHandler: (uid) => dispatch(initPresenceHandler(uid)),
+    getNotifs: (uid) => dispatch(getNotifs(uid)),
   };
 };
 //#endregion
