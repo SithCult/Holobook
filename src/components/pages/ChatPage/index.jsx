@@ -159,6 +159,7 @@ class ChatPage extends React.Component {
 
           this.setState({
             selectedChat: notifyChatObject,
+            userSelected: true,
           });
         } else {
           if (
@@ -379,12 +380,13 @@ class ChatPage extends React.Component {
                             ? "clickable active"
                             : "clickable"
                         }
-                        onClick={() =>
+                        onClick={() => {
+                          console.log(item.chat);
                           this.setState({
                             selectedChat: item.chat,
                             userSelected: true,
-                          })
-                        }
+                          });
+                        }}
                       >
                         <MDBCardBody
                           className={

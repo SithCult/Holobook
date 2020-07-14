@@ -52,6 +52,9 @@ class Chat extends React.Component {
         allUsers: this.props.allUsers
           ? this.props.allUsers
           : await this.props.getAllUsers(),
+        message: JSON.parse(localStorage.getItem(this.props.chatDetails.id))
+          ? JSON.parse(localStorage.getItem(this.props.chatDetails.id))
+          : "",
       },
       () => {
         // Check if user is part of chat
@@ -73,6 +76,13 @@ class Chat extends React.Component {
 
   componentDidUpdate() {
     this.scrollToBottom();
+  }
+
+  componentWillUnmount() {
+    localStorage.setItem(
+      this.props.chatDetails.id,
+      JSON.stringify(this.state.message)
+    );
   }
 
   getMsg = () => {
