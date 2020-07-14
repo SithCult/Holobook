@@ -155,12 +155,18 @@ class ChatPage extends React.Component {
         // Preset first selected chat
         const notifyChat = this.props.location?.chatProps?.chid;
 
-        // If notifyChat is set, make this the selected chat
-        if (notifyChat && chats && chats.length > 0) {
+        // If notifyChat is set, make it the selected chat.
+        if (
+          !this.state.notifyChatCalled &&
+          notifyChat &&
+          chats &&
+          chats.length > 0
+        ) {
           const notifyChatObject = chats.filter((c) => c.id === notifyChat)[0];
 
           this.setState({
             selectedChat: notifyChatObject,
+            notifyChatCalled: true,
             userSelected: true,
           });
         } else {
@@ -384,7 +390,6 @@ class ChatPage extends React.Component {
                             : "clickable"
                         }
                         onClick={() => {
-                          console.log(item.chat);
                           this.setState({
                             selectedChat: item.chat,
                             userSelected: true,
