@@ -1,8 +1,15 @@
 .chat-item {
   margin-bottom: 1rem;
+
   .small {
     font-size: 0.7rem;
   }
+
+  .react_tinylink_card {
+    margin: 0.6rem 0;
+    border: none;
+  }
+
   .reverse {
     flex-direction: row-reverse;
     .body-container {
@@ -15,10 +22,17 @@
         border-top-left-radius: 1rem;
         span {
           word-break: break-word;
+          a {
+            color: #33b5e5;
+            &:hover {
+              color: lighten(#33b5e5, 10%);
+            }
+          }
         }
       }
     }
   }
+
   .body-container {
     max-width: 70%;
     min-width: 50%;

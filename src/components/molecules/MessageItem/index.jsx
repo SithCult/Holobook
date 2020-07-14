@@ -12,6 +12,8 @@ import TimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 // Date/Time formatting
 import moment from "moment";
+// Link preview
+import { ReactTinyLink } from "react-tiny-link";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -35,6 +37,33 @@ import goldUserIMG from "../../../assets/images/gold.gif";
 import lightUserIMG from "../../../assets/images/light.gif";
 import bronzeUserIMG from "../../../assets/images/bronze.gif";
 import darkUserIMG from "../../../assets/images/dark.gif";
+//#endregion
+
+//#region > Functions
+function replaceAll(string, search, replace) {
+  return string.split(search).join(replace);
+}
+
+// eslint-disable-next-line no-extend-native
+String.prototype.escape = function () {
+  // Replace those tags with HTML equivalent
+  const tagsToReplace = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+  };
+
+  // Replace </br> with ||/br|| so it is not affected by the replacement
+  const pre = replaceAll(this, "</br>", "||/br||");
+
+  // Replace all <, > and & with the HTML equivalent
+  const result = pre.replace(/[&<br>]/g, function (tag) {
+    return tagsToReplace[tag] || tag;
+  });
+
+  // Change ||/br|| back to </br>
+  return replaceAll(result, "||/br||", "</br>");
+};
 //#endregion
 
 //#region > Components
@@ -122,8 +151,66 @@ class MessageItem extends React.Component {
     }
   };
 
+  processMsg = (msg) => {
+    let replacedText, replacePattern1, replacePattern2, replacePattern3;
+    let inputText = msg.escape();
+
+    //URLs starting with http://, https://, or ftp://
+    replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    replacedText = inputText.replace(
+      replacePattern1,
+      '<a href="$1" target="_blank">$1</a>'
+    );
+
+    //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    replacedText = replacedText.replace(
+      replacePattern2,
+      '$1<a href="http://$2" target="_blank">$2</a>'
+    );
+
+    //Change email addresses to mailto:: links.
+    replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+    replacedText = replacedText.replace(
+      replacePattern3,
+      '<a href="mailto:$1">$1</a>'
+    );
+
+    return replacedText;
+  };
+
+  checkForLink = (msg) => {
+    let replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    let replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+
+    let match;
+
+    match = msg.match(replacePattern1);
+
+    // Check if first pattern matched, if not try second pattern
+    if (!match) {
+      match = msg.match(replacePattern2);
+    }
+
+    // Check if match exists (if url is in post)
+    if (match) {
+      let url = match[0].trim();
+
+      if (!/^https?:\/\//i.test(url)) {
+        url = "http://" + url;
+      }
+
+      return url;
+    } else {
+      return null;
+    }
+  };
+
   render() {
     const { msg, mid, author, reverse, timestamp, spacing } = this.props;
+
+    // Get link if there is any
+    const url = this.checkForLink(msg);
 
     return (
       <>
@@ -160,8 +247,20 @@ class MessageItem extends React.Component {
                   </span>
                 </div>
                 <div>
-                  <span>{msg}</span>
+                  <span
+                    dangerouslySetInnerHTML={{ __html: this.processMsg(msg) }}
+                  ></span>
                 </div>
+                {url && (
+                  <ReactTinyLink
+                    cardSize="small"
+                    showGraphic={true}
+                    maxLine={2}
+                    minLine={1}
+                    url={url}
+                    onError={(err) => console.warn(err)}
+                  />
+                )}
               </div>
             </div>
           </div>
