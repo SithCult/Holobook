@@ -1,3 +1,4 @@
+//#region > Imports
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
@@ -28,7 +29,9 @@ import { getNotifs } from "./store/actions/notificationActions";
 
 // Routes
 import Routes from "./Routes";
+//#endregion
 
+//#region > Components
 class App extends React.Component {
   state = {};
 
@@ -127,6 +130,7 @@ class App extends React.Component {
     );
   }
 }
+//#endregion
 
 //#region > Functions
 const mapStateToProps = (state) => {
