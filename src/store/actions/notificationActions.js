@@ -54,8 +54,6 @@ export const createNotification = (details, recipients, chatName) => {
 
     const recwithoutuser = recipients.filter((r) => r !== uid);
 
-    console.log(recwithoutuser);
-
     let newNotifs = [];
 
     // Create notifs object
