@@ -10,7 +10,7 @@ export const getNotifs = () => {
     notifRef.on("value", (snapshot) => {
       let notifs = [];
 
-      // If messages exist, push them into the array
+      // If notifications exist, push them into the array
       if (!snapshot.empty) {
         snapshot.forEach((n) => {
           if (n.val().recipient === uid) {

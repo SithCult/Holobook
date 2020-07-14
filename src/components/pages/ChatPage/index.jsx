@@ -154,6 +154,8 @@ class ChatPage extends React.Component {
       () => {
         // Preset first selected chat
         const notifyChat = this.props.location?.chatProps?.chid;
+
+        // If notifyChat is set, make this the selected chat
         if (notifyChat && chats && chats.length > 0) {
           const notifyChatObject = chats.filter((c) => c.id === notifyChat)[0];
 
@@ -162,6 +164,7 @@ class ChatPage extends React.Component {
             userSelected: true,
           });
         } else {
+          // If data exists and User did not select a chat yet, use latest chat as default
           if (
             chats &&
             chats.length > 0 &&
