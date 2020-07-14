@@ -153,7 +153,7 @@ class MessageItem extends React.Component {
 
   processMsg = (msg) => {
     let replacedText, replacePattern1, replacePattern2, replacePattern3;
-    let inputText = msg.escape();
+    const inputText = msg.escape();
 
     //URLs starting with http://, https://, or ftp://
     // eslint-disable-next-line no-useless-escape
@@ -184,9 +184,9 @@ class MessageItem extends React.Component {
 
   checkForLink = (msg) => {
     // eslint-disable-next-line no-useless-escape
-    let replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    const replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
     // eslint-disable-next-line no-useless-escape
-    let replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    const replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
 
     let match;
 

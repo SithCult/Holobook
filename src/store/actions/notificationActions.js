@@ -4,6 +4,7 @@ export const getNotifs = () => {
     const firebase = getFirebase();
     const notifRef = firebase.database().ref("/notifications/");
 
+    // Retrieve the currently logged in users uid
     const uid = firebase.auth().currentUser.uid;
 
     // Create reference
@@ -50,8 +51,9 @@ export const stopGettingNotifications = () => {
 export const createNotification = (details, recipients, chatName) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
-    const uid = firebase.auth().currentUser.uid;
 
+    // Retrieve the currently logged in users uid
+    const uid = firebase.auth().currentUser.uid;
     const recwithoutuser = recipients.filter((r) => r !== uid);
 
     let newNotifs = [];
@@ -88,6 +90,8 @@ export const removeNotification = (nid) => {
 export const removeNotifications = (chid) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
+
+    // Retrieve the currently logged in users uid
     const uid = firebase.auth().currentUser.uid;
     const notifRef = firebase.database().ref("/notifications/" + chid + uid);
 
