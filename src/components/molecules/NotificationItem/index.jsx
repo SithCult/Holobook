@@ -19,10 +19,6 @@ import ReactCountryFlag from "react-country-flag";
 // Country list
 import countryList from "react-select-country-list";
 
-//> MDB
-// "Material Design for Bootstrap" is a great UI design framework
-import { MDBAvatar, MDBIcon } from "mdbreact";
-
 //> Redux
 // Connect
 import { connect } from "react-redux";

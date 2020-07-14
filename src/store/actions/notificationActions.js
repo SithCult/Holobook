@@ -51,7 +51,6 @@ export const createNotification = (details, recipients, chatName) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firebase = getFirebase();
     const uid = firebase.auth().currentUser.uid;
-    const notifRef = firebase.database().ref("/notifications/" + details.chid);
 
     const recwithoutuser = recipients.filter((r) => r !== uid);
 
@@ -60,14 +59,14 @@ export const createNotification = (details, recipients, chatName) => {
     let newNotifs = [];
 
     // Create notifs object
-    recwithoutuser.map((r) => {
+    recwithoutuser.forEach((r) => {
       newNotifs = [
         ...newNotifs,
         { ...details, sentTimestamp: Date.now(), recipient: r, chatName },
       ];
     });
 
-    newNotifs.map((n) => {
+    newNotifs.forEach((n) => {
       // Push message into DB
       firebase
         .database()

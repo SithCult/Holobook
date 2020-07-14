@@ -96,7 +96,7 @@ class ChatPage extends React.Component {
   componentWillUnmount() {
     // eslint-disable-next-line array-callback-return
     this.props.chats &&
-      this.props.chats.map((c) => {
+      this.props.chats.forEach((c) => {
         stopGettingMessages(c.id);
       });
   }
