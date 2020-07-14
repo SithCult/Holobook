@@ -43,8 +43,6 @@ class NotificationItem extends React.Component {
   render() {
     const { details } = this.props;
 
-    console.log(details);
-
     return (
       <Link
         to={{
@@ -66,7 +64,7 @@ class NotificationItem extends React.Component {
                   {countryList().getLabel(details.data.chatName)}
                 </div>
               ) : (
-                <p className="mb-0">
+                <span className="mb-0">
                   {details.data.chatName.split("and").length === 2 ? (
                     <>
                       {details.data.chatName
@@ -80,7 +78,7 @@ class NotificationItem extends React.Component {
                   ) : (
                     <span>{details.data.chatName}</span>
                   )}
-                </p>
+                </span>
               )}
             </p>
             <p className="text-muted small">

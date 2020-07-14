@@ -156,6 +156,7 @@ class MessageItem extends React.Component {
     let inputText = msg.escape();
 
     //URLs starting with http://, https://, or ftp://
+    // eslint-disable-next-line no-useless-escape
     replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
     replacedText = inputText.replace(
       replacePattern1,
@@ -163,6 +164,7 @@ class MessageItem extends React.Component {
     );
 
     //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+    // eslint-disable-next-line no-useless-escape
     replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
     replacedText = replacedText.replace(
       replacePattern2,
@@ -170,6 +172,7 @@ class MessageItem extends React.Component {
     );
 
     //Change email addresses to mailto:: links.
+    // eslint-disable-next-line no-useless-escape
     replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
     replacedText = replacedText.replace(
       replacePattern3,
@@ -180,7 +183,9 @@ class MessageItem extends React.Component {
   };
 
   checkForLink = (msg) => {
+    // eslint-disable-next-line no-useless-escape
     let replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    // eslint-disable-next-line no-useless-escape
     let replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
 
     let match;
