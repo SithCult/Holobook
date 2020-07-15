@@ -404,9 +404,11 @@ class ChatPage extends React.Component {
                     <MDBIcon icon="plus" className="mr-2" />
                     Create chat
                   </MDBBtn>
-                  <MDBBtn color="blue" size="md" onClick={this.enableNotifs}>
-                    Enable Notifications
-                  </MDBBtn>
+                  {Notification.permission === "denied" && (
+                    <p className="small text-muted">
+                      Enable notifications in your browser to get notified.
+                    </p>
+                  )}
                 </div>
                 {chats &&
                   this.state.order &&
