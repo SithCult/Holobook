@@ -105,6 +105,15 @@ class ChatPage extends React.Component {
       });
   }
 
+  componentDidUpdate = (prevState) => {
+    if (prevState.ordered !== this.state.ordered) {
+      this.setState({
+        selectedChat: this.state.order[0].chat,
+        userSelected: true,
+      });
+    }
+  };
+
   // Init chat page
   init = async () => {
     const { auth } = this.props;
