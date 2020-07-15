@@ -105,15 +105,6 @@ class ChatPage extends React.Component {
       });
   }
 
-  componentDidUpdate = (prevState) => {
-    if (prevState.ordered !== this.state.ordered) {
-      this.setState({
-        selectedChat: this.state.order[0].chat,
-        userSelected: true,
-      });
-    }
-  };
-
   // Init chat page
   init = async () => {
     const { auth } = this.props;
@@ -155,16 +146,18 @@ class ChatPage extends React.Component {
       }
     });
 
+    const sortedChats = order.sort((a, b) =>
+      a.data && b.data
+        ? a.data.sentTimestamp < b.data.sentTimestamp
+          ? 1
+          : -1
+        : -1
+    );
+
     // Put sorted array of messages into state
     this.setState(
       {
-        order: order.sort((a, b) =>
-          a.data && b.data
-            ? a.data.sentTimestamp < b.data.sentTimestamp
-              ? 1
-              : -1
-            : -1
-        ),
+        order: sortedChats,
       },
       () => {
         // Preset first selected chat
@@ -186,18 +179,6 @@ class ChatPage extends React.Component {
             selectedChat: notifyChatObject,
             userSelected: true,
           });
-        } else {
-          // If data exists and User did not select a chat yet, use latest chat as default
-          if (
-            chats &&
-            chats.length > 0 &&
-            !this.state.userSelected &&
-            this.state.order
-          ) {
-            this.setState({
-              selectedChat: this.state.order[0].chat,
-            });
-          }
         }
       }
     );
@@ -537,7 +518,7 @@ class ChatPage extends React.Component {
                   })}
               </MDBCol>
               <MDBCol lg="8">
-                {this.state.selectedChat && this.props.chatMessages && (
+                {this.state.selectedChat && this.props.chatMessages ? (
                   <Chat
                     key={this.state.selectedChat.id}
                     chatDetails={this.state.selectedChat}
@@ -552,6 +533,15 @@ class ChatPage extends React.Component {
                         : false
                     }
                   />
+                ) : (
+                  <div className="d-flex justify-content-center align-items-center h-100">
+                    <div className="text-center text-info">
+                      <MDBIcon far icon="comment" size="2x" className="mb-2" />
+                      <p className="font-weight-bold">
+                        Please select a conversation to chat.
+                      </p>
+                    </div>
+                  </div>
                 )}
               </MDBCol>
             </MDBRow>
