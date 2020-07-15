@@ -71,6 +71,7 @@ class Chat extends React.Component {
 
   componentWillReceiveProps = (nextProps) => {
     this.props.chatDetails &&
+      this.state.focussed &&
       this.props.removeNotifications(this.props.chatDetails.id);
 
     if (this.props.hasJoined === false && nextProps.hasJoined === true) {
