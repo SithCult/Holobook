@@ -44,6 +44,10 @@ import {
   MDBSpinner,
 } from "mdbreact";
 
+//> Additional Libraries
+// Push Notifications
+import addNotification from "react-push-notification";
+
 //> Components
 import { Chat } from "../../organisms";
 
@@ -351,9 +355,20 @@ class ChatPage extends React.Component {
     }
   };
 
+  enableNotifs() {
+    addNotification({
+      title: "Success!",
+      message: "Notifications are now enabled on this device!",
+      icon: "fav/apple-icon-60x60.png",
+      theme: "darkblue",
+      native: true,
+    });
+  }
+
   render() {
     const { auth, chats, profile } = this.props;
 
+    console.log(this.props);
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
 
@@ -376,6 +391,9 @@ class ChatPage extends React.Component {
                   <MDBBtn color="blue" size="md" onClick={this.toggle}>
                     <MDBIcon icon="plus" className="mr-2" />
                     Create chat
+                  </MDBBtn>
+                  <MDBBtn color="blue" size="md" onClick={this.enableNotifs}>
+                    Enable Notifications
                   </MDBBtn>
                 </div>
                 {chats &&

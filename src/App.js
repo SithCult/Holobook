@@ -10,6 +10,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import ReactGA from "react-ga";
 // Facebook Pixel
 import ReactPixel from "react-facebook-pixel";
+// Push Notifications
+import addNotification from "react-push-notification";
 
 //> Components
 /**
@@ -45,6 +47,33 @@ class App extends React.Component {
       nextProps.auth.uid !== undefined
     ) {
       this.props.initPresenceHandler(nextProps.auth.uid);
+    }
+
+    if (nextProps.notifications) {
+      nextProps.notifications.forEach((n) => {
+        let chatName;
+
+        if (n.data.chatName.split("and").length === 2) {
+          if (
+            n.data.chatName.split("and")[1]?.trim().toLowerCase() ===
+            this.props.profile.sith_name?.toLowerCase()
+          ) {
+            chatName = n.data.chatName.split("and")[0];
+          } else {
+            chatName = n.data.chatName.split("and")[1];
+          }
+        } else {
+          chatName = n.data.chatName;
+        }
+
+        addNotification({
+          title: chatName,
+          message: n.data.msg,
+          icon: "fav/apple-icon-60x60.png",
+          theme: "darkblue",
+          native: true,
+        });
+      });
     }
   };
 
@@ -136,6 +165,7 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
+    profile: state.firebase.profile,
     notifications: state.notifications.notifications,
   };
 };
