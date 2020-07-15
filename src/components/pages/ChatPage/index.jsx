@@ -44,10 +44,6 @@ import {
   MDBSpinner,
 } from "mdbreact";
 
-//> Additional Libraries
-// Push Notifications
-import addNotification from "react-push-notification";
-
 //> Components
 import { Chat } from "../../organisms";
 
@@ -348,16 +344,6 @@ class ChatPage extends React.Component {
       }
     }
   };
-
-  enableNotifs() {
-    addNotification({
-      title: "Success!",
-      message: "Notifications are now enabled on this device!",
-      icon: "fav/apple-icon-60x60.png",
-      theme: "darkblue",
-      native: true,
-    });
-  }
 
   render() {
     const { auth, chats, profile } = this.props;

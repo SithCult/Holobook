@@ -69,16 +69,14 @@ String.prototype.escape = function () {
 //#region > Components
 class MessageItem extends React.Component {
   componentDidMount() {
-    if (this.props.focussed)
-      this.props.readMessage(
-        this.props.uid,
-        this.props.chid,
-        this.props.mid,
-        this.props.read
-      );
+    this.readMessage();
   }
 
   componentDidUpdate() {
+    this.readMessage();
+  }
+
+  readMessage = () => {
     if (this.props.focussed)
       this.props.readMessage(
         this.props.uid,
@@ -86,7 +84,7 @@ class MessageItem extends React.Component {
         this.props.mid,
         this.props.read
       );
-  }
+  };
 
   // Get user profile picture
   getPicture = (skin, index, name) => {
