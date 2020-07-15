@@ -368,7 +368,6 @@ class ChatPage extends React.Component {
   render() {
     const { auth, chats, profile } = this.props;
 
-    console.log(this.props);
     // Redirect unauthorized users
     if (auth.uid === undefined) return <Redirect to="/login" />;
 

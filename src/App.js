@@ -3,7 +3,7 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 // DOM bindings for React Router
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Redirect } from "react-router-dom";
 
 //> Additional
 // Google Analytics
@@ -35,7 +35,7 @@ import Routes from "./Routes";
 
 //#region > Components
 class App extends React.Component {
-  state = {};
+  state = { redirect: null };
 
   componentDidMount = () => {
     this.checkCookies();
@@ -49,32 +49,60 @@ class App extends React.Component {
       this.props.initPresenceHandler(nextProps.auth.uid);
     }
 
-    if (nextProps.notifications) {
+    if (
+      this.props.notifications &&
+      JSON.stringify(nextProps.notifications) !==
+        JSON.stringify(this.props.notifications)
+    ) {
       nextProps.notifications.forEach((n) => {
-        let chatName;
+        if (!this.containsObject(n, this.props.notifications)) {
+          let chatName;
 
-        if (n.data.chatName.split("and").length === 2) {
-          if (
-            n.data.chatName.split("and")[1]?.trim().toLowerCase() ===
-            this.props.profile.sith_name?.toLowerCase()
-          ) {
-            chatName = n.data.chatName.split("and")[0];
+          if (n.data.chatName.split("and").length === 2) {
+            if (
+              n.data.chatName.split("and")[1]?.trim().toLowerCase() ===
+              this.props.profile.sith_name?.toLowerCase()
+            ) {
+              chatName = n.data.chatName.split("and")[0];
+            } else {
+              chatName = n.data.chatName.split("and")[1];
+            }
           } else {
-            chatName = n.data.chatName.split("and")[1];
+            chatName = n.data.chatName;
           }
-        } else {
-          chatName = n.data.chatName;
-        }
 
-        addNotification({
-          title: chatName,
-          message: n.data.msg,
-          icon: "fav/apple-icon-60x60.png",
-          theme: "darkblue",
-          native: true,
-        });
+          addNotification({
+            title: chatName,
+            message: n.data.msg,
+            icon: "fav/apple-icon-60x60.png",
+            theme: "darkblue",
+            native: true,
+            onClick: () => {
+              this.setState({
+                redirect: {
+                  pathname: "/chat",
+                  chatProps: {
+                    chid: n.data.chid,
+                  },
+                },
+              });
+            },
+          });
+        }
       });
     }
+  };
+
+  containsObject = (obj, list) => {
+    let contains = false;
+
+    list.forEach((n) => {
+      if (JSON.stringify(n) === JSON.stringify(obj)) {
+        contains = true;
+      }
+    });
+
+    return contains;
   };
 
   checkCookies = () => {
@@ -135,12 +163,13 @@ class App extends React.Component {
     if (!this.state.initialized && auth.uid) {
       this.setState({ initialized: true }, () => {
         this.props.initPresenceHandler(auth.uid);
-        this.props.getNotifs(auth.uid);
+        this.props.getNotifs();
       });
     }
 
     return (
       <Router>
+        {this.state.redirect && <Redirect to={this.state.redirect} />}
         <ScrollToTop>
           <div className="flyout">
             <Navbar
@@ -173,7 +202,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     initPresenceHandler: (uid) => dispatch(initPresenceHandler(uid)),
-    getNotifs: (uid) => dispatch(getNotifs(uid)),
+    getNotifs: () => dispatch(getNotifs()),
   };
 };
 //#endregion
