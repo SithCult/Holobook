@@ -74,21 +74,21 @@ class ChatPage extends React.Component {
     this.init();
   };
 
-  componentWillReceiveProps = (nextprops) => {
+  componentWillReceiveProps = (nextProps) => {
     /*
      * If the chats don't exist right now but will exist in the next props,
      * start message handler for the chats
      */
-    if (!this.props.chats && nextprops.chats) {
+    if (!this.props.chats && nextProps.chats) {
       // eslint-disable-next-line array-callback-return
-      nextprops.chats.map((c) => {
+      nextProps.chats.map((c) => {
         this.props.getMessages(c.id);
       });
     }
 
     // Sort the chats
-    if (nextprops.chats && nextprops.chatMessages) {
-      this.sortChats(nextprops.chats, nextprops.chatMessages);
+    if (nextProps.chats && nextProps.chatMessages) {
+      this.sortChats(nextProps, this.props.location?.chatProps?.chid);
     }
   };
 
@@ -116,13 +116,15 @@ class ChatPage extends React.Component {
   };
 
   // Sort the chats by their latest message
-  sortChats = (chats, messages) => {
+  sortChats = (nextProps, oldNotify) => {
+    const { chats, chatMessages, location } = nextProps;
+
     let order = [];
 
     // Get newest messages form chats
     // eslint-disable-next-line array-callback-return
     chats.map((c) => {
-      const co = messages[c.id];
+      const co = chatMessages[c.id];
 
       if (co && co.length > 0) {
         order = [...order, { ...co[co.length - 1], chat: c }];
@@ -140,47 +142,39 @@ class ChatPage extends React.Component {
       }
     });
 
+    const sortedChats = order.sort((a, b) =>
+      a.data && b.data
+        ? a.data.sentTimestamp < b.data.sentTimestamp
+          ? 1
+          : -1
+        : -1
+    );
+
     // Put sorted array of messages into state
     this.setState(
       {
-        order: order.sort((a, b) =>
-          a.data && b.data
-            ? a.data.sentTimestamp < b.data.sentTimestamp
-              ? 1
-              : -1
-            : -1
-        ),
+        order: sortedChats,
       },
       () => {
         // Preset first selected chat
-        const notifyChat = this.props.location?.chatProps?.chid;
+        const currNotifyChat = oldNotify;
+        const newNotifyChat = location?.chatProps?.chid;
 
         // If notifyChat is set, make it the selected chat.
         if (
-          !this.state.notifyChatCalled &&
-          notifyChat &&
+          newNotifyChat &&
+          currNotifyChat !== newNotifyChat &&
           chats &&
           chats.length > 0
         ) {
-          const notifyChatObject = chats.filter((c) => c.id === notifyChat)[0];
+          const notifyChatObject = chats.filter(
+            (c) => c.id === newNotifyChat
+          )[0];
 
           this.setState({
             selectedChat: notifyChatObject,
-            notifyChatCalled: true,
             userSelected: true,
           });
-        } else {
-          // If data exists and User did not select a chat yet, use latest chat as default
-          if (
-            chats &&
-            chats.length > 0 &&
-            !this.state.userSelected &&
-            this.state.order
-          ) {
-            this.setState({
-              selectedChat: this.state.order[0].chat,
-            });
-          }
         }
       }
     );
@@ -377,6 +371,11 @@ class ChatPage extends React.Component {
                     <MDBIcon icon="plus" className="mr-2" />
                     Create chat
                   </MDBBtn>
+                  {Notification.permission === "denied" && (
+                    <p className="small text-muted">
+                      Enable notifications in your browser to get notified.
+                    </p>
+                  )}
                 </div>
                 {chats &&
                   this.state.order &&
@@ -505,7 +504,7 @@ class ChatPage extends React.Component {
                   })}
               </MDBCol>
               <MDBCol lg="8">
-                {this.state.selectedChat && this.props.chatMessages && (
+                {this.state.selectedChat && this.props.chatMessages ? (
                   <Chat
                     key={this.state.selectedChat.id}
                     chatDetails={this.state.selectedChat}
@@ -520,6 +519,15 @@ class ChatPage extends React.Component {
                         : false
                     }
                   />
+                ) : (
+                  <div className="d-flex justify-content-center align-items-center h-100">
+                    <div className="text-center text-info">
+                      <MDBIcon far icon="comment" size="2x" className="mb-2" />
+                      <p className="font-weight-bold">
+                        Please select a conversation to chat.
+                      </p>
+                    </div>
+                  </div>
                 )}
               </MDBCol>
             </MDBRow>

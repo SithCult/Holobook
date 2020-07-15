@@ -3,13 +3,15 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 // DOM bindings for React Router
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Redirect } from "react-router-dom";
 
 //> Additional
 // Google Analytics
 import ReactGA from "react-ga";
 // Facebook Pixel
 import ReactPixel from "react-facebook-pixel";
+// Push Notifications
+import addNotification from "react-push-notification";
 
 //> Components
 /**
@@ -33,10 +35,18 @@ import Routes from "./Routes";
 
 //#region > Components
 class App extends React.Component {
-  state = {};
+  state = { redirect: null };
 
   componentDidMount = () => {
     this.checkCookies();
+  };
+
+  componentDidUpdate = () => {
+    if (this.state.redirect) {
+      this.setState({
+        redirect: null,
+      });
+    }
   };
 
   componentWillReceiveProps = (nextProps) => {
@@ -46,6 +56,62 @@ class App extends React.Component {
     ) {
       this.props.initPresenceHandler(nextProps.auth.uid);
     }
+
+    if (
+      this.props.notifications &&
+      JSON.stringify(nextProps.notifications) !==
+        JSON.stringify(this.props.notifications)
+    ) {
+      nextProps.notifications.forEach((n) => {
+        if (!this.containsObject(n, this.props.notifications)) {
+          let chatName;
+
+          if (n.data.chatName.split("and").length === 2) {
+            if (
+              n.data.chatName.split("and")[1]?.trim().toLowerCase() ===
+              this.props.profile.sith_name?.toLowerCase()
+            ) {
+              chatName = n.data.chatName.split("and")[0];
+            } else {
+              chatName = n.data.chatName.split("and")[1];
+            }
+          } else {
+            chatName = n.data.chatName;
+          }
+
+          addNotification({
+            title: chatName,
+            message: n.data.msg,
+            icon: "fav/apple-icon-60x60.png",
+            theme: "darkblue",
+            native: true,
+            onClick: () => {
+              window.focus();
+              this.setState({
+                redirect: {
+                  pathname: "/chat",
+                  chatProps: {
+                    chid: n.data.chid,
+                  },
+                },
+              });
+            },
+          });
+        }
+      });
+    }
+  };
+
+  containsObject = (obj, list) => {
+    let contains = false;
+
+    list.forEach((n) => {
+      if (JSON.stringify(n) === JSON.stringify(obj)) {
+        contains = true;
+      }
+    });
+
+    return contains;
   };
 
   checkCookies = () => {
@@ -106,12 +172,13 @@ class App extends React.Component {
     if (!this.state.initialized && auth.uid) {
       this.setState({ initialized: true }, () => {
         this.props.initPresenceHandler(auth.uid);
-        this.props.getNotifs(auth.uid);
+        this.props.getNotifs();
       });
     }
 
     return (
       <Router>
+        {this.state.redirect && <Redirect to={this.state.redirect} />}
         <ScrollToTop>
           <div className="flyout">
             <Navbar
@@ -136,6 +203,7 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
+    profile: state.firebase.profile,
     notifications: state.notifications.notifications,
   };
 };
@@ -143,7 +211,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     initPresenceHandler: (uid) => dispatch(initPresenceHandler(uid)),
-    getNotifs: (uid) => dispatch(getNotifs(uid)),
+    getNotifs: () => dispatch(getNotifs()),
   };
 };
 //#endregion
