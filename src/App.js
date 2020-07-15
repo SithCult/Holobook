@@ -86,6 +86,7 @@ class App extends React.Component {
             theme: "darkblue",
             native: true,
             onClick: () => {
+              window.focus();
               this.setState({
                 redirect: {
                   pathname: "/chat",
