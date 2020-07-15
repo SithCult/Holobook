@@ -78,21 +78,21 @@ class ChatPage extends React.Component {
     this.init();
   };
 
-  componentWillReceiveProps = (nextprops) => {
+  componentWillReceiveProps = (nextProps) => {
     /*
      * If the chats don't exist right now but will exist in the next props,
      * start message handler for the chats
      */
-    if (!this.props.chats && nextprops.chats) {
+    if (!this.props.chats && nextProps.chats) {
       // eslint-disable-next-line array-callback-return
-      nextprops.chats.map((c) => {
+      nextProps.chats.map((c) => {
         this.props.getMessages(c.id);
       });
     }
 
     // Sort the chats
-    if (nextprops.chats && nextprops.chatMessages) {
-      this.sortChats(nextprops.chats, nextprops.chatMessages);
+    if (nextProps.chats && nextProps.chatMessages) {
+      this.sortChats(nextProps, this.props.location?.chatProps?.chid);
     }
   };
 
@@ -120,13 +120,15 @@ class ChatPage extends React.Component {
   };
 
   // Sort the chats by their latest message
-  sortChats = (chats, messages) => {
+  sortChats = (nextProps, oldNotify) => {
+    const { chats, chatMessages, location } = nextProps;
+
     let order = [];
 
     // Get newest messages form chats
     // eslint-disable-next-line array-callback-return
     chats.map((c) => {
-      const co = messages[c.id];
+      const co = chatMessages[c.id];
 
       if (co && co.length > 0) {
         order = [...order, { ...co[co.length - 1], chat: c }];
@@ -157,20 +159,22 @@ class ChatPage extends React.Component {
       },
       () => {
         // Preset first selected chat
-        const notifyChat = this.props.location?.chatProps?.chid;
+        const currNotifyChat = oldNotify;
+        const newNotifyChat = location?.chatProps?.chid;
 
         // If notifyChat is set, make it the selected chat.
         if (
-          !this.state.notifyChatCalled &&
-          notifyChat &&
+          newNotifyChat &&
+          currNotifyChat !== newNotifyChat &&
           chats &&
           chats.length > 0
         ) {
-          const notifyChatObject = chats.filter((c) => c.id === notifyChat)[0];
+          const notifyChatObject = chats.filter(
+            (c) => c.id === newNotifyChat
+          )[0];
 
           this.setState({
             selectedChat: notifyChatObject,
-            notifyChatCalled: true,
             userSelected: true,
           });
         } else {

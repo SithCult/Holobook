@@ -41,6 +41,14 @@ class App extends React.Component {
     this.checkCookies();
   };
 
+  componentDidUpdate = () => {
+    if (this.state.redirect) {
+      this.setState({
+        redirect: null,
+      });
+    }
+  };
+
   componentWillReceiveProps = (nextProps) => {
     if (
       this.props.auth.uid !== nextProps.auth.uid &&

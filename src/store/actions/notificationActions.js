@@ -28,8 +28,6 @@ export const getNotifs = () => {
           : -1
       );
 
-      console.log(notifs);
-
       dispatch({
         type: "GETNOTIFS_SUCCESS",
         notifications: notifs,
