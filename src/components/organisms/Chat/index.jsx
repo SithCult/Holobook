@@ -43,6 +43,7 @@ class Chat extends React.Component {
     // State
     this.state = {
       message: "",
+      focussed: true,
     };
   }
 
@@ -63,6 +64,9 @@ class Chat extends React.Component {
         }
       }
     );
+
+    window.addEventListener("blur", () => this.setState({ focussed: false }));
+    window.addEventListener("focus", () => this.setState({ focussed: true }));
   };
 
   componentWillReceiveProps = (nextProps) => {
@@ -178,6 +182,7 @@ class Chat extends React.Component {
                               (u) => u.id === item.data.author.uid
                             )[0]
                           }
+                          focussed={this.state.focussed}
                         />
                       );
                     } else {
