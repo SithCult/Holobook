@@ -199,12 +199,18 @@ class Chat extends React.Component {
     if (selectedUsers.length === 1) {
       msgString = selectedUsers[0].data.sith_name;
     } else {
-      msgString = "multiple users";
+      msgString = selectedUsers.map((user, i) => {
+        if (i < selectedUsers.length - 1) {
+          return " " + user.data.sith_name;
+        } else {
+          return " " + user.data.sith_name;
+        }
+      });
     }
 
     this.props.writeMessage({
       chid: this.props.chatDetails.id,
-      msg: "Added " + msgString + " to the Chat",
+      msg: process.env.REACT_APP_ACTION_JOIN_CHAT + msgString,
     });
     this.toggleAddUser();
   };

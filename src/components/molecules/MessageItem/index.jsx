@@ -241,66 +241,85 @@ class MessageItem extends React.Component {
             case process.env.REACT_APP_ACTION_LEFT_CHAT:
               return (
                 <div className="text-center small mb-3">
+                  <MDBIcon icon="minus-circle" className="text-danger mr-1" />
                   {author.data.sith_name} left the chat.
                 </div>
               );
             default:
-              return (
-                <div className="chat-item" key={mid}>
-                  <div className={reverse ? "d-flex reverse" : "d-flex"}>
-                    <div>
-                      {this.getPicture(author.data.skin, mid, author.sith_name)}
-                    </div>
-                    <div className="body-container">
-                      <div className="body">
-                        <div className="d-flex justify-content-between">
-                          <span className="font-weight-bold">
-                            {author.data.title} {author.data.sith_name}
-                            {author.data.badges.includes("grandmoff") && (
-                              <RankItem rank="grandmoff" />
-                            )}
-                            {author.data.badges.includes("hand") && (
-                              <RankItem rank="hand" />
-                            )}
-                            {author.data.badges.includes("moff") && (
-                              <RankItem rank="moff" />
-                            )}
-                          </span>
-                          <span className="small text-muted">
-                            {this.calculateTimeAgo(timestamp)}
-                          </span>
-                        </div>
-                        <div>
-                          <span
-                            dangerouslySetInnerHTML={{
-                              __html: this.processMsg(msg),
-                            }}
-                          ></span>
-                        </div>
-                        {url && !this.state?.hideUrlPreview && (
-                          <ReactTinyLink
-                            cardSize="small"
-                            showGraphic={true}
-                            maxLine={2}
-                            minLine={1}
-                            url={url}
-                            onError={() =>
-                              this.setState({ hideUrlPreview: true })
-                            }
-                          />
+              if (msg.includes(process.env.REACT_APP_ACTION_JOIN_CHAT)) {
+                // Get users who were added
+                const users = msg
+                  .split(process.env.REACT_APP_ACTION_JOIN_CHAT)[1]
+                  ?.trim();
+
+                return (
+                  <div className="text-center small mb-3">
+                    <MDBIcon icon="plus-circle" className="text-success mr-1" />
+                    {author.data.sith_name} added {users}.
+                  </div>
+                );
+              } else {
+                return (
+                  <div className="chat-item" key={mid}>
+                    <div className={reverse ? "d-flex reverse" : "d-flex"}>
+                      <div>
+                        {this.getPicture(
+                          author.data.skin,
+                          mid,
+                          author.sith_name
                         )}
                       </div>
+                      <div className="body-container">
+                        <div className="body">
+                          <div className="d-flex justify-content-between">
+                            <span className="font-weight-bold">
+                              {author.data.title} {author.data.sith_name}
+                              {author.data.badges.includes("grandmoff") && (
+                                <RankItem rank="grandmoff" />
+                              )}
+                              {author.data.badges.includes("hand") && (
+                                <RankItem rank="hand" />
+                              )}
+                              {author.data.badges.includes("moff") && (
+                                <RankItem rank="moff" />
+                              )}
+                            </span>
+                            <span className="small text-muted">
+                              {this.calculateTimeAgo(timestamp)}
+                            </span>
+                          </div>
+                          <div>
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: this.processMsg(msg),
+                              }}
+                            ></span>
+                          </div>
+                          {url && !this.state?.hideUrlPreview && (
+                            <ReactTinyLink
+                              cardSize="small"
+                              showGraphic={true}
+                              maxLine={2}
+                              minLine={1}
+                              url={url}
+                              onError={() =>
+                                this.setState({ hideUrlPreview: true })
+                              }
+                            />
+                          )}
+                        </div>
+                      </div>
                     </div>
+                    {this.props.reverse && (
+                      <div className="text-right">
+                        <span className="read small mr-5">
+                          {this.getReadStatus()}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                  {this.props.reverse && (
-                    <div className="text-right">
-                      <span className="read small mr-5">
-                        {this.getReadStatus()}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              );
+                );
+              }
           }
         })()}
       </>

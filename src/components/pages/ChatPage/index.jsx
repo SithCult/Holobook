@@ -499,39 +499,64 @@ class ChatPage extends React.Component {
                                         </span>
                                       );
                                     default:
-                                      return (
-                                        <>
-                                          <MDBIcon
-                                            icon="angle-right"
-                                            className="mr-1 ml-2"
-                                          />
-                                          {item.data && item.data.author && (
-                                            <>
-                                              {item.data.author.uid ===
-                                              auth.uid ? (
-                                                <span className="blue-text">
-                                                  You:{" "}
-                                                </span>
-                                              ) : (
-                                                <span className="blue-text">
-                                                  {
-                                                    this.getUserByUid(
-                                                      item.data.author.uid
-                                                    )?.data.sith_name
-                                                  }
-                                                  :{" "}
-                                                </span>
-                                              )}
-                                            </>
-                                          )}
-                                          {item.data?.msg
-                                            ? item.data.msg.length > 30
-                                              ? item.data.msg.slice(0, 30) +
-                                                "..."
-                                              : item.data.msg
-                                            : null}
-                                        </>
-                                      );
+                                      if (
+                                        item.data.msg.includes(
+                                          process.env.REACT_APP_ACTION_JOIN_CHAT
+                                        )
+                                      ) {
+                                        // Get users who were added
+                                        const users = item.data.msg
+                                          .split(
+                                            process.env
+                                              .REACT_APP_ACTION_JOIN_CHAT
+                                          )[1]
+                                          ?.trim();
+
+                                        return (
+                                          <span>
+                                            {
+                                              this.getUserByUid(
+                                                item.data.author.uid
+                                              )?.data.sith_name
+                                            }{" "}
+                                            added {users}.
+                                          </span>
+                                        );
+                                      } else {
+                                        return (
+                                          <>
+                                            <MDBIcon
+                                              icon="angle-right"
+                                              className="mr-1 ml-2"
+                                            />
+                                            {item.data && item.data.author && (
+                                              <>
+                                                {item.data.author.uid ===
+                                                auth.uid ? (
+                                                  <span className="blue-text">
+                                                    You:{" "}
+                                                  </span>
+                                                ) : (
+                                                  <span className="blue-text">
+                                                    {
+                                                      this.getUserByUid(
+                                                        item.data.author.uid
+                                                      )?.data.sith_name
+                                                    }
+                                                    :{" "}
+                                                  </span>
+                                                )}
+                                              </>
+                                            )}
+                                            {item.data?.msg
+                                              ? item.data.msg.length > 30
+                                                ? item.data.msg.slice(0, 30) +
+                                                  "..."
+                                                : item.data.msg
+                                              : null}
+                                          </>
+                                        );
+                                      }
                                   }
                                 })()}
                               </>
