@@ -176,7 +176,7 @@ class Chat extends React.Component {
     ) {
       this.props.writeMessage({
         chid: this.props.chatDetails.id,
-        msg: "User Left the Chat",
+        msg: process.env.REACT_APP_ACTION_LEFT_CHAT,
       });
       this.props.refreshChats();
       this.toggleLeave();
