@@ -329,7 +329,10 @@ class ChatPage extends React.Component {
     // Check users are present
     if (name && users.length > 1) {
       // Check if the group name has more than 2 characters
-      if (name.length > 2) {
+      if (
+        name.length > 2 &&
+        !name.split(" ").includes(process.env.REACT_APP_ACTION_CHAT_BINDER)
+      ) {
         if (await this.props.createChat(name, users)) {
           this.setState(
             {
@@ -348,6 +351,8 @@ class ChatPage extends React.Component {
             newChatCreateError: 1,
           });
         }
+      } else {
+        this.setState({ newChatCreateError: 2 });
       }
     }
   };
@@ -676,6 +681,11 @@ class ChatPage extends React.Component {
                       Chat already exists.
                     </p>
                   )}
+                  {this.state.newChatCreateError === 2 && (
+                    <p className="text-danger font-weight-bold d-block">
+                      Please use a longer name.
+                    </p>
+                  )}
                 </>
               )}
               {this.state.selectedUsers.length === 1 && (
@@ -687,7 +697,7 @@ class ChatPage extends React.Component {
                     onClick={() =>
                       this.createChat(
                         this.props.profile.sith_name +
-                          " and " +
+                          ` ${process.env.REACT_APP_ACTION_CHAT_BINDER} ` +
                           this.state.selectedUsers[0].data.sith_name,
                         this.getUsers()
                       )

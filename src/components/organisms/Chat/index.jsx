@@ -321,7 +321,9 @@ class Chat extends React.Component {
     return (
       <div className="chat" key={chatDetails.id}>
         <div className="chat-menu">
-          {!chatDetails.name.split(" ").includes("and") &&
+          {!chatDetails.name
+            .split(" ")
+            .includes(process.env.REACT_APP_ACTION_CHAT_BINDER) &&
             chatDetails.name.length > 2 && (
               <>
                 <MDBBtn color="amber" size="sm" onClick={this.toggleLeave}>
