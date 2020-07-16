@@ -150,7 +150,7 @@ class ReceivedUser extends React.Component {
                           <MDBBtn color="black" size="sm">
                             <ReactCountryFlag
                               svg
-                              className="mr-1"
+                              className="d-block m-auto"
                               countryCode={receivedUser.address.country}
                             />
                             {countryList().getLabel(
@@ -165,7 +165,11 @@ class ReceivedUser extends React.Component {
                             size="sm"
                             onClick={this.startChat}
                           >
-                            <MDBIcon far icon="comments" />
+                            <MDBIcon
+                              far
+                              icon="comments"
+                              className="d-block m-auto"
+                            />
                             Message
                           </MDBBtn>
                         )}
