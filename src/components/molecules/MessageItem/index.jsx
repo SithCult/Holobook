@@ -238,7 +238,7 @@ class MessageItem extends React.Component {
         )}
         {(() => {
           switch (msg) {
-            case "leHuK1wgHhhmfnTX4ZPu":
+            case process.env.REACT_APP_ACTION_LEFT_CHAT:
               return (
                 <div className="text-center small mb-3">
                   {author.data.sith_name} left the chat.

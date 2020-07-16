@@ -482,7 +482,7 @@ class ChatPage extends React.Component {
                               <>
                                 {(() => {
                                   switch (item.data?.msg) {
-                                    case "leHuK1wgHhhmfnTX4ZPu":
+                                    case process.env.REACT_APP_ACTION_LEFT_CHAT:
                                       return (
                                         <span>
                                           {
