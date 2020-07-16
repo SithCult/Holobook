@@ -329,10 +329,7 @@ class ChatPage extends React.Component {
     // Check users are present
     if (name && users.length > 1) {
       // Check if the group name has more than 2 characters
-      if (
-        name.length > 2 &&
-        !name.split(" ").includes(process.env.REACT_APP_ACTION_CHAT_BINDER)
-      ) {
+      if (name.length > 2) {
         if (await this.props.createChat(name, users)) {
           this.setState(
             {

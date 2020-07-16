@@ -201,7 +201,6 @@ class Chat extends React.Component {
     this.props.joinChat(selectedUserIDs, chatDetails.id, chatDetails.users);
 
     let msgString = "";
-    console.log(selectedUsers);
 
     if (selectedUsers.length === 1) {
       msgString = selectedUsers[0].data.sith_name;

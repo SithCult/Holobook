@@ -18,6 +18,7 @@ export const joinChat = (users, chid, curUsers) => {
         usersToAdd = [...usersToAdd, u];
       }
     });
+
     // Add user to the chat users
     return firestore
       .collection("chats")
@@ -44,10 +45,8 @@ export const leaveChat = (uid, chatDetails) => {
       .then((result) => {
         return { id: result.id, data: result.data() };
       });
-    console.log(currentData);
 
     let newUsers = currentData.data.users.filter((u) => u !== uid);
-    console.log(newUsers);
 
     if (newUsers.length === 0) {
       return firestore

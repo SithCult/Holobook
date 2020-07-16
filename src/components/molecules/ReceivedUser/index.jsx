@@ -36,8 +36,6 @@ import "./receiveduser.scss";
 //#region > Components
 class ReceivedUser extends React.Component {
   startChat = async () => {
-    console.log(this.props.profile, this.props.receivedUser.uid);
-
     const chatID = await this.props.createChat(
       this.props.profile.sith_name +
         process.env.REACT_APP_ACTION_CHAT_BINDER +
