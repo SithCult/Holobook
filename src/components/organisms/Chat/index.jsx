@@ -61,6 +61,7 @@ class Chat extends React.Component {
         // Check if user is part of chat
         if (this.props.hasJoined) {
           this.getMsg();
+          this.inputRef.current.focus();
         }
       }
     );
