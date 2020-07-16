@@ -21,7 +21,6 @@ import {
   MDBModalFooter,
   MDBAvatar,
   MDBPopover,
-  MDBPopoverHeader,
   MDBPopoverBody,
 } from "mdbreact";
 
