@@ -1,11 +1,20 @@
 // Add user to chat
 export const joinChat = (users, chid, curUsers) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
+  return async (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
     let usersToAdd = [];
 
+    // Get chat from collection
+    const currentData = await firestore
+      .collection("chats")
+      .doc(chid)
+      .get()
+      .then((result) => {
+        return { id: result.id, data: result.data() };
+      });
+
     users.forEach((u) => {
-      if (!curUsers.includes(u)) {
+      if (!currentData.data.users.includes(u)) {
         usersToAdd = [...usersToAdd, u];
       }
     });
@@ -24,22 +33,42 @@ export const joinChat = (users, chid, curUsers) => {
 };
 
 export const leaveChat = (uid, chatDetails) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
+  return async (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
-    let newUsers = chatDetails.users.filter((u) => u !== uid);
-    console.log(newUsers);
-
-    return firestore
+    // Get chat from collection
+    const currentData = await firestore
       .collection("chats")
       .doc(chatDetails.id)
-      .set({ users: newUsers }, { merge: true })
-      .then(() => {
-        return true;
-      })
-      .catch(() => {
-        return false;
+      .get()
+      .then((result) => {
+        return { id: result.id, data: result.data() };
       });
+    console.log(currentData);
+
+    let newUsers = currentData.data.users.filter((u) => u !== uid);
+    console.log(newUsers);
+
+    if (newUsers.length === 0) {
+      return firestore
+        .collection("chats")
+        .doc(chatDetails.id)
+        .delete()
+        .then(() => {
+          return true;
+        });
+    } else {
+      return firestore
+        .collection("chats")
+        .doc(chatDetails.id)
+        .set({ users: newUsers }, { merge: true })
+        .then(() => {
+          return true;
+        })
+        .catch(() => {
+          return false;
+        });
+    }
   };
 };
 
@@ -134,7 +163,7 @@ export const getChatDetails = (chid) => {
       .then((result) => {
         dispatch({
           type: "GETCHATDETAILS_SUCCESS",
-          chatDetails: { id: result.id, data: result.data },
+          chatDetails: { id: result.id, data: result.data() },
         });
       });
   };

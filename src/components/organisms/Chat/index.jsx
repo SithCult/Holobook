@@ -209,8 +209,6 @@ class Chat extends React.Component {
     this.toggleAddUser();
   };
 
-  deleteChat = () => {};
-
   toggleAddUser = () => {
     this.setState({ addUserModal: !this.state.addUserModal });
   };
@@ -323,16 +321,17 @@ class Chat extends React.Component {
     return (
       <div className="chat" key={chatDetails.id}>
         <div className="chat-menu">
-          {chatDetails.users.length > 2 && chatDetails.name.length > 2 && (
-            <>
-              <MDBBtn color="amber" size="sm" onClick={this.toggleLeave}>
-                Leave Chat
-              </MDBBtn>
-              <MDBBtn color="blue" size="sm" onClick={this.toggleAddUser}>
-                Add user
-              </MDBBtn>
-            </>
-          )}
+          {!chatDetails.name.split(" ").includes("and") &&
+            chatDetails.name.length > 2 && (
+              <>
+                <MDBBtn color="amber" size="sm" onClick={this.toggleLeave}>
+                  Leave Chat
+                </MDBBtn>
+                <MDBBtn color="blue" size="sm" onClick={this.toggleAddUser}>
+                  Add user
+                </MDBBtn>
+              </>
+            )}
         </div>
         <div className="chat-container" ref={this.messagesEndRef}>
           {hasJoined ? (
@@ -442,15 +441,9 @@ class Chat extends React.Component {
             <MDBModalBody className="mb-0">
               <p className="font-weight-bold">Warning</p>
               <p className="">Do you really want to leave the chat?</p>
-              {chatDetails.users.length > 1 ? (
-                <MDBBtn color="amber" onClick={this.leaveChat}>
-                  Yes
-                </MDBBtn>
-              ) : (
-                <MDBBtn color="danger" onClick={this.deleteChat}>
-                  Yes (Chat will be deleted)
-                </MDBBtn>
-              )}
+              <MDBBtn color="amber" onClick={this.leaveChat}>
+                Yes
+              </MDBBtn>
               <MDBBtn color="blue" onClick={this.toggleLeave}>
                 No
               </MDBBtn>
