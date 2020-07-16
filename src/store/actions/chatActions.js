@@ -93,11 +93,11 @@ export const createChat = (name, users) => {
                 name.split(process.env.REACT_APP_ACTION_CHAT_BINDER)
               )
             ) {
-              isDupe = true;
+              isDupe = doc.id;
             } else if (
               name.toLowerCase().trim() === doc.data().name.toLowerCase().trim()
             ) {
-              isDupe = true;
+              isDupe = doc.id;
             }
           });
 
@@ -113,7 +113,7 @@ export const createChat = (name, users) => {
           return response.id;
         });
     } else {
-      return false;
+      return existingChat;
     }
   };
 };
