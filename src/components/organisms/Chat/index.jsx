@@ -5,6 +5,10 @@ import React from "react";
 // React Prop Types
 import PropTypes from "prop-types";
 
+//> Additional libraries
+// Flags for countries
+import ReactCountryFlag from "react-country-flag";
+
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -16,6 +20,9 @@ import {
   MDBCard,
   MDBModalFooter,
   MDBAvatar,
+  MDBPopover,
+  MDBPopoverHeader,
+  MDBPopoverBody,
 } from "mdbreact";
 
 //> Redux
@@ -322,23 +329,94 @@ class Chat extends React.Component {
   };
 
   render() {
-    const { chatDetails, currentUser, hasJoined, chatMessages } = this.props;
+    const {
+      chatDetails,
+      currentUser,
+      hasJoined,
+      chatMessages,
+      profile,
+    } = this.props;
 
     return (
       <div className="chat" key={chatDetails.id}>
-        <div className="chat-menu">
-          {chatDetails.name.split(process.env.REACT_APP_ACTION_CHAT_BINDER)
-            .length !== 2 &&
-            chatDetails.name.length > 2 && (
-              <>
-                <MDBBtn color="amber" size="sm" onClick={this.toggleLeave}>
-                  Leave Chat
-                </MDBBtn>
-                <MDBBtn color="blue" size="sm" onClick={this.toggleAddUser}>
-                  Add user
-                </MDBBtn>
-              </>
+        <div className="chat-menu d-flex justify-content-between align-items-center p-3">
+          <div>
+            {chatDetails.name.length === 2 ? (
+              <div>
+                <div className="text-center flag">
+                  <ReactCountryFlag svg countryCode={chatDetails.name} />
+                </div>
+                {countryList().getLabel(chatDetails.name)}
+                <MDBIcon icon="users" className="ml-2 text-muted" size="sm" />
+              </div>
+            ) : (
+              <p className="mb-0">
+                {chatDetails.name.split(
+                  process.env.REACT_APP_ACTION_CHAT_BINDER
+                ).length === 2 ? (
+                  <>
+                    {chatDetails.name
+                      .split(process.env.REACT_APP_ACTION_CHAT_BINDER)[1]
+                      ?.trim()
+                      .toLowerCase() === profile.sith_name?.toLowerCase()
+                      ? chatDetails.name.split(
+                          process.env.REACT_APP_ACTION_CHAT_BINDER
+                        )[0]
+                      : chatDetails.name.split(
+                          process.env.REACT_APP_ACTION_CHAT_BINDER
+                        )[1]}
+                  </>
+                ) : (
+                  <span>
+                    {chatDetails.name}
+                    <MDBIcon
+                      icon="users"
+                      className="ml-2 text-muted"
+                      size="sm"
+                    />
+                  </span>
+                )}
+              </p>
             )}
+          </div>
+          <div>
+            <MDBPopover placement="bottom" popover clickable id="popper1">
+              <MDBBtn color="transparent">
+                <MDBIcon icon="ellipsis-v" className="clickable" />
+              </MDBBtn>
+              <div>
+                <MDBPopoverBody>
+                  {chatDetails.name.split(
+                    process.env.REACT_APP_ACTION_CHAT_BINDER
+                  ).length !== 2 && chatDetails.name.length > 2 ? (
+                    <div className="menu-items">
+                      <MDBBtn
+                        color="danger"
+                        size="sm"
+                        className="m-0"
+                        onClick={this.toggleLeave}
+                      >
+                        Leave Chat
+                      </MDBBtn>
+                      <MDBBtn
+                        color="blue"
+                        size="sm"
+                        className="m-0"
+                        onClick={this.toggleAddUser}
+                      >
+                        <MDBIcon icon="plus-circle" className="mr-1" />
+                        Add user
+                      </MDBBtn>
+                    </div>
+                  ) : (
+                    <MDBBtn color="blue" disabled>
+                      View profile
+                    </MDBBtn>
+                  )}
+                </MDBPopoverBody>
+              </div>
+            </MDBPopover>
+          </div>
         </div>
         <div className="chat-container" ref={this.messagesEndRef}>
           {hasJoined ? (
@@ -448,11 +526,11 @@ class Chat extends React.Component {
             <MDBModalBody className="mb-0">
               <p className="font-weight-bold">Warning</p>
               <p className="">Do you really want to leave the chat?</p>
-              <MDBBtn color="amber" onClick={this.leaveChat}>
-                Yes
+              <MDBBtn color="danger" onClick={this.leaveChat}>
+                Leave chat
               </MDBBtn>
               <MDBBtn color="blue" onClick={this.toggleLeave}>
-                No
+                Cancel
               </MDBBtn>
             </MDBModalBody>
           </MDBModal>
@@ -601,6 +679,7 @@ Chat.propTypes = {
 const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
+    profile: state.firebase.profile,
     chatMessages: state.chat.chatMessages,
   };
 };

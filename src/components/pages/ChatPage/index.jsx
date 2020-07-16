@@ -393,125 +393,104 @@ class ChatPage extends React.Component {
                     </p>
                   )}
                 </div>
-                {chats &&
-                  this.state.order &&
-                  this.state.order.map((item, i) => {
-                    return (
-                      <MDBCard
-                        key={i}
-                        className={
-                          item.chat.id === this.state.selectedChat?.id
-                            ? "clickable active"
-                            : "clickable"
-                        }
-                        onClick={() => {
-                          this.setState({
-                            selectedChat: item.chat,
-                          });
-                        }}
-                      >
-                        <MDBCardBody
+                <div className="chat-list">
+                  {chats &&
+                    this.state.order &&
+                    this.state.order.map((item, i) => {
+                      return (
+                        <MDBCard
+                          key={i}
                           className={
-                            item.data &&
-                            item.data.read &&
-                            !item.data.read.includes(auth.uid)
-                              ? "unread"
-                              : undefined
+                            item.chat.id === this.state.selectedChat?.id
+                              ? "clickable active"
+                              : "clickable"
                           }
+                          onClick={() => {
+                            this.setState({
+                              selectedChat: item.chat,
+                            });
+                          }}
                         >
-                          <div className="d-flex justify-content-between">
-                            {item.chat.name.length === 2 ? (
-                              <div>
-                                <div className="text-center flag">
-                                  <ReactCountryFlag
-                                    svg
-                                    countryCode={item.chat.name}
+                          <MDBCardBody
+                            className={
+                              item.data &&
+                              item.data.read &&
+                              !item.data.read.includes(auth.uid)
+                                ? "unread"
+                                : undefined
+                            }
+                          >
+                            <div className="d-flex justify-content-between">
+                              {item.chat.name.length === 2 ? (
+                                <div>
+                                  <div className="text-center flag">
+                                    <ReactCountryFlag
+                                      svg
+                                      countryCode={item.chat.name}
+                                    />
+                                  </div>
+                                  {countryList().getLabel(item.chat.name)}
+                                  <MDBIcon
+                                    icon="users"
+                                    className="ml-2 text-muted"
+                                    size="sm"
                                   />
                                 </div>
-                                {countryList().getLabel(item.chat.name)}
-                                <MDBIcon
-                                  icon="users"
-                                  className="ml-2 text-muted"
-                                  size="sm"
-                                />
-                              </div>
-                            ) : (
-                              <p className="mb-0">
-                                {item.chat.name.split(
-                                  process.env.REACT_APP_ACTION_CHAT_BINDER
-                                ).length === 2 ? (
-                                  <>
-                                    {item.chat.name
-                                      .split(
-                                        process.env.REACT_APP_ACTION_CHAT_BINDER
-                                      )[1]
-                                      ?.trim()
-                                      .toLowerCase() ===
-                                    profile.sith_name?.toLowerCase()
-                                      ? item.chat.name.split(
+                              ) : (
+                                <p className="mb-0">
+                                  {item.chat.name.split(
+                                    process.env.REACT_APP_ACTION_CHAT_BINDER
+                                  ).length === 2 ? (
+                                    <>
+                                      {item.chat.name
+                                        .split(
                                           process.env
                                             .REACT_APP_ACTION_CHAT_BINDER
-                                        )[0]
-                                      : item.chat.name.split(
-                                          process.env
-                                            .REACT_APP_ACTION_CHAT_BINDER
-                                        )[1]}
-                                  </>
-                                ) : (
-                                  <span>
-                                    {item.chat.name}
-                                    <MDBIcon
-                                      icon="users"
-                                      className="ml-2 text-muted"
-                                      size="sm"
-                                    />
+                                        )[1]
+                                        ?.trim()
+                                        .toLowerCase() ===
+                                      profile.sith_name?.toLowerCase()
+                                        ? item.chat.name.split(
+                                            process.env
+                                              .REACT_APP_ACTION_CHAT_BINDER
+                                          )[0]
+                                        : item.chat.name.split(
+                                            process.env
+                                              .REACT_APP_ACTION_CHAT_BINDER
+                                          )[1]}
+                                    </>
+                                  ) : (
+                                    <span>
+                                      {item.chat.name}
+                                      <MDBIcon
+                                        icon="users"
+                                        className="ml-2 text-muted"
+                                        size="sm"
+                                      />
+                                    </span>
+                                  )}
+                                </p>
+                              )}
+                              {item.chat.users.length === 2 &&
+                                item.chat.name.length !== 2 && (
+                                  <span className="blue-text small">
+                                    Private chat
                                   </span>
                                 )}
-                              </p>
-                            )}
-                            {item.chat.users.length === 2 &&
-                              item.chat.name.length !== 2 && (
-                                <span className="blue-text small">
-                                  Private chat
+                              {(item.chat.users.length > 2 ||
+                                item.chat.name.length === 2) && (
+                                <span className="text-muted small">
+                                  Group Chat
                                 </span>
                               )}
-                            {(item.chat.users.length > 2 ||
-                              item.chat.name.length === 2) && (
-                              <span className="text-muted small">
-                                Group Chat
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-muted small latest-message">
-                            {item.data?.msg ? (
-                              <>
-                                {(() => {
-                                  switch (item.data?.msg) {
-                                    case process.env.REACT_APP_ACTION_LEFT_CHAT:
-                                      return (
-                                        <span>
-                                          {
-                                            this.getUserByUid(
-                                              item.data.author.uid
-                                            )?.data.sith_name
-                                          }{" "}
-                                          left the chat.
-                                        </span>
-                                      );
-                                    default:
-                                      if (
-                                        item.data.msg.includes(
-                                          process.env.REACT_APP_ACTION_JOIN_CHAT
-                                        )
-                                      ) {
-                                        // Get users who were added
-                                        const users = item.data.msg
-                                          .split(
-                                            process.env
-                                              .REACT_APP_ACTION_JOIN_CHAT
-                                          )[1]
-                                          ?.trim();
-
+                            </div>
+                            <div className="text-muted small latest-message">
+                              {item.data?.msg ? (
+                                <>
+                                  {(() => {
+                                    switch (item.data?.msg) {
+                                      case process.env
+                                        .REACT_APP_ACTION_LEFT_CHAT:
                                         return (
                                           <span>
                                             {
@@ -519,63 +498,90 @@ class ChatPage extends React.Component {
                                                 item.data.author.uid
                                               )?.data.sith_name
                                             }{" "}
-                                            added {users}.
+                                            left the chat.
                                           </span>
                                         );
-                                      } else {
-                                        return (
-                                          <>
-                                            <MDBIcon
-                                              icon="angle-right"
-                                              className="mr-1 ml-2"
-                                            />
-                                            {item.data && item.data.author && (
-                                              <>
-                                                {item.data.author.uid ===
-                                                auth.uid ? (
-                                                  <span className="blue-text">
-                                                    You:{" "}
-                                                  </span>
-                                                ) : (
-                                                  <span className="blue-text">
-                                                    {
-                                                      this.getUserByUid(
-                                                        item.data.author.uid
-                                                      )?.data.sith_name
-                                                    }
-                                                    :{" "}
-                                                  </span>
+                                      default:
+                                        if (
+                                          item.data.msg.includes(
+                                            process.env
+                                              .REACT_APP_ACTION_JOIN_CHAT
+                                          )
+                                        ) {
+                                          // Get users who were added
+                                          const users = item.data.msg
+                                            .split(
+                                              process.env
+                                                .REACT_APP_ACTION_JOIN_CHAT
+                                            )[1]
+                                            ?.trim();
+
+                                          return (
+                                            <span>
+                                              {
+                                                this.getUserByUid(
+                                                  item.data.author.uid
+                                                )?.data.sith_name
+                                              }{" "}
+                                              added {users}.
+                                            </span>
+                                          );
+                                        } else {
+                                          return (
+                                            <>
+                                              <MDBIcon
+                                                icon="angle-right"
+                                                className="mr-1 ml-2"
+                                              />
+                                              {item.data &&
+                                                item.data.author && (
+                                                  <>
+                                                    {item.data.author.uid ===
+                                                    auth.uid ? (
+                                                      <span className="blue-text">
+                                                        You:{" "}
+                                                      </span>
+                                                    ) : (
+                                                      <span className="blue-text">
+                                                        {
+                                                          this.getUserByUid(
+                                                            item.data.author.uid
+                                                          )?.data.sith_name
+                                                        }
+                                                        :{" "}
+                                                      </span>
+                                                    )}
+                                                  </>
                                                 )}
-                                              </>
-                                            )}
-                                            {item.data?.msg
-                                              ? item.data.msg.length > 30
-                                                ? item.data.msg.slice(0, 30) +
-                                                  "..."
-                                                : item.data.msg
-                                              : null}
-                                          </>
-                                        );
-                                      }
-                                  }
-                                })()}
-                              </>
-                            ) : (
-                              <span>No messages yet</span>
+                                              {item.data?.msg
+                                                ? item.data.msg.length > 30
+                                                  ? item.data.msg.slice(0, 30) +
+                                                    "..."
+                                                  : item.data.msg
+                                                : null}
+                                            </>
+                                          );
+                                        }
+                                    }
+                                  })()}
+                                </>
+                              ) : (
+                                <span>No messages yet</span>
+                              )}
+                            </div>
+                            {item.chat.users.length !== 2 && (
+                              <span className="text-muted small">
+                                {item.chat.users.length}{" "}
+                                {item.chat.users.length === 1
+                                  ? "participant"
+                                  : "participants"}
+                              </span>
                             )}
-                          </div>
-                          {item.chat.users.length !== 2 && (
-                            <span className="text-muted small">
-                              {item.chat.users.length}{" "}
-                              {item.chat.users.length === 1
-                                ? "participant"
-                                : "participants"}
-                            </span>
-                          )}
-                        </MDBCardBody>
-                      </MDBCard>
-                    );
-                  })}
+                          </MDBCardBody>
+                        </MDBCard>
+                      );
+                    })}
+                </div>
               </MDBCol>
               <MDBCol lg="8">
                 {this.state.selectedChat && this.props.chatMessages ? (

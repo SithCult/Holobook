@@ -1,4 +1,28 @@
 #chats {
+  .row {
+    height: 100vh - 20vh;
+    .col-lg-4 {
+      display: flex;
+      flex-flow: column;
+      height: 100%;
+      .chat-list {
+        flex-grow: 1;
+        overflow-y: scroll;
+      }
+    }
+    .col-lg-8 {
+      height: 100%;
+      .chat {
+        height: 100%;
+        display: flex;
+        flex-flow: column;
+        .chat-container {
+          flex-grow: 1;
+        }
+      }
+    }
+  }
+
   .btn {
     border-radius: 0.5rem;
     text-transform: initial;
