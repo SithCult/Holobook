@@ -86,10 +86,11 @@ export const createChat = (name, users) => {
         !querySnapshot.empty &&
           querySnapshot.forEach((doc) => {
             if (
-              name.split("and").length === 2 &&
+              name.split(process.env.REACT_APP_ACTION_CHAT_BINDER).length ===
+                2 &&
               areArraysEqualSets(
-                doc.data().name.split("and"),
-                name.split("and")
+                doc.data().name.split(process.env.REACT_APP_ACTION_CHAT_BINDER),
+                name.split(process.env.REACT_APP_ACTION_CHAT_BINDER)
               )
             ) {
               isDupe = true;

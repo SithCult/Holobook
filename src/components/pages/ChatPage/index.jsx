@@ -432,15 +432,25 @@ class ChatPage extends React.Component {
                               </div>
                             ) : (
                               <p className="mb-0">
-                                {item.chat.name.split("and").length === 2 ? (
+                                {item.chat.name.split(
+                                  process.env.REACT_APP_ACTION_CHAT_BINDER
+                                ).length === 2 ? (
                                   <>
                                     {item.chat.name
-                                      .split("and")[1]
+                                      .split(
+                                        process.env.REACT_APP_ACTION_CHAT_BINDER
+                                      )[1]
                                       ?.trim()
                                       .toLowerCase() ===
                                     profile.sith_name?.toLowerCase()
-                                      ? item.chat.name.split("and")[0]
-                                      : item.chat.name.split("and")[1]}
+                                      ? item.chat.name.split(
+                                          process.env
+                                            .REACT_APP_ACTION_CHAT_BINDER
+                                        )[0]
+                                      : item.chat.name.split(
+                                          process.env
+                                            .REACT_APP_ACTION_CHAT_BINDER
+                                        )[1]}
                                   </>
                                 ) : (
                                   <span>
@@ -470,31 +480,55 @@ class ChatPage extends React.Component {
                           <div className="text-muted small latest-message">
                             {item.data?.msg ? (
                               <>
-                                <MDBIcon
-                                  icon="angle-right"
-                                  className="mr-1 ml-2"
-                                />
-                                {item.data && item.data.author && (
-                                  <>
-                                    {item.data.author.uid === auth.uid ? (
-                                      <span className="blue-text">You: </span>
-                                    ) : (
-                                      <span className="blue-text">
-                                        {
-                                          this.getUserByUid(
-                                            item.data.author.uid
-                                          )?.data.sith_name
-                                        }
-                                        :{" "}
-                                      </span>
-                                    )}
-                                  </>
-                                )}
-                                {item.data?.msg
-                                  ? item.data.msg.length > 30
-                                    ? item.data.msg.slice(0, 30) + "..."
-                                    : item.data.msg
-                                  : null}
+                                {(() => {
+                                  switch (item.data?.msg) {
+                                    case "leHuK1wgHhhmfnTX4ZPu":
+                                      return (
+                                        <span>
+                                          {
+                                            this.getUserByUid(
+                                              item.data.author.uid
+                                            )?.data.sith_name
+                                          }{" "}
+                                          left the chat.
+                                        </span>
+                                      );
+                                    default:
+                                      return (
+                                        <>
+                                          <MDBIcon
+                                            icon="angle-right"
+                                            className="mr-1 ml-2"
+                                          />
+                                          {item.data && item.data.author && (
+                                            <>
+                                              {item.data.author.uid ===
+                                              auth.uid ? (
+                                                <span className="blue-text">
+                                                  You:{" "}
+                                                </span>
+                                              ) : (
+                                                <span className="blue-text">
+                                                  {
+                                                    this.getUserByUid(
+                                                      item.data.author.uid
+                                                    )?.data.sith_name
+                                                  }
+                                                  :{" "}
+                                                </span>
+                                              )}
+                                            </>
+                                          )}
+                                          {item.data?.msg
+                                            ? item.data.msg.length > 30
+                                              ? item.data.msg.slice(0, 30) +
+                                                "..."
+                                              : item.data.msg
+                                            : null}
+                                        </>
+                                      );
+                                  }
+                                })()}
                               </>
                             ) : (
                               <span>No messages yet</span>
