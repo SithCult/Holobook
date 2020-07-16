@@ -88,7 +88,7 @@ class ChatPage extends React.Component {
 
     // Sort the chats
     if (nextProps.chats && nextProps.chatMessages) {
-      this.sortChats(nextProps, this.props.location?.chatProps?.chid);
+      this.sortChats(nextProps);
     }
   };
 
@@ -116,7 +116,7 @@ class ChatPage extends React.Component {
   };
 
   // Sort the chats by their latest message
-  sortChats = (nextProps, oldNotify) => {
+  sortChats = (nextProps) => {
     const { chats, chatMessages, location } = nextProps;
 
     let order = [];
@@ -157,16 +157,10 @@ class ChatPage extends React.Component {
       },
       () => {
         // Preset first selected chat
-        const currNotifyChat = oldNotify;
         const newNotifyChat = location?.chatProps?.chid;
 
         // If notifyChat is set, make it the selected chat.
-        if (
-          newNotifyChat &&
-          currNotifyChat !== newNotifyChat &&
-          chats &&
-          chats.length > 0
-        ) {
+        if (newNotifyChat && chats && chats.length > 0) {
           const notifyChatObject = chats.filter(
             (c) => c.id === newNotifyChat
           )[0];
