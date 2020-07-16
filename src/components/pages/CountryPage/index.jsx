@@ -526,7 +526,7 @@ class CountryPage extends React.Component {
                               onClick={async () => {
                                 if (
                                   await this.props.joinChat(
-                                    auth.uid,
+                                    [auth.uid],
                                     this.state.countryChat.id,
                                     this.state.countryChat.users
                                   )

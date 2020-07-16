@@ -1,13 +1,39 @@
 // Add user to chat
-export const joinChat = (uid, chid, curUsers) => {
+export const joinChat = (users, chid, curUsers) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
+    let usersToAdd = [];
 
+    users.forEach((u) => {
+      if (!curUsers.includes(u)) {
+        usersToAdd = [...usersToAdd, u];
+      }
+    });
     // Add user to the chat users
     return firestore
       .collection("chats")
       .doc(chid)
-      .set({ users: [...curUsers, uid] }, { merge: true })
+      .set({ users: [...curUsers, ...usersToAdd] }, { merge: true })
+      .then(() => {
+        return true;
+      })
+      .catch(() => {
+        return false;
+      });
+  };
+};
+
+export const leaveChat = (uid, chatDetails) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    let newUsers = chatDetails.users.filter((u) => u !== uid);
+    console.log(newUsers);
+
+    return firestore
+      .collection("chats")
+      .doc(chatDetails.id)
+      .set({ users: newUsers }, { merge: true })
       .then(() => {
         return true;
       })

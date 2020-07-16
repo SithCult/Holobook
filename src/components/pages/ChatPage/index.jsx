@@ -66,7 +66,6 @@ class ChatPage extends React.Component {
     modal: false,
     showAllSearchMemberResults: false,
     newGroupName: "",
-    userSelected: false,
   };
 
   // Init on mount
@@ -165,10 +164,24 @@ class ChatPage extends React.Component {
             (c) => c.id === newNotifyChat
           )[0];
 
-          this.setState({
-            selectedChat: notifyChatObject,
-            userSelected: true,
-          });
+          this.setState(
+            {
+              selectedChat: notifyChatObject,
+            },
+            () => {
+              // Get chat props
+              let chatProps = { ...this.props.location.chatProps };
+
+              // Yeet chat props
+              delete chatProps.chid;
+
+              // Replace chat props with empty chat id
+              this.props.history.replace({
+                ...this.props.history.location,
+                chatProps,
+              });
+            }
+          );
         }
       }
     );
@@ -339,6 +352,10 @@ class ChatPage extends React.Component {
     }
   };
 
+  refreshChats = () => {
+    this.setState({ selectedChat: null }, () => this.init());
+  };
+
   render() {
     const { auth, chats, profile } = this.props;
 
@@ -385,7 +402,6 @@ class ChatPage extends React.Component {
                         onClick={() => {
                           this.setState({
                             selectedChat: item.chat,
-                            userSelected: true,
                           });
                         }}
                       >
@@ -512,6 +528,7 @@ class ChatPage extends React.Component {
                         ? true
                         : false
                     }
+                    refreshChats={this.refreshChats}
                   />
                 ) : (
                   <div className="d-flex justify-content-center align-items-center h-100">
