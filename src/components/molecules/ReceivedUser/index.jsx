@@ -3,7 +3,13 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 // Router
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+
+//> Redux
+// Connect
+import { connect } from "react-redux";
+// Actions
+import { createChat } from "../../../store/actions/chatActions";
 
 //> Additional
 // Flags for countries
@@ -29,6 +35,22 @@ import "./receiveduser.scss";
 
 //#region > Components
 class ReceivedUser extends React.Component {
+  startChat = async () => {
+    const chatID = await this.props.createChat(
+      this.props.profile.sith_name +
+        process.env.REACT_APP_ACTION_CHAT_BINDER +
+        this.props.receivedUser.sith_name,
+      [this.props.auth.uid, this.props.receivedUser.uid]
+    );
+
+    this.props.history.push({
+      pathname: "/chat",
+      chatProps: {
+        chid: chatID,
+      },
+    });
+  };
+
   render() {
     const { receivedUser, name } = this.props;
 
@@ -126,7 +148,7 @@ class ReceivedUser extends React.Component {
                           <MDBBtn color="black" size="sm">
                             <ReactCountryFlag
                               svg
-                              className="mr-2"
+                              className="d-block m-auto"
                               countryCode={receivedUser.address.country}
                             />
                             {countryList().getLabel(
@@ -134,6 +156,21 @@ class ReceivedUser extends React.Component {
                             )}
                           </MDBBtn>
                         </Link>
+                        {this.props.auth.uid !==
+                          this.props.receivedUser.uid && (
+                          <MDBBtn
+                            color="black"
+                            size="sm"
+                            onClick={this.startChat}
+                          >
+                            <MDBIcon
+                              far
+                              icon="comments"
+                              className="d-block m-auto"
+                            />
+                            Message
+                          </MDBBtn>
+                        )}
                       </div>
                     </div>
                   </MDBPopoverBody>
@@ -164,8 +201,23 @@ class ReceivedUser extends React.Component {
 }
 //#endregion
 
+//#region > Functions
+const mapStateToProps = (state) => {
+  return { auth: state.firebase.auth, profile: state.firebase.profile };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createChat: (name, users) => dispatch(createChat(name, users)),
+  };
+};
+//#endregion
+
 //#region > Exports
-export default ReceivedUser;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(ReceivedUser));
 //#endregion
 
 /**

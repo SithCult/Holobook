@@ -27,6 +27,16 @@
     }
   }
 
+  .react_tinylink_card {
+    background-color: transparentize($color: black, $amount: 0.8);
+    color: white !important;
+    border: none;
+    border-radius: 0.3rem;
+    &:hover {
+      background-color: transparentize($color: black, $amount: 0.85);
+    }
+  }
+
   // YouTube add section
   .youtube {
     input {
@@ -55,6 +65,13 @@
       box-shadow: none;
       border: 2px darken(#3e3e3e, 7%) solid;
       border-radius: 0.5rem;
+
+      a {
+        color: #33b5e5;
+        &:hover {
+          color: lighten(#33b5e5, 10%);
+        }
+      }
 
       .avatar-img {
         width: 2.5rem;

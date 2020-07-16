@@ -1,19 +1,73 @@
 // Add user to chat
-export const joinChat = (uid, chid, curUsers) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
+export const joinChat = (users, chid, curUsers) => {
+  return async (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
+    let usersToAdd = [];
+
+    // Get chat from collection
+    const currentData = await firestore
+      .collection("chats")
+      .doc(chid)
+      .get()
+      .then((result) => {
+        return { id: result.id, data: result.data() };
+      });
+
+    users.forEach((u) => {
+      if (!currentData.data.users.includes(u)) {
+        usersToAdd = [...usersToAdd, u];
+      }
+    });
 
     // Add user to the chat users
     return firestore
       .collection("chats")
       .doc(chid)
-      .set({ users: [...curUsers, uid] }, { merge: true })
+      .set({ users: [...curUsers, ...usersToAdd] }, { merge: true })
       .then(() => {
         return true;
       })
       .catch(() => {
         return false;
       });
+  };
+};
+
+export const leaveChat = (uid, chatDetails) => {
+  return async (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firestore = getFirestore();
+
+    // Get chat from collection
+    const currentData = await firestore
+      .collection("chats")
+      .doc(chatDetails.id)
+      .get()
+      .then((result) => {
+        return { id: result.id, data: result.data() };
+      });
+
+    let newUsers = currentData.data.users.filter((u) => u !== uid);
+
+    if (newUsers.length === 0) {
+      return firestore
+        .collection("chats")
+        .doc(chatDetails.id)
+        .delete()
+        .then(() => {
+          return true;
+        });
+    } else {
+      return firestore
+        .collection("chats")
+        .doc(chatDetails.id)
+        .set({ users: newUsers }, { merge: true })
+        .then(() => {
+          return true;
+        })
+        .catch(() => {
+          return false;
+        });
+    }
   };
 };
 
@@ -31,17 +85,18 @@ export const createChat = (name, users) => {
         !querySnapshot.empty &&
           querySnapshot.forEach((doc) => {
             if (
-              name.split("and").length === 2 &&
+              name.split(process.env.REACT_APP_ACTION_CHAT_BINDER).length ===
+                2 &&
               areArraysEqualSets(
-                doc.data().name.split("and"),
-                name.split("and")
+                doc.data().name.split(process.env.REACT_APP_ACTION_CHAT_BINDER),
+                name.split(process.env.REACT_APP_ACTION_CHAT_BINDER)
               )
             ) {
-              isDupe = true;
+              isDupe = doc.id;
             } else if (
               name.toLowerCase().trim() === doc.data().name.toLowerCase().trim()
             ) {
-              isDupe = true;
+              isDupe = doc.id;
             }
           });
 
@@ -57,7 +112,7 @@ export const createChat = (name, users) => {
           return response.id;
         });
     } else {
-      return false;
+      return existingChat;
     }
   };
 };
@@ -108,7 +163,7 @@ export const getChatDetails = (chid) => {
       .then((result) => {
         dispatch({
           type: "GETCHATDETAILS_SUCCESS",
-          chatDetails: { id: result.id, data: result.data },
+          chatDetails: { id: result.id, data: result.data() },
         });
       });
   };

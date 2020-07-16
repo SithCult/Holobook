@@ -21,6 +21,7 @@ import {
   MDBTooltip,
   MDBBtn,
   MDBIcon,
+  MDBBadge,
 } from "mdbreact";
 
 //> Redux
@@ -115,6 +116,12 @@ class Navbar extends React.Component {
                       >
                         <MDBIcon far icon="comments" className="pr-2" />
                         Chats
+                        {this.props.notifications &&
+                          this.props.notifications.length > 0 && (
+                            <MDBBadge color="red" pill className="ml-1">
+                              {this.props.notifications.length}
+                            </MDBBadge>
+                          )}
                       </MDBBtn>
                     </Link>
                     <Link to="/me">

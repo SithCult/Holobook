@@ -65,15 +65,21 @@ class NotificationItem extends React.Component {
                 </div>
               ) : (
                 <span className="mb-0">
-                  {details.data.chatName.split("and").length === 2 ? (
+                  {details.data.chatName.split(
+                    process.env.REACT_APP_ACTION_CHAT_BINDER
+                  ).length === 2 ? (
                     <>
                       {details.data.chatName
-                        .split("and")[1]
+                        .split(process.env.REACT_APP_ACTION_CHAT_BINDER)[1]
                         ?.trim()
                         .toLowerCase() ===
                       this.props.profile.sith_name?.toLowerCase()
-                        ? details.data.chatName.split("and")[0]
-                        : details.data.chatName.split("and")[1]}
+                        ? details.data.chatName.split(
+                            process.env.REACT_APP_ACTION_CHAT_BINDER
+                          )[0]
+                        : details.data.chatName.split(
+                            process.env.REACT_APP_ACTION_CHAT_BINDER
+                          )[1]}
                     </>
                   ) : (
                     <span>{details.data.chatName}</span>

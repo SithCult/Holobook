@@ -66,14 +66,23 @@ class App extends React.Component {
         if (!this.containsObject(n, this.props.notifications)) {
           let chatName;
 
-          if (n.data.chatName.split("and").length === 2) {
+          if (
+            n.data.chatName.split(process.env.REACT_APP_ACTION_CHAT_BINDER)
+              .length === 2
+          ) {
             if (
-              n.data.chatName.split("and")[1]?.trim().toLowerCase() ===
-              this.props.profile.sith_name?.toLowerCase()
+              n.data.chatName
+                .split(process.env.REACT_APP_ACTION_CHAT_BINDER)[1]
+                ?.trim()
+                .toLowerCase() === this.props.profile.sith_name?.toLowerCase()
             ) {
-              chatName = n.data.chatName.split("and")[0];
+              chatName = n.data.chatName.split(
+                process.env.REACT_APP_ACTION_CHAT_BINDER
+              )[0];
             } else {
-              chatName = n.data.chatName.split("and")[1];
+              chatName = n.data.chatName.split(
+                process.env.REACT_APP_ACTION_CHAT_BINDER
+              )[1];
             }
           } else {
             chatName = n.data.chatName;

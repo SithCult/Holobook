@@ -3,9 +3,46 @@
   border-radius: 0.5rem;
   position: relative;
 
+  .chat-menu {
+    // Country chat
+    .flag {
+      display: inline-block;
+      margin-right: 0.5rem;
+    }
+
+    .btn-transparent {
+      padding: 0.2rem 0.5rem;
+      margin: 0;
+      &:hover {
+        color: #33b5e5 !important;
+      }
+    }
+
+    .popover[x-placement^="bottom"] .popover_arrow {
+      border-color: transparent transparent darken(#3e3e3e, 10%) transparent;
+      &::before {
+        border-color: transparent transparent #3e3e3e transparent;
+      }
+    }
+    .popover-body {
+      background: #3e3e3e;
+      color: white;
+
+      .menu-items {
+        .btn {
+          display: block;
+          width: 100%;
+          margin-left: 0 !important;
+          margin-bottom: 0.5rem !important;
+          &:last-child {
+            margin: 0 !important;
+          }
+        }
+      }
+    }
+  }
+
   .chat-container {
-    min-height: 450px;
-    max-height: 550px;
     background: darken(grey, 35%);
     padding: 0 2rem;
 
@@ -80,16 +117,29 @@
       }
     }
 
-    // Blue button
     .btn-blue {
-      background: transparentize($color: #33b5e5, $amount: 0.5) !important;
-      border: 2px #33b5e5 solid;
-      border-radius: 0.5rem;
       margin-right: 0;
-      padding: 0.5rem 2rem;
-      &:hover {
-        background: transparentize($color: #33b5e5, $amount: 0.4) !important;
-      }
+    }
+  }
+  // Blue button
+  .btn-blue {
+    background: transparentize($color: #33b5e5, $amount: 0.5) !important;
+    border: 2px #33b5e5 solid;
+    border-radius: 0.5rem;
+    padding: 0.5rem 2rem;
+    &:hover {
+      background: transparentize($color: #33b5e5, $amount: 0.4) !important;
+    }
+  }
+  // Danger button
+  .btn-danger {
+    background: transparentize($color: #ff3547, $amount: 0.5) !important;
+    border: 2px #ff3547 solid;
+    border-radius: 0.5rem;
+    margin-right: 0;
+    padding: 0.5rem 2rem;
+    &:hover {
+      background: transparentize($color: #ff3547, $amount: 0.4) !important;
     }
   }
 }
