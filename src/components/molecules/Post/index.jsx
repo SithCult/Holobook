@@ -8,6 +8,8 @@ import React from "react";
 import TimeAgo from "javascript-time-ago";
 // Load locale-specific relative date/time formatting rules.
 import en from "javascript-time-ago/locale/en";
+// Link preview
+import { ReactTinyLink } from "react-tiny-link";
 
 //> Components
 import ReceivedUser from "../ReceivedUser";
@@ -100,9 +102,72 @@ class Post extends React.Component {
     return timeAgo.format(timestamp);
   };
 
+  processMsg = (msg) => {
+    let replacedText, replacePattern1, replacePattern2, replacePattern3;
+    const inputText = msg.escape();
+
+    //URLs starting with http://, https://, or ftp://
+    // eslint-disable-next-line no-useless-escape
+    replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    replacedText = inputText.replace(
+      replacePattern1,
+      '<a href="$1" target="_blank">$1</a>'
+    );
+
+    //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
+    // eslint-disable-next-line no-useless-escape
+    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+    replacedText = replacedText.replace(
+      replacePattern2,
+      '$1<a href="http://$2" target="_blank">$2</a>'
+    );
+
+    //Change email addresses to mailto:: links.
+    // eslint-disable-next-line no-useless-escape
+    replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+    replacedText = replacedText.replace(
+      replacePattern3,
+      '<a href="mailto:$1">$1</a>'
+    );
+
+    return replacedText;
+  };
+
+  checkForLink = (msg) => {
+    // eslint-disable-next-line no-useless-escape
+    const replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    // eslint-disable-next-line no-useless-escape
+    const replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+
+    let match;
+
+    match = msg.match(replacePattern1);
+
+    // Check if first pattern matched, if not try second pattern
+    if (!match) {
+      match = msg.match(replacePattern2);
+    }
+
+    // Check if match exists (if url is in post)
+    if (match) {
+      let url = match[0].trim();
+
+      if (!/^https?:\/\//i.test(url)) {
+        url = "http://" + url;
+      }
+
+      return url;
+    } else {
+      return null;
+    }
+  };
+
   render() {
     const { auth, post, key } = this.props;
     const { receivedUser, comments } = this.state;
+
+    // Get link if there is any
+    const url = this.checkForLink(post.data.content);
 
     return (
       <MDBCard
@@ -209,7 +274,7 @@ class Post extends React.Component {
           <div className="p-3">
             <p
               dangerouslySetInnerHTML={{
-                __html: post.data.content.escape(),
+                __html: this.processMsg(post.data.content),
               }}
               className={
                 post.data.basic && this.state.basic !== post.id
@@ -235,6 +300,16 @@ class Post extends React.Component {
                   </small>
                 )}
               </div>
+            )}
+            {url && !this.state?.hideUrlPreview && (
+              <ReactTinyLink
+                cardSize="small"
+                showGraphic={true}
+                maxLine={2}
+                minLine={1}
+                url={url}
+                onError={() => this.setState({ hideUrlPreview: true })}
+              />
             )}
             {post.data.youtubeId && (
               <div className="embed-responsive embed-responsive-16by9 mt-3">
