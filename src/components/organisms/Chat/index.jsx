@@ -161,8 +161,6 @@ class Chat extends React.Component {
   createMessage = () => {
     const newMsg = { chid: this.props.chatDetails.id, msg: this.state.message };
 
-    this.props.chatUsers && console.log(this.props.chatUsers);
-
     // Check if message is empty
     if (newMsg.msg?.trim()) {
       this.props.writeMessage(newMsg);

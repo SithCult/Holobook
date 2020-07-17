@@ -138,7 +138,6 @@ export const createChat = (name, users) => {
         return isDupe;
       });
 
-    console.log(existingChat);
     if (!existingChat) {
       // Add new chat to collection.
       return firestore
@@ -153,7 +152,6 @@ export const createChat = (name, users) => {
           return { status: true, chid: response.id };
         });
     } else {
-      console.log("hello");
       return { status: false, chid: existingChat };
     }
   };
