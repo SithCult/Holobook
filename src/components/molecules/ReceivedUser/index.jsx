@@ -41,7 +41,7 @@ class ReceivedUser extends React.Component {
         process.env.REACT_APP_ACTION_CHAT_BINDER +
         this.props.receivedUser.sith_name,
       [this.props.auth.uid, this.props.receivedUser.uid]
-    );
+    ).chid;
 
     this.props.history.push({
       pathname: "/chat",

@@ -2,6 +2,7 @@
 const initState = {
   chats: null,
   chatMessages: null,
+  chatUsers: null,
 };
 
 const chatReducer = (state = initState, action) => {
@@ -21,6 +22,14 @@ const chatReducer = (state = initState, action) => {
         chatMessages: {
           ...state.chatMessages,
           [action.chid]: action.chatMessages,
+        },
+      };
+    case "GETCHATUSERS_SUCCESS":
+      return {
+        ...state,
+        chatUsers: {
+          ...state.chatUsers,
+          [action.chid]: action.chatUsers,
         },
       };
     case "WRITEMESSAGES_SUCCESS":

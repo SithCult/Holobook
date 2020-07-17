@@ -23,7 +23,9 @@ import {
   joinChat,
   getChats,
   getMessages,
+  getChatUsers,
   stopGettingMessages,
+  stopGettingChatUsers,
 } from "../../../store/actions/chatActions";
 
 //> MDB
@@ -82,6 +84,7 @@ class ChatPage extends React.Component {
       // eslint-disable-next-line array-callback-return
       nextProps.chats.map((c) => {
         this.props.getMessages(c.id);
+        this.props.getChatUsers(c.id);
       });
     }
 
@@ -96,7 +99,8 @@ class ChatPage extends React.Component {
     // eslint-disable-next-line array-callback-return
     this.props.chats &&
       this.props.chats.forEach((c) => {
-        stopGettingMessages(c.id);
+        this.props.stopGettingMessages(c.id);
+        this.props.stopGettingChatUsers(c.id);
       });
   }
 
@@ -330,7 +334,9 @@ class ChatPage extends React.Component {
     if (name && users.length > 1) {
       // Check if the group name has more than 2 characters
       if (name.length > 2) {
-        if (await this.props.createChat(name, users)) {
+        const result = await this.props.createChat(name, users);
+
+        if (result.status) {
           this.setState(
             {
               newChatCreateError: undefined,
@@ -588,6 +594,11 @@ class ChatPage extends React.Component {
                     chatMessages={
                       this.props.chatMessages[this.state.selectedChat.id]
                     }
+                    chatUsers={
+                      this.props.chatUsers
+                        ? this.props.chatUsers[this.state.selectedChat.id]
+                        : null
+                    }
                     allUsers={this.state.users ? this.state.users : null}
                     currentUser={auth.uid}
                     hasJoined={
@@ -799,6 +810,7 @@ const mapStateToProps = (state) => {
     profile: state.firebase.profile,
     chats: state.chat.chats,
     chatMessages: state.chat.chatMessages,
+    chatUsers: state.chat.chatUsers,
   };
 };
 
@@ -807,7 +819,9 @@ const mapDispatchToProps = (dispatch) => {
     getChats: (uid) => dispatch(getChats(uid)),
     createChat: (name, users) => dispatch(createChat(name, users)),
     getMessages: (chid) => dispatch(getMessages(chid)),
+    getChatUsers: (chid) => dispatch(getChatUsers(chid)),
     stopGettingMessages: (chid) => dispatch(stopGettingMessages(chid)),
+    stopGettingChatUsers: (chid) => dispatch(stopGettingChatUsers(chid)),
     joinChat: (uid, chid, curUsers) => dispatch(joinChat(uid, chid, curUsers)),
     getAllUsers: () => dispatch(getAllUsers()),
   };

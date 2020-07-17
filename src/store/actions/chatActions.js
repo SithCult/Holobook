@@ -2,6 +2,7 @@
 export const joinChat = (users, chid, curUsers) => {
   return async (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
+    const firebase = getFirebase();
     let usersToAdd = [];
 
     // Get chat from collection
@@ -25,6 +26,10 @@ export const joinChat = (users, chid, curUsers) => {
       .doc(chid)
       .set({ users: [...curUsers, ...usersToAdd] }, { merge: true })
       .then(() => {
+        const chatUserRef = firebase.database().ref("/chatusers/" + chid);
+
+        chatUserRef.set({ users: [...curUsers, ...usersToAdd] });
+
         return true;
       })
       .catch(() => {
@@ -36,6 +41,13 @@ export const joinChat = (users, chid, curUsers) => {
 export const leaveChat = (uid, chatDetails) => {
   return async (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
+    const firebase = getFirebase();
+
+    const messageRef = firebase
+      .database()
+      .ref("/chats/" + chatDetails.id + "/");
+    const chatRef = firebase.database().ref("/chats/" + chatDetails.id);
+    const chatUserRef = firebase.database().ref("/chatusers/" + chatDetails.id);
 
     // Get chat from collection
     const currentData = await firestore
@@ -49,19 +61,41 @@ export const leaveChat = (uid, chatDetails) => {
     let newUsers = currentData.data.users.filter((u) => u !== uid);
 
     if (newUsers.length === 0) {
-      return firestore
-        .collection("chats")
-        .doc(chatDetails.id)
-        .delete()
-        .then(() => {
-          return true;
-        });
+      return messageRef.once("value", (snapshot) => {
+        let chatMessages = [];
+
+        // If messages exist, push them into the array
+        if (!snapshot.empty) {
+          snapshot.forEach((m) => {
+            chatMessages = [...chatMessages, { data: m.val(), mid: m.key }];
+          });
+        }
+
+        if (chatMessages) {
+          chatUserRef.remove();
+          chatRef.remove();
+        }
+
+        return firestore
+          .collection("chats")
+          .doc(chatDetails.id)
+          .set({ chatMessages, users: [] }, { merge: true })
+          .then(() => {
+            return true;
+          });
+      });
     } else {
       return firestore
         .collection("chats")
         .doc(chatDetails.id)
         .set({ users: newUsers }, { merge: true })
         .then(() => {
+          const chatUserRef = firebase
+            .database()
+            .ref("/chatusers/" + chatDetails.id);
+
+          chatUserRef.set({ users: newUsers });
+
           return true;
         })
         .catch(() => {
@@ -75,6 +109,7 @@ export const leaveChat = (uid, chatDetails) => {
 export const createChat = (name, users) => {
   return async (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
+    const firebase = getFirebase();
 
     const existingChat = await firestore
       .collection("chats")
@@ -103,16 +138,23 @@ export const createChat = (name, users) => {
         return isDupe;
       });
 
+    console.log(existingChat);
     if (!existingChat) {
       // Add new chat to collection.
       return firestore
         .collection("chats")
         .add({ name: name, users: users, createTimestamp: Date.now() })
         .then((response) => {
-          return response.id;
+          const chatUserRef = firebase
+            .database()
+            .ref("/chatusers/" + response.id);
+
+          chatUserRef.set({ users: users });
+          return { status: true, chid: response.id };
         });
     } else {
-      return existingChat;
+      console.log("hello");
+      return { status: false, chid: existingChat };
     }
   };
 };
@@ -295,6 +337,34 @@ export const readMessage = (uid, chid, mid, read) => {
         .update({ read: readWithUser })
         .then(() => dispatch({ type: "USERREAD_SUCCESS" }));
     }
+  };
+};
+
+export const getChatUsers = (chid) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const chatUserRef = firebase.database().ref("/chatusers/" + chid + "/");
+
+    // Create reference
+    chatUserRef.on("value", (snapshot) => {
+      if (!snapshot.empty && snapshot.val() !== null) {
+        dispatch({
+          type: "GETCHATUSERS_SUCCESS",
+          chatUsers: snapshot.val().users,
+          chid,
+        });
+      }
+    });
+  };
+};
+
+export const stopGettingChatUsers = (chid) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const chatUserRef = firebase.database().ref("/chatusers/" + chid + "/");
+
+    // Destroy reference
+    chatUserRef.off("value");
   };
 };
 
