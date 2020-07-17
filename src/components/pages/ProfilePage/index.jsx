@@ -755,7 +755,7 @@ class ProfilePage extends React.Component {
                     YouTube
                   </MDBBtn>
                   <MDBDropdown className="d-inline">
-                    <MDBDropdownToggle caret color="elegant" rounded>
+                    <MDBDropdownToggle caret color="elegant" className="btn-feeling">
                       <MDBIcon
                         far={
                           this.state.post_feeling.name.toLowerCase() ===
