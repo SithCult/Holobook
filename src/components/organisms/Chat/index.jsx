@@ -166,7 +166,9 @@ class Chat extends React.Component {
       this.props.writeMessage(newMsg);
       this.props.createNotification(
         newMsg,
-        this.props.chatDetails.users,
+        this.props.chatUsers
+          ? this.props.chatUsers
+          : this.props.chatDetails.users,
         this.props.chatDetails.name
       );
       this.setState({ message: "" }, () => this.inputRef.current.focus());

@@ -36,7 +36,7 @@ import "./receiveduser.scss";
 //#region > Components
 class ReceivedUser extends React.Component {
   startChat = async () => {
-    const chatID = await this.props.createChat(
+    const result = await this.props.createChat(
       this.props.profile.sith_name +
         process.env.REACT_APP_ACTION_CHAT_BINDER +
         this.props.receivedUser.sith_name,
@@ -46,7 +46,7 @@ class ReceivedUser extends React.Component {
     this.props.history.push({
       pathname: "/chat",
       chatProps: {
-        chid: chatID,
+        chid: result.chid,
       },
     });
   };

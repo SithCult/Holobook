@@ -164,11 +164,11 @@ body {
 // Custom scrollbar
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: lighten(#555, 25%);
+  background-color: lighten(#555, 30%);
 }
 ::-webkit-scrollbar {
   width: 12px;
-  background-color: lighten(#555, 25%);
+  background-color: lighten(#555, 30%);
 }
 ::-webkit-scrollbar-thumb {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
