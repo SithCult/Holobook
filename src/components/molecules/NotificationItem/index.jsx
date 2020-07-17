@@ -43,8 +43,6 @@ class NotificationItem extends React.Component {
   render() {
     const { details } = this.props;
 
-    console.log(details);
-
     return (
       <div
         onClick={() => {

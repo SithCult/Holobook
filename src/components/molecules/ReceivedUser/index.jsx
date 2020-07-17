@@ -43,8 +43,6 @@ class ReceivedUser extends React.Component {
       [this.props.auth.uid, this.props.receivedUser.uid]
     );
 
-    console.log(result);
-
     this.props.history.push({
       pathname: "/chat",
       chatProps: {

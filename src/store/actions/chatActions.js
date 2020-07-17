@@ -3,6 +3,7 @@ export const joinChat = (users, chid, curUsers) => {
   return async (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
     const firebase = getFirebase();
+
     let usersToAdd = [];
 
     // Get chat from collection
@@ -149,6 +150,7 @@ export const createChat = (name, users) => {
             .ref("/chatusers/" + response.id);
 
           chatUserRef.set({ users: users });
+
           return { status: true, chid: response.id };
         });
     } else {
