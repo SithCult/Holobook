@@ -383,8 +383,8 @@ class CountryPage extends React.Component {
           />
         </Helmet>
         <MDBRow>
-          <MDBCol md="4">
-            <MDBCard className="text-center">
+          <MDBCol lg="4">
+            <MDBCard className="text-center h-100-card">
               <MDBCardBody>
                 {country_code && (
                   <div className="text-center flag mb-3">
@@ -495,8 +495,8 @@ class CountryPage extends React.Component {
               </MDBCardBody>
             </MDBCard>
           </MDBCol>
-          <MDBCol md="8">
-            <MDBCard>
+          <MDBCol lg="8">
+            <MDBCard className="h-100-card no-scroll">
               <MDBCardBody>
                 {profile && country_code && profile.isLoaded ? (
                   <>
