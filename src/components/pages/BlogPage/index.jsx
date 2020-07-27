@@ -31,6 +31,7 @@ import {
   MDBDropdownToggle,
   MDBDropdownMenu,
   MDBDropdownItem,
+  MDBSpinner,
 } from "mdbreact";
 
 //> Additional Components
@@ -62,7 +63,7 @@ class BlogPage extends React.Component {
   };
 
   render() {
-    const { profile } = this.props;
+    const { auth, profile } = this.props;
 
     return (
       <>
@@ -73,61 +74,91 @@ class BlogPage extends React.Component {
         </Helmet>
         <MDBContainer className="white-text" id="blogs">
           <MDBRow>
-            <MDBCol md="10">
-              <BlogEditor />
+            <MDBCol md="9">
+              <div className="text-center">
+                <h2 className="mb-1 font-weight-bold">SithCult Holonet</h2>
+                <p className="lead">News from all over the empire.</p>
+              </div>
               <BlogList />
             </MDBCol>
-            <MDBCol md="2">
-              <MDBCard className="award text-center">
-                <MDBCardBody>
-                  <p className="lead mb-1">Get rewards</p>
-                  <p className="small text-muted mb-1">
-                    Contribute to SithCult and achieve greatness.
-                  </p>
-                  <Link to="/contribute">
-                    <MDBBtn color="blue" size="md">
-                      <MDBIcon icon="hand-holding-usd" className="mr-2" />
-                      Contribute to SithCult
-                    </MDBBtn>
-                  </Link>
-                </MDBCardBody>
-              </MDBCard>
-              <MDBCard className="text-center mt-3">
-                <MDBCardBody>
-                  <p className="lead mb-1">Your district</p>
-                  <p className="small text-muted mb-1">
-                    Get details about SithCult in your country.
-                  </p>
-                  {profile.isLoaded ? (
-                    <Link
-                      to={
-                        "/c/" + profile.address?.country?.toLowerCase().trim()
-                      }
-                    >
-                      <MDBBtn color="red" size="md">
-                        <MDBIcon far icon="flag" className="mr-2" />
-                        {profile.isLoaded ? (
-                          <>{this.getCountry(profile.address)}</>
-                        ) : (
-                          <>
-                            <span>Loading</span>
-                          </>
-                        )}
-                      </MDBBtn>
-                    </Link>
+            <MDBCol md="3" className="blog-side">
+              {!profile.isLoaded ? (
+                <div className="text-center">
+                  <MDBSpinner />
+                </div>
+              ) : (
+                <>
+                  {!auth.uid ? (
+                    <MDBCard className="award text-center">
+                      <MDBCardBody>
+                        <p className="lead mb-1">Sign up for Holobook</p>
+                        <p className="small text-muted mb-2">
+                          Holobook is the biggest and most active Sith social
+                          network.
+                        </p>
+                        <Link to="/">
+                          <MDBBtn color="blue" size="md">
+                            <MDBIcon icon="angle-up" className="mr-2" />
+                            Sign Up
+                          </MDBBtn>
+                        </Link>
+                      </MDBCardBody>
+                    </MDBCard>
                   ) : (
-                    <MDBBtn color="red" size="md" disabled={true}>
-                      <MDBIcon far icon="flag" className="mr-2" />
-                      <span>Loading</span>
-                    </MDBBtn>
+                    <>
+                      <MDBCard className="award text-center">
+                        <MDBCardBody>
+                          <p className="lead mb-1">Get rewards</p>
+                          <p className="small text-muted mb-1">
+                            Contribute to SithCult and achieve greatness.
+                          </p>
+                          <Link to="/contribute">
+                            <MDBBtn color="blue" size="md">
+                              <MDBIcon
+                                icon="hand-holding-usd"
+                                className="mr-2"
+                              />
+                              Contribute to SithCult
+                            </MDBBtn>
+                          </Link>
+                        </MDBCardBody>
+                      </MDBCard>
+                      <MDBCard className="text-center mt-3">
+                        <MDBCardBody>
+                          <p className="lead mb-1">Your district</p>
+                          <p className="small text-muted mb-1">
+                            Get details about SithCult in your country.
+                          </p>
+                          {profile.isLoaded ? (
+                            <Link
+                              to={
+                                "/c/" +
+                                profile.address?.country?.toLowerCase().trim()
+                              }
+                            >
+                              <MDBBtn color="red" size="md">
+                                <MDBIcon far icon="flag" className="mr-2" />
+                                {profile.isLoaded ? (
+                                  <>{this.getCountry(profile.address)}</>
+                                ) : (
+                                  <>
+                                    <span>Loading</span>
+                                  </>
+                                )}
+                              </MDBBtn>
+                            </Link>
+                          ) : (
+                            <MDBBtn color="red" size="md" disabled={true}>
+                              <MDBIcon far icon="flag" className="mr-2" />
+                              <span>Loading</span>
+                            </MDBBtn>
+                          )}
+                        </MDBCardBody>
+                      </MDBCard>
+                    </>
                   )}
-                </MDBCardBody>
-              </MDBCard>
-              <MDBCard className="mt-3">
-                <MDBCardBody>
-                  <OnlineUsers />
-                </MDBCardBody>
-              </MDBCard>
+                </>
+              )}
             </MDBCol>
           </MDBRow>
         </MDBContainer>
