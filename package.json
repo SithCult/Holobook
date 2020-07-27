@@ -28,6 +28,7 @@
     "react-redux": "^7.1.1",
     "react-redux-firebase": "^2.4.1",
     "react-router-dom": "^5.0.1",
+    "react-rte": "^0.16.1",
     "react-select-country-list": "^2.0.1",
     "react-tiny-link": "^3.5.0",
     "redux": "^4.0.4",
