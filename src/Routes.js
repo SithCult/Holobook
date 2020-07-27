@@ -19,6 +19,8 @@ import {
   DonatePage,
   CountryPage,
   ChatPage,
+  BlogPage,
+  BlogViewPage,
 } from "./components/pages";
 
 class Routes extends React.Component {
@@ -32,6 +34,8 @@ class Routes extends React.Component {
         <Route exact path="/basic" component={ImperialBasicTraining} />
         <Route exact path="/chat" component={ChatPage} />
         <Route exact path="/c/:country" component={CountryPage} />
+        <Route exact path="/holonet" component={BlogPage} />
+        <Route exact path="/holonet/:post" component={BlogViewPage} />
         <Route
           exact
           path="/about"
