@@ -10,6 +10,7 @@ import Post from "./Post";
 import OnlineUsers from "./OnlineUsers";
 import MessageItem from "./MessageItem";
 import NotificationItem from "./NotificationItem";
+import BlogEditor from "./BlogEditor";
 //#endregion
 
 //#region > Exports
@@ -23,6 +24,7 @@ export {
   OnlineUsers,
   MessageItem,
   NotificationItem,
+  BlogEditor,
 };
 //#endregion
 

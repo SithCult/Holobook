@@ -8,6 +8,8 @@ import MessagePage from "./MessagePage";
 import DonatePage from "./DonatePage";
 import CountryPage from "./CountryPage";
 import ChatPage from "./ChatPage";
+import BlogPage from "./BlogPage";
+import BlogViewPage from "./BlogViewPage";
 
 export {
   HomePage,
@@ -18,6 +20,8 @@ export {
   DonatePage,
   CountryPage,
   ChatPage,
+  BlogPage,
+  BlogViewPage,
 };
 
 /**
