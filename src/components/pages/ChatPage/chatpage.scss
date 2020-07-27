@@ -23,6 +23,17 @@
     }
   }
 
+  @media (max-width: 868px) {
+    .row {
+      height: auto;
+      .chat-container,
+      .chat-list {
+        overflow-y: scroll;
+        max-height: 500px;
+      }
+    }
+  }
+
   .btn {
     border-radius: 0.5rem;
     text-transform: initial;
