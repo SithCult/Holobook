@@ -1,0 +1,60 @@
+.blog-item {
+  background: darken(#2e2e2e, 2%);
+  border: 2px darken(#2e2e2e, 10%) solid;
+  border-radius: 0.4rem;
+  margin-bottom: 1rem;
+
+  // Animation on value change
+  transition: all 0.3s ease;
+
+  // Make images align on the left
+  display: flex;
+
+  // Counteract the <Link> affects
+  color: white;
+
+  .blog-img-container {
+    width: 200px;
+    height: auto;
+    margin-right: 1rem;
+
+    // Fix hover image transform overflow
+    overflow: hidden;
+
+    .blog-img {
+      // Animation on value change
+      transition: all 0.5s ease;
+
+      // Background
+      background-size: cover;
+      background-position: center;
+
+      // Fit to the parent div
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .blog-item-body {
+    // Create uniform padding
+    padding: 1rem;
+
+    // Remove any margin of <p> tags
+    p {
+      margin: 0;
+    }
+  }
+
+  // Hover effect
+  &:hover {
+    background: darken(#2e2e2e, 4%);
+    .blog-img {
+      transform: scale(1.05);
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
+ */

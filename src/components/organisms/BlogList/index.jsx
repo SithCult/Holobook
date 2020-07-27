@@ -5,6 +5,10 @@ import React from "react";
 // Router
 import { withRouter, Link } from "react-router-dom";
 
+//> Additional
+// Date/Time formatting
+import moment from "moment";
+
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -34,12 +38,15 @@ import {
 import { removePost } from "../../../store/actions/postActions";
 // Connect
 import { connect } from "react-redux";
+
+//> CSS
+import "./bloglist.scss";
 //#endregion
 
 //#region > Data
 const blogPosts = [
   {
-    title: "Hello there",
+    title: "Anima being studied in Austrian lab",
     tags: [],
     author: { name: "Alcolyte Theralun", uid: "deLaXAnEWpa6rFST1wps7acQSz32" },
     timestamp: 1594097874599,
@@ -48,7 +55,7 @@ const blogPosts = [
       "Lorem Ipsum better hope that there are no 'tapes' of our conversations before he starts leaking to the press! Trump Ipsum is calling for a total and complete shutdown of Muslim text entering your website. I will write some great placeholder text – and nobody writes better placeholder text than me, believe me – and I’ll write it very inexpensively. I will write some great, great text on your website’s Southern border, and I will make Google pay for that text. Mark my words.",
   },
   {
-    title: "Hello there2",
+    title: "How to defeat the ideas of the Jedi on a day to day basis",
     author: { name: "Alcolyte Theralun", uid: "deLaXAnEWpa6rFST1wps7acQSz32" },
     timestamp: 1594197875599,
     lead:
@@ -72,18 +79,6 @@ class BlogList extends React.Component {
     return string.trim().toLowerCase().replace(new RegExp(" ", "g"), "-");
   };
 
-  formatDate(date) {
-    var d = new Date(date),
-      month = "" + (d.getMonth() + 1),
-      day = "" + d.getDate(),
-      year = d.getFullYear();
-
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-
-    return [year, month, day].join("-");
-  }
-
   shortenString = (string, length) => {
     if (string.split(" ").length > length) {
       return string.split(" ").splice(0, length).join(" ") + "...";
@@ -98,53 +93,41 @@ class BlogList extends React.Component {
     if (blogPosts && auth) {
       let result = blogPosts.map((post, i) => {
         return (
-          <MDBRow key={i}>
-            <MDBCol lg="5">
-              <MDBView className="rounded z-depth-2 mb-lg-0 mb-4" hover waves>
-                <img className="img-fluid" src={post.titleImage} alt="" />
-                <a href="#!">
-                  <MDBMask overlay="white-slight" />
-                </a>
-              </MDBView>
-            </MDBCol>
-            <MDBCol lg="7">
-              {post.tags &&
-                post.tags.map((tag, t) => (
-                  <a href="#!" key={t} className={tag.color}>
-                    <h6 className="font-weight-bold mb-3">
+          <Link
+            to={
+              "/holonet/" +
+              moment(post.timestamp).format("YYYY-MM-DD") +
+              "-" +
+              this.unifyString(post.title)
+            }
+          >
+            <div key={i} className="blog-item">
+              <div className="blog-img-container">
+                <div
+                  className="blog-img d-inline-block"
+                  style={{ backgroundImage: `url("${post.titleImage}")` }}
+                ></div>
+              </div>
+
+              <div className="d-inline-block blog-item-body">
+                {post.tags &&
+                  post.tags.map((tag, t) => (
+                    <p className="font-weight-bold mb-1">
                       <MDBIcon icon={tag.icon} className="pr-2" />
                       {tag.name}
-                    </h6>
-                  </a>
-                ))}
-              <h3 className="font-weight-bold mb-3 p-0">
-                <strong>{post.title}</strong>
-              </h3>
-              <p>{this.shortenString(post.lead, 24)}</p>
-              <p>
-                by
-                <a href="#!">
-                  <strong> {post.author.name}</strong>
-                </a>
-                , {this.formatDate(post.timestamp)}
-              </p>
-              <MDBBtn
-                color="amber"
-                size="md"
-                className="waves-light "
-                onClick={() =>
-                  this.props.history.push(
-                    "/holonet/" +
-                      this.formatDate(post.timestamp) +
-                      "-" +
-                      this.unifyString(post.title)
-                  )
-                }
-              >
-                Read more
-              </MDBBtn>
-            </MDBCol>
-          </MDBRow>
+                    </p>
+                  ))}
+                <p className="h4-responsive font-weight-bold">
+                  <strong>{post.title}</strong>
+                </p>
+                <p className="mb-1">{this.shortenString(post.lead, 24)}</p>
+                <p className="text-muted small">
+                  by <strong className="text-white">{post.author.name}</strong>,{" "}
+                  {moment(post.timestamp).format("DD.MM.YYYY")}
+                </p>
+              </div>
+            </div>
+          </Link>
         );
       });
 
