@@ -10,6 +10,7 @@ import CountryPage from "./CountryPage";
 import ChatPage from "./ChatPage";
 import BlogPage from "./BlogPage";
 import BlogViewPage from "./BlogViewPage";
+import BlogCreatePage from "./BlogCreatePage";
 
 export {
   HomePage,
@@ -22,6 +23,7 @@ export {
   ChatPage,
   BlogPage,
   BlogViewPage,
+  BlogCreatePage,
 };
 
 /**

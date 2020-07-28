@@ -21,6 +21,7 @@ import {
   ChatPage,
   BlogPage,
   BlogViewPage,
+  BlogCreatePage,
 } from "./components/pages";
 
 class Routes extends React.Component {
@@ -35,6 +36,7 @@ class Routes extends React.Component {
         <Route exact path="/chat" component={ChatPage} />
         <Route exact path="/c/:country" component={CountryPage} />
         <Route exact path="/holonet" component={BlogPage} />
+        <Route exact path="/holonet/add" component={BlogCreatePage} />
         <Route exact path="/holonet/:post" component={BlogViewPage} />
         <Route
           exact
