@@ -36,16 +36,9 @@ import { getUser, getUserByName } from "../../../store/actions/userActions";
 import { connect } from "react-redux";
 
 // Additional Libraries
-// RTE text editor
-import RichTextEditor from "react-rte";
-
-//> Images
-import defaultUserIMG from "../../../assets/images/default.gif";
-import goldUserIMG from "../../../assets/images/gold.gif";
-import lightUserIMG from "../../../assets/images/light.gif";
-import bronzeUserIMG from "../../../assets/images/bronze.gif";
-import darkUserIMG from "../../../assets/images/dark.gif";
-import loadingUserIMG from "../../../assets/images/loading.gif";
+import { EditorState, convertToRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
 
 //> SCSS
 import "./blogeditor.scss";
@@ -53,26 +46,37 @@ import "./blogeditor.scss";
 
 //#region > Components
 class BlogEditor extends React.Component {
-  static propTypes = {
-    onChange: PropTypes.func,
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      editorState: EditorState.createEmpty(),
+    };
+  }
+
+  onEditorStateChange = (editorState) => {
+    this.setState({ editorState });
   };
 
-  state = {
-    value: RichTextEditor.createEmptyValue(),
-  };
-
-  onChange = (value) => {
-    this.setState({ value });
-    if (this.props.onChange) {
-      // Send the changes up to the parent component as an HTML string.
-      // This is here to demonstrate using `.toString()` but in a real app it
-      // would be better to avoid generating a string on each change.
-      this.props.onChange(value.toString("html"));
-    }
-  };
+  getHtml = (editorState) =>
+    draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
   render() {
-    return <RichTextEditor value={this.state.value} onChange={this.onChange} />;
+    const { editorState } = this.state;
+
+    console.log(editorState);
+
+    return (
+      <div>
+        <Editor
+          editorState={editorState}
+          wrapperClassName="rich-editor demo-wrapper"
+          editorClassName="demo-editor"
+          onEditorStateChange={this.onEditorStateChange}
+        />
+        <div className="text-white">{this.getHtml(editorState)}</div>
+      </div>
+    );
   }
 }
 //#endregion
