@@ -12,6 +12,7 @@ const blogPostReducer = (state = initState, action) => {
 
       return {
         ...state,
+        created: action.newPost,
         blogPostError: null,
       };
     case "BLOGPOSTCREATION_ERROR":

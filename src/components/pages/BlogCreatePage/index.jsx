@@ -50,6 +50,8 @@ import "./blogcreatepage.scss";
 class BlogCreatePage extends React.Component {
   state = {};
 
+  createBlog() {}
+
   render() {
     const { auth, profile } = this.props;
 
@@ -70,20 +72,6 @@ class BlogCreatePage extends React.Component {
         <MDBContainer className="py-5 mt-5" id="createblog">
           <MDBRow className="flex-center">
             <MDBCol md="6">
-              <h3 className="text-white">Create new article</h3>
-              <input
-                type="text"
-                placeholder="Headline"
-                value={this.state.headline}
-                onChange={(e) => this.setState({ headline: e.target.value })}
-                className="form-control mb-2"
-              />
-              <textarea
-                placeholder="Short description"
-                value={this.state.description}
-                onChange={(e) => this.setState({ description: e.target.value })}
-                className="form-control mb-4"
-              />
               <BlogEditor />
             </MDBCol>
           </MDBRow>

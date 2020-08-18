@@ -15,21 +15,11 @@ import en from "javascript-time-ago/locale/en";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import { MDBBtn, MDBInput, MDBIcon, MDBProgress } from "mdbreact";
+import { MDBBtn, MDBInput, MDBIcon, MDBProgress, MDBSpinner } from "mdbreact";
 
 //> Redux Firebase
-// Actions for comments
-import {
-  removeComment,
-  editComment,
-} from "../../../store/actions/commentActions";
-// Like actions
-import {
-  removeLike,
-  createLike,
-  hasLiked,
-  getLikeAmount,
-} from "../../../store/actions/likeActions";
+// Blog Post Actions
+import { createBlogPost } from "../../../store/actions/blogActions";
 // Getting user information
 import { getUser, getUserByName } from "../../../store/actions/userActions";
 // Connect
@@ -51,32 +41,96 @@ class BlogEditor extends React.Component {
 
     this.state = {
       editorState: EditorState.createEmpty(),
+      tags: "",
+      description: "",
+      headline: "",
     };
   }
 
   onEditorStateChange = (editorState) => {
-    this.setState({ editorState });
+    this.setState({ editorState, content: this.getHtml(editorState) });
   };
 
   getHtml = (editorState) =>
     draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
+  createPost = () => {
+    if (this.state.content && this.state.headline && this.state.description) {
+      this.props.createBlogPost({
+        content: this.state.content,
+        title: this.state.headline,
+        lead: this.state.description,
+        tags: this.state.tags ? this.state.tags.split(" ") : [],
+        author: {
+          uid: this.props.auth.uid,
+          name: this.props.profile.title + " " + this.props.profile.sith_name,
+        },
+        timestamp: Date.now(),
+      });
+    }
+  };
+
   render() {
     const { editorState } = this.state;
 
-    console.log(editorState);
+    if (this.props.created) {
+      return (
+        <div className="text-white">
+          <h3>Thank you for submitting your blog post</h3>
+          <h4>
+            It will be published once it has been approved by a moderator!
+          </h4>
+          <MDBBtn
+            color="amber"
+            onClick={() => this.props.history.push("/holonet")}
+          >
+            Back
+          </MDBBtn>
+        </div>
+      );
+    }
 
-    return (
-      <div>
-        <Editor
-          editorState={editorState}
-          wrapperClassName="rich-editor demo-wrapper"
-          editorClassName="demo-editor"
-          onEditorStateChange={this.onEditorStateChange}
-        />
-        <div className="text-white">{this.getHtml(editorState)}</div>
-      </div>
-    );
+    if (this.props.profile.isLoaded && !this.props.profile.isEmpty)
+      return (
+        <div>
+          <h3 className="text-white">Create new article</h3>
+          <input
+            type="text"
+            placeholder="Headline"
+            value={this.state.headline}
+            onChange={(e) => this.setState({ headline: e.target.value })}
+            className="form-control mb-2"
+          />
+          <textarea
+            placeholder="Short description"
+            value={this.state.description}
+            onChange={(e) => this.setState({ description: e.target.value })}
+            className="form-control mb-2"
+          />
+          <input
+            type="text"
+            placeholder="Tags (seperated by space)"
+            value={this.state.tags}
+            onChange={(e) => this.setState({ tags: e.target.value })}
+            className="form-control mb-4"
+          />
+          <Editor
+            editorState={editorState}
+            wrapperClassName="rich-editor demo-wrapper"
+            editorClassName="demo-editor"
+            onEditorStateChange={this.onEditorStateChange}
+          />
+          <MDBBtn color="amber" onClick={this.createPost}>
+            Create Post
+          </MDBBtn>
+        </div>
+      );
+    else
+      return (
+        <div className="text-center">
+          <MDBSpinner />
+        </div>
+      );
   }
 }
 //#endregion
@@ -86,11 +140,12 @@ const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     profile: state.firebase.profile,
+    created: state.blog.created,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return { createBlogPost: (post) => dispatch(createBlogPost(post)) };
 };
 //#endregion
 

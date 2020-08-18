@@ -4,7 +4,7 @@ export const createBlogPost = (newPost) => {
     const firestore = getFirestore();
     const firebase = getFirebase();
 
-    console.log(firebase.auth().currentUser);
+    console.log(newPost);
 
     // Create post
     firestore
@@ -86,28 +86,50 @@ export const loadBlogPosts = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
-    let posts = firestore.collection("blogPosts").where("approved", "==", true);
-
     if (amount < 0) {
       amount = 0;
     }
-    posts
-      .orderBy("timestamp", "desc")
-      .limit(amount)
-      .get()
-      .then((querySnapshot) => {
-        let results = [];
 
-        querySnapshot.forEach(function (doc) {
-          let data = doc.data();
+    if (amount) {
+      firestore
+        .collection("blogPosts")
+        .where("approved", "==", true)
+        .orderBy("timestamp", "desc")
+        .limit(amount)
+        .get()
+        .then((querySnapshot) => {
+          let results = [];
 
-          results.push({ id: doc.id, data });
+          querySnapshot.forEach(function (doc) {
+            let data = doc.data();
+
+            results.push({ id: doc.id, data });
+          });
+          dispatch({ type: "LOADBLOGPOSTS_SUCCESS", results });
+        })
+        .catch((err) => {
+          dispatch({ type: "LOADBLOGPOSTS_ERROR", err });
         });
-        dispatch({ type: "LOADBLOGPOSTS_SUCCESS", results });
-      })
-      .catch((err) => {
-        dispatch({ type: "LOADBLOGPOSTS_ERROR", err });
-      });
+    } else {
+      firestore
+        .collection("blogPosts")
+        .where("approved", "==", true)
+        .orderBy("timestamp", "desc")
+        .get()
+        .then((querySnapshot) => {
+          let results = [];
+
+          querySnapshot.forEach(function (doc) {
+            let data = doc.data();
+
+            results.push({ id: doc.id, data });
+          });
+          dispatch({ type: "LOADBLOGPOSTS_SUCCESS", results });
+        })
+        .catch((err) => {
+          dispatch({ type: "LOADBLOGPOSTS_ERROR", err });
+        });
+    }
   };
 };
 
@@ -116,30 +138,52 @@ export const loadAllBlogPosts = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
-    let posts = firestore.collection("blogPosts").where("visible", "==", true);
-
     if (amount < 0) {
       amount = 0;
     }
 
-    posts
-      .orderBy("timestamp", "desc")
-      .limit(amount)
-      .get()
-      .then((querySnapshot) => {
-        let results = [];
+    if (amount) {
+      firestore
+        .collection("blogPosts")
+        .where("visible", "==", true)
+        .orderBy("timestamp", "desc")
+        .limit(amount)
+        .get()
+        .then((querySnapshot) => {
+          let results = [];
 
-        querySnapshot.forEach(function (doc) {
-          let data = doc.data();
+          querySnapshot.forEach(function (doc) {
+            let data = doc.data();
 
-          results.push({ id: doc.id, data });
+            results.push({ id: doc.id, data });
+          });
+
+          dispatch({ type: "LOADBLOGPOSTS_SUCCESS", results });
+        })
+        .catch((err) => {
+          dispatch({ type: "LOADBLOGPOSTS_ERROR", err });
         });
+    } else
+      firestore
+        .collection("blogPosts")
+        .where("visible", "==", true)
+        .orderBy("timestamp", "desc")
+        .get()
+        .then((querySnapshot) => {
+          let results = [];
 
-        dispatch({ type: "LOADBLOGPOSTS_SUCCESS", results });
-      })
-      .catch((err) => {
-        dispatch({ type: "LOADBLOGPOSTS_ERROR", err });
-      });
+          querySnapshot.forEach(function (doc) {
+            let data = doc.data();
+
+            results.push({ id: doc.id, data });
+          });
+
+          console.log(results);
+          dispatch({ type: "LOADBLOGPOSTS_SUCCESS", results });
+        })
+        .catch((err) => {
+          dispatch({ type: "LOADBLOGPOSTS_ERROR", err });
+        });
   };
 };
 
