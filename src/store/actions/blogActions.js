@@ -1,25 +1,69 @@
+// Date formatter
+function formatDate(date) {
+  var d = new Date(date),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-");
+}
+
 // Create a new post
 export const createBlogPost = (newPost) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
+  return async (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
     const firebase = getFirebase();
 
     console.log(newPost);
 
-    // Create post
-    firestore
+    const existing = await firestore
       .collection("blogPosts")
-      .add({
-        ...newPost,
-        approved: false,
-        visible: true,
-      })
-      .then(() => {
-        dispatch({ type: "BLOGPOSTCREATION_SUCCESS", newPost });
-        return;
+      .where("approved", "==", true)
+      .get()
+      .then((querySnapshot) => {
+        let results = [];
+
+        querySnapshot.forEach(function (doc) {
+          let data = doc.data();
+
+          if (
+            data.title === newPost.title &&
+            formatDate(data.timestamp) === formatDate(newPost.timestamp)
+          )
+            results.push({ id: doc.id, data });
+        });
+        return results;
       })
       .catch((err) => {
-        dispatch({ type: "BLOGPOSTCREATION_ERROR", err });
+        return [];
+      });
+
+    if (existing.length == 0) {
+      // Create post
+      firestore
+        .collection("blogPosts")
+        .add({
+          ...newPost,
+          approved: false,
+          visible: true,
+        })
+        .then(() => {
+          dispatch({ type: "BLOGPOSTCREATION_SUCCESS", newPost });
+          return;
+        })
+        .catch((err) => {
+          dispatch({ type: "BLOGPOSTCREATION_ERROR", err });
+        });
+    } else
+      dispatch({
+        type: "BLOGPOSTCREATION_ERROR",
+        err: {
+          code: "blogexists-err",
+          message: "A blog post with this title and date already exists",
+        },
       });
   };
 };
