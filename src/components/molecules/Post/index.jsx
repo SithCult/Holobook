@@ -305,6 +305,13 @@ class Post extends React.Component {
                 )}
               </div>
             )}
+            {post.data.image && (
+              <img
+                src={post.data.image}
+                alt="Post image context"
+                className="img-fluid w-75"
+              />
+            )}
             {url && !this.state?.hideUrlPreview && (
               <ReactTinyLink
                 cardSize="small"
