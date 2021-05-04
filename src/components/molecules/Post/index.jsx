@@ -264,7 +264,11 @@ class Post extends React.Component {
                 {post.data.skin && post.data.skin !== "standard" && (
                   <div className="skin-label">
                     <small className={post.data.skin + "-label"}>
-                      {post.data.skin} Edition
+                      {post.data.skin === "dark" ? (
+                        <span>HYDRA</span>
+                      ) : (
+                        <span>{post.data.skin} Edition</span>
+                      )}
                     </small>
                   </div>
                 )}

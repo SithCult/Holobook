@@ -84,59 +84,78 @@ class ReceivedUser extends React.Component {
                   </MDBPopoverHeader>
                   <MDBPopoverBody>
                     <div>
-                      {(() => {
-                        return receivedUser.badges.map((badge, i) => {
-                          switch (badge) {
-                            case "founder":
-                              return (
-                                <MDBBadge pill color="elegant-color" key={i}>
-                                  <MDBIcon icon="award" className="pr-2" />
-                                  Founder
-                                </MDBBadge>
-                              );
-                            case "council":
-                              return (
-                                <MDBBadge pill color="red" key={i}>
-                                  <MDBIcon icon="fire" className="pr-2" />
-                                  Council
-                                </MDBBadge>
-                              );
-                            case "hand":
-                              return (
-                                <MDBBadge pill color="secondary" key={i}>
-                                  <MDBIcon fab icon="sith" className="pr-2" />
-                                  Hand of the Emperor
-                                </MDBBadge>
-                              );
-                            case "historic":
-                              return (
-                                <MDBBadge pill color="orange" key={i}>
-                                  <MDBIcon icon="book" className="pr-2" />
-                                  Historic
-                                </MDBBadge>
-                              );
-                            case "moff":
-                              return (
-                                <MDBBadge pill color="info" key={i}>
-                                  <MDBIcon icon="angle-up" className="pr-2" />
-                                  Moff
-                                </MDBBadge>
-                              );
-                            case "phase1":
-                              return (
-                                <MDBBadge pill color="amber" key={i}>
-                                  <MDBIcon
-                                    icon="dollar-sign"
-                                    className="pr-2"
-                                  />
-                                  Phase 1 Contributor
-                                </MDBBadge>
-                              );
-                            default:
-                              return null;
-                          }
-                        });
-                      })()}
+                      {receivedUser.badges.length > 0 ? (
+                        <div className="badge-container">
+                          {(() => {
+                            return receivedUser.badges.map((badge, i) => {
+                              switch (badge) {
+                                case "founder":
+                                  return (
+                                    <MDBBadge
+                                      pill
+                                      color="elegant-color"
+                                      key={i}
+                                    >
+                                      <MDBIcon icon="award" className="pr-2" />
+                                      Founder
+                                    </MDBBadge>
+                                  );
+                                case "council":
+                                  return (
+                                    <MDBBadge pill color="red" key={i}>
+                                      <MDBIcon icon="fire" className="pr-2" />
+                                      Council
+                                    </MDBBadge>
+                                  );
+                                case "hand":
+                                  return (
+                                    <MDBBadge pill color="secondary" key={i}>
+                                      <MDBIcon
+                                        fab
+                                        icon="sith"
+                                        className="pr-2"
+                                      />
+                                      Hand of the Emperor
+                                    </MDBBadge>
+                                  );
+                                case "historic":
+                                  return (
+                                    <MDBBadge pill color="orange" key={i}>
+                                      <MDBIcon icon="book" className="pr-2" />
+                                      Historic
+                                    </MDBBadge>
+                                  );
+                                case "moff":
+                                  return (
+                                    <MDBBadge pill color="info" key={i}>
+                                      <MDBIcon
+                                        icon="angle-up"
+                                        className="pr-2"
+                                      />
+                                      Moff
+                                    </MDBBadge>
+                                  );
+                                case "phase1":
+                                  return (
+                                    <MDBBadge pill color="amber" key={i}>
+                                      <MDBIcon
+                                        icon="dollar-sign"
+                                        className="pr-2"
+                                      />
+                                      Phase 1 Contributor
+                                    </MDBBadge>
+                                  );
+                                default:
+                                  return null;
+                              }
+                            });
+                          })()}
+                        </div>
+                      ) : (
+                        <p className="mb-1 text-muted text-center">
+                          No badges yet.
+                        </p>
+                      )}
                       <hr className="my-2" />
                       <div className="flex-center text-left my-2 text-white">
                         <Link
