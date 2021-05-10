@@ -4,7 +4,8 @@
 import React from "react";
 // Meta tags
 import { Helmet } from "react-helmet";
-
+// Router
+import { Link, Redirect } from "react-router-dom";
 //> Additional
 // Enables PayPal integration
 import { PayPalButton } from "react-paypal-button-v2";
@@ -112,12 +113,15 @@ class DonatePage extends React.Component {
   render() {
     const { auth, profile, donations, selectedDonation } = this.props;
 
+    // Redirect unauthorized users
+    if (auth.uid === undefined) return <Redirect to="/login" />;
+
     return (
       <MDBContainer className="white-text mt-5 pt-5" id="donate">
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Contribute - SithCult</title>
-          <link rel="canonical" href="https://sithcult.com/contribute" />
+          <title>Items - SithCult</title>
+          <link rel="canonical" href="https://sithcult.com/items" />
         </Helmet>
         <Confetti
           width={this.state.width}
@@ -248,7 +252,9 @@ class DonatePage extends React.Component {
                   <h2 className="font-weight-bold mb-1">
                     Contribute to our cause
                   </h2>
-                  <p className="lead mb-3">{`${profile.title} ${profile.sith_name}`}</p>
+                  <p className="lead mb-3">
+                    Greetings, {`${profile.title} ${profile.sith_name}`}
+                  </p>
                 </>
               ) : (
                 <>
@@ -395,10 +401,6 @@ class DonatePage extends React.Component {
                   <MDBCardBody>
                     <PayPalButton
                       amount={this.state.selectedAmount}
-                      // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                      onClick={() => {
-                        this.setState({ loading: true });
-                      }}
                       onSuccess={(details, data) => {
                         this.setState(
                           {
@@ -439,26 +441,35 @@ class DonatePage extends React.Component {
                 </MDBCard>
               </MDBCol>
               <MDBCol md="8">
+                <p className="lead font-weight-bold">
+                  SithCult is solely funded and run by its members.
+                </p>
+                <p className="lead">
+                  In no way or form does SithCult make a profit by donations. It
+                  is only used to operate servers for this web presence, expand
+                  SithCult and give back to the community.
+                </p>
                 <p>
                   <strong>Who will benefit?</strong>
                   <br />
                   {profile.sith_name &&
                     "You, " + profile.title + " " + profile.sith_name + ". "}
-                  Humanity. All members of Sith Cult and beyond who long for a
-                  Sith Imperial society.
+                  All members of Sith Cult and beyond who long for the Sith
+                  Imperial society.
                 </p>
                 <p>
                   <strong>What will the funds be used for?</strong>
                   <br />
                   We will use our gained ressources to
+                  <br />- run SithCult Holobook (this platform)
                   <br />- further promote SithCult
                   <br />- provide international SithCult clusters with funds to
                   create banners and flyers
                   <br /> - expand our Social Network "Holobook" to provide a
                   platform for all members
                   <br />- create Uniforms, Sith robes and more for our members
-                  <br />- create more content like Short films
-                  <br />- create a new news show (in English)
+                  <br />- create events (hopefully) in your local clusters
+                  <br />- create a new English news show
                 </p>
                 <p>
                   <strong>How soon do we need this funds?</strong>
@@ -562,7 +573,9 @@ class DonatePage extends React.Component {
                                           <strong>verified.</strong>
                                           <br />
                                           <small className="word-break-all">
-                                            <code>{donation.hash}</code>
+                                            <code>
+                                              Checksum: {donation.hash}
+                                            </code>
                                           </small>
                                         </div>
                                       </MDBPopoverBody>
