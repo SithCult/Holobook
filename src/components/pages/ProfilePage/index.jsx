@@ -519,7 +519,6 @@ class ProfilePage extends React.Component {
             type: "jpeg",
           })
             .then((resp) => {
-              console.log(resp);
               // Response contain compressed and resized file
               resolve(URL.createObjectURL(resp));
             })
@@ -548,8 +547,6 @@ class ProfilePage extends React.Component {
             );
 
         const postImageBase64 = await toDataURL(res);
-
-        console.log(postImageBase64);
 
         this.setState({
           postImage: res,

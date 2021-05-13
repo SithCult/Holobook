@@ -67,8 +67,6 @@ class BlogList extends React.Component {
   render() {
     const { auth, posts } = this.props;
 
-    console.log(posts);
-
     if (posts && auth) {
       let result = posts.map((post, i) => {
         return (
