@@ -15,7 +15,13 @@ import {
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import { MDBIcon, MDBProgress, MDBCard, MDBAvatar } from "mdbreact";
+import {
+  MDBIcon,
+  MDBProgress,
+  MDBCard,
+  MDBAvatar,
+  MDBAnimation,
+} from "mdbreact";
 
 //> Components
 import { RankItem } from "../../atoms";
@@ -183,8 +189,8 @@ class OnlineUsers extends Component {
                 Online Sith
               </span>
               <p className="small text-muted mb-0">
-                {onlineusercount} {onlineusercount === 1 ? "user" : "users"}{" "}
-                online
+                <MDBIcon icon="circle" className="text-danger mr-1" />
+                Live
               </p>
             </div>
             <hr className="my-2" />
