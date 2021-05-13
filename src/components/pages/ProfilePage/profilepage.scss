@@ -5,6 +5,11 @@
     padding-right: 5px;
   }
 
+  .loading-disable {
+    filter: saturate(0);
+    opacity: 0.5;
+  }
+
   .card-up {
     background-image: url("../../../assets/images/background.jpg");
     border-bottom: 2px #f44336 solid;

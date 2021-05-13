@@ -589,7 +589,10 @@ class ProfilePage extends React.Component {
         </Helmet>
         <MDBRow>
           <MDBCol md="3">
-            <MDBCard testimonial>
+            <MDBCard
+              testimonial
+              className={!profile.sith_name ? "loading-disable" : undefined}
+            >
               <MDBCardUp className="red" />
               {(() => {
                 switch (profile.skin) {
@@ -665,15 +668,7 @@ class ProfilePage extends React.Component {
                   </Link>
                   <MDBBtn color="black" size="md" disabled>
                     <MDBIcon icon="question" className="mr-2" />
-                    Hidden
-                  </MDBBtn>
-                  <MDBBtn color="black" size="md" disabled>
-                    <MDBIcon icon="question" className="mr-2" />
-                    Hidden
-                  </MDBBtn>
-                  <MDBBtn color="black" size="md" disabled>
-                    <MDBIcon icon="question" className="mr-2" />
-                    Hidden
+                    Coming soon
                   </MDBBtn>
                 </div>
               </MDBCardBody>
@@ -1035,12 +1030,22 @@ class ProfilePage extends React.Component {
               </MDBAlert>
             )}
             <div className="posts">
-              <Posts
-                posts={this.props.posts}
-                comments={comments}
-                update={this.loadMore}
-                refreshData={this.refreshData}
-              />
+              {this.props.posts ? (
+                <Posts
+                  posts={this.props.posts}
+                  comments={comments}
+                  update={this.loadMore}
+                  refreshData={this.refreshData}
+                />
+              ) : (
+                <div className="text-center spinners mt-5">
+                  <div className="spinner-grow text-danger" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                  <div className="spinner-grow text-danger" role="status"></div>
+                  <div className="spinner-grow text-danger" role="status"></div>
+                </div>
+              )}
               {this.props.postLoading && (
                 <div className="text-center spinners">
                   <div className="spinner-grow text-danger" role="status">
@@ -1055,7 +1060,7 @@ class ProfilePage extends React.Component {
           <MDBCol md="3" className="right-col">
             <MDBCard className="award text-center">
               <MDBCardBody>
-                <p className="lead mb-1">Get rewards</p>
+                <p className="lead mb-1">Help us grow</p>
                 <p className="small text-muted mb-1">
                   Contribute to SithCult and achieve greatness.
                 </p>
@@ -1065,6 +1070,11 @@ class ProfilePage extends React.Component {
                     Contribute to SithCult
                   </MDBBtn>
                 </Link>
+              </MDBCardBody>
+            </MDBCard>
+            <MDBCard className="mt-3">
+              <MDBCardBody>
+                <OnlineUsers />
               </MDBCardBody>
             </MDBCard>
             <MDBCard className="text-center mt-3">
@@ -1094,11 +1104,6 @@ class ProfilePage extends React.Component {
                     <span>Loading</span>
                   </MDBBtn>
                 )}
-              </MDBCardBody>
-            </MDBCard>
-            <MDBCard className="mt-3">
-              <MDBCardBody>
-                <OnlineUsers />
               </MDBCardBody>
             </MDBCard>
             {profile.badges &&

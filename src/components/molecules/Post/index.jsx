@@ -312,7 +312,7 @@ class Post extends React.Component {
               <img
                 src={post.data.image}
                 alt="Post image context"
-                className="img-fluid w-75 mt-3"
+                className="mt-3 post-img"
               />
             )}
             {url && !this.state?.hideUrlPreview && (
