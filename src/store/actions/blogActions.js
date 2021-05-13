@@ -132,16 +132,34 @@ export const loadBlogPosts = (amount) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
 
-    if (amount < 0) {
-      amount = 0;
-    }
+    console.log(amount);
 
-    if (amount) {
+    if (amount && amount > 0) {
       firestore
         .collection("blogPosts")
         .where("approved", "==", true)
+        .where("visible", "==", true)
         .orderBy("timestamp", "desc")
         .limit(amount)
+        .get()
+        .then((querySnapshot) => {
+          let results = [];
+
+          querySnapshot.forEach(function (doc) {
+            let data = doc.data();
+
+            results.push({ id: doc.id, data });
+          });
+          dispatch({ type: "LOADBLOGPOSTS_SUCCESS", results });
+        })
+        .catch((err) => {
+          dispatch({ type: "LOADBLOGPOSTS_ERROR", err });
+        });
+    } else if (amount === -1) {
+      firestore
+        .collection("blogPosts")
+        .where("visible", "==", true)
+        .orderBy("timestamp", "desc")
         .get()
         .then((querySnapshot) => {
           let results = [];
@@ -160,6 +178,7 @@ export const loadBlogPosts = (amount) => {
       firestore
         .collection("blogPosts")
         .where("approved", "==", true)
+        .where("visible", "==", true)
         .orderBy("timestamp", "desc")
         .get()
         .then((querySnapshot) => {

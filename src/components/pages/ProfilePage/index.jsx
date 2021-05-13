@@ -1105,16 +1105,25 @@ class ProfilePage extends React.Component {
             </div>
           </MDBCol>
           <MDBCol md="3" className="right-col">
-            <MDBCard className="award text-center">
+            <MDBCard className="text-center">
               <MDBCardBody>
-                <p className="lead mb-1">Help us grow</p>
-                <p className="small text-muted mb-1">
-                  Contribute to SithCult and achieve greatness.
+                <p className="lead mb-1">
+                  <MDBIcon icon="globe" className="mr-2 text-info" />
+                  Imperial Holonet
+                  <MDBIcon icon="globe" className="ml-2 text-info" />
                 </p>
-                <Link to="/contribute">
+                <p className="lead">
+                  {process.env.REACT_APP_VERSION.includes("4.0.") && (
+                    <MDBBadge color="info">New</MDBBadge>
+                  )}
+                </p>
+                <p className="small text-muted mb-1">
+                  Learn about a great many things and stay informed. News from
+                  all over the empire.
+                </p>
+                <Link to="/holonet">
                   <MDBBtn color="blue" size="md">
-                    <MDBIcon icon="hand-holding-usd" className="mr-2" />
-                    Contribute to SithCult
+                    Enter HOLONET
                   </MDBBtn>
                 </Link>
               </MDBCardBody>
@@ -1151,6 +1160,20 @@ class ProfilePage extends React.Component {
                     <span>Loading</span>
                   </MDBBtn>
                 )}
+              </MDBCardBody>
+            </MDBCard>
+            <MDBCard className="mt-3 award text-center">
+              <MDBCardBody>
+                <p className="lead mb-1">Help us grow</p>
+                <p className="small text-muted mb-1">
+                  Contribute to SithCult and achieve greatness.
+                </p>
+                <Link to="/contribute">
+                  <MDBBtn color="blue" size="md">
+                    <MDBIcon icon="hand-holding-usd" className="mr-2" />
+                    Contribute to SithCult
+                  </MDBBtn>
+                </Link>
               </MDBCardBody>
             </MDBCard>
             {profile.badges &&

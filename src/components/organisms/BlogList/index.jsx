@@ -48,7 +48,7 @@ class BlogList extends React.Component {
   state = { amount: 5 };
 
   componentDidMount = () => {
-    this.props.loadBlogPosts(this.state.amount);
+    this.props.loadBlogPosts(5);
   };
 
   // This function removes all spaces and unifies the strings.
@@ -82,7 +82,7 @@ class BlogList extends React.Component {
             key={i}
           >
             <div key={i} className="blog-item">
-              <div className="blog-img-container">
+              <div className="blog-img-container d-sm-block d-none">
                 <div
                   className="blog-img d-inline-block"
                   style={{ backgroundImage: `url("${post.data.image}")` }}
@@ -111,6 +111,11 @@ class BlogList extends React.Component {
                   </strong>
                   , {moment(post.data.timestamp).format("DD.MM.YYYY")}
                 </p>
+                {!post.data.approved && (
+                  <p className="mt-2 mb-0 text-danger font-weight-bold">
+                    PLEASE REVIEW
+                  </p>
+                )}
               </div>
             </div>
           </Link>

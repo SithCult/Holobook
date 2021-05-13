@@ -6,13 +6,11 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 // Meta tags
 import { Helmet } from "react-helmet";
-
 //> Redux
 // Connect
 import { connect } from "react-redux";
 // Blog actions
 import { loadBlogPosts } from "../../../store/actions/blogActions";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -37,23 +35,11 @@ import {
   MDBDropdownItem,
   MDBSpinner,
 } from "mdbreact";
-
-//> Additional Components
-import { OnlineUsers, BlogEditor } from "../../molecules";
-import { BlogList } from "../../organisms";
-
-//> Additional modules
 // Country list
 import countryList from "react-select-country-list";
 
 //> Images
-import defaultUserIMG from "../../../assets/images/default.gif";
-import goldUserIMG from "../../../assets/images/gold.gif";
-import lightUserIMG from "../../../assets/images/light.gif";
-import bronzeUserIMG from "../../../assets/images/bronze.gif";
-import holocronIcon from "../../../assets/images/icons/holocron.png";
-import darkUserIMG from "../../../assets/images/dark.gif";
-
+import logoImg from "../../../assets/images/logo_white.png";
 //> SCSS
 import "./blogviewpage.scss";
 //#endregion
@@ -63,7 +49,7 @@ class BlogViewPage extends React.Component {
   state = {};
 
   componentDidMount() {
-    this.props.loadBlogPosts();
+    this.props.loadBlogPosts(-1);
   }
 
   componentDidUpdate = (prevProps) => {
@@ -72,9 +58,7 @@ class BlogViewPage extends React.Component {
       prevProps.blogPosts != this.props.blogPosts
     ) {
       const post = this.props.match.params.post;
-
       const postdetails = post.split("-");
-
       const date = [postdetails[0], postdetails[1], postdetails[2]].join("-");
 
       let titleArr = [];
@@ -90,7 +74,7 @@ class BlogViewPage extends React.Component {
           (bp) =>
             this.formatDate(bp.data.timestamp) === date &&
             this.unifyString(bp.data.title) === title
-        )[0].data,
+        )[0]?.data,
       });
     }
   };
@@ -102,7 +86,7 @@ class BlogViewPage extends React.Component {
   };
 
   formatDate(date) {
-    var d = new Date(date),
+    let d = new Date(date),
       month = "" + (d.getMonth() + 1),
       day = "" + d.getDate(),
       year = d.getFullYear();
@@ -118,24 +102,30 @@ class BlogViewPage extends React.Component {
   };
 
   render() {
-    const { profile } = this.props;
-
     if (this.state.post) {
       return (
         <>
           <Helmet>
             <meta charSet="utf-8" />
-            <title>{"SithCult - Holonet"}</title>
+            <title>{this.state.post.title} - SithCult</title>
             <link
               rel="canonical"
-              href={`https://sithcult.com/holonet/ ${this.props.match.params.post}`}
+              href={`https://sithcult.com/holonet/${this.props.match.params.post}`}
             />
           </Helmet>
           <MDBContainer id="blogview">
+            <MDBBtn
+              color="blue"
+              onClick={() => this.props.history.push("/holonet")}
+              className="d-inline-block d-sm-none mb-3 mx-auto w-100"
+            >
+              <MDBIcon icon="angle-left" className="mr-1" />
+              Back
+            </MDBBtn>
             <MDBRow>
               <MDBCol lg="12">
                 <MDBCard reverse>
-                  <MDBView hover cascade waves>
+                  <MDBView>
                     <div
                       className="top-image w-100"
                       style={{
@@ -146,7 +136,17 @@ class BlogViewPage extends React.Component {
                         backgroundPosition: "center center",
                       }}
                     />
-                    <MDBMask overlay="white-slight" className="waves-light" />
+                    <MDBMask>
+                      <img src={logoImg} alt="" className="logo" />
+                      <MDBBtn
+                        color="blue"
+                        onClick={() => this.props.history.push("/holonet")}
+                        className="d-sm-inline-block d-none"
+                      >
+                        <MDBIcon icon="angle-left" className="mr-1" />
+                        Back
+                      </MDBBtn>
+                    </MDBMask>
                   </MDBView>
                   <MDBCardBody cascade className="text-center">
                     <h2 className="font-weight-bold">
@@ -157,29 +157,38 @@ class BlogViewPage extends React.Component {
                       Written by <strong>{this.state.post.author.name}</strong>,{" "}
                       {this.formatDate(this.state.post.timestamp)}
                     </p>
-                    {this.state.post.tags &&
-                      this.state.post.tags.map((tag, t) => (
-                        <MDBBadge
-                          pill
-                          color="default"
-                          key={t}
-                          className="mr-1 ml-1"
-                        >
-                          {tag}
-                        </MDBBadge>
-                      ))}
                   </MDBCardBody>
                 </MDBCard>
                 <MDBContainer className="mt-5 white-text">
-                  <h3>{this.state.post.lead}</h3>
                   <div
                     dangerouslySetInnerHTML={{
                       __html: this.state.post.content,
                     }}
                   ></div>
+                  <hr />
+                  <p className="small mb-1 d-inline-block mr-2 mb-0">Tags</p>
+                  {this.state.post.tags &&
+                    this.state.post.tags.map((tag, t) => (
+                      <MDBBadge
+                        pill
+                        color="default"
+                        key={t}
+                        className="mr-1 ml-1 d-inline-block"
+                      >
+                        {tag}
+                      </MDBBadge>
+                    ))}
                 </MDBContainer>
               </MDBCol>
             </MDBRow>
+            <MDBBtn
+              color="blue"
+              onClick={() => this.props.history.push("/holonet")}
+              className="d-inline-block d-sm-none mt-3 mx-auto w-100"
+            >
+              <MDBIcon icon="angle-left" className="mr-1" />
+              Back
+            </MDBBtn>
           </MDBContainer>
         </>
       );
@@ -204,7 +213,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return { loadBlogPosts: () => dispatch(loadBlogPosts()) };
+  return { loadBlogPosts: (amount) => dispatch(loadBlogPosts(amount)) };
 };
 //#endregion
 

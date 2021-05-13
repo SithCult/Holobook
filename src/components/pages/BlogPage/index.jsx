@@ -109,12 +109,35 @@ class BlogPage extends React.Component {
                       <MDBCard className="award text-center">
                         <MDBCardBody>
                           <p className="lead mb-1">Your profile</p>
+                          <p className="text-muted small mb-1">
+                            Return to Holobook, our social network.
+                          </p>
                           <Link to="/me">
-                            <MDBBtn color="blue" size="md">
-                              <MDBIcon fab icon="sith" className="mr-2" />
+                            <MDBBtn
+                              color="blue"
+                              size="md"
+                              className="d-block w-100"
+                            >
                               Return to Holobook
                             </MDBBtn>
                           </Link>
+                          {profile?.badges.includes("author") && (
+                            <div className="mt-3">
+                              <p className="text-muted small mb-1">
+                                You are a SithCult author. As which you can
+                                create articles.
+                              </p>
+                              <Link to="/holonet/add">
+                                <MDBBtn
+                                  color="red"
+                                  size="md"
+                                  className="d-block w-100"
+                                >
+                                  Create article
+                                </MDBBtn>
+                              </Link>
+                            </div>
+                          )}
                         </MDBCardBody>
                       </MDBCard>
                     </>

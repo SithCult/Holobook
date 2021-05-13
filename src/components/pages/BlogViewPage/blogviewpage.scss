@@ -1,5 +1,35 @@
+@import "../../../utilities/variables";
+
 #blogview {
   margin-top: 7rem;
+
+  .logo {
+    height: 100px;
+    margin: auto;
+    margin-top: 1rem;
+  }
+
+  .container {
+    background: darken(#2e2e2e, 1%);
+    padding: 2rem 1rem 1rem 1rem;
+
+    h3 {
+      font-weight: bold;
+      background: $sithcultRed !important;
+      display: inline-block;
+      padding: 0.2rem 0.3rem;
+    }
+
+    strong {
+      background: transparentize($sithcultRed, 0.5);
+      padding: 0 0.2rem;
+    }
+
+    .badge {
+      background: darken(#2e2e2e, 1%) !important;
+      border: 2px darken(#2e2e2e, 5%) solid;
+    }
+  }
 
   .top-image {
     filter: blur(2px);
@@ -11,10 +41,37 @@
     border-radius: 0.4rem;
     box-shadow: none;
     color: white;
+  }
 
-    .badge {
-      background: darken(#2e2e2e, 1%) !important;
-      border: 2px darken(#2e2e2e, 5%) solid;
+  .btn {
+    border-radius: 0.5rem;
+    text-transform: initial;
+    margin: 0;
+
+    &.btn-blue {
+      background: transparentize($color: #33b5e5, $amount: 0.5) !important;
+      border: 2px #33b5e5 solid;
+
+      &:hover {
+        background: transparentize($color: #33b5e5, $amount: 0.4) !important;
+      }
+    }
+
+    &.btn-red {
+      background: transparentize($color: #f44336, $amount: 0.5) !important;
+      border: 2px #f44336 solid;
+
+      &:hover {
+        background: transparentize($color: #f44336, $amount: 0.4) !important;
+      }
+    }
+  }
+
+  .mask {
+    .btn {
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
     }
   }
 }

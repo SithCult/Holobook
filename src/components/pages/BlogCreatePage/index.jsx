@@ -60,7 +60,7 @@ class BlogCreatePage extends React.Component {
       auth.uid === undefined ||
       (profile.isLoaded && !profile.badges.includes("author"))
     )
-      return <Redirect to="/login" />;
+      return <Redirect to="/holonet" />;
 
     return (
       <>
@@ -70,11 +70,7 @@ class BlogCreatePage extends React.Component {
           <link rel="canonical" href="https://sithcult.com/holonet/add" />
         </Helmet>
         <MDBContainer className="py-5 mt-5" id="createblog">
-          <MDBRow className="flex-center">
-            <MDBCol md="6">
-              <BlogEditor />
-            </MDBCol>
-          </MDBRow>
+          <BlogEditor />
         </MDBContainer>
       </>
     );

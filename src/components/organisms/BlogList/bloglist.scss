@@ -5,6 +5,11 @@
   margin-bottom: 1rem;
   overflow: hidden;
 
+  .badge {
+    background: darken(#2e2e2e, 5%) !important;
+    border: 2px darken(#2e2e2e, 10%) solid;
+  }
+
   // Animation on value change
   transition: all 0.3s ease;
 
@@ -39,6 +44,7 @@
   .blog-item-body {
     // Create uniform padding
     padding: 1rem;
+    flex: 1;
 
     // Remove any margin of <p> tags
     p {
