@@ -3,6 +3,12 @@
     font-size: 1.3em !important;
   }
 
+  .post-img {
+    max-height: 400px;
+    max-width: 100%;
+    width: auto;
+  }
+
   .name {
     font-weight: bold;
     transition: color 0.1s ease;
@@ -55,8 +61,29 @@
   }
 
   .gold {
-    border: 2px darken(gold, 20%) solid;
+    border: 2px transparentize($color: gold, $amount: 0.5) solid;
     border-radius: 0.2rem;
+
+    .row {
+      .p-2 {
+        img {
+          border: 2px gold solid;
+        }
+      }
+    }
+  }
+
+  .dark {
+    border: 2px transparentize($color: lightcoral, $amount: 0.5) solid;
+    border-radius: 0.2rem;
+
+    .row {
+      .p-2 {
+        img {
+          border: 2px lightcoral solid;
+        }
+      }
+    }
   }
 
   .skin-label {

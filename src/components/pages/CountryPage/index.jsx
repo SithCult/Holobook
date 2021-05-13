@@ -387,7 +387,7 @@ class CountryPage extends React.Component {
             <MDBCard className="text-center h-100-card">
               <MDBCardBody>
                 {country_code && (
-                  <div className="text-center flag mb-3">
+                  <div className="text-center country-flag mb-3">
                     <ReactCountryFlag svg countryCode={country_code} />
                   </div>
                 )}
