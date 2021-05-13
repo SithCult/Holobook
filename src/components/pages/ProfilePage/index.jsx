@@ -103,6 +103,10 @@ class ProfilePage extends React.Component {
     youtubeActive: false,
     youtubeLink: "",
     pictureActive: false,
+    showVersionChange:
+      localStorage.getItem("version") !== process.env.REACT_APP_VERSION
+        ? true
+        : false,
   };
 
   componentDidMount = () => {
@@ -920,7 +924,6 @@ class ProfilePage extends React.Component {
                     id="group_image"
                   />
                 )}
-
                 {this.state.postImage && (
                   <div className="mt-3">
                     <img src={this.state.postImage} />
@@ -1001,6 +1004,50 @@ class ProfilePage extends React.Component {
                       Omega-Theta on Balmorra. Report to your local chief of
                       operations!
                     </p>
+                  </MDBCol>
+                </MDBRow>
+              </MDBAlert>
+            )}
+            {this.state.showVersionChange && (
+              <MDBAlert
+                color="info"
+                className="mt-2 mb-3 text-center text-lg-left"
+              >
+                <MDBRow>
+                  <MDBCol>
+                    <h4 className="alert-heading">
+                      <MDBIcon icon="layer-group" /> New version!
+                    </h4>
+                    <p>
+                      SithCult: Holobook has just been updated to v
+                      {process.env.REACT_APP_VERSION}.
+                    </p>
+                    <p>
+                      Check out the{" "}
+                      <a
+                        href={`https://github.com/SithCult/Holobook/releases/tag/v${process.env.REACT_APP_VERSION}`}
+                        target="_blank"
+                      >
+                        Changelog
+                      </a>{" "}
+                      to learn about the changes.
+                    </p>
+                  </MDBCol>
+                  <MDBCol md="auto" className="align-self-center">
+                    <MDBBtn
+                      color="info"
+                      rounded
+                      onClick={() =>
+                        this.setState({ showVersionChange: false }, () =>
+                          localStorage.setItem(
+                            "version",
+                            process.env.REACT_APP_VERSION
+                          )
+                        )
+                      }
+                    >
+                      <MDBIcon icon="check" />
+                    </MDBBtn>
                   </MDBCol>
                 </MDBRow>
               </MDBAlert>
