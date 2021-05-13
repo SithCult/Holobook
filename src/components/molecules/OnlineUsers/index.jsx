@@ -236,7 +236,7 @@ class OnlineUsers extends Component {
                   } else if (
                     user?.status?.state === "offline" &&
                     user?.status?.last_changed + 300000 < currentTimestamp &&
-                    user?.status?.last_changed + 9000000 > currentTimestamp
+                    user?.status?.last_changed + 15000000 > currentTimestamp
                   ) {
                     return (
                       <MDBCard className="text-left" key={i}>
