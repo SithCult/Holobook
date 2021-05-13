@@ -5,6 +5,22 @@
     padding-right: 5px;
   }
 
+  .mobile-nav-item {
+    flex: 1;
+    margin: 0.5rem;
+    background: rgba(51, 181, 229, 0.5) !important;
+    border: 2px #33b5e5 solid;
+    color: white;
+
+    i {
+      margin-bottom: 0.1rem;
+    }
+
+    &:hover {
+      background: rgba(51, 181, 229, 0.7) !important;
+    }
+  }
+
   .loading-disable {
     filter: saturate(0);
     opacity: 0.5;
@@ -69,6 +85,7 @@
       color: #848e96;
     }
   }
+
   .posts {
     .card {
       background: #3e3e3e;

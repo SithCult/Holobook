@@ -13,7 +13,6 @@ import convert from "image-file-resize";
 import FadeIn from "react-fade-in";
 // Country list
 import countryList from "react-select-country-list";
-
 //> Redux
 // Connect
 import { connect } from "react-redux";
@@ -23,7 +22,6 @@ import {
   loadAllPosts,
 } from "../../../store/actions/postActions";
 import { loadComments } from "../../../store/actions/commentActions";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -49,13 +47,11 @@ import {
 //> Additional Components
 import { Posts } from "../../organisms";
 import { OnlineUsers } from "../../molecules";
-
 //> CSS
 // Profile page
 import "./profilepage.scss";
 // Post
 import "../../organisms/Posts/posts.scss";
-
 //> Images
 import defaultUserIMG from "../../../assets/images/default.gif";
 import goldUserIMG from "../../../assets/images/gold.gif";
@@ -523,7 +519,6 @@ class ProfilePage extends React.Component {
             type: "jpeg",
           })
             .then((resp) => {
-              console.log(resp);
               // Response contain compressed and resized file
               resolve(URL.createObjectURL(resp));
             })
@@ -552,8 +547,6 @@ class ProfilePage extends React.Component {
             );
 
         const postImageBase64 = await toDataURL(res);
-
-        console.log(postImageBase64);
 
         this.setState({
           postImage: res,
@@ -652,7 +645,27 @@ class ProfilePage extends React.Component {
                 </p>
               </MDBCardBody>
             </MDBCard>
-            <MDBCard className="mt-3 text-center">
+            <div className="d-flex d-sm-none justify-content-around mt-3">
+              <MDBCard
+                className="mobile-nav-item"
+                onClick={() => this.props.history.push("/holonet")}
+              >
+                <MDBCardBody className="text-center">
+                  <MDBIcon icon="globe" size="lg" className="d-block" />
+                  Holonet
+                </MDBCardBody>
+              </MDBCard>
+              <MDBCard
+                className="mobile-nav-item"
+                onClick={() => this.props.history.push("/chat")}
+              >
+                <MDBCardBody className="text-center">
+                  <MDBIcon icon="comments" size="lg" className="d-block" />
+                  Chat
+                </MDBCardBody>
+              </MDBCard>
+            </div>
+            <MDBCard className="my-3 text-center">
               <MDBCardBody>
                 <div className="mt-1 features">
                   <p className="lead mb-3">
@@ -1105,16 +1118,25 @@ class ProfilePage extends React.Component {
             </div>
           </MDBCol>
           <MDBCol md="3" className="right-col">
-            <MDBCard className="award text-center">
+            <MDBCard className="text-center">
               <MDBCardBody>
-                <p className="lead mb-1">Help us grow</p>
-                <p className="small text-muted mb-1">
-                  Contribute to SithCult and achieve greatness.
+                <p className="lead mb-1">
+                  <MDBIcon icon="globe" className="mr-2 text-info" />
+                  Imperial Holonet
+                  <MDBIcon icon="globe" className="ml-2 text-info" />
                 </p>
-                <Link to="/contribute">
+                <p className="lead">
+                  {process.env.REACT_APP_VERSION.includes("4.0.") && (
+                    <MDBBadge color="info">New</MDBBadge>
+                  )}
+                </p>
+                <p className="small text-muted mb-1">
+                  Learn about a great many things and stay informed. News from
+                  all over the empire.
+                </p>
+                <Link to="/holonet">
                   <MDBBtn color="blue" size="md">
-                    <MDBIcon icon="hand-holding-usd" className="mr-2" />
-                    Contribute to SithCult
+                    Enter HOLONET
                   </MDBBtn>
                 </Link>
               </MDBCardBody>
@@ -1151,6 +1173,20 @@ class ProfilePage extends React.Component {
                     <span>Loading</span>
                   </MDBBtn>
                 )}
+              </MDBCardBody>
+            </MDBCard>
+            <MDBCard className="mt-3 award text-center">
+              <MDBCardBody>
+                <p className="lead mb-1">Help us grow</p>
+                <p className="small text-muted mb-1">
+                  Contribute to SithCult and achieve greatness.
+                </p>
+                <Link to="/contribute">
+                  <MDBBtn color="blue" size="md">
+                    <MDBIcon icon="hand-holding-usd" className="mr-2" />
+                    Contribute to SithCult
+                  </MDBBtn>
+                </Link>
               </MDBCardBody>
             </MDBCard>
             {profile.badges &&

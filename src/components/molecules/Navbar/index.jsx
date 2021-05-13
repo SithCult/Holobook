@@ -97,14 +97,24 @@ class Navbar extends React.Component {
             >
               <MDBNavbarNav right className="text-white flex-center">
                 {!auth.uid && (
-                  <Link to="/login">
-                    <MDBNavItem>
-                      <MDBBtn color="yellow" size="md" outline>
-                        <MDBIcon icon="angle-right" className="pr-2" />
-                        Log in
-                      </MDBBtn>
-                    </MDBNavItem>
-                  </Link>
+                  <>
+                    <Link to="/holonet">
+                      <MDBNavItem>
+                        <MDBBtn color="blue" size="md">
+                          <MDBIcon icon="globe" className="pr-2" />
+                          Holonet
+                        </MDBBtn>
+                      </MDBNavItem>
+                    </Link>
+                    <Link to="/login">
+                      <MDBNavItem>
+                        <MDBBtn color="yellow" size="md">
+                          <MDBIcon icon="angle-right" className="pr-2" />
+                          Log in
+                        </MDBBtn>
+                      </MDBNavItem>
+                    </Link>
+                  </>
                 )}
                 {auth.uid && (
                   <>

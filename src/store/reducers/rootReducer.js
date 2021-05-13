@@ -9,6 +9,7 @@ import donMsgReducer from "./donMsgReducer";
 import commentReducer from "./commentReducer";
 import chatReducer from "./chatReducer";
 import notificationReducer from "./notificationReducer";
+import blogReducer from "./blogReducer";
 
 //> Redux
 import { combineReducers } from "redux";
@@ -18,6 +19,7 @@ import { firestoreReducer } from "redux-firestore";
 
 //> Firebase reducer
 import { firebaseReducer } from "react-redux-firebase";
+import blogPostReducer from "./blogReducer";
 //#endregion
 
 //#region > Config
@@ -38,6 +40,8 @@ const rootReducer = combineReducers({
   chat: chatReducer,
   /* Notifications */
   notifications: notificationReducer,
+  /* Blog Posts */
+  blog: blogPostReducer,
   /* Database */
   firestore: firestoreReducer,
   /* Authentication */
