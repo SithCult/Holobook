@@ -13,7 +13,6 @@ import convert from "image-file-resize";
 import FadeIn from "react-fade-in";
 // Country list
 import countryList from "react-select-country-list";
-
 //> Redux
 // Connect
 import { connect } from "react-redux";
@@ -23,7 +22,6 @@ import {
   loadAllPosts,
 } from "../../../store/actions/postActions";
 import { loadComments } from "../../../store/actions/commentActions";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -49,13 +47,11 @@ import {
 //> Additional Components
 import { Posts } from "../../organisms";
 import { OnlineUsers } from "../../molecules";
-
 //> CSS
 // Profile page
 import "./profilepage.scss";
 // Post
 import "../../organisms/Posts/posts.scss";
-
 //> Images
 import defaultUserIMG from "../../../assets/images/default.gif";
 import goldUserIMG from "../../../assets/images/gold.gif";
@@ -652,7 +648,27 @@ class ProfilePage extends React.Component {
                 </p>
               </MDBCardBody>
             </MDBCard>
-            <MDBCard className="mt-3 text-center">
+            <div className="d-flex d-sm-none justify-content-around mt-3">
+              <MDBCard
+                className="mobile-nav-item"
+                onClick={() => this.props.history.push("/holonet")}
+              >
+                <MDBCardBody className="text-center">
+                  <MDBIcon icon="globe" size="lg" className="d-block" />
+                  Holonet
+                </MDBCardBody>
+              </MDBCard>
+              <MDBCard
+                className="mobile-nav-item"
+                onClick={() => this.props.history.push("/chat")}
+              >
+                <MDBCardBody className="text-center">
+                  <MDBIcon icon="comments" size="lg" className="d-block" />
+                  Chat
+                </MDBCardBody>
+              </MDBCard>
+            </div>
+            <MDBCard className="my-3 text-center">
               <MDBCardBody>
                 <div className="mt-1 features">
                   <p className="lead mb-3">

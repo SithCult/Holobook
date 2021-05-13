@@ -81,8 +81,8 @@ class BlogList extends React.Component {
             }
             key={i}
           >
-            <div key={i} className="blog-item">
-              <div className="blog-img-container d-sm-block d-none">
+            <div key={i} className="blog-item d-sm-flex d-block">
+              <div className="blog-img-container">
                 <div
                   className="blog-img d-inline-block"
                   style={{ backgroundImage: `url("${post.data.image}")` }}

@@ -31,12 +31,20 @@
       // Animation on value change
       transition: all 0.5s ease;
 
+      min-height: 100px;
+
       // Background
       background-size: cover;
       background-position: center;
 
       // Fit to the parent div
       height: 100%;
+      width: 100%;
+    }
+  }
+
+  @media only screen and (max-width: 500px) {
+    .blog-img-container {
       width: 100%;
     }
   }

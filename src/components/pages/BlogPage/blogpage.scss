@@ -1,6 +1,46 @@
 #blogs {
   margin-top: 8rem;
 
+  .mobile-nav-item {
+    flex: 1;
+    margin: 0.5rem;
+    background: rgba(51, 181, 229, 0.5) !important;
+    border: 2px #33b5e5 solid;
+    color: white;
+
+    i {
+      margin-bottom: 0.1rem;
+    }
+
+    &:hover {
+      background: rgba(51, 181, 229, 0.7) !important;
+    }
+  }
+
+  .btn {
+    border-radius: 0.5rem;
+    text-transform: initial;
+    margin: 0;
+
+    &.btn-blue {
+      background: transparentize($color: #33b5e5, $amount: 0.5) !important;
+      border: 2px #33b5e5 solid;
+
+      &:hover {
+        background: transparentize($color: #33b5e5, $amount: 0.4) !important;
+      }
+    }
+
+    &.btn-red {
+      background: transparentize($color: #f44336, $amount: 0.5) !important;
+      border: 2px #f44336 solid;
+
+      &:hover {
+        background: transparentize($color: #f44336, $amount: 0.4) !important;
+      }
+    }
+  }
+
   .blog-side {
     .card {
       background: darken(#2e2e2e, 1%);
@@ -10,42 +50,6 @@
 
       .card-body {
         padding: 0.4rem 0.4rem 0.8rem 0.4rem;
-
-        .btn {
-          border-radius: 0.5rem;
-          text-transform: initial;
-          margin: 0;
-
-          &.btn-blue {
-            background: transparentize(
-              $color: #33b5e5,
-              $amount: 0.5
-            ) !important;
-            border: 2px #33b5e5 solid;
-
-            &:hover {
-              background: transparentize(
-                $color: #33b5e5,
-                $amount: 0.4
-              ) !important;
-            }
-          }
-
-          &.btn-red {
-            background: transparentize(
-              $color: #f44336,
-              $amount: 0.5
-            ) !important;
-            border: 2px #f44336 solid;
-
-            &:hover {
-              background: transparentize(
-                $color: #f44336,
-                $amount: 0.4
-              ) !important;
-            }
-          }
-        }
       }
     }
   }

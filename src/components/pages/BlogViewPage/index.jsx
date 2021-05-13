@@ -2,8 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-// Router
-import { Link, Redirect } from "react-router-dom";
+//> Lottie
+import Lottie from "lottie-react-web";
 // Meta tags
 import { Helmet } from "react-helmet";
 //> Redux
@@ -40,8 +40,21 @@ import countryList from "react-select-country-list";
 
 //> Images
 import logoImg from "../../../assets/images/logo_white.png";
+//> Lottie
+import animationFile from "../../../assets/lottie/loader.json";
 //> SCSS
 import "./blogviewpage.scss";
+//#endregion
+
+//#region > Config
+const loadingAnimation = {
+  loop: true,
+  autoplay: true,
+  animationData: animationFile,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
+};
 //#endregion
 
 //#region > Components
@@ -194,8 +207,12 @@ class BlogViewPage extends React.Component {
       );
     } else {
       return (
-        <div className="text-center">
-          <MDBSpinner />
+        <div className="text-center py-5 my-5">
+          <MDBView className="animation">
+            <Lottie options={loadingAnimation} speed={1} ariaRole="img" />
+            <MDBMask />
+          </MDBView>
+          <p className="text-info mb-5">Initializing Imperial Database...</p>
         </div>
       );
     }

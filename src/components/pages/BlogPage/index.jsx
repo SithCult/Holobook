@@ -79,6 +79,14 @@ class BlogPage extends React.Component {
                 <h2 className="mb-1 font-weight-bold">SithCult Holonet</h2>
                 <p className="lead">News from all over the empire.</p>
               </div>
+              <div className="d-sm-none d-block mb-3">
+                <Link to="/me">
+                  <MDBBtn color="blue" size="md" className="d-block w-100">
+                    <MDBIcon icon="users" className="mr-1" />
+                    Return to Holobook
+                  </MDBBtn>
+                </Link>
+              </div>
               <BlogList />
             </MDBCol>
             <MDBCol md="3" className="blog-side">
@@ -118,6 +126,7 @@ class BlogPage extends React.Component {
                               size="md"
                               className="d-block w-100"
                             >
+                              <MDBIcon icon="users" className="mr-1" />
                               Return to Holobook
                             </MDBBtn>
                           </Link>
@@ -133,6 +142,7 @@ class BlogPage extends React.Component {
                                   size="md"
                                   className="d-block w-100"
                                 >
+                                  <MDBIcon icon="plus" className="mr-1" />
                                   Create article
                                 </MDBBtn>
                               </Link>
