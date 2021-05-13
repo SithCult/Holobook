@@ -54,35 +54,50 @@ class OnlineUsers extends Component {
   };
 
   // Get user picture‚
-  getPicture = (skin, index, name) => {
+  getPicture = (skin, index, name, isOnline) => {
     switch (skin) {
       case "gold":
         return (
-          <MDBAvatar className="mx-auto white online" key={index}>
+          <MDBAvatar
+            className={`mx-auto white ${isOnline ? "online" : "offline"}`}
+            key={index}
+          >
             <img src={goldUserIMG} alt={name} />
           </MDBAvatar>
         );
       case "light":
         return (
-          <MDBAvatar className="mx-auto white online" key={index}>
+          <MDBAvatar
+            className={`mx-auto white ${isOnline ? "online" : "offline"}`}
+            key={index}
+          >
             <img src={lightUserIMG} alt={name} />
           </MDBAvatar>
         );
       case "bronze":
         return (
-          <MDBAvatar className="mx-auto white online" key={index}>
+          <MDBAvatar
+            className={`mx-auto white ${isOnline ? "online" : "offline"}`}
+            key={index}
+          >
             <img src={bronzeUserIMG} alt={name} />
           </MDBAvatar>
         );
       case "dark":
         return (
-          <MDBAvatar className="mx-auto white online" key={index}>
+          <MDBAvatar
+            className={`mx-auto white ${isOnline ? "online" : "offline"}`}
+            key={index}
+          >
             <img src={darkUserIMG} alt={name} />
           </MDBAvatar>
         );
       default:
         return (
-          <MDBAvatar className="mx-auto white online" key={index}>
+          <MDBAvatar
+            className={`mx-auto white ${isOnline ? "online" : "offline"}`}
+            key={index}
+          >
             <img src={defaultUserIMG} alt={name} />
           </MDBAvatar>
         );
@@ -141,6 +156,17 @@ class OnlineUsers extends Component {
       this.mergeUserData(this.props.onlineusers);
     }
 
+    users &&
+      users.sort((a, b) =>
+        a?.status?.last_changed < b?.status?.last_changed
+          ? 1
+          : b?.status?.last_changed < a?.status?.last_changed
+          ? -1
+          : 0
+      );
+
+    const currentTimestamp = new Date().getTime();
+
     return (
       <div id="onlineusers">
         {!onlineusercount ? (
@@ -165,7 +191,10 @@ class OnlineUsers extends Component {
             <div>
               {users &&
                 users.map((user, i) => {
-                  if (user?.status?.state === "online") {
+                  if (
+                    user?.status?.state === "online" ||
+                    user?.status?.last_changed + 300000 > currentTimestamp
+                  ) {
                     return (
                       <MDBCard className="text-left" key={i}>
                         <div className="d-flex justify-content-between">
@@ -173,9 +202,15 @@ class OnlineUsers extends Component {
                             {this.getPicture(
                               user.data.skin,
                               i,
-                              user.data.sith_name
+                              user.data.sith_name,
+                              true
                             )}
-                            <span className="pl-2">{user.data.sith_name}</span>
+                            <span className="pl-2">
+                              {user.data.sith_name}
+                              <span className="small d-block text-success">
+                                Online
+                              </span>
+                            </span>
                           </div>
                           <span className="small text-muted">
                             {user.data.badges.includes("moff") && (
@@ -192,7 +227,45 @@ class OnlineUsers extends Component {
                         </div>
                       </MDBCard>
                     );
-                  } else {
+                  } else if (
+                    user?.status?.state === "offline" &&
+                    user?.status?.last_changed + 300000 < currentTimestamp &&
+                    user?.status?.last_changed + 9000000 > currentTimestamp
+                  ) {
+                    return (
+                      <MDBCard className="text-left" key={i}>
+                        <div className="d-flex justify-content-between">
+                          <div className="d-flex align-items-center">
+                            {this.getPicture(
+                              user.data.skin,
+                              i,
+                              user.data.sith_name,
+                              false
+                            )}
+                            <span className="pl-2">
+                              {user.data.sith_name}
+                              <span className="text-muted small d-block">
+                                Seen recently
+                              </span>
+                            </span>
+                          </div>
+                          <span className="small text-muted">
+                            {user.data.badges.includes("moff") && (
+                              <RankItem rank="moff" />
+                            )}
+                            {user.data.badges.includes("grandmoff") && (
+                              <RankItem rank="grandmoff" />
+                            )}
+                            {user.data.badges.includes("hand") && (
+                              <RankItem rank="hand" />
+                            )}
+                            <span className="ml-1">{user.data.title}</span>
+                          </span>
+                        </div>
+                      </MDBCard>
+                    );
+                  }
+                  {
                     return null;
                   }
                 })}
