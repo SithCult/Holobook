@@ -108,51 +108,13 @@ class BlogPage extends React.Component {
                     <>
                       <MDBCard className="award text-center">
                         <MDBCardBody>
-                          <p className="lead mb-1">Get rewards</p>
-                          <p className="small text-muted mb-1">
-                            Contribute to SithCult and achieve greatness.
-                          </p>
-                          <Link to="/contribute">
+                          <p className="lead mb-1">Your profile</p>
+                          <Link to="/me">
                             <MDBBtn color="blue" size="md">
-                              <MDBIcon
-                                icon="hand-holding-usd"
-                                className="mr-2"
-                              />
-                              Contribute to SithCult
+                              <MDBIcon fab icon="sith" className="mr-2" />
+                              Return to Holobook
                             </MDBBtn>
                           </Link>
-                        </MDBCardBody>
-                      </MDBCard>
-                      <MDBCard className="text-center mt-3">
-                        <MDBCardBody>
-                          <p className="lead mb-1">Your district</p>
-                          <p className="small text-muted mb-1">
-                            Get details about SithCult in your country.
-                          </p>
-                          {profile.isLoaded ? (
-                            <Link
-                              to={
-                                "/c/" +
-                                profile.address?.country?.toLowerCase().trim()
-                              }
-                            >
-                              <MDBBtn color="red" size="md">
-                                <MDBIcon far icon="flag" className="mr-2" />
-                                {profile.isLoaded ? (
-                                  <>{this.getCountry(profile.address)}</>
-                                ) : (
-                                  <>
-                                    <span>Loading</span>
-                                  </>
-                                )}
-                              </MDBBtn>
-                            </Link>
-                          ) : (
-                            <MDBBtn color="red" size="md" disabled={true}>
-                              <MDBIcon far icon="flag" className="mr-2" />
-                              <span>Loading</span>
-                            </MDBBtn>
-                          )}
                         </MDBCardBody>
                       </MDBCard>
                     </>

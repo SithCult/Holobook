@@ -133,13 +133,18 @@ class BlogViewPage extends React.Component {
           </Helmet>
           <MDBContainer id="blogview">
             <MDBRow>
-              <MDBCol md="10">
+              <MDBCol lg="12">
                 <MDBCard reverse>
                   <MDBView hover cascade waves>
-                    <img
-                      src={this.state.post.titleImage}
-                      alt=""
-                      className="img-fluid"
+                    <div
+                      className="top-image w-100"
+                      style={{
+                        height: "300px",
+                        backgroundImage: `url("${this.state.post.image}")`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "cover",
+                        backgroundPosition: "center center",
+                      }}
                     />
                     <MDBMask overlay="white-slight" className="waves-light" />
                   </MDBView>
@@ -147,9 +152,9 @@ class BlogViewPage extends React.Component {
                     <h2 className="font-weight-bold">
                       {this.state.post.title}
                     </h2>
-                    <p>
-                      Written by
-                      <strong> {this.state.post.author.name} </strong>,{" "}
+                    <p>{this.state.post.lead}</p>
+                    <p className="small text-muted">
+                      Written by <strong>{this.state.post.author.name}</strong>,{" "}
                       {this.formatDate(this.state.post.timestamp)}
                     </p>
                     {this.state.post.tags &&
@@ -173,58 +178,6 @@ class BlogViewPage extends React.Component {
                     }}
                   ></div>
                 </MDBContainer>
-              </MDBCol>
-              <MDBCol md="2">
-                <MDBCard className="award text-center">
-                  <MDBCardBody>
-                    <p className="lead mb-1">Get rewards</p>
-                    <p className="small text-muted mb-1">
-                      Contribute to SithCult and achieve greatness.
-                    </p>
-                    <Link to="/contribute">
-                      <MDBBtn color="blue" size="md">
-                        <MDBIcon icon="hand-holding-usd" className="mr-2" />
-                        Contribute to SithCult
-                      </MDBBtn>
-                    </Link>
-                  </MDBCardBody>
-                </MDBCard>
-                <MDBCard className="text-center mt-3">
-                  <MDBCardBody>
-                    <p className="lead mb-1">Your district</p>
-                    <p className="small text-muted mb-1">
-                      Get details about SithCult in your country.
-                    </p>
-                    {profile.isLoaded ? (
-                      <Link
-                        to={
-                          "/c/" + profile.address?.country?.toLowerCase().trim()
-                        }
-                      >
-                        <MDBBtn color="red" size="md">
-                          <MDBIcon far icon="flag" className="mr-2" />
-                          {profile.isLoaded ? (
-                            <>{this.getCountry(profile.address)}</>
-                          ) : (
-                            <>
-                              <span>Loading</span>
-                            </>
-                          )}
-                        </MDBBtn>
-                      </Link>
-                    ) : (
-                      <MDBBtn color="red" size="md" disabled={true}>
-                        <MDBIcon far icon="flag" className="mr-2" />
-                        <span>Loading</span>
-                      </MDBBtn>
-                    )}
-                  </MDBCardBody>
-                </MDBCard>
-                <MDBCard className="mt-3">
-                  <MDBCardBody>
-                    <OnlineUsers />
-                  </MDBCardBody>
-                </MDBCard>
               </MDBCol>
             </MDBRow>
           </MDBContainer>

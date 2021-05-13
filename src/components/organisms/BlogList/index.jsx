@@ -85,26 +85,25 @@ class BlogList extends React.Component {
               <div className="blog-img-container">
                 <div
                   className="blog-img d-inline-block"
-                  style={{ backgroundImage: `url("${post.data.titleImage}")` }}
+                  style={{ backgroundImage: `url("${post.data.image}")` }}
                 ></div>
               </div>
-
               <div className="d-inline-block blog-item-body">
+                <p className="h4-responsive font-weight-bold">
+                  <strong>{post.data.title}</strong>
+                </p>
+                <p className="mb-1">{this.shortenString(post.data.lead, 24)}</p>
                 {post.data.tags &&
                   post.data.tags.map((tag, t) => (
                     <MDBBadge
                       pill
                       color="default"
                       key={t}
-                      className="mr-1 ml-1"
+                      className="mr-1 ml-1 mb-2"
                     >
                       {tag}
                     </MDBBadge>
                   ))}
-                <p className="h4-responsive font-weight-bold">
-                  <strong>{post.data.title}</strong>
-                </p>
-                <p className="mb-1">{this.shortenString(post.data.lead, 24)}</p>
                 <p className="text-muted small">
                   by{" "}
                   <strong className="text-white">

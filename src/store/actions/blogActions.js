@@ -51,10 +51,12 @@ export const createBlogPost = (newPost) => {
           visible: true,
         })
         .then(() => {
+          console.log("yes");
           dispatch({ type: "BLOGPOSTCREATION_SUCCESS", newPost });
           return;
         })
         .catch((err) => {
+          console.error(err);
           dispatch({ type: "BLOGPOSTCREATION_ERROR", err });
         });
     } else
