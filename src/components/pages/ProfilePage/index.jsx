@@ -6,7 +6,8 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 // Meta tags
 import { Helmet } from "react-helmet";
-
+//> Compress image
+import convert from "image-file-resize";
 //> Additional modules
 // Fade In Animation
 import FadeIn from "react-fade-in";
@@ -101,6 +102,7 @@ class ProfilePage extends React.Component {
     showDeletedPosts: false,
     youtubeActive: false,
     youtubeLink: "",
+    pictureActive: false,
   };
 
   componentDidMount = () => {
@@ -185,6 +187,7 @@ class ProfilePage extends React.Component {
         youtubeLinkError: undefined,
         youtubeId: undefined,
         youtubeActive: false,
+        pictureActive: false,
       },
       () => this.removeFeeling()
     );
@@ -298,6 +301,7 @@ class ProfilePage extends React.Component {
         : this.state.post_feeling;
     let basic = this.state.post_basic;
     let youtubeId = this.state.youtubeId ? this.state.youtubeId : null;
+    let image = this.state.postImageBase64 ? this.state.postImageBase64 : null;
 
     // Check if the content is English for a
     if (target) {
@@ -329,6 +333,7 @@ class ProfilePage extends React.Component {
         },
         basic: basic,
         youtubeId,
+        image,
       };
 
       // Tell Firebase to create post
@@ -450,7 +455,8 @@ class ProfilePage extends React.Component {
   };
 
   getYouTubeVideoId = (url) => {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const regExp =
+      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
 
     return match && match[2].length === 11 ? match[2] : null;
@@ -480,6 +486,75 @@ class ProfilePage extends React.Component {
         youtubeLink: url,
         youtubeId: false,
         youtubeLinkError: true,
+      });
+    }
+  };
+
+  onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      let img = new Image();
+      const file = event.target.files[0];
+      let objectUrl = URL.createObjectURL(event.target.files[0]);
+
+      const maxWidth = 450;
+      const maxHeight = 450;
+
+      const promise = new Promise((resolve, reject) => {
+        img.onload = function () {
+          const ratio = Math.min(
+            maxWidth > this.width
+              ? this.width / this.width
+              : maxWidth / this.width,
+            maxHeight > this.height
+              ? this.height / this.height
+              : maxHeight / this.height
+          );
+
+          //URL.revokeObjectURL(objectUrl);
+
+          convert({
+            file: file,
+            width: this.width * ratio,
+            height: this.height * ratio,
+            type: "jpeg",
+          })
+            .then((resp) => {
+              console.log(resp);
+              // Response contain compressed and resized file
+              resolve(URL.createObjectURL(resp));
+            })
+            .catch((error) => {
+              // Error
+              console.error(error);
+            });
+        };
+
+        img.src = objectUrl;
+      });
+
+      promise.then(async (res) => {
+        const toDataURL = (url) =>
+          fetch(url)
+            .then((response) => response.blob())
+            .then(
+              (blob) =>
+                new Promise((resolve, reject) => {
+                  const reader = new FileReader();
+
+                  reader.onloadend = () => resolve(reader.result);
+                  reader.onerror = reject;
+                  reader.readAsDataURL(blob);
+                })
+            );
+
+        const postImageBase64 = await toDataURL(res);
+
+        console.log(postImageBase64);
+
+        this.setState({
+          postImage: res,
+          postImageBase64,
+        });
       });
     }
   };
@@ -755,7 +830,11 @@ class ProfilePage extends React.Component {
                     YouTube
                   </MDBBtn>
                   <MDBDropdown className="d-inline">
-                    <MDBDropdownToggle caret color="elegant" className="btn-feeling">
+                    <MDBDropdownToggle
+                      caret
+                      color="elegant"
+                      className="btn-feeling"
+                    >
                       <MDBIcon
                         far={
                           this.state.post_feeling.name.toLowerCase() ===
@@ -808,11 +887,50 @@ class ProfilePage extends React.Component {
                       })}
                     </MDBDropdownMenu>
                   </MDBDropdown>
-                  <MDBBtn color="elegant" rounded disabled>
-                    <MDBIcon icon="user-plus" className="pr-2" size="lg" />
-                    Tag
+                  <MDBBtn
+                    color="elegant"
+                    rounded
+                    onClick={
+                      this.state.pictureActive
+                        ? () =>
+                            this.setState({
+                              pictureActive: false,
+                              postImage: undefined,
+                            })
+                        : () => this.setState({ pictureActive: true })
+                    }
+                  >
+                    {this.state.pictureActive ? (
+                      <>
+                        <MDBIcon
+                          icon="times"
+                          className="pr-2 text-danger"
+                          size="lg"
+                        />
+                        Remove picture
+                      </>
+                    ) : (
+                      <>
+                        <MDBIcon icon="image" className="pr-2" size="lg" />
+                        Add picture
+                      </>
+                    )}
                   </MDBBtn>
                 </div>
+                {this.state.pictureActive && (
+                  <input
+                    type="file"
+                    onChange={this.onImageChange}
+                    className="filetype mt-3"
+                    id="group_image"
+                  />
+                )}
+
+                {this.state.postImage && (
+                  <div className="mt-3">
+                    <img src={this.state.postImage} />
+                  </div>
+                )}
                 {this.state.youtubeActive && (
                   <div className="youtube p-3">
                     <input

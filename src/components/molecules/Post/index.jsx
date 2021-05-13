@@ -108,7 +108,8 @@ class Post extends React.Component {
 
     //URLs starting with http://, https://, or ftp://
     // eslint-disable-next-line no-useless-escape
-    replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    replacePattern1 =
+      /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
     replacedText = inputText.replace(
       replacePattern1,
       '<a href="$1" target="_blank">$1</a>'
@@ -124,7 +125,8 @@ class Post extends React.Component {
 
     //Change email addresses to mailto:: links.
     // eslint-disable-next-line no-useless-escape
-    replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+    replacePattern3 =
+      /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
     replacedText = replacedText.replace(
       replacePattern3,
       '<a href="mailto:$1">$1</a>'
@@ -135,7 +137,8 @@ class Post extends React.Component {
 
   checkForLink = (msg) => {
     // eslint-disable-next-line no-useless-escape
-    const replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+    const replacePattern1 =
+      /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
     // eslint-disable-next-line no-useless-escape
     const replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
 
@@ -282,8 +285,8 @@ class Post extends React.Component {
               }}
               className={
                 post.data.basic && this.state.basic !== post.id
-                  ? "basic hand"
-                  : ""
+                  ? "basic hand mb-1"
+                  : "mb-1"
               }
             ></p>
             {post.data.basic && (
@@ -309,7 +312,7 @@ class Post extends React.Component {
               <img
                 src={post.data.image}
                 alt="Post image context"
-                className="img-fluid w-75"
+                className="img-fluid w-75 mt-3"
               />
             )}
             {url && !this.state?.hideUrlPreview && (
