@@ -6,10 +6,11 @@ import Posts from "./Posts";
 import Comments from "./Comments";
 import Chat from "./Chat";
 import NotifBox from "./NotifBox";
+import BlogList from "./BlogList";
 //#endregion
 
 //#region > Exports
-export { RegisterForm, Posts, Comments, Chat, NotifBox };
+export { RegisterForm, Posts, Comments, Chat, NotifBox, BlogList };
 //#endregion
 
 /**

@@ -15,6 +15,9 @@ import "bootstrap-css-only/css/bootstrap.min.css";
 // "Material Design for Bootstrap" is a great UI design framework
 import "mdbreact/dist/css/mdb.css";
 
+//> Draft.js CSS
+import "../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
 //> CSS
 // Root SCSS file
 import "./index.scss";

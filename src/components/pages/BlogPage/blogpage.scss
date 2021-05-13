@@ -1,0 +1,54 @@
+#blogs {
+  margin-top: 8rem;
+
+  .blog-side {
+    .card {
+      background: darken(#2e2e2e, 1%);
+      border: 2px darken(#2e2e2e, 5%) solid;
+      border-radius: 0.4rem;
+      box-shadow: none;
+
+      .card-body {
+        padding: 0.4rem 0.4rem 0.8rem 0.4rem;
+
+        .btn {
+          border-radius: 0.5rem;
+          text-transform: initial;
+          margin: 0;
+
+          &.btn-blue {
+            background: transparentize(
+              $color: #33b5e5,
+              $amount: 0.5
+            ) !important;
+            border: 2px #33b5e5 solid;
+            &:hover {
+              background: transparentize(
+                $color: #33b5e5,
+                $amount: 0.4
+              ) !important;
+            }
+          }
+          &.btn-red {
+            background: transparentize(
+              $color: #f44336,
+              $amount: 0.5
+            ) !important;
+            border: 2px #f44336 solid;
+            &:hover {
+              background: transparentize(
+                $color: #f44336,
+                $amount: 0.4
+              ) !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/** 
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2019-2020 Werbeagentur Christian Aichner
+ */
